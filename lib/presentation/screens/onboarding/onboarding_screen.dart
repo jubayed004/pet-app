@@ -40,6 +40,7 @@ class OnboardingPageCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
     return Padding(
       padding: const EdgeInsets.only(
         left: 16.0,
@@ -91,7 +92,8 @@ class OnboardingPageCard extends StatelessWidget {
 
           Obx(() {
             return CustomImage(
-              width: 350.w,
+              width: width,
+              height: 235.h,
               boxFit: BoxFit.fill,
               imageSrc: _controller.onboardingList[_controller.currentIndex
                   .value].image,
@@ -137,12 +139,14 @@ class OnboardingPageCard extends StatelessWidget {
                   AppRouter.route.pushNamed(RoutePath.signInScreen);
                 }
               },
+              textColor: AppColors.blackColor,
               showIcon: true,
-              title: _controller.currentIndex.value >= 2 ? "Continue " : 'Next',
-              fontSize: 16.sp,
+              title: _controller.currentIndex.value >= 2 ? "Get Started" : 'Next',
+              fontSize: 20.sp,
               width: double.infinity,
               height: 60,
-              fillColor: AppColors.greenColor,
+              fillColor: AppColors.primaryColor,
+              iconSize: 8,
             );
           }),
         ],

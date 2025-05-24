@@ -66,14 +66,14 @@ class CustomButton extends StatelessWidget {
           children: [
             CustomText(
               fontSize: fontSize ?? 18.sp,
-              fontWeight: FontWeight.w600,
+              fontWeight: FontWeight.w700,
               color: textColor,
               textAlign: TextAlign.center,
               text: title,
             ),
             Gap(4),
             // Show icon only if showIcon is true
-            showIcon ? Assets.icons.petowner.svg(width: iconSize) : SizedBox.shrink(),
+            showIcon ? Assets.icons.backarrowicon.svg(width: iconSize,) : SizedBox.shrink(),
           ],
         ),
       ),

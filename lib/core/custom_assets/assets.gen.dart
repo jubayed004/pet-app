@@ -51,6 +51,10 @@ class $AssetsIconsGen {
   SvgGenImage get addpeticon =>
       const SvgGenImage('assets/icons/addpeticon.svg');
 
+  /// File path: assets/icons/backarrowicon.svg
+  SvgGenImage get backarrowicon =>
+      const SvgGenImage('assets/icons/backarrowicon.svg');
+
   /// File path: assets/icons/businessowner.svg
   SvgGenImage get businessowner =>
       const SvgGenImage('assets/icons/businessowner.svg');
@@ -162,6 +166,7 @@ class $AssetsIconsGen {
         abouticon,
         addicon,
         addpeticon,
+        backarrowicon,
         businessowner,
         chaticon,
         emailicon,
