@@ -1,8 +1,8 @@
-/*
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:pet_app/core/custom_assets/assets.gen.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
 
@@ -73,7 +73,7 @@ class CustomButton extends StatelessWidget {
             ),
             Gap(4),
             // Show icon only if showIcon is true
-            showIcon ? Assets.icons.arrowrighticon.svg(width: iconSize) : SizedBox.shrink(),
+            showIcon ? Assets.icons.petowner.svg(width: iconSize) : SizedBox.shrink(),
           ],
         ),
       ),
@@ -83,4 +83,3 @@ class CustomButton extends StatelessWidget {
 
 
 
-*/

@@ -18,7 +18,7 @@ class AppRouter {
         path: RoutePath.splashScreen.addBasePath,
         pageBuilder: (context, state) => _buildPageWithAnimation(child: SplashScreen(), state: state),
       ),
- /*     GoRoute(
+      GoRoute(
         name: RoutePath.onboardingScreen,
         path: RoutePath.onboardingScreen.addBasePath,
         pageBuilder:
@@ -26,7 +26,7 @@ class AppRouter {
           child: OnboardingScreen(),
           state: state,
         ),
-      ),*/
+      ),
 
 /*
 

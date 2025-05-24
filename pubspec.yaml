@@ -112,6 +112,7 @@ flutter_gen:
 
   #===========>>>>>>>>>> Flutter Gen Code ==============>>>>>>>>>>>
   # dart pub global activate flutter_gen
+  # flutter pub run build_runner build
   # import 'package:pet_app/core/custom_assets/assets.gen.dart';
 
 
