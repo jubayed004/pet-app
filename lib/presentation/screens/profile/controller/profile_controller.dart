@@ -1,17 +1,12 @@
-/*
-import 'dart:convert';
-import 'dart:io';
-import 'package:betwise_app/core/dependency/get_it_injection.dart';
-import 'package:betwise_app/core/route/routes.dart';
-import 'package:betwise_app/helper/local_db/local_db.dart';
-import 'package:betwise_app/helper/toast_message/toast_message.dart';
-import 'package:betwise_app/presentation/screens/profile/model/profile_model.dart';
-import 'package:betwise_app/service/api_service.dart';
-import 'package:betwise_app/service/api_url.dart';
-import 'package:betwise_app/utils/app_const/app_const.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:pet_app/core/dependency/get_it_injection.dart';
+import 'package:pet_app/helper/local_db/local_db.dart';
+import 'package:pet_app/presentation/screens/profile/model/profile_model.dart';
+import 'package:pet_app/service/api_service.dart';
+import 'package:pet_app/utils/app_const/app_const.dart';
 
 class ProfileController extends GetxController {
 
@@ -26,8 +21,8 @@ class ProfileController extends GetxController {
   final RxBool isAdmin = false.obs;
 
   Future<void> getProfile() async{
-    loadingMethod(Status.completed);
-    try{
+/*    loadingMethod(Status.completed);*/
+/*    try{
       loadingMethod(Status.loading);
       final response = await apiClient.get(url: ApiUrl.profile());
       if (response.statusCode == 200) {
@@ -48,7 +43,7 @@ class ProfileController extends GetxController {
       }
     }catch(e){
       loadingMethod(Status.error);
-    }
+    }*/
 
   }
 
@@ -68,7 +63,7 @@ class ProfileController extends GetxController {
   }
 
   Future<void> updateProfile() async{
-    try{
+/*    try{
       isUpdateLoading.value = true;
 
       final body = {
@@ -96,7 +91,7 @@ class ProfileController extends GetxController {
       }
     }catch(error){
       isUpdateLoading.value = false;
-    }
+    }*/
   }
 
   Future<void> getAdmin() async{
@@ -116,4 +111,3 @@ class ProfileController extends GetxController {
     super.onReady();
   }
 }
-*/

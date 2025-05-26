@@ -1,20 +1,9 @@
-/*
-import 'package:betwise_app/controller/get_controllers.dart';
-import 'package:betwise_app/core/custom_assets/assets.gen.dart';
-import 'package:betwise_app/core/route/route_path.dart';
-import 'package:betwise_app/core/route/routes.dart';
-import 'package:betwise_app/helper/dialog/show_custom_animated_dialog.dart';
-import 'package:betwise_app/helper/image/network_image.dart';
-import 'package:betwise_app/presentation/components/custom_button/custom_button.dart';
-import 'package:betwise_app/presentation/components/custom_text/custom_text.dart';
-import 'package:betwise_app/presentation/screens/profile/widgets/profile_box_card.dart';
-import 'package:betwise_app/presentation/widget/align/custom_align_text.dart';
-import 'package:betwise_app/presentation/widget/show_custom_animated_dialog/show_custon_animated_dialog.dart';
-import 'package:betwise_app/utils/app_colors/app_colors.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:pet_app/controller/get_controllers.dart';
 
 
 class ProfileScreen extends StatelessWidget {
@@ -32,9 +21,7 @@ final controller = GetControllers.instance.getNavigationControllerMain();
       appBar: AppBar(
         backgroundColor: Colors.white,
     centerTitle: true,
-          title: CustomText(
-            text: "Profile",fontSize: 16,fontWeight: FontWeight.w600,
-          ),
+
 
       ),
       body: RefreshIndicator(
@@ -43,7 +30,7 @@ final controller = GetControllers.instance.getNavigationControllerMain();
         },
         child: CustomScrollView(
           slivers: [
-
+/*
             SliverToBoxAdapter(
               child: Container(
                 padding: EdgeInsets.all(8),
@@ -71,15 +58,14 @@ final controller = GetControllers.instance.getNavigationControllerMain();
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
 
-                          */
-/*  SizedBox(
+  SizedBox(
                               height: 100.h,
                               width: 100.w,
                               child: ClipRRect(
                                   borderRadius: BorderRadius.circular(5),
                                   child: CustomNetworkImage(imageUrl: profileController.profile.value.data?.??"",)
                               ),
-                            ),*//*
+                            ),
 
                             SizedBox(
                               height: 100.h,
@@ -282,7 +268,7 @@ final controller = GetControllers.instance.getNavigationControllerMain();
                   ],
                 ),
               ),
-            ),
+            ),*/
           ],
         ),
       ),
@@ -292,4 +278,3 @@ final controller = GetControllers.instance.getNavigationControllerMain();
 
 }
 
-*/

@@ -16,7 +16,7 @@ class CustomNetworkImage extends StatelessWidget {
   final ColorFilter? colorFilter;
   final BoxFit? fit;
 
-  const CustomNetworkImage({
+  const  CustomNetworkImage({
     super.key,
     this.child,
     this.errorWidget,
@@ -38,7 +38,7 @@ class CustomNetworkImage extends StatelessWidget {
     if (imageUrl.isEmpty) {
       print("Empty Image URL: $imageUrl");
       return CachedNetworkImage(
-        imageUrl: "http://10.0.60.137:5055/uploads/images/category/1741837193950-photo-1470225620780-dba8ba36b745.jpg",
+        imageUrl: "https://banner2.cleanpng.com/lnd/20240813/vh/e56b05260362485ee5bdfd1f8a5118.webp",
         fit: fit,
         imageBuilder: (context, imageProvider) => Container(
           height: height,

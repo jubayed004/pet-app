@@ -70,7 +70,7 @@ class OnboardingPageCard extends StatelessWidget {
                     alignment: Alignment.topRight,
                     child: InkWell(
                       onTap: () {
-                        AppRouter.route.goNamed(RoutePath.signInScreen);
+                        AppRouter.route.goNamed(RoutePath.vendorSelectionScreen);
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -136,7 +136,7 @@ class OnboardingPageCard extends StatelessWidget {
                   _controller.currentIndex.value =
                       _controller.currentIndex.value + 1;
                 } else {
-                  AppRouter.route.pushNamed(RoutePath.signInScreen);
+                  AppRouter.route.pushNamed(RoutePath.vendorSelectionScreen);
                 }
               },
               textColor: AppColors.blackColor,

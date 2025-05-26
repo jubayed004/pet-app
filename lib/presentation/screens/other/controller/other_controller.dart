@@ -1,15 +1,10 @@
-/*
-import 'package:betwise_app/core/dependency/get_it_injection.dart';
-import 'package:betwise_app/core/route/routes.dart';
-import 'package:betwise_app/helper/local_db/local_db.dart';
-import 'package:betwise_app/helper/toast_message/toast_message.dart';
-import 'package:betwise_app/presentation/screens/other/model/other_model.dart';
-import 'package:betwise_app/service/api_service.dart';
-import 'package:betwise_app/service/api_url.dart';
-import 'package:betwise_app/utils/app_const/app_const.dart';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pet_app/core/dependency/get_it_injection.dart';
+import 'package:pet_app/helper/local_db/local_db.dart';
+import 'package:pet_app/presentation/screens/other/model/other_model.dart';
+import 'package:pet_app/service/api_service.dart';
+import 'package:pet_app/utils/app_const/app_const.dart';
 
 class OtherController extends GetxController{
   final ApiClient apiClient = serviceLocator();
@@ -22,7 +17,7 @@ class OtherController extends GetxController{
   termsLoadingMethod(Status status) => termsLoading.value = status;
 
   Future<void> getTermsCondition() async {
-    try{
+/*    try{
       termsLoadingMethod(Status.loading);
       var response = await apiClient.get(url: ApiUrl.getTerms());
       if (response.statusCode == 200) {
@@ -39,7 +34,7 @@ class OtherController extends GetxController{
       }
     }catch(e){
       termsLoadingMethod(Status.error);
-    }
+    }*/
 
   }
 
@@ -50,6 +45,7 @@ class OtherController extends GetxController{
   privacyLoadingMethod(Status status) => privacyLoading.value = status;
 
   Future<void> getPrivacyPolicy() async {
+/*
     try{
       privacyLoadingMethod(Status.loading);
       var response = await apiClient.get(url: ApiUrl.privacyPolicy());
@@ -68,6 +64,7 @@ class OtherController extends GetxController{
     }catch(e){
       privacyLoadingMethod(Status.error);
     }
+*/
 
   }
 
@@ -79,7 +76,6 @@ class OtherController extends GetxController{
   final confirmPassword = TextEditingController();
 
   Future<void> changePassword() async {
- */
 /*   try{
       changePasswordLoadingMethod(true);
 
@@ -101,7 +97,7 @@ class OtherController extends GetxController{
     }catch(e){
       toastMessage();
       changePasswordLoadingMethod(false);
-    }*//*
+    }*/
 
 
   }
@@ -112,7 +108,6 @@ class OtherController extends GetxController{
   final deletePassword = TextEditingController();
 
   void deleteAccount() async {
-*/
 /*
     try{
       deleteMethod(true);
@@ -132,7 +127,8 @@ class OtherController extends GetxController{
     }catch (err){
       deleteMethod(false);
     }
-*//*
+*/
+
 
 
   }
@@ -145,4 +141,3 @@ class OtherController extends GetxController{
 
 }
 
-*/

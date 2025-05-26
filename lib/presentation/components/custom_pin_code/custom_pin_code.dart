@@ -1,7 +1,6 @@
-/*
 // ignore_for_file: prefer_const_constructors
-import 'package:betwise_app/utils/app_colors/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:pet_app/utils/app_colors/app_colors.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 class CustomPinCode extends StatelessWidget {
@@ -22,8 +21,8 @@ class CustomPinCode extends StatelessWidget {
         animationType: AnimationType.fade,
         animationDuration: Duration(milliseconds: 300),
         controller: controller,
-        textStyle: TextStyle(color: AppColors.secondTextColor),
-        cursorColor: AppColors.secondTextColor,
+        textStyle: TextStyle(color: AppColors.purple500),
+        cursorColor: AppColors.purple500,
         hintCharacter: "*",
         hintStyle: TextStyle(fontWeight: FontWeight.w800,fontSize: 20),
         pinTheme: PinTheme(
@@ -31,24 +30,24 @@ class CustomPinCode extends StatelessWidget {
           borderRadius: BorderRadius.circular(6),
           fieldHeight: 50,
           fieldWidth: size.width * 0.14,
-          inactiveColor: AppColors.secondTextColor,
-          activeColor: AppColors.secondTextColor, // active color
-          activeFillColor: Color(0xFFF1F5F9),
-          inactiveFillColor: Color(0xffF1F5F9),
+          inactiveColor: AppColors.grey700,
+          activeColor: AppColors.purple500, // active color
+          activeFillColor: Colors.white,
+          inactiveFillColor: Colors.white,
           inactiveBorderWidth: 1,
           activeBorderWidth: 1,
           selectedBorderWidth: 1,
           disabledBorderWidth: 1,
-          selectedFillColor: Color(0xffF1F5F9), // selected color
-          disabledColor: AppColors.secondTextColor,
-          selectedColor: AppColors.secondTextColor,
+          selectedFillColor: Colors.white, // selected color
+          disabledColor: AppColors.purple500,
+          selectedColor: AppColors.purple500,
         ),
         validator: (value) {
           if (value == null || value.isEmpty) {
-            return 'OTP_is_required';
+            return 'OTP is required';
           }
           if (value.length != 6) {
-            return 'OTP_must_be_6_digits';
+            return 'OTP must be 6 digits';
           }
           return null;
         },
@@ -56,4 +55,3 @@ class CustomPinCode extends StatelessWidget {
     );
   }
 }
-*/

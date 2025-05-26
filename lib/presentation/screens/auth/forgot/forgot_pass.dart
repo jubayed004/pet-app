@@ -1,19 +1,15 @@
-/*
-import 'package:betwise_app/controller/get_controllers.dart';
-import 'package:betwise_app/core/route/route_path.dart';
-import 'package:betwise_app/core/route/routes.dart';
-import 'package:betwise_app/presentation/components/custom_button/custom_button.dart';
-import 'package:betwise_app/presentation/components/custom_text/custom_text.dart';
-import 'package:betwise_app/presentation/components/custom_text_field/custom_text_field.dart';
-import 'package:betwise_app/presentation/widget/align/custom_align_text.dart';
-import 'package:betwise_app/presentation/widget/back_button/back_button.dart';
-import 'package:betwise_app/presentation/widget/custom_text/custom_text.dart';
-import 'package:betwise_app/presentation/widget/text_field/custom_text_field.dart';
-import 'package:betwise_app/utils/app_colors/app_colors.dart';
-
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:pet_app/controller/get_controllers.dart';
+import 'package:pet_app/core/route/route_path.dart';
+import 'package:pet_app/core/route/routes.dart';
+import 'package:pet_app/presentation/components/custom_button/custom_button.dart';
+import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
+import 'package:pet_app/presentation/components/custom_text_field/custom_text_field.dart';
+import 'package:pet_app/presentation/widget/align/custom_align_text.dart';
+import 'package:pet_app/utils/app_colors/app_colors.dart';
+import 'package:pet_app/utils/app_strings/app_strings.dart';
 
 
 class ForgotPassScreen extends StatelessWidget {
@@ -28,11 +24,8 @@ class ForgotPassScreen extends StatelessWidget {
       backgroundColor: Colors.white,
   appBar: AppBar(
     backgroundColor: Colors.white,
-      leading: CustomBackButton(
-        onTap: () {
-          AppRouter.route.pop();
-        },
-      ),
+    title: CustomText(text: AppStrings.forgotPasswordScreen,fontWeight: FontWeight.w500,fontSize: 18,),
+    centerTitle: true,
   ),
       body: Center(
         child: SingleChildScrollView(
@@ -48,8 +41,8 @@ class ForgotPassScreen extends StatelessWidget {
                     fontSize: 24),
                 Gap(8),
                 CustomText(
-                    text: "Access your account and stay ahead with expert picks."
-                        , color: AppColors.secondTextColor, maxLines: 3),
+                    text: AppStrings.enterYourEmailAnd
+                        , color: AppColors.secondTextColor, maxLines: 3,fontSize: 14,fontWeight: FontWeight.w400,),
                 const Gap(24),
 
                 //=============================== Email text ==================================
@@ -76,12 +69,15 @@ class ForgotPassScreen extends StatelessWidget {
 
                 Obx(() {
                   return CustomButton(
+                    textColor: Colors.black,
                     isLoading: _authController.forgetLoading.value,
-                    title: "continue", onTap: () {
+                    title: "Send Code", onTap: () {
 
-                    if (_formKey.currentState!.validate()) {
+              /*      if (_formKey.currentState!.validate()) {
                       _authController.forget();
-                    }
+                    }*/
+                    
+                    AppRouter.route.pushNamed(RoutePath.verifyOtpScreen);
                   },
                   );
                 }),
@@ -95,4 +91,3 @@ class ForgotPassScreen extends StatelessWidget {
     );
   }
 }
-*/

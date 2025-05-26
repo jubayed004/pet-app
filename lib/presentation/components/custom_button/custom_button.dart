@@ -25,6 +25,8 @@ class CustomButton extends StatelessWidget {
     this.showIcon = false,
     this.iconSize = 20,
     this.borderColor,
+   this.icon,
+    this.fontWeight,
   });
 
   final Color? borderColor;
@@ -43,6 +45,8 @@ class CustomButton extends StatelessWidget {
   final bool? isLoading;
   final bool showIcon;
   final double iconSize;
+  final Widget? icon;
+  final FontWeight? fontWeight;
 
   @override
   Widget build(BuildContext context) {
@@ -66,14 +70,14 @@ class CustomButton extends StatelessWidget {
           children: [
             CustomText(
               fontSize: fontSize ?? 18.sp,
-              fontWeight: FontWeight.w700,
+              fontWeight: fontWeight??FontWeight.w700,
               color: textColor,
               textAlign: TextAlign.center,
               text: title,
             ),
-            Gap(4),
+            Gap(8),
             // Show icon only if showIcon is true
-            showIcon ? Assets.icons.backarrowicon.svg(width: iconSize,) : SizedBox.shrink(),
+            showIcon ? icon?? SizedBox() : SizedBox.shrink(),
           ],
         ),
       ),

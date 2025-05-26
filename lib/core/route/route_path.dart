@@ -3,6 +3,8 @@ class RoutePath{
 
   static const String splashScreen = 'splashScreen';
   static const String onboardingScreen = 'onboardingScreen';
+  static const String vendorSelectionScreen = 'vendorSelectionScreen';
+  static const String petRegistrationScreen = 'petRegistrationScreen';
 
   static const String signInScreen = 'signInScreen';
   static const String signUpScreen = 'signUpScreen';

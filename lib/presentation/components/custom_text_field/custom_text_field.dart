@@ -1,8 +1,7 @@
-/*
-import 'package:betwise_app/utils/app_colors/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:pet_app/utils/app_colors/app_colors.dart';
 
 class CustomTextField extends StatefulWidget {
   const CustomTextField({
@@ -85,6 +84,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       keyboardType: widget.keyboardType,
       textInputAction: widget.textInputAction,
       cursorColor: widget.cursorColor,
+
       style: widget.inputTextStyle ??
           GoogleFonts.poppins(
               fontSize: 16,
@@ -146,4 +146,3 @@ class _CustomTextFieldState extends State<CustomTextField> {
     });
   }
 }
-*/

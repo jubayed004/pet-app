@@ -1,6 +1,5 @@
-/*
-import 'package:betwise_app/presentation/components/custom_text/custom_text.dart';
 import 'package:flutter/material.dart';
+import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 
 class CustomAlignText extends StatelessWidget {
   const CustomAlignText({
@@ -32,4 +31,3 @@ class CustomAlignText extends StatelessWidget {
     );
   }
 }
-*/

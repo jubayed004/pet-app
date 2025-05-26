@@ -2,8 +2,17 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pet_app/helper/extension/base_extension.dart';
+import 'package:pet_app/presentation/screens/auth/forgot/forgot_pass.dart';
+import 'package:pet_app/presentation/screens/auth/otp/verify_otp_screen.dart';
+import 'package:pet_app/presentation/screens/auth/password/set_new_password.dart';
+import 'package:pet_app/presentation/screens/auth/pet_registration/pet_registration_screen.dart';
+import 'package:pet_app/presentation/screens/auth/sign_in/sign_in.dart';
+import 'package:pet_app/presentation/screens/auth/sign_up/sign_up.dart';
+import 'package:pet_app/presentation/screens/nav/navigation_page.dart';
 import 'package:pet_app/presentation/screens/onboarding/onboarding_screen.dart';
+import 'package:pet_app/presentation/screens/other/terms_of_condition.dart';
 import 'package:pet_app/presentation/screens/splash/splash_screen.dart';
+import 'package:pet_app/presentation/screens/vendor_selection/vendor_selection_screen.dart';
 import 'route_path.dart';
 
 class AppRouter {
@@ -28,7 +37,16 @@ class AppRouter {
         ),
       ),
 
-/*
+      GoRoute(
+        name: RoutePath.vendorSelectionScreen,
+        path: RoutePath.vendorSelectionScreen.addBasePath,
+        pageBuilder:
+            (context, state) => _buildPageWithAnimation(
+          child: VendorSelectionScreen(),
+          state: state,
+        ),
+      ),
+
 
       ///======================= Auth Route =======================
       GoRoute(
@@ -44,6 +62,13 @@ class AppRouter {
         pageBuilder:
             (context, state) =>
                 _buildPageWithAnimation(child: SignUpScreen(), state: state),
+      ),
+      GoRoute(
+        name: RoutePath.petRegistrationScreen,
+        path: RoutePath.petRegistrationScreen.addBasePath,
+        pageBuilder:
+            (context, state) =>
+                _buildPageWithAnimation(child: PetRegistrationScreen(), state: state),
       ),
       GoRoute(
         name: RoutePath.forgotPassScreen,
@@ -74,7 +99,6 @@ class AppRouter {
               state: state,
             ),
       ),
-
       ///======================= Navigation Route =======================
       GoRoute(
         name: RoutePath.navigationPage,
@@ -87,8 +111,7 @@ class AppRouter {
               state: state,
             ),
       ),
-
-      GoRoute(
+     /* GoRoute(
         name: RoutePath.editProfileScreen,
         path: RoutePath.editProfileScreen.addBasePath,
         pageBuilder:
@@ -96,8 +119,8 @@ class AppRouter {
               child: const EditProfileScreen(),
               state: state,
             ),
-      ),
-      GoRoute(
+      ),*/
+     /* GoRoute(
         name: RoutePath.notifyScreen,
         path: RoutePath.notifyScreen.addBasePath,
         pageBuilder:
@@ -105,9 +128,7 @@ class AppRouter {
               child: const NotifyScreen(),
               state: state,
             ),
-      ),
-
-
+      ),*/
       // GoRoute(
       //   name: RoutePath.checkNotify,
       //   path: RoutePath.checkNotify.addBasePath,
@@ -117,16 +138,15 @@ class AppRouter {
       //         state: state,
       //       ),
       // ),
-
       ///======================= Other Route =======================
-      GoRoute(
+      /*GoRoute(
         name: RoutePath.settingsScreen,
         path: RoutePath.settingsScreen.addBasePath,
         pageBuilder:
             (context, state) =>
                 _buildPageWithAnimation(child: SettingsScreen(), state: state),
-      ),
-      GoRoute(
+      ),*/
+     /* GoRoute(
         name: RoutePath.changePasswordScreen,
         path: RoutePath.changePasswordScreen.addBasePath,
         pageBuilder:
@@ -134,14 +154,14 @@ class AppRouter {
               child: ChangePasswordScreen(),
               state: state,
             ),
-      ),
-      GoRoute(
+      ),*/
+     /* GoRoute(
         name: RoutePath.privacyPolicy,
         path: RoutePath.privacyPolicy.addBasePath,
         pageBuilder:
             (context, state) =>
                 _buildPageWithAnimation(child: PrivacyPolicy(), state: state),
-      ),
+      ),*/
       GoRoute(
         name: RoutePath.termsOfCondition,
         path: RoutePath.termsOfCondition.addBasePath,
@@ -151,7 +171,7 @@ class AppRouter {
               state: state,
             ),
       ),
-      GoRoute(
+      /*GoRoute(
         name: RoutePath.helpFaqScreen,
         path: RoutePath.helpFaqScreen.addBasePath,
         pageBuilder:
@@ -159,11 +179,11 @@ class AppRouter {
               child: HelpFaqScreen(),
               state: state,
             ),
-      ),
+      ),*/
 
       ///======================= Subscription =======================
 
-      GoRoute(
+     /* GoRoute(
         name: RoutePath.subscriptionScreen,
         path: RoutePath.subscriptionScreen.addBasePath,
         pageBuilder:
@@ -171,9 +191,9 @@ class AppRouter {
               child: SubscriptionScreen(),
               state: state,
             ),
-      ),
+      ),*/
 
-      GoRoute(
+     /* GoRoute(
         name: RoutePath.subscriptionStatusScreen,
         path: RoutePath.subscriptionStatusScreen.addBasePath,
         pageBuilder:
@@ -181,8 +201,7 @@ class AppRouter {
               child: SubscriptionStatusScreen(),
               state: state,
             ),
-      ),
-*/
+      ),*/
 
     ],
   );

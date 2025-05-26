@@ -1,12 +1,10 @@
-/*
-import 'package:betwise_app/core/custom_assets/assets.gen.dart';
-import 'package:betwise_app/presentation/screens/home/home_screen.dart';
-import 'package:betwise_app/presentation/screens/notify/check_notify.dart';
-import 'package:betwise_app/presentation/screens/notify/notify_screen.dart';
-import 'package:betwise_app/presentation/screens/profile/profile_screen.dart';
-import 'package:betwise_app/presentation/screens/search/search_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pet_app/presentation/screens/chat/chat_screen.dart';
+import 'package:pet_app/presentation/screens/explore/explore_screen.dart';
+import 'package:pet_app/presentation/screens/home/home_screen.dart';
+import 'package:pet_app/presentation/screens/my_pets/my_pets_screen.dart';
+import 'package:pet_app/presentation/screens/profile/profile_screen.dart';
 
 class NavigationControllerMain extends GetxController {
   static NavigationControllerMain get to => Get.find();
@@ -16,9 +14,9 @@ class NavigationControllerMain extends GetxController {
   List<Widget> getPages() {
     return [
       HomeScreen(),
-      SearchScreen(),
-      // CheckNotify(),
-      NotifyScreen(),
+      ExploreScreen(),
+      ChatScreen(),
+      MyPetsScreen(),
       ProfileScreen(),
     ];
   }
@@ -26,18 +24,19 @@ class NavigationControllerMain extends GetxController {
 
   // List of icons for the navigation bar
   final List<String> icons = [
-    "assets/icons/home.svg",
-    "assets/icons/searchoneicon.svg",
-    "assets/icons/notification.svg",
-    "assets/icons/Profileicon.svg",
+    "assets/icons/homeicon.svg",
+    "assets/icons/exploreicon.svg",
+    "assets/icons/chaticon.svg",
+    "assets/icons/mypeticon.svg",
+    "assets/icons/profileicon.svg",
   ];
 
   // List of labels for the navigation bar
   final List<String> labels = [
     "Home",
-    "Search",
-    "Notification",
+    "Explore",
+    "Chat",
+    "My Pets",
     "Profile",
   ];
 }
-*/

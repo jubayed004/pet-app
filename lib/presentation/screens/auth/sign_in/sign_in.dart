@@ -1,21 +1,22 @@
-/*
-import 'package:betwise_app/controller/get_controllers.dart';
-import 'package:betwise_app/core/route/route_path.dart';
-import 'package:betwise_app/core/route/routes.dart';
-import 'package:betwise_app/presentation/components/custom_button/custom_button.dart';
-import 'package:betwise_app/presentation/components/custom_text/custom_text.dart';
-import 'package:betwise_app/presentation/components/custom_text_field/custom_text_field.dart';
-import 'package:betwise_app/presentation/widget/align/custom_align_text.dart';
-import 'package:betwise_app/utils/app_colors/app_colors.dart';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:pet_app/controller/get_controllers.dart';
+import 'package:pet_app/core/custom_assets/assets.gen.dart';
+import 'package:pet_app/core/route/route_path.dart';
+import 'package:pet_app/core/route/routes.dart';
+import 'package:pet_app/presentation/components/custom_button/custom_button.dart';
+import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
+import 'package:pet_app/presentation/components/custom_text_field/custom_text_field.dart';
+import 'package:pet_app/presentation/widget/align/custom_align_text.dart';
+import 'package:pet_app/utils/app_colors/app_colors.dart';
+import 'package:pet_app/utils/app_strings/app_strings.dart';
 
 class SignInScreen extends StatelessWidget {
   SignInScreen({super.key});
-
   final _authController = GetControllers.instance.getAuthController();
   final _formKey = GlobalKey<FormState>();
 
@@ -39,18 +40,19 @@ class SignInScreen extends StatelessWidget {
                   fontWeight: FontWeight.w800,
                   fontSize: 24,
                 ),
-                CustomText(
+               Assets.icons.loginimage.svg(),
+               /* CustomText(
                   text: "Access your account and stay ahead with expert picks.",
                   color: AppColors.secondTextColor,
                   maxLines: 3,
 
-                ),
+                ),*/
                 Gap(24),
                 CustomAlignText(text: "Email"),
                 Gap(8.0),
                 CustomTextField(
-                  hintText: "michelle.rivera@example.com",
-                  fieldBorderColor: AppColors.secondTextColor,
+                  hintText: AppStrings.enterYourEmail,
+                  fieldBorderColor: AppColors.secondPrimaryColor,
                   fieldBorderRadius: 10,
                   fillColor: Colors.white,
                   keyboardType: TextInputType.emailAddress,
@@ -73,10 +75,10 @@ class SignInScreen extends StatelessWidget {
                 Gap(8.0),
                 CustomTextField(
 
-                  fieldBorderColor: AppColors.secondTextColor,
+                  fieldBorderColor: AppColors.secondPrimaryColor,
                   fieldBorderRadius: 10,
                   fillColor: Colors.white,
-                  hintText: "•••••••••••••",
+                  hintText: AppStrings.enterYourPassword,
                   isPassword: true,
                   keyboardType: TextInputType.text,
                   textEditingController: _authController.password,
@@ -90,7 +92,7 @@ class SignInScreen extends StatelessWidget {
                     return null;
                   },
                 ),
-                Gap(5),
+                Gap(16),
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -111,11 +113,11 @@ class SignInScreen extends StatelessWidget {
                               decoration: BoxDecoration(
                                 color:
                                     _authController.rememberMe.value
-                                        ? AppColors.blackColor
+                                        ? AppColors.purple500
                                         : Colors.transparent,
                                 border: Border.all(
                                   width: .5.sp,
-                                  color: AppColors.secondTextColor
+                                  color: AppColors.secondPrimaryColor
                                 ),
                                 borderRadius: BorderRadius.circular(4.sp),
                               ),
@@ -132,9 +134,10 @@ class SignInScreen extends StatelessWidget {
                             ),
                             CustomText(
                               left: 8.w,
-                              text: "Remember me",
+                              text: "Remember Me",
                               // Replace this with appropriate text
-                              fontSize: 12.sp,
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w400,
                             ),
                           ],
                         ),
@@ -147,33 +150,51 @@ class SignInScreen extends StatelessWidget {
                       },
                       child: CustomText(
                         text: "Forget Password ?",
-                        color: AppColors.greenColor,
+                        color: AppColors.whiteColor700,
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w500,
+                        textAlign: TextAlign.center,
                       ),
                     ),
                   ],
                 ),
+
+                Gap(24),
+              CustomButton(
+                // isLoading: _authController.loginLoading.value,
+                textColor: Colors.black,
+                title: AppStrings.signIn,
+                onTap: () {
+                  /*      if (_formKey.currentState!.validate()) {
+                        _authController.login();
+                      }*/
+
+                  AppRouter.route.goNamed(RoutePath.navigationPage);
+                },
+              ),
+              /*  Obx(() {
+                  return
+                }),*/
                 Gap(24),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
                       height: 1.h,
-                      color: AppColors.secondTextColor,
+                      color: AppColors.purple500,
                       width: MediaQuery.of(context).size.width * .38,
                     ),
                     CustomText(text: "OR", left: 8.w, right: 8.w),
                     Container(
                       height: 1.h,
-                      color: AppColors.secondTextColor,
+                      color: AppColors.purple500,
                       width: MediaQuery.of(context).size.width * .38,
                     ),
                   ],
                 ),
                 Gap(24),
                 Align(
-                  alignment: Alignment.topLeft,
+                  alignment: Alignment.topCenter,
                   child: RichText(
                     text: TextSpan(
                       text: 'Don’t have an account?',
@@ -181,28 +202,16 @@ class SignInScreen extends StatelessWidget {
                       children: [
                         TextSpan(
                           text: " Sign Up",
-                          style: TextStyle(color: AppColors.blueColor,fontWeight: FontWeight.w600),
+                          style: TextStyle(color: AppColors.purple500,fontWeight: FontWeight.w600),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                             AppRouter.route.goNamed(RoutePath.signUpScreen);
+                              AppRouter.route.goNamed(RoutePath.signUpScreen);
                             },
                         ),
                       ],
                     ),
                   ),
                 ),
-                Gap(24),
-                Obx(() {
-                  return CustomButton(
-                    isLoading: _authController.loginLoading.value,
-                    title: " Log In",
-                    onTap: () {
-                      if (_formKey.currentState!.validate()) {
-                        _authController.login();
-                      }
-                    },
-                  );
-                }),
 
               ],
             ),
@@ -212,4 +221,3 @@ class SignInScreen extends StatelessWidget {
     );
   }
 }
-*/

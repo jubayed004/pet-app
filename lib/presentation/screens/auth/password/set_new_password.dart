@@ -1,16 +1,12 @@
-/*
-import 'package:betwise_app/controller/get_controllers.dart';
-import 'package:betwise_app/presentation/components/custom_button/custom_button.dart';
-import 'package:betwise_app/presentation/components/custom_text/custom_text.dart';
-import 'package:betwise_app/presentation/components/custom_text_field/custom_text_field.dart';
-import 'package:betwise_app/presentation/widget/align/custom_align_text.dart';
-import 'package:betwise_app/presentation/widget/custom_text/custom_text.dart';
-import 'package:betwise_app/presentation/widget/text_field/custom_text_field.dart';
-import 'package:betwise_app/utils/app_colors/app_colors.dart';
-
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:pet_app/controller/get_controllers.dart';
+import 'package:pet_app/presentation/components/custom_button/custom_button.dart';
+import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
+import 'package:pet_app/presentation/components/custom_text_field/custom_text_field.dart';
+import 'package:pet_app/presentation/widget/align/custom_align_text.dart';
+import 'package:pet_app/utils/app_colors/app_colors.dart';
 
 class SetNewPassword extends StatelessWidget {
   SetNewPassword({super.key, required this.email});
@@ -33,11 +29,11 @@ class SetNewPassword extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                CustomText(text: "set_a_new_password".tr,
+                CustomText(text: "set a new password",
                     fontWeight: FontWeight.w800,
                     fontSize: 24),
                 CustomText(
-                  text: "create_a_secure_password_to_protect_your_account_and_get_started_seamlessly"
+                  text: "create a secure password to protect your account and get started seamlessly"
                       .tr, color: AppColors.secondTextColor, maxLines: 2,),
                 const Gap(24),
 
@@ -46,16 +42,16 @@ class SetNewPassword extends StatelessWidget {
                 CustomAlignText(text: "password"),
                 const Gap(8),
                 CustomTextField(
-                  hintText: "enter_your_password".tr,
+                  hintText: "enter your password",
                   isPassword: true,
                   keyboardType: TextInputType.text,
                   textEditingController: _authController.resetPassword,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Password_is_required'.tr;
+                      return 'Password is required';
                     }
                     if (value.length < 6) {
-                      return 'Password_must_be_at_least_6_characters'.tr;
+                      return 'Password must be at least 6 characters';
                     }
                     return null;
                   },
@@ -63,18 +59,18 @@ class SetNewPassword extends StatelessWidget {
 
                 ///=============================== Confirm Password text ==================================
                 const Gap(24),
-                CustomAlignText(text: "confirm_password".tr),
+                CustomAlignText(text: "confirm_password"),
                 const Gap(8),
                 CustomTextField(
-                  hintText: "confirm_your_password".tr,
+                  hintText: "confirm your password",
                   isPassword: true,
                   keyboardType: TextInputType.text,
                   textEditingController: _authController.resetConfirmPassword,
                   validator: (value) {
                     if (value!.isEmpty) {
-                      return "field_can_t_be_empty".tr;
+                      return "field_can_t_be_empty";
                     } else if (value != _authController.resetPassword.text) {
-                      return "password_should_match".tr;
+                      return "password should match";
                     }
                     return null;
                   },
@@ -83,7 +79,7 @@ class SetNewPassword extends StatelessWidget {
                 Obx(() {
                   return CustomButton(
                     isLoading: _authController.resetLoading.value,
-                      title: "confirm".tr, onTap: () {
+                      title: "confirm", onTap: () {
                     if (_formKey.currentState!.validate()) {
                       _authController.reset(email: email);
                     }
@@ -98,4 +94,3 @@ class SetNewPassword extends StatelessWidget {
     );
   }
 }
-*/

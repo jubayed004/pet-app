@@ -84,12 +84,7 @@ dependencies:
   file_picker: ^9.0.2
   permission_handler: ^11.3.1
   open_file: ^3.0.5
-
-  # PDF Handling
-  path_provider: ^2.1.5
-  pdf: ^3.11.2
-  flutter_pdfview: ^1.4.0
-  printing: ^5.14.2
+  badges: ^3.1.2
 
 
 dev_dependencies:

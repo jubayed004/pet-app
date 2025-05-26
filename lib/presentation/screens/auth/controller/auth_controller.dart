@@ -1,16 +1,10 @@
-/*
-
-import 'package:betwise_app/core/dependency/get_it_injection.dart';
-import 'package:betwise_app/core/route/route_path.dart';
-import 'package:betwise_app/core/route/routes.dart';
-import 'package:betwise_app/helper/local_db/local_db.dart';
-import 'package:betwise_app/helper/toast_message/toast_message.dart';
-import 'package:betwise_app/presentation/screens/auth/model/login_model.dart';
-import 'package:betwise_app/service/api_service.dart';
-import 'package:betwise_app/service/api_url.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:pet_app/core/dependency/get_it_injection.dart';
+import 'package:pet_app/helper/local_db/local_db.dart';
+import 'package:pet_app/service/api_service.dart';
+import 'package:pet_app/service/api_url.dart';
 
 class AuthController extends GetxController {
   RxBool rememberMe = false.obs;
@@ -20,6 +14,7 @@ class AuthController extends GetxController {
 
   /// ============================= Login Account =====================================
   RxBool loginLoading = false.obs;
+  RxBool isUser = true.obs;
   loginMethod(bool status) => loginLoading.value = status;
 
   ///Login
@@ -29,7 +24,7 @@ class AuthController extends GetxController {
   final TextEditingController password = TextEditingController();
 
   Future<void> login() async {
-    try {
+/*    try {
       loginMethod(true);
       final body = {
         "email": email.text.trim(),
@@ -64,7 +59,7 @@ class AuthController extends GetxController {
       }
     } catch (err) {
       loginMethod(false);
-    }
+    }*/
   }
 
   /// ============================= Forget Password =====================================
@@ -73,7 +68,7 @@ class AuthController extends GetxController {
   final TextEditingController forgetEmail = TextEditingController();
 
   void forget() async {
-    try {
+/*    try {
       forgetMethod(true);
       var response = await apiClient.post(body: {"email": forgetEmail.text}, url: ApiUrl.forget(), isBasic: true);
 
@@ -92,7 +87,7 @@ class AuthController extends GetxController {
       }
     } catch (err) {
       forgetMethod(false);
-    }
+    }*/
   }
 
   /// ============================= Verify OTP =====================================
@@ -101,7 +96,7 @@ class AuthController extends GetxController {
   final TextEditingController verifyOtp = TextEditingController();
 
   void otpVerify({required String email}) async {
-    try {
+/*    try {
       otpMethod(true);
       final body = {
         "email": email,
@@ -122,7 +117,7 @@ class AuthController extends GetxController {
       }
     } catch (err) {
       otpMethod(false);
-    }
+    }*/
 
   }
 
@@ -132,7 +127,7 @@ class AuthController extends GetxController {
   resendOTPLoadingMethod(bool status) => resendOTPLoading.value = status;
 
   Future<void> resendOTP({required String email}) async {
-    try {
+/*    try {
       resendOTPLoadingMethod(true);
       var response = await apiClient.post(body: {"email": forgetEmail.text}, url: ApiUrl.forget(), isBasic: true);
       if (response.statusCode == 200) {
@@ -144,7 +139,7 @@ class AuthController extends GetxController {
       }
     } catch (err) {
       resendOTPLoadingMethod(false);
-    }
+    }*/
   }
 
   /// ============================= Reset Password =====================================
@@ -154,7 +149,7 @@ class AuthController extends GetxController {
   final TextEditingController resetConfirmPassword = TextEditingController();
 
   void reset({required String email}) async {
-    try {
+/*    try {
       resetMethod(true);
       final body = {
         "email": email,
@@ -176,7 +171,7 @@ class AuthController extends GetxController {
       }
     } catch (err) {
       resetMethod(false);
-    }
+    }*/
   }
 
   /// ============================= Sign Up ===========================================
@@ -185,13 +180,13 @@ class AuthController extends GetxController {
 
   ///Sign Up
   final TextEditingController nameSignUp = TextEditingController();
-  final TextEditingController emailSignUp = TextEditingController(text: "michelle.rivera@example.com");
+  final TextEditingController emailSignUp = TextEditingController();
   final TextEditingController passwordSignUp = TextEditingController();
   final TextEditingController confirmPasswordSignUp = TextEditingController();
   final TextEditingController phoneNumberSignUp = TextEditingController();
 
   Future<void> signUp()  async {
-    try{
+/*    try{
       signUpLoadingMethod(true);
       final body = {
         "name": nameSignUp.text,
@@ -224,7 +219,7 @@ class AuthController extends GetxController {
       }
     }catch (err){
       signUpLoadingMethod(false);
-    }
+    }*/
   }
 
   /// ============================= Active Account Otp =====================================
@@ -235,7 +230,7 @@ class AuthController extends GetxController {
   final TextEditingController accountVerifyOtp = TextEditingController();
 
   Future<void> activeAccount({required String email}) async {
-    try {
+/*    try {
       activeMethod(true);
 
       final body = {
@@ -269,14 +264,14 @@ class AuthController extends GetxController {
       }
     } catch (err) {
       activeMethod(false);
-    }
+    }*/
   }
 
   /// ============================= Resend OTP Account Active =====================================
   RxBool resendActiveLoading = false.obs;
   resendActiveLoadingMethod(bool status) => resendActiveLoading.value = status;
   Future<void> resendActiveOTP({required String email}) async {
-    try {
+/*    try {
       resendActiveLoadingMethod(true);
       var response = await apiClient.post(body: {"email": email}, url: ApiUrl.resendActiveOtp(), isBasic: true);
       if (response.statusCode == 200) {
@@ -288,8 +283,7 @@ class AuthController extends GetxController {
       }
     } catch (err) {
       resendActiveLoadingMethod(false);
-    }
+    }*/
   }
 
 }
-*/

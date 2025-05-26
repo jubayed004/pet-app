@@ -1,5 +1,9 @@
 import 'package:get/get.dart';
+import 'package:pet_app/presentation/screens/auth/controller/auth_controller.dart';
+import 'package:pet_app/presentation/screens/nav/controller/navigation_controller.dart';
 import 'package:pet_app/presentation/screens/onboarding/controller/onboarding_controller.dart';
+import 'package:pet_app/presentation/screens/other/controller/other_controller.dart';
+import 'package:pet_app/presentation/screens/profile/controller/profile_controller.dart';
 
 
 class GetControllers {
@@ -24,7 +28,7 @@ class GetControllers {
     }
     return Get.find<OnboardingController>();
   }
-/*AuthController getAuthController() {
+AuthController getAuthController() {
     if (!Get.isRegistered<AuthController>()) {
       Get.put(AuthController());
     }
@@ -45,12 +49,14 @@ class GetControllers {
     return Get.find<OtherController>();
   }
 
+/*
   FaqController getFaqController() {
     if (!Get.isRegistered<FaqController>()) {
       Get.put(FaqController());
     }
     return Get.find<FaqController>();
   }
+*/
 
 
   ProfileController getProfileController() {
@@ -60,27 +66,27 @@ class GetControllers {
     return Get.find<ProfileController>();
   }
 
-  HomeController getHomeController() {
+/*  HomeController getHomeController() {
     if (!Get.isRegistered<HomeController>()) {
       Get.put(HomeController());
     }
     return Get.find<HomeController>();
-  }
+  }*/
 
+/*
   SearchScreenController getSearchScreenController() {
     if (!Get.isRegistered<SearchScreenController>()) {
       Get.put(SearchScreenController());
     }
     return Get.find<SearchScreenController>();
   }
+*/
 
-
+/*
   NotifyController getNotifyController() {
     if (!Get.isRegistered<NotifyController>()) {
       Get.put(NotifyController());
     }
     return Get.find<NotifyController>();
-  }
-}
-*/
+  }*/
 }

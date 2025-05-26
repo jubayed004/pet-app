@@ -1,11 +1,10 @@
-/*
-import 'package:betwise_app/controller/get_controllers.dart';
-import 'package:betwise_app/presentation/components/custom_text/custom_text.dart';
-import 'package:betwise_app/utils/app_colors/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:pet_app/controller/get_controllers.dart';
+import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
+import 'package:pet_app/utils/app_colors/app_colors.dart';
 
 class NavigationPage extends StatefulWidget {
   const NavigationPage({super.key, this.index = 0});
@@ -42,7 +41,7 @@ class _NavigationPageState extends State<NavigationPage> {
         child: Container(
           padding: EdgeInsets.only(bottom: 20,top: 6),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: AppColors.primaryColor,
             borderRadius: BorderRadius.vertical(
               top: Radius.circular(5),
             ),
@@ -103,7 +102,7 @@ class _NavigationPageState extends State<NavigationPage> {
                               child: SvgPicture.asset(
                                 _controller.icons[index],
                                 colorFilter: ColorFilter.mode(
-                                  isSelected ? Colors.white : Colors.black,
+                                  isSelected ? AppColors.purple500 : AppColors.purple500,
                                   BlendMode.srcIn,
                                 ),
                               ),
@@ -113,7 +112,7 @@ class _NavigationPageState extends State<NavigationPage> {
                           SvgPicture.asset(
                             _controller.icons[index],
                             colorFilter: ColorFilter.mode(
-                              Colors.black,
+                              AppColors.whiteColor,
                               BlendMode.srcIn,
                             ),
                           ),
@@ -121,6 +120,9 @@ class _NavigationPageState extends State<NavigationPage> {
                           Padding(
                             padding: EdgeInsets.only(top: 4.w),
                             child: CustomText(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 14,
+                              color: Colors.white,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               text: _controller.labels[index],
@@ -138,4 +140,3 @@ class _NavigationPageState extends State<NavigationPage> {
     );
   }
 }
-*/
