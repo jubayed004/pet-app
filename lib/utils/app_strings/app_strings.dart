@@ -104,6 +104,7 @@ static const String confirmYourNewPassword = "Confirm your new password";
   static const String upcomingAppointments = "Upcoming Appointments";
   static const String seeAll = "See all";
   static const String vets = "Vets";
+  static const String petVets = "Pet Vets";
   static const String lastVisit = "Last Visit :";
   static const String chat = "Chat";
   static const String visitWebsite = "Visit Website";

@@ -1,3 +1,4 @@
+/*
 // To parse this JSON data, do
 //
 //     final homeModel = homeModelFromJson(jsonString);
@@ -191,3 +192,4 @@ class PostedBy {
     "__v": v,
   };
 }
+*/

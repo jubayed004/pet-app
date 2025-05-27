@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:pet_app/presentation/screens/auth/controller/auth_controller.dart';
+import 'package:pet_app/presentation/screens/home/controller/home_controller.dart';
 import 'package:pet_app/presentation/screens/nav/controller/navigation_controller.dart';
 import 'package:pet_app/presentation/screens/onboarding/controller/onboarding_controller.dart';
 import 'package:pet_app/presentation/screens/other/controller/other_controller.dart';
@@ -66,12 +67,12 @@ AuthController getAuthController() {
     return Get.find<ProfileController>();
   }
 
-/*  HomeController getHomeController() {
+  HomeController getHomeController() {
     if (!Get.isRegistered<HomeController>()) {
       Get.put(HomeController());
     }
     return Get.find<HomeController>();
-  }*/
+  }
 
 /*
   SearchScreenController getSearchScreenController() {

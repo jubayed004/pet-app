@@ -1,9 +1,12 @@
 import 'package:badges/badges.dart' as badges;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
+import 'package:gap/gap.dart';
 import 'package:pet_app/controller/get_controllers.dart';
+import 'package:pet_app/core/custom_assets/assets.gen.dart';
 import 'package:pet_app/helper/image/network_image.dart';
+import 'package:pet_app/presentation/components/custom_button/custom_button.dart';
+import 'package:pet_app/presentation/components/custom_image/custom_image.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:pet_app/presentation/components/custom_text_field/custom_text_field.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
@@ -20,22 +23,25 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  // final homeController = GetControllers.instance.getHomeController();
+  final homeController = GetControllers.instance.getHomeController();
   final controller = GetControllers.instance.getProfileController();
+  final _controller = GetControllers.instance.getOnboardingController();
 
   @override
   Widget build(BuildContext context) {
-    final double width = MediaQuery.of(context).size.width;
+    final double width = MediaQuery
+        .of(context)
+        .size
+        .width;
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.appBackgroundColor,
       body: CustomScrollView(
         slivers: [
 
-          /// SliverAppBar (Floating & Snap)
           SliverAppBar(
             pinned: false,
-            backgroundColor: Colors.white,
+            backgroundColor: AppColors.appBackgroundColor,
             elevation: 0,
             toolbarHeight: 56,
             flexibleSpace: FlexibleSpaceBar(
@@ -57,30 +63,30 @@ class _HomeScreenState extends State<HomeScreen> {
                               shape: BoxShape.circle,
                             ),
                             child: Obx(
-                              () =>
-                                  controller.loading.value == Status.completed
-                                      ? ClipRRect(
-                                        borderRadius: BorderRadius.circular(25),
-                                        child: CustomNetworkImage(
-                                          imageUrl:
-                                              /* controller.profile.value.data?.profileImage ??*/
-                                              "",
-                                        ),
-                                      )
-                                      : Shimmer.fromColors(
-                                        baseColor: AppColors.whiteColor
-                                            .withAlpha(50),
-                                        highlightColor: AppColors.whiteColor
-                                            .withAlpha(100),
-                                        child: Container(
-                                          height: 50,
-                                          width: 50,
-                                          decoration: const BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color: AppColors.primaryColor,
-                                          ),
-                                        ),
-                                      ),
+                                  () =>
+                              controller.loading.value == Status.completed
+                                  ? ClipRRect(
+                                borderRadius: BorderRadius.circular(25),
+                                child: CustomNetworkImage(
+                                  imageUrl:
+                                  /* controller.profile.value.data?.profileImage ??*/
+                                  "",
+                                ),
+                              )
+                                  : Shimmer.fromColors(
+                                baseColor: AppColors.whiteColor
+                                    .withAlpha(50),
+                                highlightColor: AppColors.whiteColor
+                                    .withAlpha(100),
+                                child: Container(
+                                  height: 50,
+                                  width: 50,
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: AppColors.primaryColor,
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
                         ),
@@ -127,317 +133,317 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
 
-                        /*Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Obx(
-                                () =>
-                                    controller.loading.value == Status.completed
-                                        ? Text(
-                                          "Hello Jane Copper ",
-
-                                          */
-                        /*    ${controller.profile.value.data?.firstName ?? ""} ${controller.profile.value.data?.lastName ?? ""}*/
-                        /*
-                                          style: const TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        )
-                                        : Shimmer.fromColors(
-                                          baseColor: AppColors.whiteColor
-                                              .withAlpha(50),
-                                          highlightColor: AppColors.whiteColor
-                                              .withAlpha(100),
-                                          child: Container(
-                                            height: 10,
-                                            width: 120,
-                                            color: AppColors.primaryColor,
-                                          ),
-                                        ),
-                              ),
-                              const Text(
-                                "Welcome to BetWisePicks",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),*/
                       ],
                     ),
-                    /*   const SizedBox(height: 6),
-                    Container(
-                      height: 50,
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFF0FDF4),
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(
-                          color: Colors.black.withOpacity(0.3),
-                          width: 1,
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.15),
-                            blurRadius: 8,
-                            spreadRadius: 1,
-                            offset: const Offset(2, 2),
-                          ),
-                        ],
-                      ),
-                      child: CupertinoSearchTextField(
-                        onTap: () {
-                          // Navigate or custom logic
-                        },
-                        keyboardType: TextInputType.none,
-                        placeholder: "Search Here",
-                        prefixIcon: Icon(
-                          Iconsax.search_favorite,
-                          color: AppColors.blackColor,
-                        ),
-                        decoration: const BoxDecoration(
-                          color: Colors.transparent,
-                        ),
-                      ),
-                    ),*/
+
                   ],
                 ),
               ),
             ),
           ),
-          SliverAppBar(
-            backgroundColor: Colors.white,
-            elevation: 0,
-            flexibleSpace: FlexibleSpaceBar(
-              titlePadding: EdgeInsets.zero,
-              centerTitle: false,
-              title: Padding(
-                padding: const EdgeInsets.only(left: 16,  right: 10),
-                child: Row(
-                  children: [
-                   CustomText(text: AppStrings.activePetProfiles,fontSize: 18,fontWeight: FontWeight.w600,)
-
-                    /*Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Obx(
-                            () =>
-                                controller.loading.value == Status.completed
-                                    ? Text(
-                                      "Hello Jane Copper ",
-
-                                      */
-                    /*    ${controller.profile.value.data?.firstName ?? ""} ${controller.profile.value.data?.lastName ?? ""}*/
-                    /*
-                                      style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    )
-                                    : Shimmer.fromColors(
-                                      baseColor: AppColors.whiteColor
-                                          .withAlpha(50),
-                                      highlightColor: AppColors.whiteColor
-                                          .withAlpha(100),
-                                      child: Container(
-                                        height: 10,
-                                        width: 120,
-                                        color: AppColors.primaryColor,
-                                      ),
-                                    ),
-                          ),
-                          const Text(
-                            "Welcome to BetWisePicks",
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),*/
-                  ],
-                ),
-              ),
-            ),
-          ),
-
-          /*         const SliverGap(34),
-
-          /// SliverAppBar (Floating & Snap)
-          SliverAppBar(
-            floating: false,
-            snap: false,
-            pinned: false,
-            backgroundColor: Colors.white,
-            elevation: 0,
-             toolbarHeight: 90,
-            flexibleSpace: FlexibleSpaceBar(
-              titlePadding: EdgeInsets.zero,
-              centerTitle: false,
-              title: Padding(
-                padding: const EdgeInsets.only(left: 16, bottom: 16, right: 10),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(right: 10),
-                          child: Container(
-                            height: 50,
-                            width: 50,
-                            decoration: const BoxDecoration(shape: BoxShape.circle),
-                            child: Obx(() => controller.loading.value == Status.completed
-                                ? ClipRRect(
-                              borderRadius: BorderRadius.circular(25),
-                              child: CustomNetworkImage(
-                                imageUrl:
-controller.profile.value.data?.profileImage ??
- "",
-                              ),
-                            )
-                                : Shimmer.fromColors(
-                              baseColor: AppColors.whiteColor.withAlpha(50),
-                              highlightColor: AppColors.whiteColor.withAlpha(100),
-                              child: Container(
-                                height: 50,
-                                width: 50,
-                                decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: AppColors.primaryColor,
-                                ),
-                              ),
-                            )),
-                          ),
-                        ),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Obx(() => controller.loading.value == Status.completed
-                                  ? Text(
-                                "Hello Jane Copper ",
- ${controller.profile.value.data?.firstName ?? ""} ${controller.profile.value.data?.lastName ?? ""}
-
-                                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                              )
-                                  : Shimmer.fromColors(
-                                baseColor: AppColors.whiteColor.withAlpha(50),
-                                highlightColor: AppColors.whiteColor.withAlpha(100),
-                                child: Container(
-                                  height: 10,
-                                  width: 120,
-                                  color: AppColors.primaryColor,
-                                ),
-                              )),
-                              const Text(
-                                "Welcome to BetWisePicks",
-                                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 6),
-                    Container(
-                      height: 50,
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFF0FDF4),
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: Colors.black.withOpacity(0.3), width: 1),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.15),
-                            blurRadius: 8,
-                            spreadRadius: 1,
-                            offset: const Offset(2, 2),
-                          ),
-                        ],
-                      ),
-                      child: CupertinoSearchTextField(
-                        onTap: () {
-                          // Navigate or custom logic
-                        },
-                        keyboardType: TextInputType.none,
-                        placeholder: "Search Here",
-                        prefixIcon: Icon(Iconsax.search_favorite, color: AppColors.blackColor),
-                        decoration: const BoxDecoration(color: Colors.transparent),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-
-
-          /// Optional Extra UI
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.only(left: 16.0),
-              child: Text("Product Categories", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            ),
-          ),
+              padding: const EdgeInsets.only(left: 16.0, top: 10, right: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Text(AppStrings.activePetProfiles, style: TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.bold)),
+                      Gap(4),
+                      CircleAvatar(
+                        radius: 10,
+                        child: CustomText(text: "1",
+                          textAlign: TextAlign.center,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,),
+                      ),
 
-          /// Paged List View
-          SliverFillRemaining(
-            child: RefreshIndicator(
-              onRefresh: () async {
-                homeController.pagingController.refresh();
-              },
-              child: PagedListView<int, HomePost>(
-                pagingController: homeController.pagingController,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                builderDelegate: PagedChildBuilderDelegate<HomePost>(
-                  itemBuilder: (context, item, index) {
+                    ],
+                  ),
+                  Gap(16),
+                  Obx(() {
                     return Container(
-                      margin: const EdgeInsets.symmetric(vertical: 8),
+                      padding: EdgeInsets.all(24),
                       decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: AppColors.greenColor.withOpacity(0.4), width: 1),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
-                            blurRadius: 8,
-                            offset: const Offset(1, 2),
+                        color: AppColors.primaryColor,
+                        borderRadius: BorderRadius.circular(20),
+
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CustomText(
+                                text: _controller.onboardingList[_controller
+                                    .currentIndex.value]
+                                    .title,),
+                              CustomText(
+                                text: _controller.onboardingList[_controller
+                                    .currentIndex
+                                    .value]
+                                    .details,)
+                            ],
                           ),
+                          CustomImage(
+                            imageSrc: "assets/images/petkalloimage.png",
+                            sizeWidth: 100,)
                         ],
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(12),
-                        child: CustomPostWidget(
-                          timeAgo: DateFormat("DD MM YY").format(item.updatedAt ?? DateTime.now()),
-                          matchTitle: item.postTitle??"🏀 Los Angeles Lakers ─vs─ Golden State Warriors.",
-                          predictions: item.predictionDescription ?? "",
-                          analystLabel: item.predictionType??"Gold Analyst",
-                          image: Text(item.postImage ??"")
- Assets.images.homeimage.image()
-,
-                        ),
-                      ),
                     );
-                  },
-                  firstPageErrorIndicatorBuilder: (context) => Center(
-                    child: ErrorCard(
-                      onTap: () => homeController.pagingController.refresh(),
-                      text: homeController.pagingController.error.toString(),
-                    ),
+                  }),
+                  Gap(10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(
+                        3, (index) => buildDot(index, context)),
                   ),
+                ],
+              ),
+            ),
+          ),
+          SliverGap(8),
+          SliverToBoxAdapter(
+            child: Padding(
+                padding: EdgeInsets.only(left: 16),
+                child: CustomText(text: AppStrings.findWhatYouNeed,
+                  textAlign: TextAlign.start,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 18,)),
+          ),
+          SliverGap(8),
+          SliverToBoxAdapter(
+            child: SizedBox(
+              height: 130,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: 6,
+                padding: EdgeInsets.only(left: 16, right: 10),
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: EdgeInsets.only(right: 10),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            homeController.selectedIndex.value = index;
+                          },
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            elevation: 3,
+                            child: Obx(() {
+                              bool isSelected = homeController.selectedIndex.value == index;
+                              return CircleAvatar(
+                                backgroundColor: isSelected ? AppColors.primaryColor : Colors.white,
+                                radius: 40,
+                                child: iconList[index],
+                              );
+                            }),
+                          ),
+                        ),
+                        SizedBox(height: 4),
+                        CustomText(text: stringList[index],
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: EdgeInsets.only(left: 16,right: 16),
+                child: Column(
+                  children: [
+                    CustomImage(imageSrc: "assets/images/adshome.png"),
+                  ],
+                )),
+          ),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: EdgeInsets.only(left: 16,right: 16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                   CustomText(text: AppStrings.upcomingAppointments,fontWeight: FontWeight.w400,fontSize: 18,),
+                  TextButton(onPressed: (){}, child:   CustomText(text: AppStrings.seeAll,fontWeight: FontWeight.w400,fontSize: 14,))
+                  ],
+                )),
+          ),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 16.0,right: 16),
+              child: Container(
+                padding: EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Column(
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                      children: [
+                       Row(
+                         children: [
+                           CustomImage(imageSrc: "assets/images/vet.png",sizeWidth: 30,),
+                             Gap(6),
+                             CustomText(text: AppStrings.vets,textAlign: TextAlign.center,fontSize: 16,fontWeight: FontWeight.w700,),
+                         ],
+                       ),
+
+                        CustomImage(imageSrc: "assets/images/petshoplogo.png",sizeWidth: 50,),
+                      ],
+                    ),
+                    Assets.icons.petshopimage.svg(),
+                    Gap(6),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CustomImage(imageSrc: "assets/images/womandogimage.png",),
+                            SizedBox(height: 6),
+                            Row(
+                              children: [
+                                CustomText(text: AppStrings.lastVisit, fontWeight: FontWeight.w400),
+                                CustomText(text: "25/11/2022", fontWeight: FontWeight.w400),
+                              ],
+                            ),
+                          ],
+                        ),
+                        Gap(6),
+                        Expanded(
+                          flex: 1,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CustomText(text: "Dr.Jubayed Islam ",fontSize: 18,fontWeight: FontWeight.w500,),
+                              Gap(4),
+                              CustomText(
+                                text: "Bachelor of veterinary science ",
+                                overflow: TextOverflow.ellipsis,
+
+                              ),
+                              Gap(4),
+                              Row(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: List.generate(5, (index) => Icon(Icons.star, color: Colors.amber,size: 18,)),
+                                  ),
+                                  Gap(6),
+                                  Expanded(child: CustomText(text: "5.0 {100 reviews}",fontWeight: FontWeight.w500, fontSize: 12,))
+                                ],
+                              ),
+                              Gap(4),
+                              Row(
+                                children: [
+                                  Icon(Icons.call,size: 18,),
+                                  Expanded(child: CustomText(text: "(406) 555-0120",fontWeight: FontWeight.w400,)),
+                                  Icon(Icons.location_on_sharp,size: 18,),
+                                  Expanded(child: CustomText(text: "4517 Washington Ave.{2.5 km} ",overflow: TextOverflow.ellipsis,))
+                                ],
+                              ),
+                             Gap(4),
+                              Row(
+                                children: [
+                                  Expanded(child: CustomButton(onTap: (){},title: "Bella",height: 20,fontSize: 14,fontWeight: FontWeight.w400,fillColor: AppColors.whiteColor,textColor: Colors.black,borderColor: Colors.black,borderRadius: 30,borderWidth: 1,isBorder: true,)),
+                                  Gap(4),
+                                  Expanded(child: CustomButton(onTap: (){},title: "Chat",height: 20,fontSize: 14,fontWeight: FontWeight.w400,fillColor: AppColors.whiteColor,textColor: Colors.black,borderColor: Colors.black,borderRadius: 30,borderWidth: 1,isBorder: true,)),
+
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Expanded(
+
+                                      child: CustomButton(onTap: (){},title: " Website",height: 20,fontSize: 14,fontWeight: FontWeight.w400,fillColor: AppColors.purple500,)),
+                                  Expanded(
+
+                                      child: TextButton(onPressed: (){}, child: CustomText(text: "Add Review")))
+                                ],
+                              ),
+
+                            ],
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
                 ),
               ),
             ),
-          ),*/
+          ),
+          SliverGap(16),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 16.0,right: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CustomText(text: AppStrings.topBrands,fontWeight: FontWeight.w400,fontSize: 18,)
+                ],
+              ),
+            ),
+          ),
+          SliverGap(24),
+
+
         ],
       ),
+    );
+  }
+
+  final List<Widget> iconList = [
+    Assets.icons.petvets.svg(),
+    Assets.icons.petshops.svg(),
+    Assets.icons.petgrooming.svg(),
+    Assets.icons.pethotel.svg(),
+    Assets.icons.pettraining.svg(),
+    Assets.icons.friendlyplace.svg(),
+
+  ];
+  final List<String> stringList = [
+    AppStrings.petVets,
+    AppStrings.petShops,
+    AppStrings.petGrooming,
+    AppStrings.petHotels,
+    AppStrings.petTraining,
+    AppStrings.friendlyPlace,
+
+
+  ];
+
+  buildDot(int index, BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(left: 8),
+      child: Obx(() {
+        return Container(
+          height: 6,
+          width: _controller.currentIndex.value == index ? 24 : 6,
+          margin: EdgeInsets.only(right: 5),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: _controller.currentIndex.value == index ?
+            AppColors.primaryColor : AppColors.lightGray,
+          ),
+        );
+      }),
     );
   }
 }
