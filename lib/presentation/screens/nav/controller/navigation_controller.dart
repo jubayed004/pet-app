@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pet_app/presentation/screens/chat/chat_screen.dart';
+import 'package:pet_app/presentation/screens/chat/view/chatting_page.dart';
+import 'package:pet_app/presentation/screens/chat/view/message_page.dart';
 import 'package:pet_app/presentation/screens/explore/explore_screen.dart';
 import 'package:pet_app/presentation/screens/home/home_screen.dart';
 import 'package:pet_app/presentation/screens/my_pets/my_pets_screen.dart';
@@ -15,7 +16,7 @@ class NavigationControllerMain extends GetxController {
     return [
       HomeScreen(),
       ExploreScreen(),
-      ChatScreen(),
+      MessageListPage(),
       MyPetsScreen(),
       ProfileScreen(),
     ];

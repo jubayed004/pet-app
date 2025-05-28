@@ -1,12 +1,15 @@
 import 'package:badges/badges.dart' as badges;
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:pet_app/controller/get_controllers.dart';
 import 'package:pet_app/core/custom_assets/assets.gen.dart';
 import 'package:pet_app/helper/image/network_image.dart';
 import 'package:pet_app/presentation/components/custom_button/custom_button.dart';
 import 'package:pet_app/presentation/components/custom_image/custom_image.dart';
+import 'package:pet_app/presentation/components/custom_tab_selected/custom_tab_bar.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:pet_app/presentation/components/custom_text_field/custom_text_field.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
@@ -14,6 +17,8 @@ import 'package:pet_app/utils/app_const/app_const.dart';
 import 'package:pet_app/utils/app_strings/app_strings.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
+
+import '../../../utils/app_images/app_images.dart' show AppImages;
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -40,7 +45,8 @@ class _HomeScreenState extends State<HomeScreen> {
         slivers: [
 
           SliverAppBar(
-            pinned: false,
+            pinned: true,
+
             backgroundColor: AppColors.appBackgroundColor,
             elevation: 0,
             toolbarHeight: 56,
@@ -288,6 +294,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                color: Colors.grey.withValues(alpha: 0.5),
+                spreadRadius: 2,
+                blurRadius: 5,
+                offset: Offset(0, 3), // changes position of shadow
+
+                    )
+                  ]
                 ),
                 child: Column(
                   children: [
@@ -396,11 +411,47 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CustomText(text: AppStrings.topBrands,fontWeight: FontWeight.w400,fontSize: 18,)
+                  CustomText(text: AppStrings.topBrands,fontWeight: FontWeight.w400,fontSize: 18,),
+
+                  // Image Carousel with finite size
+                  CarouselSlider(
+                    options: CarouselOptions(
+                     // Set the height of the carousel
+                      autoPlay: true,
+                      enlargeCenterPage: true,
+                      aspectRatio: 16 / 8,
+                      viewportFraction: 1.0,
+                    ),
+                    items: [
+                      // Replace with your actual image assets
+                      ClipRRect(
+                          borderRadius:  BorderRadius.all(Radius.circular(20)),
+                          child: CustomImage(
+                              imageSrc: "assets/images/topbrandsimage.png", fit: BoxFit.cover)),
+                      ClipRRect(
+                          borderRadius:  BorderRadius.all(Radius.circular(20)),
+                          child: CustomImage(
+                              imageSrc: "assets/images/topbrandsimage.png", fit: BoxFit.cover)),
+                      ClipRRect(
+                          borderRadius:  BorderRadius.all(Radius.circular(20)),
+                          child: CustomImage(
+                              imageSrc: "assets/images/topbrandsimage.png", fit: BoxFit.cover)),
+                      ClipRRect(
+                          borderRadius:  BorderRadius.all(Radius.circular(20)),
+                          child: CustomImage(
+                              imageSrc: "assets/images/topbrandsimage.png", fit: BoxFit.cover)),
+                      ClipRRect(
+                          borderRadius:  BorderRadius.all(Radius.circular(20)),
+                          child: CustomImage(
+                              imageSrc: "assets/images/topbrandsimage.png", fit: BoxFit.cover)),
+
+                    ],
+                  ),
                 ],
               ),
             ),
           ),
+
           SliverGap(24),
 
 

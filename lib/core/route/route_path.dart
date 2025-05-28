@@ -13,6 +13,7 @@ class RoutePath{
   static const String setNewPassword = 'setNewPassword';
 
   static const String navigationPage = 'navigationPage';
+  static const String chatScreen = 'chatScreen';
   static const String editProfileScreen = 'editProfileScreen';
   static const String projectDetailsScreen = 'projectDetailsScreen';
   static const String notifyScreen = 'notifyScreen';

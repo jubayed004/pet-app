@@ -8,6 +8,7 @@ import 'package:pet_app/presentation/screens/auth/password/set_new_password.dart
 import 'package:pet_app/presentation/screens/auth/pet_registration/pet_registration_screen.dart';
 import 'package:pet_app/presentation/screens/auth/sign_in/sign_in.dart';
 import 'package:pet_app/presentation/screens/auth/sign_up/sign_up.dart';
+import 'package:pet_app/presentation/screens/chat/view/chatting_page.dart';
 import 'package:pet_app/presentation/screens/nav/navigation_page.dart';
 import 'package:pet_app/presentation/screens/onboarding/onboarding_screen.dart';
 import 'package:pet_app/presentation/screens/other/terms_of_condition.dart';
@@ -108,6 +109,16 @@ class AppRouter {
               child: NavigationPage(
                 index: state.extra != null && (state.extra is int) ? state.extra as int : 0,
               ),
+              state: state,
+            ),
+      ),
+
+      GoRoute(
+        name: RoutePath.chatScreen,
+        path: RoutePath.chatScreen.addBasePath,
+        pageBuilder:
+            (context, state) => _buildPageWithAnimation(
+              child: ChatScreen(),
               state: state,
             ),
       ),

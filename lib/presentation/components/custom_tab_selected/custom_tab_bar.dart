@@ -1,10 +1,6 @@
-/*
-import 'package:betwise_app/presentation/components/custom_text/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-*/
-/*
 class CustomTabBar extends StatelessWidget {
   final List<String> tabs;
   final int selectedIndex;
@@ -91,15 +87,13 @@ class CustomTabBar extends StatelessWidget {
     );
   }
 }
-*//*
 
 
 
 
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
 
+
+/*
 class CustomTabBar extends StatelessWidget {
   final List<String> tabs;
   final int selectedIndex;
@@ -190,6 +184,6 @@ class CustomTabBar extends StatelessWidget {
     );
   }
 }
-
-
 */
+
+
