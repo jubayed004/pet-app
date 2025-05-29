@@ -6,6 +6,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:pet_app/controller/get_controllers.dart';
 import 'package:pet_app/core/custom_assets/assets.gen.dart';
+import 'package:pet_app/core/route/route_path.dart';
+import 'package:pet_app/core/route/routes.dart';
 import 'package:pet_app/helper/image/network_image.dart';
 import 'package:pet_app/presentation/components/custom_button/custom_button.dart';
 import 'package:pet_app/presentation/components/custom_image/custom_image.dart';
@@ -45,8 +47,9 @@ class _HomeScreenState extends State<HomeScreen> {
         slivers: [
 
           SliverAppBar(
-            pinned: true,
 
+            floating: true,
+            snap: true,
             backgroundColor: AppColors.appBackgroundColor,
             elevation: 0,
             toolbarHeight: 56,
@@ -99,7 +102,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
                         Expanded(
                           child: CustomTextField(
-                            onTap: () {},
+                            onTap: () {
+
+                            },
                             hintText: AppStrings.searchForServices,
                             fillColor: AppColors.whiteColor,
                             fieldBorderColor: AppColors.purple500,
@@ -110,6 +115,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: badges.Badge(
+                            onTap: (){
+                              AppRouter.route.pushNamed(RoutePath.notifyScreen);
+                            },
                             badgeContent: const Text(
                               '3',
                               style: TextStyle(
@@ -131,10 +139,15 @@ class _HomeScreenState extends State<HomeScreen> {
                               start: 10,
                               top: -20,
                             ),
-                            child: const Icon(
-                              CupertinoIcons.bell,
-                              size: 24,
-                              color: AppColors.purple500,
+                            child: GestureDetector(
+                              onTap: (){
+                                AppRouter.route.pushNamed(RoutePath.notifyScreen);
+                              },
+                              child: const Icon(
+                                CupertinoIcons.bell,
+                                size: 24,
+                                color: AppColors.purple500,
+                              ),
                             ),
                           ),
                         ),

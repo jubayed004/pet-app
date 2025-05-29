@@ -9,7 +9,9 @@ import 'package:pet_app/presentation/screens/auth/pet_registration/pet_registrat
 import 'package:pet_app/presentation/screens/auth/sign_in/sign_in.dart';
 import 'package:pet_app/presentation/screens/auth/sign_up/sign_up.dart';
 import 'package:pet_app/presentation/screens/chat/view/chatting_page.dart';
+import 'package:pet_app/presentation/screens/my_pets/edit_my_pets/edit_my_pets_screen.dart';
 import 'package:pet_app/presentation/screens/nav/navigation_page.dart';
+import 'package:pet_app/presentation/screens/notify/notify_screen.dart';
 import 'package:pet_app/presentation/screens/onboarding/onboarding_screen.dart';
 import 'package:pet_app/presentation/screens/other/terms_of_condition.dart';
 import 'package:pet_app/presentation/screens/splash/splash_screen.dart';
@@ -112,7 +114,7 @@ class AppRouter {
               state: state,
             ),
       ),
-
+      ///======================= Massage Route =======================
       GoRoute(
         name: RoutePath.chatScreen,
         path: RoutePath.chatScreen.addBasePath,
@@ -122,6 +124,18 @@ class AppRouter {
               state: state,
             ),
       ),
+      ///======================= MY Pets Route =======================
+
+      GoRoute(
+        name: RoutePath.editMyPetsScreen,
+        path: RoutePath.editMyPetsScreen.addBasePath,
+        pageBuilder:
+            (context, state) => _buildPageWithAnimation(
+          child: EditMyPetsScreen(),
+          state: state,
+        ),
+      ),
+
      /* GoRoute(
         name: RoutePath.editProfileScreen,
         path: RoutePath.editProfileScreen.addBasePath,
@@ -131,7 +145,7 @@ class AppRouter {
               state: state,
             ),
       ),*/
-     /* GoRoute(
+      GoRoute(
         name: RoutePath.notifyScreen,
         path: RoutePath.notifyScreen.addBasePath,
         pageBuilder:
@@ -139,7 +153,7 @@ class AppRouter {
               child: const NotifyScreen(),
               state: state,
             ),
-      ),*/
+      ),
       // GoRoute(
       //   name: RoutePath.checkNotify,
       //   path: RoutePath.checkNotify.addBasePath,

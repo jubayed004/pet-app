@@ -15,7 +15,7 @@ class RoutePath{
   static const String navigationPage = 'navigationPage';
   static const String chatScreen = 'chatScreen';
   static const String editProfileScreen = 'editProfileScreen';
-  static const String projectDetailsScreen = 'projectDetailsScreen';
+  static const String editMyPetsScreen = 'editMyPetsScreen';
   static const String notifyScreen = 'notifyScreen';
   static const String dashboardScreen = 'dashboardScreen';
 
