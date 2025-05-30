@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:pet_app/presentation/components/custom_image/custom_image.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
 
@@ -33,7 +34,8 @@ class CustomDefaultAppbar extends StatelessWidget
   final Widget? leading;
   final Widget? titleWidget;
   final List<Widget>? action;
-  final IconButton? iconButton;
+  final Widget? iconButton;
+
   const CustomDefaultAppbar({
     super.key,
     this.title,
@@ -55,21 +57,22 @@ class CustomDefaultAppbar extends StatelessWidget
       centerTitle: true,
       leading: leading,
       actions: action,
-      title:Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          SizedBox(),
-          titleWidget ??
-              CustomText(
-                text: title ?? "",
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                color: Colors.black,
-              ),
-          iconButton != null?   IconButton(onPressed: (){}, icon: Icon(Icons.call,size: 18,color: AppColors.purple500,)):SizedBox()
-        ],
-      )
+        title: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SizedBox(),
+            titleWidget ??
+                CustomText(
+                  text: title ?? "",
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black,
+                ),
+            iconButton ?? SizedBox(),
+          ],
+        )
+
 
     );
   }

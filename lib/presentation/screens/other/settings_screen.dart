@@ -9,7 +9,7 @@ import 'package:betwise_app/presentation/components/custom_text/custom_text.dart
 import 'package:betwise_app/presentation/components/custom_text_field/custom_text_field.dart';
 import 'package:betwise_app/presentation/screens/other/widget/setting_notification_card.dart';
 import 'package:betwise_app/presentation/screens/profile/profile_screen.dart';
-import 'package:betwise_app/presentation/screens/profile/widgets/profile_box_card.dart';
+import 'package:betwise_app/presentation/screens/profile/widgets/button_section_all.dart';
 import 'package:betwise_app/presentation/widget/align/custom_align_text.dart';
 import 'package:betwise_app/presentation/widget/back_button/back_button.dart';
 import 'package:betwise_app/presentation/widget/text_field/custom_text_field.dart';
