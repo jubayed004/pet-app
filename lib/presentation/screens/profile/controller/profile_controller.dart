@@ -9,7 +9,7 @@ import 'package:pet_app/service/api_service.dart';
 import 'package:pet_app/utils/app_const/app_const.dart';
 
 class ProfileController extends GetxController {
-
+  RxString selectedCountryCode = "+880".obs;
   final ImagePicker _imagePicker = ImagePicker();
   final ApiClient apiClient = serviceLocator();
   final DBHelper dbHelper = serviceLocator();

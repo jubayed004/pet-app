@@ -5,6 +5,8 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:pet_app/controller/get_controllers.dart';
 import 'package:pet_app/core/custom_assets/assets.gen.dart';
+import 'package:pet_app/core/route/route_path.dart';
+import 'package:pet_app/core/route/routes.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
 import 'package:pet_app/utils/app_strings/app_strings.dart';
@@ -14,7 +16,8 @@ import 'widgets/button_section_all.dart';
 class ProfileScreen extends StatelessWidget {
   ProfileScreen({super.key});
 
-  final profileController = GetControllers.instance.getMyPetsProfileController();
+  final profileController = GetControllers.instance.getProfileController();
+  final _controller = GetControllers.instance.getMyPetsProfileController();
   final controller = GetControllers.instance.getNavigationControllerMain();
 
   @override
@@ -44,10 +47,10 @@ class ProfileScreen extends StatelessWidget {
                       fontWeight: FontWeight.w600,
                       color: Colors.black,
                     ),
-                    profileController.selectedImage.value != null
+                    _controller.selectedImage.value != null
                         ? ClipOval(
                       child: Image.file(
-                        File(profileController.selectedImage.value!.path),
+                        File(_controller.selectedImage.value!.path),
                         width: 40,
                         height: 40,
                         fit: BoxFit.cover,
@@ -109,7 +112,7 @@ class ProfileScreen extends StatelessWidget {
                                 ),
                                 GestureDetector(
                                   onTap: (){
-
+                                    AppRouter.route.pushNamed(RoutePath.editProfileScreen);
                                   },
                                   child: Card(
                                     shape: OutlineInputBorder(

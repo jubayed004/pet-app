@@ -45,6 +45,7 @@ class EditMyPetsScreen extends StatelessWidget {
                       width: double.infinity,
                       height: double.infinity,
                     ),
+
                     Positioned(
                       top: 0,
                       bottom: 0,
@@ -54,22 +55,10 @@ class EditMyPetsScreen extends StatelessWidget {
                         onTap: () {
                           controller.pickImage();
                         },
-                        child: Container(
-                          alignment: Alignment.center,
-                          child: Container(
-                            height: 50,
-                            width: 50,
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: AppColors.whiteColor,
-                            ),
-                            child: Icon(
-                              Icons.camera_alt,
-                              size: 24,
-                              color: AppColors.blackColor,
-                            ),
-                          ),
+                        child: Icon(
+                          Icons.camera_alt,
+                          size: 40,
+                          color: AppColors.primaryColor,
                         ),
                       ),
                     ),

@@ -14,6 +14,7 @@ import 'package:pet_app/presentation/screens/nav/navigation_page.dart';
 import 'package:pet_app/presentation/screens/notify/notify_screen.dart';
 import 'package:pet_app/presentation/screens/onboarding/onboarding_screen.dart';
 import 'package:pet_app/presentation/screens/other/terms_of_condition.dart';
+import 'package:pet_app/presentation/screens/profile/edit_profile/edit_profile_screen.dart';
 import 'package:pet_app/presentation/screens/splash/splash_screen.dart';
 import 'package:pet_app/presentation/screens/vendor_selection/vendor_selection_screen.dart';
 import 'route_path.dart';
@@ -136,15 +137,15 @@ class AppRouter {
         ),
       ),
 
-     /* GoRoute(
+      GoRoute(
         name: RoutePath.editProfileScreen,
         path: RoutePath.editProfileScreen.addBasePath,
         pageBuilder:
             (context, state) => _buildPageWithAnimation(
-              child: const EditProfileScreen(),
+              child:  EditProfileScreen(),
               state: state,
             ),
-      ),*/
+      ),
       GoRoute(
         name: RoutePath.notifyScreen,
         path: RoutePath.notifyScreen.addBasePath,
