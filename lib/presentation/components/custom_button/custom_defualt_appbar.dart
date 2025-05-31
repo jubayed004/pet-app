@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:pet_app/presentation/components/custom_image/custom_image.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
@@ -50,15 +51,17 @@ class CustomDefaultAppbar extends StatelessWidget
   Widget build(BuildContext context) {
     return SliverAppBar(
       pinned: true,
+      //floating: true,
+      //snap: true,
       automaticallyImplyLeading: true,
        //floating: false,
       backgroundColor:backgroundColor?? Colors.transparent,
       // foregroundColor: AppColors.kWhiteColor,
-      centerTitle: true,
+   centerTitle: true,
       leading: leading,
       actions: action,
         title: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
+         // crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             SizedBox(),
@@ -69,6 +72,7 @@ class CustomDefaultAppbar extends StatelessWidget
                   fontWeight: FontWeight.w600,
                   color: Colors.black,
                 ),
+            Gap(6),
             iconButton ?? SizedBox(),
           ],
         )

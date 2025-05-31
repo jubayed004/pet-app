@@ -1,7 +1,10 @@
 import 'package:get/get.dart';
 import 'package:pet_app/presentation/screens/auth/controller/auth_controller.dart';
+import 'package:pet_app/presentation/screens/category/category_details/controller/category_details_controller.dart';
+import 'package:pet_app/presentation/screens/category/controller/category_controller.dart';
 import 'package:pet_app/presentation/screens/chat/chat_controller/message_controller.dart';
 import 'package:pet_app/presentation/screens/home/controller/home_controller.dart';
+import 'package:pet_app/presentation/screens/my_appointment/controller/my_appointment_controller.dart';
 import 'package:pet_app/presentation/screens/my_pets/controller/my_pets_controller.dart';
 import 'package:pet_app/presentation/screens/nav/controller/navigation_controller.dart';
 import 'package:pet_app/presentation/screens/onboarding/controller/onboarding_controller.dart';
@@ -81,6 +84,27 @@ AuthController getAuthController() {
       Get.put(HomeController());
     }
     return Get.find<HomeController>();
+  }
+
+  MyAppointmentController getMyAppointmentController() {
+    if (!Get.isRegistered<MyAppointmentController>()) {
+      Get.put(MyAppointmentController());
+    }
+    return Get.find<MyAppointmentController>();
+  }
+
+  CategoryController getCategoryController() {
+    if (!Get.isRegistered<CategoryController>()) {
+      Get.put(CategoryController());
+    }
+    return Get.find<CategoryController>();
+  }
+
+  CategoryDetailsController getCategoryDetailsController() {
+    if (!Get.isRegistered<CategoryDetailsController>()) {
+      Get.put(CategoryDetailsController());
+    }
+    return Get.find<CategoryDetailsController>();
   }
 
   MessageController getMessageController() {

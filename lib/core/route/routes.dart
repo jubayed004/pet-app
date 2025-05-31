@@ -8,10 +8,13 @@ import 'package:pet_app/presentation/screens/auth/password/set_new_password.dart
 import 'package:pet_app/presentation/screens/auth/pet_registration/pet_registration_screen.dart';
 import 'package:pet_app/presentation/screens/auth/sign_in/sign_in.dart';
 import 'package:pet_app/presentation/screens/auth/sign_up/sign_up.dart';
+import 'package:pet_app/presentation/screens/category/category_details/view/category_details_screen.dart';
+import 'package:pet_app/presentation/screens/category/view/category_screen.dart';
 import 'package:pet_app/presentation/screens/chat/view/chatting_page.dart';
+import 'package:pet_app/presentation/screens/my_appointment/view/my_appointment_screen.dart';
 import 'package:pet_app/presentation/screens/my_pets/edit_my_pets/edit_my_pets_screen.dart';
 import 'package:pet_app/presentation/screens/nav/navigation_page.dart';
-import 'package:pet_app/presentation/screens/notify/notify_screen.dart';
+import 'package:pet_app/presentation/screens/notify/view/notify_screen.dart';
 import 'package:pet_app/presentation/screens/onboarding/onboarding_screen.dart';
 import 'package:pet_app/presentation/screens/other/terms_of_condition.dart';
 import 'package:pet_app/presentation/screens/profile/edit_profile/edit_profile_screen.dart';
@@ -146,6 +149,36 @@ class AppRouter {
               state: state,
             ),
       ),
+      ///======================= Category Route =======================
+      GoRoute(
+        name: RoutePath.categoryScreen,
+        path: RoutePath.categoryScreen.addBasePath,
+        pageBuilder:
+            (context, state) => _buildPageWithAnimation(
+          child:  CategoryScreen(),
+          state: state,
+        ),
+      ),
+      GoRoute(
+        name: RoutePath.categoryDetailsScreen,
+        path: RoutePath.categoryDetailsScreen.addBasePath,
+        pageBuilder:
+            (context, state) => _buildPageWithAnimation(
+          child: CategoryDetailsScreen(),
+          state: state,
+        ),
+      ),
+      ///======================= MY Appointments Route =======================
+      GoRoute(
+        name: RoutePath.myAppointmentScreen,
+        path: RoutePath.myAppointmentScreen.addBasePath,
+        pageBuilder:
+            (context, state) => _buildPageWithAnimation(
+          child:  MyAppointmentScreen(),
+          state: state,
+        ),
+      ),
+      ///======================= Notify Route =======================
       GoRoute(
         name: RoutePath.notifyScreen,
         path: RoutePath.notifyScreen.addBasePath,

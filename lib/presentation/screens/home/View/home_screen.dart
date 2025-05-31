@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:badges/badges.dart' as badges;
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
@@ -20,7 +22,7 @@ import 'package:pet_app/utils/app_strings/app_strings.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../../../utils/app_images/app_images.dart' show AppImages;
+import '../../../../utils/app_images/app_images.dart' show AppImages;
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -45,9 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: AppColors.appBackgroundColor,
       body: CustomScrollView(
         slivers: [
-
           SliverAppBar(
-
             floating: true,
             snap: true,
             backgroundColor: AppColors.appBackgroundColor,
@@ -71,32 +71,32 @@ class _HomeScreenState extends State<HomeScreen> {
                             decoration: const BoxDecoration(
                               shape: BoxShape.circle,
                             ),
-                            child: Obx(
-                                  () =>
-                              controller.loading.value == Status.completed
-                                  ? ClipRRect(
-                                borderRadius: BorderRadius.circular(25),
-                                child: CustomNetworkImage(
-                                  imageUrl:
-                                  /* controller.profile.value.data?.profileImage ??*/
-                                  "",
-                                ),
-                              )
-                                  : Shimmer.fromColors(
-                                baseColor: AppColors.whiteColor
-                                    .withAlpha(50),
-                                highlightColor: AppColors.whiteColor
-                                    .withAlpha(100),
-                                child: Container(
-                                  height: 50,
-                                  width: 50,
-                                  decoration: const BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: AppColors.primaryColor,
+                            child: Obx(() {
+                              final imageFile = controller.selectedImage.value;
+                              if (imageFile != null) {
+                                return ClipOval(
+                                  child: Image.file(
+                                    File(imageFile.path),
+                                    width: 50,
+                                    height: 50,
+                                    fit: BoxFit.cover,
                                   ),
-                                ),
-                              ),
-                            ),
+                                );
+                              } else {
+                                return Shimmer.fromColors(
+                                  baseColor: AppColors.blackColor.withAlpha(50),
+                                  highlightColor: AppColors.blackColor.withAlpha(100),
+                                  child: Container(
+                                    height: 50,
+                                    width: 50,
+                                    decoration: const BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: AppColors.primaryColor,
+                                    ),
+                                  ),
+                                );
+                              }
+                            }),
                           ),
                         ),
 
@@ -111,7 +111,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             keyboardType: TextInputType.none,
                           ),
                         ),
-
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: badges.Badge(
@@ -151,10 +150,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                         ),
-
                       ],
                     ),
-
                   ],
                 ),
               ),
@@ -251,25 +248,24 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            homeController.selectedIndex.value = index;
+
+                            //homeController.selectedIndex.value = index;
+                            AppRouter.route.pushNamed(RoutePath.categoryScreen);
                           },
                           child: Card(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(50),
                             ),
                             elevation: 3,
-                            child: Obx(() {
-                              bool isSelected = homeController.selectedIndex.value == index;
-                              return CircleAvatar(
-                                backgroundColor: isSelected ? AppColors.primaryColor : Colors.white,
-                                radius: 40,
-                                child: iconList[index],
-                              );
-                            }),
+                            child: CircleAvatar(
+                              backgroundColor:/* isSelected ? AppColors.primaryColor :*/ Colors.white,
+                              radius: 40,
+                              child: homeController.iconList[index],
+                            ),
                           ),
                         ),
                         SizedBox(height: 4),
-                        CustomText(text: stringList[index],
+                        CustomText(text: homeController.stringList[index],
                           fontSize: 16,
                           fontWeight: FontWeight.w400,),
                       ],
@@ -295,7 +291,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                    CustomText(text: AppStrings.upcomingAppointments,fontWeight: FontWeight.w400,fontSize: 18,),
-                  TextButton(onPressed: (){}, child:   CustomText(text: AppStrings.seeAll,fontWeight: FontWeight.w400,fontSize: 14,))
+                  TextButton(onPressed: (){
+                    AppRouter.route.pushNamed(RoutePath.myAppointmentScreen);
+                  }, child:   CustomText(text: AppStrings.seeAll,fontWeight: FontWeight.w400,fontSize: 14,))
                   ],
                 )),
           ),
@@ -313,7 +311,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 spreadRadius: 2,
                 blurRadius: 5,
                 offset: Offset(0, 3), // changes position of shadow
-
                     )
                   ]
                 ),
@@ -325,44 +322,44 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: [
                        Row(
                          children: [
-                           CustomImage(imageSrc: "assets/images/vet.png",sizeWidth: 30,),
+                           CustomImage(imageSrc: "assets/images/vet.png",sizeWidth: 30.sp,),
                              Gap(6),
                              CustomText(text: AppStrings.vets,textAlign: TextAlign.center,fontSize: 16,fontWeight: FontWeight.w700,),
                          ],
                        ),
-
                         CustomImage(imageSrc: "assets/images/petshoplogo.png",sizeWidth: 50,),
                       ],
                     ),
-                    Assets.icons.petshopimage.svg(),
                     Gap(6),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            CustomImage(imageSrc: "assets/images/womandogimage.png",),
-                            SizedBox(height: 6),
-                            Row(
-                              children: [
-                                CustomText(text: AppStrings.lastVisit, fontWeight: FontWeight.w400),
-                                CustomText(text: "25/11/2022", fontWeight: FontWeight.w400),
-                              ],
-                            ),
-                          ],
-                        ),
-                        Gap(6),
                         Expanded(
-                          flex: 1,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              CustomText(text: "Dr.Jubayed Islam ",fontSize: 18,fontWeight: FontWeight.w500,),
+                             CustomImage(imageSrc: "assets/images/womandogimage.png",boxFit: BoxFit.cover,),
+                              SizedBox(height: 6),
+                              Row(
+                                children: [
+                                  Expanded(child: CustomText(text: "Visiting Date : ", fontWeight: FontWeight.w400,textAlign: TextAlign.start,)),
+                                  Expanded(child: CustomText(text: "25/11/2022", fontWeight: FontWeight.w400,textAlign: TextAlign.start,)),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        Gap(6),
+                        Expanded(
+                        flex: 2,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CustomText(text: "Pet Food & Supplies Sales",fontSize: 18,fontWeight: FontWeight.w500,),
                               Gap(4),
                               CustomText(
-                                text: "Bachelor of veterinary science ",
+                                text: "Pet Grooming ",
                                 overflow: TextOverflow.ellipsis,
 
                               ),
@@ -375,41 +372,50 @@ class _HomeScreenState extends State<HomeScreen> {
                                     children: List.generate(5, (index) => Icon(Icons.star, color: Colors.amber,size: 18,)),
                                   ),
                                   Gap(6),
-                                  Expanded(child: CustomText(text: "5.0 {100 reviews}",fontWeight: FontWeight.w500, fontSize: 12,))
+                                  CustomText(text: "5.0 ",fontWeight: FontWeight.w500, fontSize: 12,)
                                 ],
                               ),
                               Gap(4),
                               Row(
                                 children: [
                                   Icon(Icons.call,size: 18,),
-                                  Expanded(child: CustomText(text: "(406) 555-0120",fontWeight: FontWeight.w400,)),
+                                  Expanded(child: CustomText(text: "(406) 555-0120",fontWeight: FontWeight.w400,textAlign: TextAlign.start,)),
                                   Icon(Icons.location_on_sharp,size: 18,),
-                                  Expanded(child: CustomText(text: "4517 Washington Ave.{2.5 km} ",overflow: TextOverflow.ellipsis,))
+                                  Expanded(child: CustomText(text: "4517 Washington Ave. ",overflow: TextOverflow.ellipsis,textAlign: TextAlign.start,))
                                 ],
                               ),
-                             Gap(4),
-                              Row(
-                                children: [
-                                  Expanded(child: CustomButton(onTap: (){},title: "Bella",height: 20,fontSize: 14,fontWeight: FontWeight.w400,fillColor: AppColors.whiteColor,textColor: Colors.black,borderColor: Colors.black,borderRadius: 30,borderWidth: 1,isBorder: true,)),
-                                  Gap(4),
-                                  Expanded(child: CustomButton(onTap: (){},title: "Chat",height: 20,fontSize: 14,fontWeight: FontWeight.w400,fillColor: AppColors.whiteColor,textColor: Colors.black,borderColor: Colors.black,borderRadius: 30,borderWidth: 1,isBorder: true,)),
 
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Expanded(
-
-                                      child: CustomButton(onTap: (){},title: " Website",height: 20,fontSize: 14,fontWeight: FontWeight.w400,fillColor: AppColors.purple500,)),
-                                  Expanded(
-
-                                      child: TextButton(onPressed: (){}, child: CustomText(text: "Add Review")))
-                                ],
-                              ),
 
                             ],
                           ),
                         ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: CustomButton(onTap: (){},
+                            title: "Chat Now",
+                            height: 24,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            fillColor: AppColors.whiteColor,
+                            textColor: Colors.black,
+                            //borderColor: Colors.black,
+                            borderWidth: 1,
+                            //isBorder: true,
+                           // icon: Icon(Icons.chat,color: Colors.black,size: 16,),
+                            showIcon: true,
+                          ),
+                        ),
+                        Expanded(
+
+                            child: CustomButton(onTap: (){},title: " Website",height: 24,fontSize: 12,fontWeight: FontWeight.w400,fillColor: AppColors.purple500,textColor: Colors.black,)),
+                        Expanded(
+
+                            child: TextButton(onPressed: (){}, child: CustomText(text: "Add Review",fontSize: 12,fontWeight: FontWeight.w600,))),
                       ],
                     )
                   ],
@@ -473,25 +479,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  final List<Widget> iconList = [
-    Assets.icons.petvets.svg(),
-    Assets.icons.petshops.svg(),
-    Assets.icons.petgrooming.svg(),
-    Assets.icons.pethotel.svg(),
-    Assets.icons.pettraining.svg(),
-    Assets.icons.friendlyplace.svg(),
 
-  ];
-  final List<String> stringList = [
-    AppStrings.petVets,
-    AppStrings.petShops,
-    AppStrings.petGrooming,
-    AppStrings.petHotels,
-    AppStrings.petTraining,
-    AppStrings.friendlyPlace,
-
-
-  ];
 
   buildDot(int index, BuildContext context) {
     return Padding(

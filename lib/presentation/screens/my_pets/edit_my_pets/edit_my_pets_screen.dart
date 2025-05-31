@@ -22,12 +22,12 @@ class EditMyPetsScreen extends StatelessWidget {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            foregroundColor: AppColors.primaryColor,
+            foregroundColor: AppColors.blackColor,
             pinned: true,
-             backgroundColor: Colors.white,
+             backgroundColor: AppColors.primaryColor,
             expandedHeight: 200,
             centerTitle: true,
-            title:  CustomText(text: 'Edit My Pet',fontWeight: FontWeight.w600,fontSize: 24,color: AppColors.primaryColor,),
+            title:  CustomText(text: 'Edit My Pet',fontWeight: FontWeight.w600,fontSize: 24,color: AppColors.blackColor,),
             flexibleSpace: FlexibleSpaceBar(
               background:Obx(() {
                 return Stack(

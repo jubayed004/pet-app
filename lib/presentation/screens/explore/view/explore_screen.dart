@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:pet_app/presentation/components/custom_image/custom_image.dart';
 
 class ExploreScreen extends StatelessWidget {
@@ -9,9 +10,13 @@ class ExploreScreen extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          CustomImage(imageSrc: "assets/images/map.png")
+          Expanded(
+            child: CustomImage(imageSrc: "assets/images/map.png", boxFit: BoxFit.cover),
+          ),
+          const Gap(10),
         ],
       ),
     );
+
   }
 }

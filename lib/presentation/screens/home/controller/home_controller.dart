@@ -5,8 +5,10 @@ import 'package:get/get.dart';
 
 
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:pet_app/core/custom_assets/assets.gen.dart';
 import 'package:pet_app/core/dependency/get_it_injection.dart';
 import 'package:pet_app/service/api_service.dart';
+import 'package:pet_app/utils/app_strings/app_strings.dart';
 
 class HomeController extends GetxController{
  final PagingController<int, String> pagingController = PagingController(firstPageKey: 1);
@@ -17,6 +19,25 @@ class HomeController extends GetxController{
  RxInt currentIndex = 0.obs;
  RxInt selectedTabIndex = 0.obs;
 
+ final List<Widget> iconList = [
+   Assets.icons.petvets.svg(),
+   Assets.icons.petshops.svg(),
+   Assets.icons.petgrooming.svg(),
+   Assets.icons.pethotel.svg(),
+   Assets.icons.pettraining.svg(),
+   Assets.icons.friendlyplace.svg(),
+
+ ];
+ final List<String> stringList = [
+   AppStrings.petVets,
+   AppStrings.petShops,
+   AppStrings.petGrooming,
+   AppStrings.petHotels,
+   AppStrings.petTraining,
+   AppStrings.friendlyPlace,
+
+
+ ];
 
  final List<String> imgList = [
    'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',

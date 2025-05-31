@@ -1,10 +1,11 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'core/dependency/get_it_injection.dart';
 import 'core/route/routes.dart';
 import 'helper/device_utils/device_utils.dart';
-
+import 'package:device_preview/device_preview.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   DeviceUtils.lockDevicePortrait();
@@ -12,11 +13,11 @@ Future<void> main() async {
   initDependencies();
 
   runApp(
- /*   DevicePreview(
+    DevicePreview(
       enabled: !kReleaseMode,
       builder: (context) => MyApp(), // Wrap your app
-    ),*/
-      MyApp()
+    ),
+     /* MyApp()*/
   );
 }
 

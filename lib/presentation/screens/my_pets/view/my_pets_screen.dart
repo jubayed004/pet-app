@@ -9,6 +9,7 @@ import 'package:pet_app/core/route/route_path.dart';
 import 'package:pet_app/core/route/routes.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:pet_app/presentation/screens/my_pets/widgets/health_history_section.dart';
+import 'package:pet_app/presentation/widget/align/custom_align_text.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
 import 'package:pet_app/utils/app_strings/app_strings.dart';
 
@@ -21,10 +22,11 @@ class MyPetsScreen extends StatelessWidget {
      body: CustomScrollView(
        slivers: [
          SliverAppBar(
+           backgroundColor: AppColors.primaryColor,
            pinned: true,
            expandedHeight: 200,
            centerTitle: true,
-           title: CustomText(text: 'My Pet',fontWeight: FontWeight.w600,fontSize: 24,color: Colors.white,),
+           title: CustomText(text: 'My Pet',fontWeight: FontWeight.w600,fontSize: 24,color: Colors.black,),
            flexibleSpace: FlexibleSpaceBar(
              background: Obx(() {
                return controller.selectedImage.value != null
@@ -173,6 +175,17 @@ class MyPetsScreen extends StatelessWidget {
                  HealthHistorySection(text: "Treatments:", subText: " Flea and tick treatment every 3 months",),
                  Gap(12),
                  HealthHistorySection(text: "Notes:", subText: "Allergic to certain antibiotics",),
+                 Gap(16),
+                 CustomAlignText(text: "More Info",fontWeight: FontWeight.w600,fontSize: 14,),
+                 Gap(8),
+                 Container(
+                   padding: EdgeInsets.all(12),
+                   decoration: BoxDecoration(
+                     borderRadius: BorderRadius.circular(10),
+                     border: Border.all(color: AppColors.purple500)
+                   ),
+                   child:CustomText(text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut ",fontSize: 16,fontWeight: FontWeight.w400,maxLines: 6,textAlign: TextAlign.start,),
+                 )
                ],
              ),
            ),
