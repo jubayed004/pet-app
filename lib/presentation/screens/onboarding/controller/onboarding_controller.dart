@@ -12,13 +12,13 @@ class OnboardingController extends GetxController {
     ),
 
     OnboardingModel(
-      image: "assets/images/getstartedone.png",
+      image: "assets/icons/onboardingonee.svg",
       title: "Keep now !",
       details: "Find vets, groomers, pet shops, hotels & pet-friendly spots near you. Book services in just a few taps — quick, easy, and stress-free.",
     ),
 
     OnboardingModel(
-      image: "assets/images/getstartedtwo.png",
+      image: "assets/icons/onbordingtwoo.svg",
       title: "We provide",
       details:  "Track health Stay organized",
     ),

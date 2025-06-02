@@ -9,6 +9,7 @@ import 'package:pet_app/presentation/screens/auth/pet_registration/pet_registrat
 import 'package:pet_app/presentation/screens/auth/sign_in/sign_in.dart';
 import 'package:pet_app/presentation/screens/auth/sign_up/sign_up.dart';
 import 'package:pet_app/presentation/screens/category/category_details/view/category_details_screen.dart';
+import 'package:pet_app/presentation/screens/category/service/view/service_screen.dart';
 import 'package:pet_app/presentation/screens/category/view/category_screen.dart';
 import 'package:pet_app/presentation/screens/chat/view/chatting_page.dart';
 import 'package:pet_app/presentation/screens/my_appointment/view/my_appointment_screen.dart';
@@ -165,6 +166,15 @@ class AppRouter {
         pageBuilder:
             (context, state) => _buildPageWithAnimation(
           child: CategoryDetailsScreen(),
+          state: state,
+        ),
+      ),
+      GoRoute(
+        name: RoutePath.serviceScreen,
+        path: RoutePath.serviceScreen.addBasePath,
+        pageBuilder:
+            (context, state) => _buildPageWithAnimation(
+          child: ServiceScreen(),
           state: state,
         ),
       ),

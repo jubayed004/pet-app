@@ -12,7 +12,7 @@ import '../widgets/chat_message_card_item_widget.dart';
 
 class ChatScreen extends StatefulWidget {
   static const String routeName = '/chatting';
-   ChatScreen({super.key});
+   const ChatScreen({super.key});
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();

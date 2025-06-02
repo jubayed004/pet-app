@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:pet_app/presentation/screens/auth/controller/auth_controller.dart';
 import 'package:pet_app/presentation/screens/category/category_details/controller/category_details_controller.dart';
 import 'package:pet_app/presentation/screens/category/controller/category_controller.dart';
+import 'package:pet_app/presentation/screens/category/service/controller/service_controller.dart';
 import 'package:pet_app/presentation/screens/chat/chat_controller/message_controller.dart';
 import 'package:pet_app/presentation/screens/home/controller/home_controller.dart';
 import 'package:pet_app/presentation/screens/my_appointment/controller/my_appointment_controller.dart';
@@ -105,6 +106,14 @@ AuthController getAuthController() {
       Get.put(CategoryDetailsController());
     }
     return Get.find<CategoryDetailsController>();
+  }
+
+
+  ServiceController getServiceController() {
+    if (!Get.isRegistered<ServiceController>()) {
+      Get.put(ServiceController());
+    }
+    return Get.find<ServiceController>();
   }
 
   MessageController getMessageController() {

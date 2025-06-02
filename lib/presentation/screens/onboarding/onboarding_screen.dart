@@ -105,7 +105,7 @@ class OnboardingPageCard extends StatelessWidget {
                   .title,
               fontSize: 32.sp,
               // Bigger text for tablets
-              fontWeight: FontWeight.w400,
+              fontWeight: FontWeight.w600,
               color: AppColors.blackColor,
               textAlign: TextAlign.center,
               maxLines: 2,
@@ -115,8 +115,8 @@ class OnboardingPageCard extends StatelessWidget {
             return CustomText(
               text: _controller.onboardingList[_controller.currentIndex.value]
                   .details,
-              fontSize: 14.sp,
-              fontWeight: FontWeight.w400,
+              fontSize: 16.sp,
+              fontWeight: FontWeight.w500,
               color: AppColors.secondTextColor,
               textAlign: TextAlign.center,
               maxLines: 2,

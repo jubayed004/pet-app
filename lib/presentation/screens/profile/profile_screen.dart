@@ -42,7 +42,7 @@ class ProfileScreen extends StatelessWidget {
                   children: [
                     SizedBox(width: 40.w,),
                     CustomText(
-                      text: "Pixel Posse",
+                      text: "Profile",
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
                       color: Colors.black,
