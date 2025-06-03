@@ -18,6 +18,7 @@ class ServiceScreen extends StatelessWidget {
                 padding: const EdgeInsets.only(left:16.0,right: 16,top: 24),
                 child: Column(
                   children: [
+
                  CustomAlignText(text: "Selected your service",fontWeight: FontWeight.w500,fontSize: 18,),
                     Gap(16),
                     Row(
