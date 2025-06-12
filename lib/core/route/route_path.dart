@@ -17,6 +17,7 @@ class RoutePath{
   static const String categoryScreen = 'categoryScreen';
   static const String categoryDetailsScreen = 'categoryDetailsScreen';
   static const String serviceScreen = 'serviceScreen';
+  static const String bookAnAppointmentScreen = 'bookAnAppointmentScreen';
   static const String chatScreen = 'chatScreen';
   static const String editProfileScreen = 'editProfileScreen';
   static const String editMyPetsScreen = 'editMyPetsScreen';
@@ -42,5 +43,6 @@ class RoutePath{
 
   static const String imageViewScreen = 'imageViewScreen';
   static const String checkNotify = 'CheckNotify';
+  static const String addToOrderScrreen = 'addToOrderScrreen';
 
 }

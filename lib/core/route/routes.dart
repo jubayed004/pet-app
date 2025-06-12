@@ -2,12 +2,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pet_app/helper/extension/base_extension.dart';
+import 'package:pet_app/my_textscreen.dart';
 import 'package:pet_app/presentation/screens/auth/forgot/forgot_pass.dart';
 import 'package:pet_app/presentation/screens/auth/otp/verify_otp_screen.dart';
 import 'package:pet_app/presentation/screens/auth/password/set_new_password.dart';
 import 'package:pet_app/presentation/screens/auth/pet_registration/pet_registration_screen.dart';
 import 'package:pet_app/presentation/screens/auth/sign_in/sign_in.dart';
 import 'package:pet_app/presentation/screens/auth/sign_up/sign_up.dart';
+import 'package:pet_app/presentation/screens/category/book_an_appointment/view/book_an_appointment_screen.dart';
 import 'package:pet_app/presentation/screens/category/category_details/view/category_details_screen.dart';
 import 'package:pet_app/presentation/screens/category/service/view/service_screen.dart';
 import 'package:pet_app/presentation/screens/category/view/category_screen.dart';
@@ -178,6 +180,15 @@ class AppRouter {
           state: state,
         ),
       ),
+      GoRoute(
+        name: RoutePath.bookAnAppointmentScreen,
+        path: RoutePath.bookAnAppointmentScreen.addBasePath,
+        pageBuilder:
+            (context, state) => _buildPageWithAnimation(
+          child: BookAnAppointmentScreen(),
+          state: state,
+        ),
+      ),
       ///======================= MY Appointments Route =======================
       GoRoute(
         name: RoutePath.myAppointmentScreen,
@@ -237,6 +248,15 @@ class AppRouter {
         pageBuilder:
             (context, state) => _buildPageWithAnimation(
               child: TermsOfCondition(),
+              state: state,
+            ),
+      ),
+      GoRoute(
+        name: RoutePath.addToOrderScrreen,
+        path: RoutePath.addToOrderScrreen.addBasePath,
+        pageBuilder:
+            (context, state) => _buildPageWithAnimation(
+              child: AddToOrderScrreen(),
               state: state,
             ),
       ),
