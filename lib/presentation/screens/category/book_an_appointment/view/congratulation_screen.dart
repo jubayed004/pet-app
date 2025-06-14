@@ -1,0 +1,51 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
+import 'package:pet_app/controller/get_controllers.dart';
+import 'package:pet_app/presentation/components/custom_button/custom_button.dart';
+import 'package:pet_app/presentation/components/custom_button/custom_defualt_appbar.dart';
+import 'package:pet_app/presentation/components/custom_image/custom_image.dart';
+import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
+import 'package:pet_app/utils/app_const/padding_constant.dart';
+
+class CongratulationScreen extends StatelessWidget {
+   CongratulationScreen({super.key});
+   final controller = GetControllers.instance.getNavigationControllerMain();
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: CustomScrollView(
+        slivers: [
+          CustomDefaultAppbar(title: "Congratulations",),
+          SliverFillRemaining(
+            hasScrollBody: false,
+            child: Center(
+              child: Padding(
+                padding: padding16H,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    CustomImage(imageSrc: "assets/icons/congrotulation.svg"),
+                    Gap(24),
+                    CustomText(text: "CONGRATULATIONS!",fontSize: 14,fontWeight: FontWeight.w500,),
+                    Gap(24),
+                    CustomText(text: "Your appointment has been added successfully",fontSize: 14,fontWeight: FontWeight.w500,),
+                    Gap(44),
+                    CustomButton(onTap: (){
+                      controller.selectedNavIndex.value = 2;
+                      if (kDebugMode) {
+                        print("object");
+                      }
+                    },textColor: Colors.black,title: "Go To Home Page",)
+
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

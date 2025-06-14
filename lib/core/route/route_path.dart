@@ -18,6 +18,7 @@ class RoutePath{
   static const String categoryDetailsScreen = 'categoryDetailsScreen';
   static const String serviceScreen = 'serviceScreen';
   static const String bookAnAppointmentScreen = 'bookAnAppointmentScreen';
+  static const String congratulationScreen = 'congratulationScreen';
   static const String chatScreen = 'chatScreen';
   static const String editProfileScreen = 'editProfileScreen';
   static const String editMyPetsScreen = 'editMyPetsScreen';

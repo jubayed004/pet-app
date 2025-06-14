@@ -50,6 +50,7 @@ class CustomDefaultAppbar extends StatelessWidget
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
+      surfaceTintColor: Colors.transparent,
       pinned: true,
       //floating: true,
       //snap: true,

@@ -62,6 +62,10 @@ class $AssetsIconsGen {
   /// File path: assets/icons/chaticon.svg
   SvgGenImage get chaticon => const SvgGenImage('assets/icons/chaticon.svg');
 
+  /// File path: assets/icons/congrotulation.svg
+  SvgGenImage get congrotulation =>
+      const SvgGenImage('assets/icons/congrotulation.svg');
+
   /// File path: assets/icons/emailicon.svg
   SvgGenImage get emailicon => const SvgGenImage('assets/icons/emailicon.svg');
 
@@ -76,10 +80,6 @@ class $AssetsIconsGen {
   /// File path: assets/icons/friendlyplaceimage.svg
   SvgGenImage get friendlyplaceimage =>
       const SvgGenImage('assets/icons/friendlyplaceimage.svg');
-
-  /// File path: assets/icons/homeadsimage.svg
-  SvgGenImage get homeadsimage =>
-      const SvgGenImage('assets/icons/homeadsimage.svg');
 
   /// File path: assets/icons/homeicon.svg
   SvgGenImage get homeicon => const SvgGenImage('assets/icons/homeicon.svg');
@@ -103,6 +103,14 @@ class $AssetsIconsGen {
   SvgGenImage get mypetsicon =>
       const SvgGenImage('assets/icons/mypetsicon.svg');
 
+  /// File path: assets/icons/onboardingonee.svg
+  SvgGenImage get onboardingonee =>
+      const SvgGenImage('assets/icons/onboardingonee.svg');
+
+  /// File path: assets/icons/onbordingtwoo.svg
+  SvgGenImage get onbordingtwoo =>
+      const SvgGenImage('assets/icons/onbordingtwoo.svg');
+
   /// File path: assets/icons/petgrooming.svg
   SvgGenImage get petgrooming =>
       const SvgGenImage('assets/icons/petgrooming.svg');
@@ -110,23 +118,11 @@ class $AssetsIconsGen {
   /// File path: assets/icons/pethotel.svg
   SvgGenImage get pethotel => const SvgGenImage('assets/icons/pethotel.svg');
 
-  /// File path: assets/icons/petkallopantiimage.svg
-  SvgGenImage get petkallopantiimage =>
-      const SvgGenImage('assets/icons/petkallopantiimage.svg');
-
   /// File path: assets/icons/petowner.svg
   SvgGenImage get petowner => const SvgGenImage('assets/icons/petowner.svg');
 
-  /// File path: assets/icons/petshopimage.svg
-  SvgGenImage get petshopimage =>
-      const SvgGenImage('assets/icons/petshopimage.svg');
-
   /// File path: assets/icons/petshops.svg
   SvgGenImage get petshops => const SvgGenImage('assets/icons/petshops.svg');
-
-  /// File path: assets/icons/petshopsticker.svg
-  SvgGenImage get petshopsticker =>
-      const SvgGenImage('assets/icons/petshopsticker.svg');
 
   /// File path: assets/icons/pettraining.svg
   SvgGenImage get pettraining =>
@@ -158,9 +154,6 @@ class $AssetsIconsGen {
   SvgGenImage get veryfiyscreenimage =>
       const SvgGenImage('assets/icons/veryfiyscreenimage.svg');
 
-  /// File path: assets/icons/vets.svg
-  SvgGenImage get vets => const SvgGenImage('assets/icons/vets.svg');
-
   /// List of all assets
   List<SvgGenImage> get values => [
         abouticon,
@@ -169,24 +162,23 @@ class $AssetsIconsGen {
         backarrowicon,
         businessowner,
         chaticon,
+        congrotulation,
         emailicon,
         exploreicon,
         friendlyplace,
         friendlyplaceimage,
-        homeadsimage,
         homeicon,
         loginimage,
         logouticon,
         myappointmenticon,
         mypeticon,
         mypetsicon,
+        onboardingonee,
+        onbordingtwoo,
         petgrooming,
         pethotel,
-        petkallopantiimage,
         petowner,
-        petshopimage,
         petshops,
-        petshopsticker,
         pettraining,
         pettrainingimage,
         petvets,
@@ -194,13 +186,15 @@ class $AssetsIconsGen {
         profileicon,
         proiconsChaticon,
         settingicon,
-        veryfiyscreenimage,
-        vets
+        veryfiyscreenimage
       ];
 }
 
 class $AssetsImagesGen {
   const $AssetsImagesGen();
+
+  /// File path: assets/images/adshome.png
+  AssetGenImage get adshome => const AssetGenImage('assets/images/adshome.png');
 
   /// File path: assets/images/deshboadimage.png
   AssetGenImage get deshboadimage =>
@@ -214,9 +208,20 @@ class $AssetsImagesGen {
   AssetGenImage get getstartedtwo =>
       const AssetGenImage('assets/images/getstartedtwo.png');
 
+  /// File path: assets/images/map.png
+  AssetGenImage get map => const AssetGenImage('assets/images/map.png');
+
   /// File path: assets/images/onbordingone.png
   AssetGenImage get onbordingone =>
       const AssetGenImage('assets/images/onbordingone.png');
+
+  /// File path: assets/images/petkalloimage.png
+  AssetGenImage get petkalloimage =>
+      const AssetGenImage('assets/images/petkalloimage.png');
+
+  /// File path: assets/images/petshoplogo.png
+  AssetGenImage get petshoplogo =>
+      const AssetGenImage('assets/images/petshoplogo.png');
 
   /// File path: assets/images/splashlogo.png
   AssetGenImage get splashlogo =>
@@ -226,18 +231,26 @@ class $AssetsImagesGen {
   AssetGenImage get topbrandsimage =>
       const AssetGenImage('assets/images/topbrandsimage.png');
 
+  /// File path: assets/images/vet.png
+  AssetGenImage get vet => const AssetGenImage('assets/images/vet.png');
+
   /// File path: assets/images/womandogimage.png
   AssetGenImage get womandogimage =>
       const AssetGenImage('assets/images/womandogimage.png');
 
   /// List of all assets
   List<AssetGenImage> get values => [
+        adshome,
         deshboadimage,
         getstartedone,
         getstartedtwo,
+        map,
         onbordingone,
+        petkalloimage,
+        petshoplogo,
         splashlogo,
         topbrandsimage,
+        vet,
         womandogimage
       ];
 }

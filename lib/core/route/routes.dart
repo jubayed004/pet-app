@@ -10,6 +10,7 @@ import 'package:pet_app/presentation/screens/auth/pet_registration/pet_registrat
 import 'package:pet_app/presentation/screens/auth/sign_in/sign_in.dart';
 import 'package:pet_app/presentation/screens/auth/sign_up/sign_up.dart';
 import 'package:pet_app/presentation/screens/category/book_an_appointment/view/book_an_appointment_screen.dart';
+import 'package:pet_app/presentation/screens/category/book_an_appointment/view/congratulation_screen.dart';
 import 'package:pet_app/presentation/screens/category/category_details/view/category_details_screen.dart';
 import 'package:pet_app/presentation/screens/category/service/view/service_screen.dart';
 import 'package:pet_app/presentation/screens/category/view/category_screen.dart';
@@ -186,6 +187,15 @@ class AppRouter {
         pageBuilder:
             (context, state) => _buildPageWithAnimation(
           child: BookAnAppointmentScreen(),
+          state: state,
+        ),
+      ),
+      GoRoute(
+        name: RoutePath.congratulationScreen,
+        path: RoutePath.congratulationScreen.addBasePath,
+        pageBuilder:
+            (context, state) => _buildPageWithAnimation(
+          child: CongratulationScreen(),
           state: state,
         ),
       ),

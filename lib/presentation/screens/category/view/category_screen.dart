@@ -18,7 +18,8 @@ class CategoryScreen extends StatelessWidget {
    @override
    Widget build(BuildContext context) {
      return Scaffold(
-       backgroundColor: AppColors.appBackgroundColor,
+      // backgroundColor: AppColors.appBackgroundColor,
+ backgroundColor: AppColors.whiteColor,
        body: CustomScrollView(
          slivers: [
            CustomDefaultAppbar(title: 'Category'),

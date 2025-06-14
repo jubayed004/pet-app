@@ -19,6 +19,7 @@ class CategoryDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
        body: CustomScrollView(
          slivers: [
         /*   CustomDefaultAppbar(
@@ -50,7 +51,9 @@ class CategoryDetailsScreen extends StatelessWidget {
                    Positioned(
                      top: 30,
                        left: 30,
-                       child: IconButton(onPressed: (){}, icon: Icon(Icons.arrow_back,color: Colors.black,))),
+                       child: IconButton(onPressed: (){
+                        AppRouter.route.pop();
+                       }, icon: Icon(Icons.arrow_back,color: Colors.black,))),
                    // Card positioned below image, no fixed height, mainAxisSize.min ensures height matches content
                    Positioned(
                      top: 160,

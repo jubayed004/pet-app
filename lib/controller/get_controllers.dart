@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:pet_app/presentation/screens/auth/controller/auth_controller.dart';
+import 'package:pet_app/presentation/screens/category/book_an_appointment/controller/book_an_appointment_controller.dart';
 import 'package:pet_app/presentation/screens/category/category_details/controller/category_details_controller.dart';
 import 'package:pet_app/presentation/screens/category/controller/category_controller.dart';
 import 'package:pet_app/presentation/screens/category/service/controller/service_controller.dart';
@@ -114,6 +115,14 @@ AuthController getAuthController() {
       Get.put(ServiceController());
     }
     return Get.find<ServiceController>();
+  }
+
+
+  BookAnAppointmentController getBookAnAppointmentController() {
+    if (!Get.isRegistered<BookAnAppointmentController>()) {
+      Get.put(BookAnAppointmentController());
+    }
+    return Get.find<BookAnAppointmentController>();
   }
 
   MessageController getMessageController() {

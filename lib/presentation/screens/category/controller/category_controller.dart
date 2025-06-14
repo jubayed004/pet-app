@@ -8,6 +8,7 @@ import 'package:pet_app/presentation/components/custom_button/custom_button.dart
 import 'package:pet_app/presentation/components/custom_image/custom_image.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
+import 'package:pet_app/utils/app_const/padding_constant.dart';
 import 'package:pet_app/utils/app_strings/app_strings.dart';
 
 class CategoryController extends GetxController{
@@ -20,10 +21,10 @@ class CategoryController extends GetxController{
       },
       child: Container(
         margin: EdgeInsets.only(bottom: 10),
-        padding: EdgeInsets.all(16),
+     padding: padding8,
         decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(10),
             boxShadow: [
               BoxShadow(
                 color: Colors.grey.withValues(alpha: 0.5),
@@ -35,21 +36,21 @@ class CategoryController extends GetxController{
         ),
         child: Column(
           children: [
-            Row(
+        /*    Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment:MainAxisAlignment.spaceBetween,
               children: [
-                Row(
+            *//*    Row(
                   children: [
-                    CustomImage(imageSrc: "assets/images/vet.png",sizeWidth: 30,),
+                *//**//*    CustomImage(imageSrc: "assets/images/vet.png",sizeWidth: 30,),*//**//*
                     Gap(6),
                     CustomText(text: AppStrings.vets,textAlign: TextAlign.center,fontSize: 16,fontWeight: FontWeight.w700,),
                   ],
-                ),
+                ),*//*
 
-                CustomImage(imageSrc: "assets/images/petshoplogo.png",sizeWidth: 50,),
+
               ],
-            ),
+            ),*/
             //Assets.icons.petshopimage.svg(),
             Gap(6),
             Row(
@@ -59,17 +60,11 @@ class CategoryController extends GetxController{
                 Expanded(
 
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       CustomImage(imageSrc: "assets/images/womandogimage.png",boxFit: BoxFit.cover,),
-                      SizedBox(height: 6),
-                      Row(
-                        children: [
-                          Expanded(child: CustomText(text: "Visiting Date : ", fontWeight: FontWeight.w400,textAlign: TextAlign.start,)),
-                          Expanded(child: CustomText(text: "25/11/2022", fontWeight: FontWeight.w400,textAlign: TextAlign.start,)),
-
-                        ],
-                      ),
+                      Gap(8),
+                      CustomText(text: "Open",color: AppColors.primaryColor,fontWeight: FontWeight.w500,fontSize: 14,)
 
                     ],
                   ),
@@ -80,46 +75,57 @@ class CategoryController extends GetxController{
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomText(text: "Pet Food & Supplies Sales",fontSize: 18,fontWeight: FontWeight.w500,),
+                      CustomText(text: "Sansal  Land",fontSize: 18,fontWeight: FontWeight.w500,),
                       Gap(4),
                       CustomText(
                         text: "Pet Grooming ",
                         overflow: TextOverflow.ellipsis,
 
                       ),
+
                       Gap(4),
                       Row(
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: List.generate(5, (index) => Icon(Icons.star, color: Colors.amber,size: 18,)),
-                          ),
-                          Gap(6),
-                          CustomText(text: "5.0 ",fontWeight: FontWeight.w500, fontSize: 12,)
-                        ],
-                      ),
-                      Gap(4),
-                      Row(
-                        children: [
-                          Icon(Icons.call,size: 18,),
-                          Expanded(child: CustomText(text: "(406) 555-0120",fontWeight: FontWeight.w400,textAlign: TextAlign.start,)),
                           Icon(Icons.location_on_sharp,size: 18,),
-                          Expanded(child: CustomText(text: "4517 Washington Ave. ",overflow: TextOverflow.ellipsis,textAlign: TextAlign.start,))
+                          Expanded(child: CustomText(text: "4517 Washington Ave. ",overflow: TextOverflow.ellipsis,textAlign: TextAlign.start,)),
+
                         ],
                       ),
+                      Gap(4),
+                      Row(
+                        children: [
+                          Icon(Icons.access_time,size: 18,),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                CustomText(text: 'Monday - Friday at 8.00 am - 5.00pm', overflow: TextOverflow.ellipsis,),
+                                CustomText(text: 'Off day -Sunday',textAlign: TextAlign.start,),
+                              ],
+                            ),
+                          ),
+                       /*   ListTile(
+                            leading: Icon(Icons.access_time_sharp),
+                            title: CustomText(text: 'Monday - Friday at 8.00 am - 5.00pm'),
+                            subtitle:CustomText(text: '  Off day -Sunday'),
+                          )*/
+                        ],
+                      ),
+                      Gap(4),
 
 
                     ],
                   ),
                 ),
+                CustomImage(imageSrc: "assets/images/petshoplogo.png",sizeWidth: 50,),
               ],
             ),
             Row(
               mainAxisAlignment:MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Expanded(
+          /*      Expanded(
                   child: CustomButton(onTap: (){},
                     title: "Chat Now",
                     height: 24,
@@ -133,13 +139,14 @@ class CategoryController extends GetxController{
                     // icon: Icon(Icons.chat,color: Colors.black,size: 16,),
                     showIcon: true,
                   ),
-                ),
-                Expanded(
+                ),*/
+               Expanded(child: SizedBox()),
+                Expanded(child: CustomButton(onTap: (){},title: " Website",height: 24,fontSize: 12,fontWeight: FontWeight.w400,fillColor: AppColors.purple500,textColor: Colors.black,)),
+               Expanded(child: SizedBox())
+          /*
+Expanded(
 
-                    child: CustomButton(onTap: (){},title: " Website",height: 24,fontSize: 12,fontWeight: FontWeight.w400,fillColor: AppColors.purple500,textColor: Colors.black,)),
-                Expanded(
-
-                    child: TextButton(onPressed: (){}, child: CustomText(text: "Add Review",fontSize: 12,fontWeight: FontWeight.w600,))),
+                    child: TextButton(onPressed: (){}, child: CustomText(text: "Add Review",fontSize: 12,fontWeight: FontWeight.w600,))),*/
               ],
             )
           ],
