@@ -9,7 +9,6 @@ import 'package:pet_app/presentation/components/custom_image/custom_image.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
 import 'package:pet_app/utils/app_const/padding_constant.dart';
-import 'package:pet_app/utils/app_strings/app_strings.dart';
 
 class CategoryController extends GetxController{
   final PagingController<int, Widget> pagingController = PagingController(firstPageKey: 1,);

@@ -8,7 +8,7 @@ import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:pet_app/presentation/widget/align/custom_align_text.dart';
 
 class ServiceScreen extends StatefulWidget {
-   ServiceScreen({super.key});
+   const ServiceScreen({super.key});
 
   @override
   State<ServiceScreen> createState() => _ServiceScreenState();
@@ -21,6 +21,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
     "Parasite Prevention & Treatment (fleas, ticks, worms)",
     "Spaying & Neutering",
     "Emergency Care",
+
     "Peanut Butter",
     "Extras ",
 
