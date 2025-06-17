@@ -22,6 +22,7 @@ import 'package:pet_app/presentation/screens/notify/view/notify_screen.dart';
 import 'package:pet_app/presentation/screens/onboarding/onboarding_screen.dart';
 import 'package:pet_app/presentation/screens/other/terms_of_condition.dart';
 import 'package:pet_app/presentation/screens/profile/edit_profile/edit_profile_screen.dart';
+import 'package:pet_app/presentation/screens/search/search_screen.dart';
 import 'package:pet_app/presentation/screens/splash/splash_screen.dart';
 import 'package:pet_app/presentation/screens/vendor_selection/vendor_selection_screen.dart';
 import 'route_path.dart';
@@ -216,6 +217,15 @@ class AppRouter {
         pageBuilder:
             (context, state) => _buildPageWithAnimation(
               child: const NotifyScreen(),
+              state: state,
+            ),
+      ),
+      GoRoute(
+        name: RoutePath.searchScreen,
+        path: RoutePath.searchScreen.addBasePath,
+        pageBuilder:
+            (context, state) => _buildPageWithAnimation(
+              child: const SearchScreen(),
               state: state,
             ),
       ),

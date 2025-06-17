@@ -103,7 +103,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         Expanded(
                           child: CustomTextField(
                             onTap: () {
-
+                              AppRouter.route.pushNamed(RoutePath.searchScreen);
                             },
                             hintText: AppStrings.searchForServices,
                             fillColor: AppColors.whiteColor,
@@ -208,7 +208,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           CustomImage(
                             imageSrc: "assets/images/petkalloimage.png",
-                            sizeWidth: 100,)
+                            sizeWidth: 80,)
                         ],
                       ),
                     );

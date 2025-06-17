@@ -21,10 +21,8 @@ class _ServiceScreenState extends State<ServiceScreen> {
     "Parasite Prevention & Treatment (fleas, ticks, worms)",
     "Spaying & Neutering",
     "Emergency Care",
-
     "Peanut Butter",
     "Extras ",
-
   ];
 
    int choiceOfTopCookie = 1;

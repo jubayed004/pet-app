@@ -1,9 +1,3 @@
-/*
-import 'package:betwise_app/controller/get_controllers.dart';
-import 'package:betwise_app/core/custom_assets/assets.gen.dart';
-import 'package:betwise_app/presentation/components/custom_text/custom_text.dart';
-import 'package:betwise_app/presentation/screens/no_internet/error_card.dart';
-import 'package:betwise_app/utils/app_colors/app_colors.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +5,12 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:pet_app/controller/get_controllers.dart';
+import 'package:pet_app/core/custom_assets/assets.gen.dart';
+import 'package:pet_app/presentation/components/custom_button/custom_defualt_appbar.dart';
+import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
+import 'package:pet_app/presentation/no_internet/error_card.dart';
+import 'package:pet_app/utils/app_colors/app_colors.dart';
 
 import 'widget/search_drawer.dart';
 
@@ -31,7 +31,7 @@ class _SearchScreenState extends State<SearchScreen> {
       child: Scaffold(
         backgroundColor: Colors.white,
         key: _scaffoldState,
-        endDrawer: SearchDrawer(),
+
         body: Obx(() {
           return RefreshIndicator(
             onRefresh: () async {
@@ -39,7 +39,7 @@ class _SearchScreenState extends State<SearchScreen> {
             },
             child: CustomScrollView(
               slivers: [
-
+                CustomDefaultAppbar(title: "What are you looking for?",),
                 /// Floating AppBar (Search + Filter)
                 SliverPersistentHeader(
 
@@ -76,11 +76,10 @@ class _SearchScreenState extends State<SearchScreen> {
                             ),
                           ),
                           const Gap(8),
-                          GestureDetector(
+           /*               GestureDetector(
                             onTap: () {
-                              */
-/* controller.search.value = "";
-                            controller.searchController.clear();*//*
+ controller.search.value = "";
+                            controller.searchController.clear();
 
                               _scaffoldState.currentState?.openEndDrawer();
                             },
@@ -94,9 +93,9 @@ class _SearchScreenState extends State<SearchScreen> {
                                     color: Colors.black, width: 1),
                                 borderRadius: BorderRadius.circular(5),
                               ),
-                              child: Assets.icons.filltericon.svg(),
+                              child: Assets.icons..svg(),
                             ),
-                          ),
+                          ),*/
                         ],
                       ),
                     ),
@@ -147,9 +146,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     ),
                   ),
                 ) :
-
                 /// Paged List
-
                 SliverPadding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   sliver: PagedSliverList<int, Widget>(
@@ -224,4 +221,3 @@ class _SearchHeaderDelegate extends SliverPersistentHeaderDelegate {
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) =>
       true;
 }
-*/

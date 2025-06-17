@@ -1,14 +1,11 @@
-/*
-import 'package:betwise_app/core/custom_assets/assets.gen.dart';
-import 'package:betwise_app/core/dependency/get_it_injection.dart';
-import 'package:betwise_app/presentation/screens/home/model/home_model.dart';
-import 'package:betwise_app/presentation/widget/custom_post_betwise/custom_post_betwise.dart';
-import 'package:betwise_app/service/api_service.dart';
-import 'package:betwise_app/service/api_url.dart';
+
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:pet_app/core/dependency/get_it_injection.dart';
+import 'package:pet_app/service/api_service.dart';
+import 'package:pet_app/service/api_url.dart';
 
 class SearchScreenController extends GetxController{
   final ApiClient apiClient = serviceLocator();
@@ -21,48 +18,23 @@ class SearchScreenController extends GetxController{
   final RxString search = "".obs;
   RxBool isLoadingMove = false.obs;
 
-  @override
+/*  @override
   void onInit() {
     super.onInit();
     pagingController.addPageRequestListener((pageKey) {
       getAllSearch(pageKey);
     });
-  }
+  }*/
   List<Widget> bitwiseCard = [
 
-    CustomPostWidget(
-      timeAgo: "Posted 2h ago",
-      matchTitle: "🏀 Los Angeles Lakers ─vs─ Golden State Warriors.",
-      predictions: "",
-      analystLabel: "Gold Analyst",
-      image: Assets.images.homeimage.image(),
-      // Example URL
-    ),
 
-    CustomPostWidget(
-      timeAgo: "Posted 2h ago",
-      matchTitle: "🏀 Los Angeles Lakers ─vs─ Golden State Warriors.",
-      predictions: "",
-      analystLabel: "Gold Analyst",
-      image: Assets.images.homeimage.image(),
-      // Example URL
-    ),
-
-    CustomPostWidget(
-      timeAgo: "Posted 2h ago",
-      matchTitle: "🏀 Los Angeles Lakers ─vs─ Golden State Warriors.",
-      predictions: "",
-      analystLabel: "Gold Analyst",
-      image: Assets.images.homeimage.image(),
-      // Example URL
-    ),
 
   ];
 
+/*
   Future<void> getAllSearch( int pageKey ) async {
     pagingController.appendLastPage(bitwiseCard);
-  */
-/*  if (isLoadingMove.value) return;
+  if (isLoadingMove.value) return;
     isLoadingMove.value = true;
 
     try {
@@ -93,11 +65,9 @@ class SearchScreenController extends GetxController{
       pagingController.error = 'Something went wrong';
     } finally {
       isLoadingMove.value = false;
-    }*//*
+    }
 
   }
-*/
-/*
   Rx<Status> countryCity = Status.loading.obs;
   Rx<CountryCityModel> countryCityModel = CountryCityModel().obs;
 
@@ -116,19 +86,18 @@ class SearchScreenController extends GetxController{
       countryCity(Status.error);
     }
   }
-*//*
-
-
-
 
 */
-/*  @override
+
+
+
+
+  @override
   void onReady() {
 
     super.onReady();
 
    // getCountryCity();
-  }*//*
+  }
 
 }
-*/
