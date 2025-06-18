@@ -142,7 +142,7 @@ class MyPetsScreen extends StatelessWidget {
                      ),
                      GestureDetector(
                        onTap: (){
-
+                           AppRouter.route.pushNamed(RoutePath.petHealthScreen);
                        },
                        child: Container(
                          padding: EdgeInsets.all(8),

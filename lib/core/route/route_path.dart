@@ -21,6 +21,8 @@ class RoutePath{
   static const String congratulationScreen = 'congratulationScreen';
   static const String chatScreen = 'chatScreen';
   static const String editProfileScreen = 'editProfileScreen';
+  static const String addPetScreen = 'addPetScreen';
+  static const String petHealthScreen = 'petHealthScreen';
   static const String editMyPetsScreen = 'editMyPetsScreen';
   static const String notifyScreen = 'notifyScreen';
   static const String searchScreen = 'searchScreen';

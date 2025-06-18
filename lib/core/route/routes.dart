@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pet_app/helper/extension/base_extension.dart';
 import 'package:pet_app/my_textscreen.dart';
+import 'package:pet_app/presentation/screens/add_pet/view/add_pet_screen.dart';
 import 'package:pet_app/presentation/screens/auth/forgot/forgot_pass.dart';
 import 'package:pet_app/presentation/screens/auth/otp/verify_otp_screen.dart';
 import 'package:pet_app/presentation/screens/auth/password/set_new_password.dart';
@@ -21,6 +22,7 @@ import 'package:pet_app/presentation/screens/nav/navigation_page.dart';
 import 'package:pet_app/presentation/screens/notify/view/notify_screen.dart';
 import 'package:pet_app/presentation/screens/onboarding/onboarding_screen.dart';
 import 'package:pet_app/presentation/screens/other/terms_of_condition.dart';
+import 'package:pet_app/presentation/screens/pet_health/view/pet_health_screen.dart';
 import 'package:pet_app/presentation/screens/profile/edit_profile/edit_profile_screen.dart';
 import 'package:pet_app/presentation/screens/search/search_screen.dart';
 import 'package:pet_app/presentation/screens/splash/splash_screen.dart';
@@ -154,6 +156,27 @@ class AppRouter {
               state: state,
             ),
       ),
+
+      GoRoute(
+        name: RoutePath.addPetScreen,
+        path: RoutePath.addPetScreen.addBasePath,
+        pageBuilder:
+            (context, state) => _buildPageWithAnimation(
+              child:  AddPetScreen(),
+              state: state,
+            ),
+      ),
+
+      GoRoute(
+        name: RoutePath.petHealthScreen,
+        path: RoutePath.petHealthScreen.addBasePath,
+        pageBuilder:
+            (context, state) => _buildPageWithAnimation(
+              child:  PetHealthScreen(),
+              state: state,
+            ),
+      ),
+
       ///======================= Category Route =======================
       GoRoute(
         name: RoutePath.categoryScreen,
