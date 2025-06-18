@@ -65,7 +65,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                   child: Icon(Iconsax.search_favorite,
                                       color: AppColors.blackColor),
                                 ),
-                                placeholder: "Chicago Bulls vs Brooklyn Nets",
+                                placeholder: "Search here",
                                 decoration: BoxDecoration(
                                   border: Border.all(
                                       color: Colors.black, width: 1),

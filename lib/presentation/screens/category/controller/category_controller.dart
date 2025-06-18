@@ -90,34 +90,38 @@ class CategoryController extends GetxController{
 
                         ],
                       ),
-                      Gap(4),
-                      Row(
-                        children: [
-                          Icon(Icons.access_time,size: 18,),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                CustomText(text: 'Monday - Friday at 8.00 am - 5.00pm', overflow: TextOverflow.ellipsis,),
-                                CustomText(text: 'Off day -Sunday',textAlign: TextAlign.start,),
-                              ],
-                            ),
-                          ),
-                       /*   ListTile(
-                            leading: Icon(Icons.access_time_sharp),
-                            title: CustomText(text: 'Monday - Friday at 8.00 am - 5.00pm'),
-                            subtitle:CustomText(text: '  Off day -Sunday'),
-                          )*/
-                        ],
-                      ),
+
                       Gap(4),
 
 
                     ],
                   ),
                 ),
-                CustomImage(imageSrc: "assets/images/petshoplogo.png",sizeWidth: 50,),
+                 CustomImage(imageSrc: "assets/images/petshoplogo.png",sizeWidth: 50,),
+              ],
+            ),
+            Gap(4),
+            Row(
+              mainAxisAlignment:MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Icon(Icons.access_time,size: 18,),
+                Gap(4),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      CustomText(text: 'Monday - Friday at 8.00 am - 5.00pm', overflow: TextOverflow.ellipsis,),
+                      CustomText(text: 'Off day -Sunday',textAlign: TextAlign.start,),
+                    ],
+                  ),
+                ),
+                /*   ListTile(
+                            leading: Icon(Icons.access_time_sharp),
+                            title: CustomText(text: 'Monday - Friday at 8.00 am - 5.00pm'),
+                            subtitle:CustomText(text: '  Off day -Sunday'),
+                          )*/
               ],
             ),
             Row(
