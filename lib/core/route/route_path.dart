@@ -23,6 +23,7 @@ class RoutePath{
   static const String editProfileScreen = 'editProfileScreen';
   static const String addPetScreen = 'addPetScreen';
   static const String petHealthScreen = 'petHealthScreen';
+  static const String settingsPage = 'settingsPage';
   static const String editMyPetsScreen = 'editMyPetsScreen';
   static const String notifyScreen = 'notifyScreen';
   static const String searchScreen = 'searchScreen';

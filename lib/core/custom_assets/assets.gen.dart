@@ -59,12 +59,19 @@ class $AssetsIconsGen {
   SvgGenImage get businessowner =>
       const SvgGenImage('assets/icons/businessowner.svg');
 
+  /// File path: assets/icons/changepassword.svg
+  SvgGenImage get changepassword =>
+      const SvgGenImage('assets/icons/changepassword.svg');
+
   /// File path: assets/icons/chaticon.svg
   SvgGenImage get chaticon => const SvgGenImage('assets/icons/chaticon.svg');
 
   /// File path: assets/icons/congrotulation.svg
   SvgGenImage get congrotulation =>
       const SvgGenImage('assets/icons/congrotulation.svg');
+
+  /// File path: assets/icons/delete.svg
+  SvgGenImage get delete => const SvgGenImage('assets/icons/delete.svg');
 
   /// File path: assets/icons/emailicon.svg
   SvgGenImage get emailicon => const SvgGenImage('assets/icons/emailicon.svg');
@@ -73,6 +80,9 @@ class $AssetsIconsGen {
   SvgGenImage get exploreicon =>
       const SvgGenImage('assets/icons/exploreicon.svg');
 
+  /// File path: assets/icons/faq.svg
+  SvgGenImage get faq => const SvgGenImage('assets/icons/faq.svg');
+
   /// File path: assets/icons/friendlyplace.svg
   SvgGenImage get friendlyplace =>
       const SvgGenImage('assets/icons/friendlyplace.svg');
@@ -80,6 +90,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/friendlyplaceimage.svg
   SvgGenImage get friendlyplaceimage =>
       const SvgGenImage('assets/icons/friendlyplaceimage.svg');
+
+  /// File path: assets/icons/help.svg
+  SvgGenImage get help => const SvgGenImage('assets/icons/help.svg');
 
   /// File path: assets/icons/homeicon.svg
   SvgGenImage get homeicon => const SvgGenImage('assets/icons/homeicon.svg');
@@ -138,6 +151,10 @@ class $AssetsIconsGen {
   /// File path: assets/icons/phoneicon.svg
   SvgGenImage get phoneicon => const SvgGenImage('assets/icons/phoneicon.svg');
 
+  /// File path: assets/icons/privacypolicy.svg
+  SvgGenImage get privacypolicy =>
+      const SvgGenImage('assets/icons/privacypolicy.svg');
+
   /// File path: assets/icons/profileicon.svg
   SvgGenImage get profileicon =>
       const SvgGenImage('assets/icons/profileicon.svg');
@@ -150,6 +167,10 @@ class $AssetsIconsGen {
   SvgGenImage get settingicon =>
       const SvgGenImage('assets/icons/settingicon.svg');
 
+  /// File path: assets/icons/terms&condition.svg
+  SvgGenImage get termsCondition =>
+      const SvgGenImage('assets/icons/terms&condition.svg');
+
   /// File path: assets/icons/veryfiyscreenimage.svg
   SvgGenImage get veryfiyscreenimage =>
       const SvgGenImage('assets/icons/veryfiyscreenimage.svg');
@@ -161,12 +182,16 @@ class $AssetsIconsGen {
         addpeticon,
         backarrowicon,
         businessowner,
+        changepassword,
         chaticon,
         congrotulation,
+        delete,
         emailicon,
         exploreicon,
+        faq,
         friendlyplace,
         friendlyplaceimage,
+        help,
         homeicon,
         loginimage,
         logouticon,
@@ -183,9 +208,11 @@ class $AssetsIconsGen {
         pettrainingimage,
         petvets,
         phoneicon,
+        privacypolicy,
         profileicon,
         proiconsChaticon,
         settingicon,
+        termsCondition,
         veryfiyscreenimage
       ];
 }

@@ -204,7 +204,9 @@ class ProfileScreen extends StatelessWidget {
                           ButtonSectionAll(
                               icon: Assets.icons.settingicon.svg(),
                               text: AppStrings.settings,
-                            onTap: () {  },),
+                            onTap: () {
+                                AppRouter.route.pushNamed(RoutePath.settingsPage);
+                            },),
 
                           ButtonSectionAll(
                             showTrailingIcon: false,

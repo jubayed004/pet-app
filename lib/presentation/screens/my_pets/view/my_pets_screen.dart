@@ -1,17 +1,14 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:pet_app/controller/get_controllers.dart';
-import 'package:pet_app/core/custom_assets/assets.gen.dart';
 import 'package:pet_app/core/route/route_path.dart';
 import 'package:pet_app/core/route/routes.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:pet_app/presentation/screens/my_pets/widgets/health_history_section.dart';
 import 'package:pet_app/presentation/widget/align/custom_align_text.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
-import 'package:pet_app/utils/app_strings/app_strings.dart';
 
 class MyPetsScreen extends StatelessWidget {
    MyPetsScreen({super.key});
@@ -45,7 +42,6 @@ class MyPetsScreen extends StatelessWidget {
              }),
            ),
          ),
-
          SliverToBoxAdapter(
            child: Padding(
              padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 20),
@@ -75,7 +71,6 @@ class MyPetsScreen extends StatelessWidget {
                                    AppRouter.route.pushNamed(RoutePath.editMyPetsScreen);
                                  }, icon: Icon(Icons.edit,size: 20,))),
                              Gap(6),
-
                            ],
                          )
                        ],
@@ -88,7 +83,6 @@ class MyPetsScreen extends StatelessWidget {
                       Icon(Icons.account_box_outlined),
                      Gap(6),
                      CustomText(text: "About Bella",fontWeight: FontWeight.w600,fontSize: 16,)
-
                    ],
                  ),
                  Gap(16),
@@ -115,11 +109,9 @@ class MyPetsScreen extends StatelessWidget {
                  Gap(16),
                  Row(
                    children: [
-
                      Icon(Icons.safety_divider_outlined),
                      Gap(6),
                      CustomText(text: "Bella’s Status",fontWeight: FontWeight.w600,fontSize: 16,)
-
                    ],
                  ),
                  Gap(16),

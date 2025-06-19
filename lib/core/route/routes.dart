@@ -23,7 +23,9 @@ import 'package:pet_app/presentation/screens/notify/view/notify_screen.dart';
 import 'package:pet_app/presentation/screens/onboarding/onboarding_screen.dart';
 import 'package:pet_app/presentation/screens/other/terms_of_condition.dart';
 import 'package:pet_app/presentation/screens/pet_health/view/pet_health_screen.dart';
+import 'package:pet_app/presentation/screens/profile/change_password_page.dart';
 import 'package:pet_app/presentation/screens/profile/edit_profile/edit_profile_screen.dart';
+import 'package:pet_app/presentation/screens/profile/settings_page.dart';
 import 'package:pet_app/presentation/screens/search/search_screen.dart';
 import 'package:pet_app/presentation/screens/splash/splash_screen.dart';
 import 'package:pet_app/presentation/screens/vendor_selection/vendor_selection_screen.dart';
@@ -177,6 +179,16 @@ class AppRouter {
             ),
       ),
 
+      GoRoute(
+        name: RoutePath.settingsPage,
+        path: RoutePath.settingsPage.addBasePath,
+        pageBuilder:
+            (context, state) => _buildPageWithAnimation(
+              child:  SettingsPage(),
+              state: state,
+            ),
+      ),
+
       ///======================= Category Route =======================
       GoRoute(
         name: RoutePath.categoryScreen,
@@ -269,7 +281,7 @@ class AppRouter {
             (context, state) =>
                 _buildPageWithAnimation(child: SettingsScreen(), state: state),
       ),*/
-     /* GoRoute(
+      GoRoute(
         name: RoutePath.changePasswordScreen,
         path: RoutePath.changePasswordScreen.addBasePath,
         pageBuilder:
@@ -277,7 +289,7 @@ class AppRouter {
               child: ChangePasswordScreen(),
               state: state,
             ),
-      ),*/
+      ),
      /* GoRoute(
         name: RoutePath.privacyPolicy,
         path: RoutePath.privacyPolicy.addBasePath,
