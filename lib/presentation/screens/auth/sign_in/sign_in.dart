@@ -169,7 +169,11 @@ class SignInScreen extends StatelessWidget {
                         _authController.login();
                       }*/
 
-                  AppRouter.route.goNamed(RoutePath.navigationPage);
+                  if(_authController.isUser.value){
+                    AppRouter.route.goNamed(RoutePath.navigationPage);
+                  }else{
+                    AppRouter.route.goNamed(RoutePath.navigationPage);
+                  }
                 },
               ),
               /*  Obx(() {

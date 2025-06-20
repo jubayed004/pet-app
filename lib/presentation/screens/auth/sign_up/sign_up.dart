@@ -173,10 +173,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                    textColor: Colors.black,
                    showIcon : false,
                     onTap: () {
-                   /*    if (_formKey.currentState!.validate()) {
-                        _authController.signUp();
-                      }*/
-                      AppRouter.route.pushNamed(RoutePath.petRegistrationScreen);
+
                     },
                   );
                 }),

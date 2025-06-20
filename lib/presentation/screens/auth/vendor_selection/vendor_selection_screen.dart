@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pet_app/controller/get_controllers.dart';
 import 'package:pet_app/core/custom_assets/assets.gen.dart';
 import 'package:pet_app/core/route/route_path.dart';
@@ -35,7 +34,6 @@ class _VendorSelectionScreenState extends State<VendorSelectionScreen> {
                      padding: const EdgeInsets.all(40.0),
                      child: Assets.images.onbordingone.image(),
                    ),
-
                  ],
                ),
             CustomText(text: AppStrings.wherePet,fontSize: 24,fontWeight : FontWeight.w400,maxLines: 2,),
@@ -54,9 +52,9 @@ class _VendorSelectionScreenState extends State<VendorSelectionScreen> {
             CustomButton(
               onTap: (){
                 _authController.isUser.value = false;
+                AppRouter.route.goNamed(RoutePath.signInScreen);
               },
               fillColor: Colors.white,
-
               borderColor: AppColors.primaryColor,
               isBorder: true,
               title: AppStrings.businessOwners,

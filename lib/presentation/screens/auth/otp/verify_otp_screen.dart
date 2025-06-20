@@ -171,7 +171,11 @@ class VerifyOtpScreen extends StatelessWidget {
                       _authController.otpVerify(email: email);
                     }*/
 
-                    AppRouter.route.pushNamed(RoutePath.signInScreen);
+                    if(_authController.isUser.value){
+                      AppRouter.route.goNamed(RoutePath.navigationPage);
+                    }else{
+                      AppRouter.route.goNamed(RoutePath.navigationPage);
+                    }
                   },
 
                   /*    isLoading: isSignUp
