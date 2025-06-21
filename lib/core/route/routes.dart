@@ -16,6 +16,7 @@ import 'package:pet_app/presentation/screens/category/category_details/view/cate
 import 'package:pet_app/presentation/screens/category/service/view/service_screen.dart';
 import 'package:pet_app/presentation/screens/category/view/category_screen.dart';
 import 'package:pet_app/presentation/screens/chat/view/chatting_page.dart';
+import 'package:pet_app/presentation/screens/faq/help_faq_screen.dart';
 import 'package:pet_app/presentation/screens/my_appointment/view/my_appointment_screen.dart';
 import 'package:pet_app/presentation/screens/my_pets/edit_my_pets/edit_my_pets_screen.dart';
 import 'package:pet_app/presentation/screens/nav/navigation_page.dart';
@@ -25,6 +26,8 @@ import 'package:pet_app/presentation/screens/other/terms_of_condition.dart';
 import 'package:pet_app/presentation/screens/pet_health/view/pet_health_screen.dart';
 import 'package:pet_app/presentation/screens/profile/change_password_page.dart';
 import 'package:pet_app/presentation/screens/profile/edit_profile/edit_profile_screen.dart';
+import 'package:pet_app/presentation/screens/profile/help_center_screen.dart';
+import 'package:pet_app/presentation/screens/profile/privacy_policy.dart';
 import 'package:pet_app/presentation/screens/profile/settings_page.dart';
 import 'package:pet_app/presentation/screens/search/search_screen.dart';
 import 'package:pet_app/presentation/screens/splash/splash_screen.dart';
@@ -290,13 +293,13 @@ class AppRouter {
               state: state,
             ),
       ),
-     /* GoRoute(
+      GoRoute(
         name: RoutePath.privacyPolicy,
         path: RoutePath.privacyPolicy.addBasePath,
         pageBuilder:
             (context, state) =>
                 _buildPageWithAnimation(child: PrivacyPolicy(), state: state),
-      ),*/
+      ),
       GoRoute(
         name: RoutePath.termsOfCondition,
         path: RoutePath.termsOfCondition.addBasePath,
@@ -315,7 +318,7 @@ class AppRouter {
               state: state,
             ),
       ),
-      /*GoRoute(
+      GoRoute(
         name: RoutePath.helpFaqScreen,
         path: RoutePath.helpFaqScreen.addBasePath,
         pageBuilder:
@@ -323,7 +326,16 @@ class AppRouter {
               child: HelpFaqScreen(),
               state: state,
             ),
-      ),*/
+      ),
+      GoRoute(
+        name: RoutePath.helpCenterScreen,
+        path: RoutePath.helpCenterScreen.addBasePath,
+        pageBuilder:
+            (context, state) => _buildPageWithAnimation(
+              child: HelpCenterScreen(),
+              state: state,
+            ),
+      ),
 
       ///======================= Subscription =======================
 

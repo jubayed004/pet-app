@@ -6,6 +6,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:pet_app/controller/get_controllers.dart';
+import 'package:pet_app/core/route/route_path.dart';
+import 'package:pet_app/core/route/routes.dart';
 import 'package:pet_app/presentation/components/custom_button/custom_button.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:pet_app/presentation/components/custom_text_field/custom_text_field.dart';
@@ -143,7 +145,8 @@ class EditProfileScreen extends StatelessWidget {
                   ),
                   Gap(24),
                   CustomButton(onTap: (){
-
+                    controller.selectedNavIndex.value = 4;
+                    AppRouter.route.goNamed(RoutePath.navigationPage);
                   },
                     title: "Save",
                   textColor: Colors.black,

@@ -102,21 +102,54 @@ class _PetHealthScreenState extends State<PetHealthScreen> with TickerProviderSt
                           ),
                         ),
                       ),
-                      Container(
-                        margin: const EdgeInsets.all(12),
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          color: Colors.green[50],
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: Colors.green),
-                        ),
-                        child: const Center(
-                          child: Text(
-                            "All Good Reports",
-                            style: TextStyle(fontSize: 16, color: Colors.green),
+                      Padding(
+                        padding: padding16H,
+                        child: Card(
+                          color: Colors.white,
+                          elevation: 3,
+                          child: Container(
+                            margin: const EdgeInsets.all(12),
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                CustomText(text: "Vaccinations",fontSize: 16,fontWeight: FontWeight.w600,),
+                                Gap(24),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        CustomText(text: "Rabies vaccination",fontSize: 14,fontWeight: FontWeight.w600,),
+                                        CustomText(text: "24th Jan 2022",fontSize: 14,fontWeight: FontWeight.w400,maxLines: 4,),
+                                        CustomText(text: "Dr. Nambuvan",fontSize: 14,fontWeight: FontWeight.w400,maxLines: 4,),
+                                      ],
+                                    ),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        CustomText(text: "Calicivirus",fontSize: 14,fontWeight: FontWeight.w600,),
+                                        CustomText(text: "12nd Feb 2022",fontSize: 14,fontWeight: FontWeight.w400,maxLines: 4,),
+                                        CustomText(text: "Dr. Ram",fontSize: 14,fontWeight: FontWeight.w400,maxLines: 4,),
+                                      ],
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
                           ),
                         ),
                       ),
+
                     ],
                   ),
                 ),

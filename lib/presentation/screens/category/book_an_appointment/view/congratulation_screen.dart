@@ -2,6 +2,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:pet_app/controller/get_controllers.dart';
+import 'package:pet_app/core/custom_assets/assets.gen.dart';
+import 'package:pet_app/core/route/route_path.dart';
+import 'package:pet_app/core/route/routes.dart';
 import 'package:pet_app/presentation/components/custom_button/custom_button.dart';
 import 'package:pet_app/presentation/components/custom_button/custom_defualt_appbar.dart';
 import 'package:pet_app/presentation/components/custom_image/custom_image.dart';
@@ -26,14 +29,15 @@ class CongratulationScreen extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    CustomImage(imageSrc: "assets/icons/congrotulation.svg"),
+
+                    Assets.icons.waitingforapprovel.svg(),
+
                     Gap(24),
-                    CustomText(text: "CONGRATULATIONS!",fontSize: 14,fontWeight: FontWeight.w500,),
-                    Gap(24),
-                    CustomText(text: "Your appointment has been added successfully",fontSize: 14,fontWeight: FontWeight.w500,),
+                    CustomText(text: "Waiting for the approval......",fontSize: 14,fontWeight: FontWeight.w500,color: Color(0xFFEEAB4A),),
                     Gap(44),
                     CustomButton(onTap: (){
-                      controller.selectedNavIndex.value = 2;
+                      controller.selectedNavIndex.value = 0;
+                      AppRouter.route.goNamed(RoutePath.navigationPage);
                       if (kDebugMode) {
                         print("object");
                       }

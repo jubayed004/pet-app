@@ -65,7 +65,7 @@ class CustomDefaultAppbar extends StatelessWidget
          // crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            SizedBox(),
+          Gap(20),
             titleWidget ??
                 CustomText(
                   text: title ?? "",
@@ -73,7 +73,7 @@ class CustomDefaultAppbar extends StatelessWidget
                   fontWeight: FontWeight.w600,
                   color: Colors.black,
                 ),
-            Gap(6),
+            SizedBox(),
             iconButton ?? SizedBox(),
           ],
         )

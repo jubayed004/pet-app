@@ -1,7 +1,6 @@
-/*
-import 'package:betwise_app/core/custom_assets/assets.gen.dart';
-import 'package:betwise_app/presentation/components/custom_image/custom_image.dart';
+
 import 'package:flutter/material.dart';
+import 'package:pet_app/presentation/components/custom_image/custom_image.dart';
 
 void showCustomAnimatedDialog({
   required BuildContext context,
@@ -38,12 +37,7 @@ void showCustomAnimatedDialog({
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  CustomImage(
-                    imageSrc: animationSrc ?? "", // Pass dynamic image source (can be Lottie, PNG, or SVG)
-                    width: 100,
-                    height: 100,
-                    boxFit: BoxFit.contain,
-                  ),
+
                   if (title != null)
                     Text(
                       title,
@@ -92,4 +86,3 @@ void showCustomAnimatedDialog({
     },
   );
 }
-*/

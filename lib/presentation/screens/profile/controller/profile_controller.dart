@@ -6,6 +6,7 @@ import 'package:pet_app/core/dependency/get_it_injection.dart';
 import 'package:pet_app/helper/local_db/local_db.dart';
 import 'package:pet_app/presentation/screens/profile/model/profile_model.dart';
 import 'package:pet_app/service/api_service.dart';
+import 'package:pet_app/service/api_url.dart';
 import 'package:pet_app/utils/app_const/app_const.dart';
 
 class ProfileController extends GetxController {
@@ -93,6 +94,40 @@ class ProfileController extends GetxController {
       isUpdateLoading.value = false;
     }*/
   }
+
+
+  ///=================================give feedback=======================///
+  TextEditingController subject = TextEditingController();
+  TextEditingController feedback = TextEditingController();
+
+  Future<void> giveFeedback() async{
+/*    try{
+      isUpdateLoading.value = true;
+      final body = {
+        "subject": subject.text,
+        "feedback": feedback.text,
+
+      };
+      final response = await apiClient.post(url: ApiUrl.giveFeedbacks(), body: body,);
+      if(response.statusCode == 200){
+        isUpdateLoading.value = false;
+        toastMessage(message: response.body?['message']?.toString());
+        subject.clear();
+        feedback.clear();
+        AppRouter.route.pop();
+
+
+
+      }else{
+        toastMessage(message: response.body?['message']?.toString());
+        isUpdateLoading.value = false;
+
+      }
+    }catch(error){
+      isUpdateLoading.value = false;
+    }*/
+  }
+
 
   Future<void> getAdmin() async{
     final role = await dbHelper.getUserRole();

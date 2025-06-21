@@ -3,9 +3,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:pet_app/controller/get_controllers.dart';
 import 'package:pet_app/core/custom_assets/assets.gen.dart';
 import 'package:pet_app/core/route/route_path.dart';
 import 'package:pet_app/core/route/routes.dart';
+import 'package:pet_app/helper/dialog/show_custom_animated_dialog.dart';
+import 'package:pet_app/helper/local_db/local_db.dart';
 import 'package:pet_app/presentation/components/custom_button/custom_button.dart';
 import 'package:pet_app/presentation/components/custom_button/custom_defualt_appbar.dart';
 import 'package:pet_app/presentation/components/custom_button_tap/custom_button_tap.dart';
@@ -16,12 +19,12 @@ import 'package:pet_app/utils/app_const/padding_constant.dart';
 import 'package:pet_app/utils/app_strings/app_strings.dart';
 
 class SettingsPage extends StatelessWidget {
-  static const String routeName = "/settings";
-  const SettingsPage({super.key});
-
+   SettingsPage({super.key});
+  final profileController = GetControllers.instance.getProfileController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: CustomScrollView(
         slivers: [
           CustomDefaultAppbar(title: AppStrings.settings),
@@ -31,14 +34,21 @@ class SettingsPage extends StatelessWidget {
               child: Column(
                 spacing: 12.h,
                 children: [
-                 /* Image.asset(logo, height: 100.h),*/
+
                  Assets.images.splashlogo.image(width:100),
                   SettingsCardWidget(
                     title: "FAQs",
 
                     icon: Assets.icons.faq.svg(),
                     onTap: () {
-                     // Get.toNamed(TermsPolicyHelpPage.routeName,arguments: AppStaticStrings.faqs.tr);
+                     AppRouter.route.pushNamed(RoutePath.helpFaqScreen);
+                    },
+                  ),
+                  SettingsCardWidget(
+                    title: "Help Center",
+                    icon: Assets.icons.help.svg(),
+                    onTap: () {
+                     AppRouter.route.pushNamed(RoutePath.helpCenterScreen);
                     },
                   ),
                   SettingsCardWidget(
@@ -46,7 +56,7 @@ class SettingsPage extends StatelessWidget {
 
                     icon: Assets.icons.termsCondition.svg(),
                     onTap: () {
-                    //  Get.toNamed(TermsPolicyHelpPage.routeName,arguments: AppStaticStrings.termsCondition.tr);
+                    AppRouter.route.pushNamed(RoutePath.termsOfCondition);
                     },
                   ),
                   SettingsCardWidget(
@@ -54,7 +64,7 @@ class SettingsPage extends StatelessWidget {
 
                     icon: Assets.icons.privacypolicy.svg(),
                     onTap: () {
-                     // Get.toNamed(TermsPolicyHelpPage.routeName,arguments: AppStaticStrings.privacyPolicy.tr);
+                     AppRouter.route.pushNamed(RoutePath.privacyPolicy);
                     },
                   ),
                   SettingsCardWidget(
@@ -71,11 +81,43 @@ class SettingsPage extends StatelessWidget {
 
                     icon: Assets.icons.delete.svg(),
                     onTap: () {
-                      defaultYesNoDialog(
-                        title: "Do you want to delete your profile?",
-                        onTap: () {
-                        //  Get.offAllNamed(LoginPage.routeName);
-                        },
+                      showCustomAnimatedDialog(
+
+                        context: context,
+                        title: "Warning",
+                        subtitle:
+                        "Do you want to delete your profile?",
+                        actionButton: [
+                          CustomButton(
+                            width: double.infinity,
+                            height: 36,
+                            fillColor: Colors.white,
+                            // White background
+                            borderWidth: 1,
+                            // Border width
+                            borderColor: AppColors.greenColor,
+                            // Border color (black)
+                            onTap: () {
+                              AppRouter.route.pop();
+                            },
+                            textColor: AppColors.greenColor,
+                            title: "Cancel",
+                            isBorder: true,
+                            fontSize: 14, // Ensure the border is visible
+                          ),
+                          CustomButton(
+
+                            fillColor: AppColors.primaryColor,
+                            width: double.infinity,
+                            height: 36,
+                            onTap: ()  {
+
+                              DBHelper().logOut();// Navigate
+                            },
+                            title: " Confirm",
+                            fontSize: 14,
+                          ),
+                        ],
                       );
                     },
                   ),
@@ -89,47 +131,7 @@ class SettingsPage extends StatelessWidget {
   }
 }
 
-Future<dynamic> defaultYesNoDialog({
-  required String title,
-  required Function() onTap,
-})
-{
-  return Get.dialog(
-    AlertDialog(
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          CustomText(text: title, ),
-         Gap(8),
-          Row(
-            spacing: 16.w,
-            children: [
-              Expanded(
-                child: CustomButton(
-                  borderRadius: 8.r,
-                  onTap: onTap,
-                  title: "Yes",
-                  borderColor: AppColors.kPrimaryDarkColor,
-                  textColor: AppColors.kPrimaryDarkColor,
-                  fillColor: Colors.transparent,
-                ),
-              ),
-              Expanded(
-                child: CustomButton(
-                  borderRadius: 8.r,
-                  onTap: () {
-                    Get.back();
-                  },
-                  title: "No",
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    ),
-  );
-}
+
 class SettingsCardWidget extends StatelessWidget {
   final String title;
   final Widget icon;
@@ -145,7 +147,8 @@ class SettingsCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(color: AppColors.kPrimaryColor),
+        color: Color(0xFFF9F7F1),
+        border: Border.all(color: AppColors.purple200),
         borderRadius: BorderRadius.circular(6.r),
       ),
       child: ButtonTapWidget(
@@ -160,7 +163,7 @@ class SettingsCardWidget extends StatelessWidget {
               Expanded(child: CustomText(text: title, textAlign: TextAlign.start,)),
               Icon(
                 Icons.keyboard_arrow_right_sharp,
-                color: AppColors.kPrimaryColor,
+                color: AppColors.purple200,
               ),
             ],
           ),

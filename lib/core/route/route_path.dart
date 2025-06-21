@@ -35,6 +35,8 @@ class RoutePath{
   static const String changePasswordScreen = 'changePasswordScreen';
   static const String privacyPolicy = 'privacyPolicy';
   static const String termsOfCondition = 'termsOfCondition';
+  static const String helpFaqScreen = 'helpFaqScreen';
+  static const String helpCenterScreen = 'helpCenterScreen';
 
   static const String subscriptionScreen = 'subscriptionScreen';
   static const String subscriptionStatusScreen = 'subscriptionStatusScreen';

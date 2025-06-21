@@ -1,4 +1,7 @@
 
+import 'package:pet_app/core/route/route_path.dart';
+import 'package:pet_app/core/route/routes.dart';
+import 'package:pet_app/helper/toast_message/toast_message.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../service/api_service.dart';
@@ -127,7 +130,7 @@ class DBHelper {
 
 
   /// ====================== Save User Information ==================
-/*  Future logOut() async {
+  Future logOut() async {
     try{
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.clear().then((value) async {
@@ -139,5 +142,5 @@ class DBHelper {
     }catch(e){
       AppRouter.route.goNamed(RoutePath.onboardingScreen);
     }
-  }*/
+  }
 }

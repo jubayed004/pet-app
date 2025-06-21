@@ -54,6 +54,7 @@ class _VendorSelectionScreenState extends State<VendorSelectionScreen> {
             CustomButton(
               onTap: (){
                 _authController.isUser.value = false;
+                AppRouter.route.goNamed(RoutePath.signInScreen);
               },
               fillColor: Colors.white,
 

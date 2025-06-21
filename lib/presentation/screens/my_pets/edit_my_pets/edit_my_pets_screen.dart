@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:pet_app/controller/get_controllers.dart';
+import 'package:pet_app/core/route/route_path.dart';
+import 'package:pet_app/core/route/routes.dart';
 import 'package:pet_app/presentation/components/custom_button/custom_button.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:pet_app/presentation/components/custom_text_field/custom_text_field.dart';
@@ -15,6 +17,7 @@ class EditMyPetsScreen extends StatelessWidget {
    EditMyPetsScreen({super.key});
   final controller = GetControllers.instance.getMyPetsProfileController();
    final _authController = GetControllers.instance.getAuthController();
+   final navigationController = GetControllers.instance.getNavigationControllerMain();
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
@@ -178,7 +181,10 @@ class EditMyPetsScreen extends StatelessWidget {
                   ),
                   Gap(24),
                   
-                  CustomButton(onTap: (){},title: "Save",textColor: Colors.black,)
+                  CustomButton(onTap: (){
+                    navigationController.selectedNavIndex.value = 3;
+                    AppRouter.route.goNamed(RoutePath.navigationPage);
+                  },title: "Save",textColor: Colors.black,)
                 ],
               ),
             ),

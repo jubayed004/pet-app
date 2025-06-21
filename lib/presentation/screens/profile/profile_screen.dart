@@ -7,6 +7,9 @@ import 'package:pet_app/controller/get_controllers.dart';
 import 'package:pet_app/core/custom_assets/assets.gen.dart';
 import 'package:pet_app/core/route/route_path.dart';
 import 'package:pet_app/core/route/routes.dart';
+import 'package:pet_app/helper/dialog/show_custom_animated_dialog.dart';
+import 'package:pet_app/helper/local_db/local_db.dart';
+import 'package:pet_app/presentation/components/custom_button/custom_button.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
 import 'package:pet_app/utils/app_strings/app_strings.dart';
@@ -182,17 +185,23 @@ class ProfileScreen extends StatelessWidget {
                           ButtonSectionAll(
                               icon: Assets.icons.myappointmenticon.svg(),
                               text: AppStrings.myAppointments,
-                            onTap: () {  },),
+                            onTap: () {
+                                AppRouter.route.pushNamed(RoutePath.myAppointmentScreen);
+                            },),
 
                           ButtonSectionAll(
                               icon: Assets.icons.mypeticon.svg(colorFilter:ColorFilter.mode(AppColors.purple500, BlendMode.srcIn)),
                               text: AppStrings.myPets,
-                            onTap: () {  },),
+                            onTap: () {
+                              controller.selectedNavIndex.value = 3;
+                            },),
 
                           ButtonSectionAll(
                               icon: Assets.icons.addpeticon.svg(),
                               text: AppStrings.addPet,
-                            onTap: () {  },),
+                            onTap: () {
+                                AppRouter.route.pushNamed(RoutePath.addPetScreen);
+                            },),
 
                           ButtonSectionAll(
                               icon: Assets.icons.chaticon.svg(colorFilter:ColorFilter.mode(AppColors.purple500, BlendMode.srcIn)),
@@ -212,7 +221,66 @@ class ProfileScreen extends StatelessWidget {
                             showTrailingIcon: false,
                               icon: Assets.icons.logouticon.svg(),
                               text: AppStrings.signOut,
-                            onTap: () {  },),
+                            onTap: () {
+                              showCustomAnimatedDialog(
+                                animationSrc: "assets/images/warning.png",
+                                context: context,
+                                title: "Warning",
+                                subtitle:
+                                "Are you sure you want to change your subscription plan?",
+                                actionButton: [
+                                  CustomButton(
+                                    width: double.infinity,
+                                    height: 36,
+                                    fillColor: Colors.white,
+                                    // White background
+                                    borderWidth: 1,
+                                    // Border width
+                                    borderColor: AppColors.greenColor,
+                                    // Border color (black)
+                                    onTap: () {
+                                      AppRouter.route.pop();
+                                    },
+                                    textColor: AppColors.greenColor,
+                                    title: "Cancel",
+                                    isBorder: true,
+                                    fontSize: 14, // Ensure the border is visible
+                                  ),
+                                  CustomButton(
+                                    width: double.infinity,
+                                    height: 36,
+                                    onTap: () async {
+                                      AppRouter.route.pop();
+                                      await Future.delayed(
+                                          Duration(milliseconds: 100));
+                                      showCustomAnimatedDialog(
+                                        context: context,
+                                        title: "Success",
+                                        subtitle:
+                                        "You have been logged out successfully.",
+                                        animationSrc:
+                                        "assets/animation/success.json",
+                                        // Path to your Lottie animation
+                                        isDismissible: true,
+                                        actionButton: [
+                                          CustomButton(
+                                            height: 36,
+                                            width: 100,
+                                            onTap: () {
+                                              DBHelper().logOut();// Navigate
+                                            },
+                                            title: "Confirm",
+                                            fontSize: 14,
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                    title: " Confirm",
+                                    fontSize: 14,
+                                  ),
+                                ],
+                              );
+                            },),
 
 
                         ],

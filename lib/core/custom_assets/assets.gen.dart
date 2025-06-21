@@ -70,6 +70,10 @@ class $AssetsIconsGen {
   SvgGenImage get congrotulation =>
       const SvgGenImage('assets/icons/congrotulation.svg');
 
+  /// File path: assets/icons/customersupport.svg
+  SvgGenImage get customersupport =>
+      const SvgGenImage('assets/icons/customersupport.svg');
+
   /// File path: assets/icons/delete.svg
   SvgGenImage get delete => const SvgGenImage('assets/icons/delete.svg');
 
@@ -175,6 +179,10 @@ class $AssetsIconsGen {
   SvgGenImage get veryfiyscreenimage =>
       const SvgGenImage('assets/icons/veryfiyscreenimage.svg');
 
+  /// File path: assets/icons/waitingforapprovel.svg
+  SvgGenImage get waitingforapprovel =>
+      const SvgGenImage('assets/icons/waitingforapprovel.svg');
+
   /// List of all assets
   List<SvgGenImage> get values => [
         abouticon,
@@ -185,6 +193,7 @@ class $AssetsIconsGen {
         changepassword,
         chaticon,
         congrotulation,
+        customersupport,
         delete,
         emailicon,
         exploreicon,
@@ -213,7 +222,8 @@ class $AssetsIconsGen {
         proiconsChaticon,
         settingicon,
         termsCondition,
-        veryfiyscreenimage
+        veryfiyscreenimage,
+        waitingforapprovel
       ];
 }
 
