@@ -5,6 +5,7 @@ class RoutePath{
   static const String onboardingScreen = 'onboardingScreen';
   static const String vendorSelectionScreen = 'vendorSelectionScreen';
   static const String petRegistrationScreen = 'petRegistrationScreen';
+  static const String petShopRegistrationScreen = 'petShopRegistrationScreen';
 
   static const String signInScreen = 'signInScreen';
   static const String signUpScreen = 'signUpScreen';

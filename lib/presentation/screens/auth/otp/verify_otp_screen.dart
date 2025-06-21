@@ -174,7 +174,7 @@ class VerifyOtpScreen extends StatelessWidget {
                     if(_authController.isUser.value){
                       AppRouter.route.goNamed(RoutePath.navigationPage);
                     }else{
-                      AppRouter.route.goNamed(RoutePath.navigationPage);
+                      AppRouter.route.goNamed(RoutePath.petShopRegistrationScreen);
                     }
                   },
 

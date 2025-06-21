@@ -8,6 +8,7 @@ import 'package:pet_app/presentation/screens/auth/forgot/forgot_pass.dart';
 import 'package:pet_app/presentation/screens/auth/otp/verify_otp_screen.dart';
 import 'package:pet_app/presentation/screens/auth/password/set_new_password.dart';
 import 'package:pet_app/presentation/screens/auth/pet_registration/pet_registration_screen.dart';
+import 'package:pet_app/presentation/screens/auth/pet_shop_registration/view/pet_shop_registration_screen.dart';
 import 'package:pet_app/presentation/screens/auth/sign_in/sign_in.dart';
 import 'package:pet_app/presentation/screens/auth/sign_up/sign_up.dart';
 import 'package:pet_app/presentation/screens/category/book_an_appointment/view/book_an_appointment_screen.dart';
@@ -358,6 +359,18 @@ class AppRouter {
               state: state,
             ),
       ),*/
+      ///======================= Business Owner =======================
+
+       GoRoute(
+        name: RoutePath.petShopRegistrationScreen,
+        path: RoutePath.petShopRegistrationScreen.addBasePath,
+        pageBuilder:
+            (context, state) => _buildPageWithAnimation(
+              child: PetShopRegistrationScreen(),
+              state: state,
+            ),
+      ),
+
 
     ],
   );

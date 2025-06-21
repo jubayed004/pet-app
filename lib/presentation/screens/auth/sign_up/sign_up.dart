@@ -173,7 +173,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                    textColor: Colors.black,
                    showIcon : false,
                     onTap: () {
-
+                      AppRouter.route.pushNamed(RoutePath.verifyOtpScreen);
                     },
                   );
                 }),
