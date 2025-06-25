@@ -11,6 +11,7 @@ import 'package:pet_app/presentation/screens/auth/pet_registration/pet_registrat
 import 'package:pet_app/presentation/screens/auth/pet_shop_registration/view/pet_shop_registration_screen.dart';
 import 'package:pet_app/presentation/screens/auth/sign_in/sign_in.dart';
 import 'package:pet_app/presentation/screens/auth/sign_up/sign_up.dart';
+import 'package:pet_app/presentation/screens/business_owners/subscription/subscription_screen.dart';
 import 'package:pet_app/presentation/screens/category/book_an_appointment/view/book_an_appointment_screen.dart';
 import 'package:pet_app/presentation/screens/category/book_an_appointment/view/congratulation_screen.dart';
 import 'package:pet_app/presentation/screens/category/category_details/view/category_details_screen.dart';
@@ -340,7 +341,7 @@ class AppRouter {
 
       ///======================= Subscription =======================
 
-     /* GoRoute(
+      GoRoute(
         name: RoutePath.subscriptionScreen,
         path: RoutePath.subscriptionScreen.addBasePath,
         pageBuilder:
@@ -348,9 +349,9 @@ class AppRouter {
               child: SubscriptionScreen(),
               state: state,
             ),
-      ),*/
+      ),
 
-     /* GoRoute(
+/*      GoRoute(
         name: RoutePath.subscriptionStatusScreen,
         path: RoutePath.subscriptionStatusScreen.addBasePath,
         pageBuilder:

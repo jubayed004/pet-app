@@ -1,74 +1,79 @@
-/*
-import 'package:betwise_app/utils/app_colors/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pet_app/utils/app_colors/app_colors.dart';
 import 'package:pinput/pinput.dart';
 
 class OtpTextField extends StatelessWidget {
   const OtpTextField({super.key, required this.controller});
+
   final TextEditingController controller;
 
   @override
   Widget build(BuildContext context) {
-    return Pinput(
-      length: 6,
-      controller: controller,
-      autofocus: true,
-      defaultPinTheme: PinTheme(
-        height: 50,
-        width: 50,
-        textStyle: const TextStyle(color: AppColors.blackColor, fontSize: 18,fontWeight: FontWeight.w800),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          color: AppColors.whiteColor,
-        ),
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
+    final basePinTheme = PinTheme(
+      height: 50,
+      width: 50,
+      textStyle: theme.textTheme.titleMedium?.copyWith(
+        fontWeight: FontWeight.w800,
+        color: isDark ? AppColors.whiteColor : AppColors.blackColor,
       ),
-      focusedPinTheme: PinTheme(
-        height: 50,
-        width: 50,
-        textStyle: const TextStyle(color: AppColors.blackColor, fontSize: 18,fontWeight: FontWeight.w800),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          color: AppColors.whiteColor,
-        ),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: AppColors.blackColor),
       ),
-      submittedPinTheme: PinTheme(
-        height: 50,
-        width: 50,
-        textStyle: const TextStyle(color: AppColors.blackColor, fontSize: 18,fontWeight: FontWeight.w800),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          color: AppColors.whiteColor,
-        ),
-      ),
-      disabledPinTheme: PinTheme(
-        height: 50,
-        width: 50,
-        textStyle: const TextStyle(color: AppColors.blackColor, fontSize: 18,fontWeight: FontWeight.w800),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          color: AppColors.whiteColor,
-        ),
-      ),
-      errorPinTheme: PinTheme(
-        height: 50,
-        width: 50,
-        textStyle: const TextStyle(color: AppColors.blackColor, fontSize: 18,fontWeight: FontWeight.w800),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          color: AppColors.greenColor,
-        ),
-      ),
+    );
+
+    return FormField<String>(
       validator: (value) {
-        if (value == null || value.isEmpty) {
+        if (controller.text.isEmpty) {
           return 'OTP_is_required'.tr;
         }
-        if (value.length != 6) {
+        if (controller.text.length != 6) {
           return 'OTP_must_be_6_digits'.tr;
         }
         return null;
       },
+      builder: (FormFieldState<String> field) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Pinput(
+              length: 6,
+              controller: controller,
+              autofocus: true,
+              defaultPinTheme: basePinTheme,
+              focusedPinTheme: basePinTheme.copyWith(
+                decoration: basePinTheme.decoration?.copyWith(
+                  border: Border.all(color: AppColors.blackColor),
+                ),
+              ),
+              submittedPinTheme: basePinTheme,
+              errorPinTheme: basePinTheme.copyWith(
+                decoration: basePinTheme.decoration?.copyWith(
+                  color: AppColors.primaryColor.withOpacity(0.8),
+                ),
+              ),
+              onChanged: (value) {
+                field.didChange(value);
+              },
+            ),
+            if (field.hasError)
+              Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: Text(
+                  field.errorText ?? '',
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: AppColors.primaryColor,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+          ],
+        );
+      },
     );
   }
 }
-*/

@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:pet_app/controller/get_controllers.dart';
@@ -9,6 +10,7 @@ import 'package:pet_app/core/route/routes.dart';
 import 'package:pet_app/presentation/components/custom_button/custom_button.dart';
 import 'package:pet_app/presentation/components/custom_pin_code/custom_pin_code.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
+import 'package:pet_app/presentation/widget/text_field/otp_text_field.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
 import 'package:pet_app/utils/app_strings/app_strings.dart';
 
@@ -65,18 +67,20 @@ class VerifyOtpScreen extends StatelessWidget {
                 isSignUp
                     ? Align(
                       alignment: Alignment.center,
-                      child: CustomPinCode(
+                      child: OtpTextField(
                         controller: _authController.accountVerifyOtp,
                       ),
                     )
                     : Align(
                       alignment: Alignment.center,
-                      child: CustomPinCode(
+                      child: OtpTextField(
                         controller: _authController.verifyOtp,
                       ),
                     ),
+                Gap(8),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
+
                   children: [
                     RichText(
                       text: TextSpan(

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -20,6 +21,7 @@ class PetShopRegistrationScreen extends StatelessWidget {
    PetShopRegistrationScreen({super.key});
   final _authController = GetControllers.instance.getAuthController();
   final _profileController = GetControllers.instance.getProfileController();
+  final _petShopRegistrationController = GetControllers.instance.getPetShopRegistrationController();
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -43,18 +45,18 @@ class PetShopRegistrationScreen extends StatelessWidget {
           key: _formKey,
           child: Column(
             children: [
-              CustomAlignText(text: "Pet Name", fontWeight: FontWeight.w500),
+              CustomAlignText(text: "Pet Shop Name", fontWeight: FontWeight.w500),
               Gap(8.0),
               CustomTextField(
                 fieldBorderColor: AppColors.purple500,
                 fieldBorderRadius: 10,
                 fillColor: Colors.white,
-                hintText: "Enter your pet name",
+                hintText: "Enter your pet shop name",
                 keyboardType: TextInputType.text,
                 textEditingController: _authController.nameSignUp,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter your name';
+                    return 'Please enter your pet shop name';
                   }
                   if (value.length < 3) {
                     return 'Name must be at least 3 characters';
@@ -64,21 +66,75 @@ class PetShopRegistrationScreen extends StatelessWidget {
               ),
               Gap(14),
               CustomAlignText(
-                text: AppStrings.age,
+                text: AppStrings.businessType,
                 fontWeight: FontWeight.w500,
               ),
               Gap(8.0),
-              CustomTextField(
-                hintText: AppStrings.enterAge,
-                fieldBorderColor: AppColors.purple500,
-                fieldBorderRadius: 10,
-                fillColor: Colors.white,
-                keyboardType: TextInputType.phone,
-                textEditingController: _authController.emailSignUp,
+              DropdownButtonFormField2<String>(
+                isExpanded: true,
+                decoration: InputDecoration(
+                  contentPadding: const EdgeInsets.symmetric(vertical: 16),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: AppColors.purple500,), // Default border
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color:AppColors.purple500,),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: AppColors.purple500, width: 1.5),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: AppColors.purple500,),
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: AppColors.purple500,),
+                  ),
+                  fillColor: Colors.white,
+                  filled: true,
+                  hintStyle: TextStyle(color: AppColors.purple500),
+                ),
+                hint: CustomText(
+                  text: "select business type",
+                  color: AppColors.blackColor,
+                  fontSize: 16,
+                ),
+                items: _petShopRegistrationController.analystType
+                    .map((item) => DropdownMenuItem<String>(
+                  value: item,
+                  child: CustomText(text: item,fontSize: 16,fontWeight: FontWeight.w400),
+                ))
+                    .toList(),
+                onChanged: (value) {
+                  if (value != null) {
+                    _petShopRegistrationController.selectedAnalystType.value = value;
+                  }
+                },
+                style: TextStyle(color: AppColors.blackColor,fontSize: 16,fontWeight: FontWeight.w400),
+                buttonStyleData: const ButtonStyleData(
+                  padding: EdgeInsets.only(right: 8),
+                ),
+                iconStyleData: const IconStyleData(
+                  icon: Icon(Icons.arrow_downward_rounded, color: AppColors.blackColor),
+                  iconSize: 24,
+                ),
+                dropdownStyleData: DropdownStyleData(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    color: AppColors.whiteColor,
+                  ),
+                ),
+                menuItemStyleData: const MenuItemStyleData(
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                ),
               ),
               Gap(14),
               CustomAlignText(
-                text: AppStrings.gender,
+                text: AppStrings.businessAddress,
                 fontWeight: FontWeight.w500,
               ),
               Gap(8.0),
@@ -87,14 +143,12 @@ class PetShopRegistrationScreen extends StatelessWidget {
                 fieldBorderColor: AppColors.purple500,
                 fieldBorderRadius: 10,
                 fillColor: Colors.white,
-                hintText: AppStrings.enterGender,
+                hintText: "Enter your address",
                 keyboardType: TextInputType.text,
               ),
-
               Gap(14),
-
               CustomAlignText(
-                text: AppStrings.weight,
+                text: "Website link",
                 fontWeight: FontWeight.w500,
               ),
               Gap(8.0),
@@ -102,55 +156,9 @@ class PetShopRegistrationScreen extends StatelessWidget {
                 fieldBorderColor: AppColors.purple500,
                 fieldBorderRadius: 10,
                 fillColor: Colors.white,
-                hintText: AppStrings.enterWight,
-
+                hintText: "website link",
                 keyboardType: TextInputType.visiblePassword,
                 textEditingController: _authController.passwordSignUp,
-              ),
-              Gap(14),
-              CustomAlignText(
-                text: AppStrings.height,
-                fontWeight: FontWeight.w500,
-              ),
-              Gap(8.0),
-              CustomTextField(
-                fieldBorderColor: AppColors.purple500,
-                fieldBorderRadius: 10,
-                fillColor: Colors.white,
-                hintText: AppStrings.enterHeight,
-
-                keyboardType: TextInputType.visiblePassword,
-                textEditingController: _authController.confirmPasswordSignUp,
-              ),
-              Gap(14),
-              CustomAlignText(
-                text: AppStrings.color,
-                fontWeight: FontWeight.w500,
-              ),
-              Gap(8.0),
-              CustomTextField(
-                fieldBorderColor: AppColors.purple500,
-                fieldBorderRadius: 10,
-                fillColor: Colors.white,
-                hintText: AppStrings.enterColor,
-
-                keyboardType: TextInputType.text,
-                textEditingController: _authController.confirmPasswordSignUp,
-              ),
-              Gap(14),
-              CustomAlignText(
-                text: AppStrings.breed,
-                fontWeight: FontWeight.w500,
-              ),
-              Gap(8.0),
-              CustomTextField(
-                fieldBorderColor: AppColors.purple500,
-                fieldBorderRadius: 10,
-                fillColor: Colors.white,
-                hintText: AppStrings.enterPetBreed,
-
-                keyboardType: TextInputType.text,
-                textEditingController: _authController.confirmPasswordSignUp,
               ),
               Gap(14),
               CustomAlignText(
@@ -315,7 +323,7 @@ class PetShopRegistrationScreen extends StatelessWidget {
                     /*    if (_formKey.currentState!.validate()) {
                           _authController.signUp();
                         }*/
-                    AppRouter.route.goNamed(RoutePath.verifyOtpScreen);
+               AppRouter.route.goNamed(RoutePath.subscriptionScreen);
                   },
                 );
               }),
