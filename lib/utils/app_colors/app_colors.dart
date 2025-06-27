@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class AppColors {
   static const Color primaryColor = Color(0xFF91DF92);
+  static const Color greenNormal = Color(0xFFB5ED90);
   static const Color secondPrimaryColor = Color(0xFFB54686);
   static const Color purple500 = Color(0xFFFF62BD);
   static const Color purple510 = Color(0xFFFFCEEB);
@@ -14,12 +15,14 @@ class AppColors {
   static const Color blackColor = Color(0xFF000000);
   static const Color blackNormal = Color(0xFF020202);
   static const Color blueColor = Color(0xFF3B82F6);
+  static const Color blueColor50 = Color(0xFFEFFDF6);
   static const Color amberColor = Color(0xFFF59E0B);
   static const Color secondTextColor = Color(0xFF4C4D4A);
 
   static const Color textDescription = Color(0xFFEBEBEB);
   static const Color greenColor = Color(0xFF022C22);
   static const Color lightGray = Color(0xFFD9D9D9);
+  static const Color primarColor = Color(0xFF083E24);
 
   static const Color kPrimaryColor = Color(0xffFFBD59);
   static const Color kPrimaryDarkColor = Color(0xffF86306);

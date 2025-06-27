@@ -27,7 +27,7 @@ class _ChatScreenState extends State<ChatScreen> {
       resizeToAvoidBottomInset: true,
       body:CustomScrollView(
         slivers: [
-          CustomDefaultAppbar(title: "Chat",iconButton:IconButton(onPressed: (){}, icon: IconButton(onPressed: (){}, icon: Icon(Icons.call,size: 18,color: AppColors.purple500,))) ,),
+          CustomDefaultAppbar(title: "Chat",),
           SliverList(
             delegate: SliverChildBuilderDelegate(
                   (context, index) {

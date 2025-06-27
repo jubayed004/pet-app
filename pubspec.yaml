@@ -79,6 +79,7 @@ dependencies:
   lottie: ^3.3.1
   flutter_switch: ^0.3.2
   flutter_easy_faq: ^1.0.1
+  fl_chart: ^1.0.0
   # File Management
   file_picker: ^9.0.2
   permission_handler: ^11.3.1

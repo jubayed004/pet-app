@@ -1,6 +1,9 @@
 import 'package:get/get.dart';
 import 'package:pet_app/presentation/screens/auth/controller/auth_controller.dart';
 import 'package:pet_app/presentation/screens/auth/pet_shop_registration/controller/pet_shop_registration_controller.dart';
+import 'package:pet_app/presentation/screens/business_owners/business_nav/controller/navigation_controller.dart';
+import 'package:pet_app/presentation/screens/business_owners/business_service/business_add_service/controller/business_add_service_controller.dart';
+import 'package:pet_app/presentation/screens/business_owners/business_service/controller/business_service_controller.dart';
 import 'package:pet_app/presentation/screens/business_owners/subscription/subscription_screen.dart';
 import 'package:pet_app/presentation/screens/category/book_an_appointment/controller/book_an_appointment_controller.dart';
 import 'package:pet_app/presentation/screens/category/category_details/controller/category_details_controller.dart';
@@ -153,6 +156,27 @@ AuthController getAuthController() {
       Get.put(SubscriptionScreen());
     }
     return Get.find<SubscriptionScreen>();
+  }
+
+  BusinessNavigationControllerMain getBusinessNavigationControllerMain() {
+    if (!Get.isRegistered<BusinessNavigationControllerMain>()) {
+      Get.put(BusinessNavigationControllerMain());
+    }
+    return Get.find<BusinessNavigationControllerMain>();
+  }
+
+  BusinessServiceController getBusinessServiceController() {
+    if (!Get.isRegistered<BusinessServiceController>()) {
+      Get.put(BusinessServiceController());
+    }
+    return Get.find<BusinessServiceController>();
+  }
+
+  BusinessAddServiceController getBusinessAddServiceController() {
+    if (!Get.isRegistered<BusinessAddServiceController>()) {
+      Get.put(BusinessAddServiceController());
+    }
+    return Get.find<BusinessAddServiceController>();
   }
 
 /*

@@ -6,6 +6,12 @@ class RoutePath{
   static const String vendorSelectionScreen = 'vendorSelectionScreen';
   static const String petRegistrationScreen = 'petRegistrationScreen';
   static const String petShopRegistrationScreen = 'petShopRegistrationScreen';
+  static const String businessNavigationPage = 'businessNavigationPage';
+  static const String businessAllPetsScreen = 'businessAllPetsScreen';
+  static const String businessShopProfileScreen = 'businessShopProfileScreen';
+  static const String businessServiceScreen = 'businessServiceScreen';
+  static const String businessAddServiceScreen = 'businessAddServiceScreen';
+  static const String businessEditServiceScreen = 'businessEditServiceScreen';
 
   static const String signInScreen = 'signInScreen';
   static const String signUpScreen = 'signUpScreen';
@@ -41,6 +47,7 @@ class RoutePath{
 
   static const String subscriptionScreen = 'subscriptionScreen';
   static const String subscriptionStatusScreen = 'subscriptionStatusScreen';
+  static const String changeSubscriptionScreen = 'changeSubscriptionScreen';
 
 
 

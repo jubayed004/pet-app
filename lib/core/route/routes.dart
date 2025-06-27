@@ -11,7 +11,15 @@ import 'package:pet_app/presentation/screens/auth/pet_registration/pet_registrat
 import 'package:pet_app/presentation/screens/auth/pet_shop_registration/view/pet_shop_registration_screen.dart';
 import 'package:pet_app/presentation/screens/auth/sign_in/sign_in.dart';
 import 'package:pet_app/presentation/screens/auth/sign_up/sign_up.dart';
+import 'package:pet_app/presentation/screens/business_owners/business_all_pets/view/business_all_pets_screen.dart';
+import 'package:pet_app/presentation/screens/business_owners/business_nav/business_navigation_page.dart';
+import 'package:pet_app/presentation/screens/business_owners/business_service/business_add_service/view/business_add_service_screen.dart';
+import 'package:pet_app/presentation/screens/business_owners/business_service/business_add_service/view/business_edit_service_screen.dart';
+import 'package:pet_app/presentation/screens/business_owners/business_service/view/business_service_screen.dart';
+import 'package:pet_app/presentation/screens/business_owners/business_shop_profile/view/business_shop_profile_screen.dart';
+import 'package:pet_app/presentation/screens/business_owners/subscription/change_subscription/change_subscription_screen.dart';
 import 'package:pet_app/presentation/screens/business_owners/subscription/subscription_screen.dart';
+import 'package:pet_app/presentation/screens/business_owners/subscription/subscription_status/subcription_status_screen.dart';
 import 'package:pet_app/presentation/screens/category/book_an_appointment/view/book_an_appointment_screen.dart';
 import 'package:pet_app/presentation/screens/category/book_an_appointment/view/congratulation_screen.dart';
 import 'package:pet_app/presentation/screens/category/category_details/view/category_details_screen.dart';
@@ -351,7 +359,7 @@ class AppRouter {
             ),
       ),
 
-/*      GoRoute(
+      GoRoute(
         name: RoutePath.subscriptionStatusScreen,
         path: RoutePath.subscriptionStatusScreen.addBasePath,
         pageBuilder:
@@ -359,7 +367,17 @@ class AppRouter {
               child: SubscriptionStatusScreen(),
               state: state,
             ),
-      ),*/
+      ),
+
+      GoRoute(
+        name: RoutePath.changeSubscriptionScreen,
+        path: RoutePath.changeSubscriptionScreen.addBasePath,
+        pageBuilder:
+            (context, state) => _buildPageWithAnimation(
+              child: ChangeSubscriptionScreen(),
+              state: state,
+            ),
+      ),
       ///======================= Business Owner =======================
 
        GoRoute(
@@ -368,6 +386,60 @@ class AppRouter {
         pageBuilder:
             (context, state) => _buildPageWithAnimation(
               child: PetShopRegistrationScreen(),
+              state: state,
+            ),
+      ),
+       GoRoute(
+        name: RoutePath.businessNavigationPage,
+        path: RoutePath.businessNavigationPage.addBasePath,
+        pageBuilder:
+            (context, state) => _buildPageWithAnimation(
+              child: BusinessNavigationPage(),
+              state: state,
+            ),
+      ),
+       GoRoute(
+        name: RoutePath.businessAllPetsScreen,
+        path: RoutePath.businessAllPetsScreen.addBasePath,
+        pageBuilder:
+            (context, state) => _buildPageWithAnimation(
+              child: BusinessAllPetsScreen(),
+              state: state,
+            ),
+      ),
+       GoRoute(
+        name: RoutePath.businessShopProfileScreen,
+        path: RoutePath.businessShopProfileScreen.addBasePath,
+        pageBuilder:
+            (context, state) => _buildPageWithAnimation(
+              child: BusinessShopProfileScreen(),
+              state: state,
+            ),
+      ),
+       GoRoute(
+        name: RoutePath.businessServiceScreen,
+        path: RoutePath.businessServiceScreen.addBasePath,
+        pageBuilder:
+            (context, state) => _buildPageWithAnimation(
+              child: BusinessServiceScreen(),
+              state: state,
+            ),
+      ),
+       GoRoute(
+        name: RoutePath.businessAddServiceScreen,
+        path: RoutePath.businessAddServiceScreen.addBasePath,
+        pageBuilder:
+            (context, state) => _buildPageWithAnimation(
+              child: BusinessAddServiceScreen(),
+              state: state,
+            ),
+      ),
+       GoRoute(
+        name: RoutePath.businessEditServiceScreen,
+        path: RoutePath.businessEditServiceScreen.addBasePath,
+        pageBuilder:
+            (context, state) => _buildPageWithAnimation(
+              child: BusinessEditServiceScreen(),
               state: state,
             ),
       ),

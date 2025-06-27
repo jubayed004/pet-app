@@ -112,7 +112,7 @@ class _SubscriptionPlanViewState extends State<SubscriptionPlanView> {
                           height: 36,
                           width: 100,
                           onTap: () {
-                          // AppRouter.route.goNamed(RoutePath.navigationPage,); // Navigate
+                       AppRouter.route.goNamed(RoutePath.businessNavigationPage,); // Navigate
                           },
                           title: "Confirm",
                           fontSize: 14,
@@ -146,6 +146,7 @@ class _SubscriptionPlanViewState extends State<SubscriptionPlanView> {
 
                             AppRouter.route.pop();
                            // subscriptionController.paymentUrl(subscriptionId: widget.id);
+                            AppRouter.route.goNamed(RoutePath.businessNavigationPage,); // N
                           },
                           title: " Confirm",
                           fontSize: 14,

@@ -51,6 +51,10 @@ class $AssetsIconsGen {
   SvgGenImage get addpeticon =>
       const SvgGenImage('assets/icons/addpeticon.svg');
 
+  /// File path: assets/icons/animalshelter.svg
+  SvgGenImage get animalshelter =>
+      const SvgGenImage('assets/icons/animalshelter.svg');
+
   /// File path: assets/icons/backarrowicon.svg
   SvgGenImage get backarrowicon =>
       const SvgGenImage('assets/icons/backarrowicon.svg');
@@ -76,6 +80,16 @@ class $AssetsIconsGen {
 
   /// File path: assets/icons/delete.svg
   SvgGenImage get delete => const SvgGenImage('assets/icons/delete.svg');
+
+  /// File path: assets/icons/deletedicon.svg
+  SvgGenImage get deletedicon =>
+      const SvgGenImage('assets/icons/deletedicon.svg');
+
+  /// File path: assets/icons/editico.svg
+  SvgGenImage get editico => const SvgGenImage('assets/icons/editico.svg');
+
+  /// File path: assets/icons/editicon.svg
+  SvgGenImage get editicon => const SvgGenImage('assets/icons/editicon.svg');
 
   /// File path: assets/icons/emailicon.svg
   SvgGenImage get emailicon => const SvgGenImage('assets/icons/emailicon.svg');
@@ -188,6 +202,7 @@ class $AssetsIconsGen {
         abouticon,
         addicon,
         addpeticon,
+        animalshelter,
         backarrowicon,
         businessowner,
         changepassword,
@@ -195,6 +210,9 @@ class $AssetsIconsGen {
         congrotulation,
         customersupport,
         delete,
+        deletedicon,
+        editico,
+        editicon,
         emailicon,
         exploreicon,
         faq,
@@ -233,6 +251,10 @@ class $AssetsImagesGen {
   /// File path: assets/images/adshome.png
   AssetGenImage get adshome => const AssetGenImage('assets/images/adshome.png');
 
+  /// File path: assets/images/animalshelter.png
+  AssetGenImage get animalshelter =>
+      const AssetGenImage('assets/images/animalshelter.png');
+
   /// File path: assets/images/deshboadimage.png
   AssetGenImage get deshboadimage =>
       const AssetGenImage('assets/images/deshboadimage.png');
@@ -264,6 +286,13 @@ class $AssetsImagesGen {
   AssetGenImage get splashlogo =>
       const AssetGenImage('assets/images/splashlogo.png');
 
+  /// File path: assets/images/subicon.png
+  AssetGenImage get subicon => const AssetGenImage('assets/images/subicon.png');
+
+  /// File path: assets/images/subicon2.png
+  AssetGenImage get subicon2 =>
+      const AssetGenImage('assets/images/subicon2.png');
+
   /// File path: assets/images/topbrandsimage.png
   AssetGenImage get topbrandsimage =>
       const AssetGenImage('assets/images/topbrandsimage.png');
@@ -278,6 +307,7 @@ class $AssetsImagesGen {
   /// List of all assets
   List<AssetGenImage> get values => [
         adshome,
+        animalshelter,
         deshboadimage,
         getstartedone,
         getstartedtwo,
@@ -286,6 +316,8 @@ class $AssetsImagesGen {
         petkalloimage,
         petshoplogo,
         splashlogo,
+        subicon,
+        subicon2,
         topbrandsimage,
         vet,
         womandogimage

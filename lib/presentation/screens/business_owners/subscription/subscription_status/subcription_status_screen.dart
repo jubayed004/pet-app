@@ -1,13 +1,4 @@
-/*
-import 'package:betwise_app/controller/get_controllers.dart';
-import 'package:betwise_app/core/custom_assets/assets.gen.dart';
-import 'package:betwise_app/core/route/route_path.dart';
-import 'package:betwise_app/core/route/routes.dart';
-import 'package:betwise_app/helper/dialog/show_custom_animated_dialog.dart';
-import 'package:betwise_app/presentation/components/custom_button/custom_button.dart';
-import 'package:betwise_app/presentation/components/custom_text/custom_text.dart';
-import 'package:betwise_app/presentation/widget/back_button/back_button.dart';
-import 'package:betwise_app/utils/app_colors/app_colors.dart';
+
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -45,11 +36,7 @@ class _SubscriptionStatusScreenState extends State<SubscriptionStatusScreen> {
           title: CustomText(text: "Subscription status",
             fontWeight: FontWeight.w500,
             fontSize: 16,),
-          leading: CustomBackButton(
-            onTap: () {
-              AppRouter.route.pop();
-            },
-          )
+
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
@@ -85,7 +72,7 @@ class _SubscriptionStatusScreenState extends State<SubscriptionStatusScreen> {
                           borderRadius: BorderRadius.circular(4),
 
                         ),
-                        child: Assets.icons.subtwoicon.svg(),
+                        child:Assets.images.subicon.image(width: 40),
                       ),
                       Gap(10),
                       Column(
@@ -96,8 +83,8 @@ class _SubscriptionStatusScreenState extends State<SubscriptionStatusScreen> {
                             fontSize: 12,
                             fontWeight: FontWeight.w500,),
                           CustomText(text: DateFormat('MMMM dd, yyyy').format(
-                            profileController.profile.value.data
-                                ?.subscriptionEndDate ??
+                     /*       profileController.profile.value.data
+                                ?.subscriptionEndDate ??*/
                                 DateTime.now(),
                           ),
                             fontWeight: FontWeight.w600,
@@ -109,9 +96,9 @@ class _SubscriptionStatusScreenState extends State<SubscriptionStatusScreen> {
                     ],
                   ),
                   Positioned(
-                      right: 0,
-                      bottom: 0,
-                      child: Assets.icons.subicon.svg()
+                      right: -30,
+                      bottom: -30,
+                      child: Assets.images.subicon2.image(width: 145)
                   )
                 ],
               ),
@@ -134,8 +121,8 @@ class _SubscriptionStatusScreenState extends State<SubscriptionStatusScreen> {
                 child: Padding(
                   padding: const EdgeInsets.all(18.0),
                   child: CustomText(
-                    text: profileController.profile.value.data?.subscriptionPlan
-                        ?.subscriptionType ?? "",
+                    text: /*profileController.profile.value.data?.subscriptionPlan
+                        ?.subscriptionType ??*/ "Gold",
                     fontWeight: FontWeight.w400,
                     fontSize: 14,
                     textAlign: TextAlign.start,
@@ -148,64 +135,66 @@ class _SubscriptionStatusScreenState extends State<SubscriptionStatusScreen> {
               fontWeight: FontWeight.w400,
               bottom: 8,
               top: 8,),
-            Obx(() {
-              return SizedBox(
-                width: double.infinity,
-                child: Card(
-                  elevation: 2,
-                  color: Colors.white,
-                  shape: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(2),
-                      borderSide: BorderSide.none,
-                      gapPadding: 100
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(18.0),
-                    child: CustomText(
-                      text: DateFormat('MMMM dd, yyyy').format(
-                        profileController.profile.value.data
-                            ?.subscriptionStartDate ?? DateTime.now(),
-                      ),
-                      fontWeight: FontWeight.w400,
-                      fontSize: 14,
-                      textAlign: TextAlign.start,
-                      color: AppColors.secondTextColor,),
-                  ),
+        SizedBox(
+          width: double.infinity,
+          child: Card(
+            elevation: 2,
+            color: Colors.white,
+            shape: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(2),
+                borderSide: BorderSide.none,
+                gapPadding: 100
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(18.0),
+              child: CustomText(
+                text: DateFormat('MMMM dd, yyyy').format(
+                  /*  profileController.profile.value.data
+                            ?.subscriptionStartDate ?? */DateTime.now(),
                 ),
-              );
-            }),
+                fontWeight: FontWeight.w400,
+                fontSize: 14,
+                textAlign: TextAlign.start,
+                color: AppColors.secondTextColor,),
+            ),
+          ),
+        ),
+           /* Obx(() {
+              return
+            }),*/
             CustomText(text: "Subscription Expiry Date",
               fontSize: 14,
               fontWeight: FontWeight.w400,
               bottom: 8,
               top: 8,),
-            Obx(() {
-              print(profileController.profile.value.data?.subscriptionEndDate);
-              return SizedBox(
-                width: double.infinity,
-                child: Card(
-                  elevation: 2,
-                  color: Colors.white,
-                  shape: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(2),
-                      borderSide: BorderSide.none,
-                      gapPadding: 100
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(18.0),
-                    child: CustomText(text: DateFormat('MMMM dd, yyyy').format(
-                      profileController.profile.value.data
-                          ?.subscriptionEndDate ??
-                          DateTime.now(),
-                    ),
-                      fontWeight: FontWeight.w400,
-                      fontSize: 14,
-                      textAlign: TextAlign.start,
-                      color: AppColors.secondTextColor,),
-                  ),
+            SizedBox(
+              width: double.infinity,
+              child: Card(
+                elevation: 2,
+                color: Colors.white,
+                shape: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(2),
+                    borderSide: BorderSide.none,
+                    gapPadding: 100
                 ),
-              );
-            }),
+                child: Padding(
+                  padding: const EdgeInsets.all(18.0),
+                  child: CustomText(text: DateFormat('MMMM dd, yyyy').format(
+                    /*  profileController.profile.value.data
+                          ?.subscriptionEndDate ??*/
+                    DateTime.now(),
+                  ),
+                    fontWeight: FontWeight.w400,
+                    fontSize: 14,
+                    textAlign: TextAlign.start,
+                    color: AppColors.secondTextColor,),
+                ),
+              ),
+            ),
+        /*    Obx(() {
+    *//*          print(profileController.profile.value.data?.subscriptionEndDate);*//*
+              return ;
+            }),*/
             Gap(20),
             CustomButton(
               onTap: () {
@@ -248,11 +237,11 @@ class _SubscriptionStatusScreenState extends State<SubscriptionStatusScreen> {
                               height: 36,
                               width: 100,
                               onTap: () {
-                                final play =  profileController.profile.value.data?.subscriptionPlan?.id;
+                         /*       final play =  profileController.profile.value.data?.subscriptionPlan?.id;
                                 print(play);
                                 if(play != null){
                                   controller.paymentUrl(subscriptionId: play);
-                                }
+                                }*/
                                 AppRouter.route.pop();
                               },
                               title: "Confirm",
@@ -301,7 +290,7 @@ class _SubscriptionStatusScreenState extends State<SubscriptionStatusScreen> {
                       height: 36,
                       onTap: () async {
                         AppRouter.route.pop();
-                        //AppRouter.route.pushNamed(RoutePath.changeSubscriptionScreen);
+                     AppRouter.route.pushNamed(RoutePath.changeSubscriptionScreen);
                       },
                       title: " Confirm",
                       fontSize: 14,
@@ -320,4 +309,3 @@ class _SubscriptionStatusScreenState extends State<SubscriptionStatusScreen> {
     );
   }
 }
-*/

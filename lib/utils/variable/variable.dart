@@ -1,5 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
+import 'package:pet_app/core/route/route_path.dart';
+import 'package:pet_app/core/route/routes.dart';
 
 
 String dummyProfileImage =
@@ -141,6 +144,58 @@ final List<String> category = [
   'Kids & Toys',
   'Others',
 ];
+List<VendorDashboardModel> vendorGridList = [
+  VendorDashboardModel(
+    img: Icon(Icons.home_repair_service),
+    title: "Services",
+    route:  RoutePath.businessServiceScreen,
+  ),
+  VendorDashboardModel(
+    img: Icon(Icons.wallet_giftcard_sharp),
+    title: "Advertisement",
+    route:  RoutePath.subscriptionScreen,
+  ),
+  VendorDashboardModel(
+    img: Icon(Icons.book_online_outlined),
+    title: "Booking",
+    route:  RoutePath.settingsPage,
+  ),
+
+];
+List<ProductOptionModel> productOptions = [
+  ProductOptionModel(
+    title: "dhdfgh",
+    route: RoutePath.subscriptionScreen,
+  ),
+  ProductOptionModel(
+    title: 'dhdh',
+    route:  RoutePath.settingsPage,
+  ),
+  ProductOptionModel(
+    title: 'dhdh',
+    route: RoutePath.subscriptionScreen,
+  )
+];
+
+class VendorDashboardModel {
+  final Icon img;
+  final String title;
+  final String route;
+
+  VendorDashboardModel({
+    required this.img,
+    required this.title,
+    required this.route,
+  });
+}
+
+class ProductOptionModel {
+  final String title;
+  final String route;
+
+  ProductOptionModel({required this.title, required this.route});
+}
+
 /*List<String> paymentList =[
   AppStaticStrings.paymentMethod,
   AppStaticStrings.cashHandDelivery
@@ -161,12 +216,6 @@ class MyListingsModel {
   final String title;
 
   MyListingsModel({required this.img, required this.title});
-}class ProductOptionModel {
-  final String title;
-  final String route;
-
-  ProductOptionModel({required this.title, required this.route});
-
 }
 
 String dummyDesc =
