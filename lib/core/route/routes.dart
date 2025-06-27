@@ -12,6 +12,7 @@ import 'package:pet_app/presentation/screens/auth/pet_shop_registration/view/pet
 import 'package:pet_app/presentation/screens/auth/sign_in/sign_in.dart';
 import 'package:pet_app/presentation/screens/auth/sign_up/sign_up.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_all_pets/view/business_all_pets_screen.dart';
+import 'package:pet_app/presentation/screens/business_owners/business_booking/view/business_booking_screen.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_nav/business_navigation_page.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_service/business_add_service/view/business_add_service_screen.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_service/business_add_service/view/business_edit_service_screen.dart';
@@ -440,6 +441,15 @@ class AppRouter {
         pageBuilder:
             (context, state) => _buildPageWithAnimation(
               child: BusinessEditServiceScreen(),
+              state: state,
+            ),
+      ),
+       GoRoute(
+        name: RoutePath.businessBookingScreen,
+        path: RoutePath.businessBookingScreen.addBasePath,
+        pageBuilder:
+            (context, state) => _buildPageWithAnimation(
+              child: BusinessBookingScreen(),
               state: state,
             ),
       ),

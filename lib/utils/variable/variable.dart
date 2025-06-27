@@ -133,17 +133,7 @@ final Address toAddress = Address(
   country: 'USA',
 );
 // Category options
-final List<String> category = [
-  'Electronics',
-  'Jewelry',
-  "Men's Fashion",
-  "Women's Fashion",
-  'Home Decor',
-  'Kitchen Tools',
-  'Health Products',
-  'Kids & Toys',
-  'Others',
-];
+
 List<VendorDashboardModel> vendorGridList = [
   VendorDashboardModel(
     img: Icon(Icons.home_repair_service),
@@ -158,7 +148,7 @@ List<VendorDashboardModel> vendorGridList = [
   VendorDashboardModel(
     img: Icon(Icons.book_online_outlined),
     title: "Booking",
-    route:  RoutePath.settingsPage,
+    route:  RoutePath.businessBookingScreen,
   ),
 
 ];
