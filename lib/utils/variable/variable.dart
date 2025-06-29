@@ -143,7 +143,7 @@ List<VendorDashboardModel> vendorGridList = [
   VendorDashboardModel(
     img: Icon(Icons.wallet_giftcard_sharp),
     title: "Advertisement",
-    route:  RoutePath.subscriptionScreen,
+    route:  RoutePath.businessAdvertisementScreen,
   ),
   VendorDashboardModel(
     img: Icon(Icons.book_online_outlined),
