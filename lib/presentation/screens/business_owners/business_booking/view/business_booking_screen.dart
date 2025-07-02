@@ -54,7 +54,7 @@ class BusinessBookingScreen extends StatelessWidget {
                             color: controller.selectedTabIndex.value == 1 ? AppColors.primaryColor : null,
                             borderRadius: BorderRadius.circular(25)
                         ),
-                        child: CustomText(text: "approved".tr, color: AppColors.blackColor, fontSize: 14, fontWeight: FontWeight.w800,),
+                        child: CustomText(text: "approved", color: AppColors.blackColor, fontSize: 14, fontWeight: FontWeight.w800,),
                       );
                     }),
                   ),
@@ -71,7 +71,7 @@ class BusinessBookingScreen extends StatelessWidget {
                             color: controller.selectedTabIndex.value == 2 ? AppColors.primaryColor : null,
                             borderRadius: BorderRadius.circular(25)
                         ),
-                        child: CustomText(text: "rejected".tr, color: AppColors.blackColor, fontSize: 14, fontWeight: FontWeight.w800,),
+                        child: CustomText(text: "rejected", color: AppColors.blackColor, fontSize: 14, fontWeight: FontWeight.w800,),
                       );
                     }),
                   ),
@@ -94,22 +94,22 @@ class BusinessBookingScreen extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                       builderDelegate: PagedChildBuilderDelegate<Widget>(
                         itemBuilder: (context, item, index) {
-                          return DashboardStoreCard(
-                            index: 0,
-                            item: item,
-                            onApprove: () {
-                          /*    controller.updateItemStatus(
-                                id: *//*item.id ??*//* '',
-                                status: 'Approved',
-                              );*/
-                            },
-                            onReject: () {
-
-                          /*    controller.updateItemStatus(
-                                id: *//*item.id ?? *//*'',
-                                status: 'Rejected',
-                              );*/
-                            },
+                          return CustomBookingCard(
+                            index: 0, // 👈 0, 1, 2 যেকোনো দিতে পারো
+                            logoPath: "assets/images/vet.png",
+                            topTitle: "Vets",
+                            imagePath: "assets/images/womandogimage.png",
+                            visitingDate: "25/11/2022",
+                            mainTitle: "Pet Food & Supplies Sales",
+                            subTitle: "Pet Grooming",
+                            rating: 5.0,
+                            phoneNumber: "(406) 555-0120",
+                            address: "4517 Washington Ave.",
+                            onChat: () => print("Chat tapped"),
+                            onWebsite: () => print("Website tapped"),
+                            onAddReview: () => print("Review tapped"),
+                            onApprove: () => print("Approved"),
+                            onReject: () => print("Rejected"),
                           );
                         },
                       ),
@@ -126,16 +126,24 @@ class BusinessBookingScreen extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                       builderDelegate: PagedChildBuilderDelegate<Widget>(
                         itemBuilder: (context, item, index) {
-                          return DashboardStoreCard(
-                            index: 1,
-                            item: item,
-                            onReject: () {
-                          /*    controller.updateItemStatus(
-                                id: *//*item.id ??*//* '',
-                                status: 'Rejected',
-                              );*/
-                            },
+                          return CustomBookingCard(
+                            index: 0, // 👈 0, 1, 2 যেকোনো দিতে পারো
+                            logoPath: "assets/images/vet.png",
+                            topTitle: "Vets",
+                            imagePath: "assets/images/womandogimage.png",
+                            visitingDate: "25/11/2022",
+                            mainTitle: "Pet Food & Supplies Sales",
+                            subTitle: "Pet Grooming",
+                            rating: 5.0,
+                            phoneNumber: "(406) 555-0120",
+                            address: "4517 Washington Ave.",
+                            onChat: () => print("Chat tapped"),
+                            onWebsite: () => print("Website tapped"),
+                            onAddReview: () => print("Review tapped"),
+                            onApprove: () => print("Approved"),
+                            onReject: () => print("Rejected"),
                           );
+
                         },
                       ),
                     ),
@@ -151,16 +159,24 @@ class BusinessBookingScreen extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                       builderDelegate: PagedChildBuilderDelegate<Widget>(
                         itemBuilder: (context, item, index) {
-                          return DashboardStoreCard(
-                            index: 2,
-                            item: item,
-                            onApprove: () {
-                        /*      controller.updateItemStatus(
-                                id: *//*item.id ?? *//*'',
-                                status: 'Approved',
-                              );*/
-                            },
-                          );
+                          return CustomBookingCard(
+                            index: 0, // 👈 0, 1, 2 যেকোনো দিতে পারো
+                            logoPath: "assets/images/vet.png",
+                            topTitle: "Vets",
+                            imagePath: "assets/images/womandogimage.png",
+                            visitingDate: "25/11/2022",
+                            mainTitle: "Pet Food & Supplies Sales",
+                            subTitle: "Pet Grooming",
+                            rating: 5.0,
+                            phoneNumber: "(406) 555-0120",
+                            address: "4517 Washington Ave.",
+                            onChat: () => print("Chat tapped"),
+                            onWebsite: () => print("Website tapped"),
+                            onAddReview: () => print("Review tapped"),
+                            onApprove: () => print("Approved"),
+                            onReject: () => print("Rejected"),
+                          )
+                          ;
                         },
                       ),
                     ),
@@ -176,15 +192,22 @@ class BusinessBookingScreen extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                       builderDelegate: PagedChildBuilderDelegate<Widget>(
                         itemBuilder: (context, item, index) {
-                          return DashboardStoreCard(
-                            index: 3,
-                            item: item,
-                            onApprove: () {
-                        /*      controller.updateItemStatus(
-                                id: *//*item.id ?? *//*'',
-                                status: 'Approved',
-                              );*/
-                            },
+                          return CustomBookingCard(
+                            index: 0, // 👈 0, 1, 2 যেকোনো দিতে পারো
+                            logoPath: "assets/images/vet.png",
+                            topTitle: "Vets",
+                            imagePath: "assets/images/womandogimage.png",
+                            visitingDate: "25/11/2022",
+                            mainTitle: "Pet Food & Supplies Sales",
+                            subTitle: "Pet Grooming",
+                            rating: 5.0,
+                            phoneNumber: "(406) 555-0120",
+                            address: "4517 Washington Ave.",
+                            onChat: () => print("Chat tapped"),
+                            onWebsite: () => print("Website tapped"),
+                            onAddReview: () => print("Review tapped"),
+                            onApprove: () => print("Approved"),
+                            onReject: () => print("Rejected"),
                           );
                         },
                       ),

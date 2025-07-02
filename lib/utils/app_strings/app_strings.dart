@@ -102,6 +102,7 @@ static const String confirmYourNewPassword = "Confirm your new password";
   static const String petTraining = "Pet Training";
   static const String friendlyPlace = "Friendly Place";
   static const String upcomingAppointments = "Upcoming Appointments";
+  static const String activePromotions = "Active Promotions";
   static const String seeAll = "See all";
   static const String vets = "Vets";
   static const String petVets = "Pet Vets";

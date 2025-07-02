@@ -35,13 +35,10 @@ class _HomeScreenState extends State<HomeScreen> {
   final homeController = GetControllers.instance.getHomeController();
   final controller = GetControllers.instance.getProfileController();
   final _controller = GetControllers.instance.getOnboardingController();
-
+  final navController = GetControllers.instance.getNavigationControllerMain();
   @override
   Widget build(BuildContext context) {
-    final double width = MediaQuery
-        .of(context)
-        .size
-        .width;
+    final double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
       backgroundColor: AppColors.appBackgroundColor,
@@ -396,7 +393,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Expanded(
-                          child: CustomButton(onTap: (){},
+                          child: CustomButton(onTap: (){
+                            navController.selectedNavIndex.value = 2;
+                          },
                             title: "Chat Now",
                             height: 24,
                             fontSize: 12,
@@ -415,7 +414,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: CustomButton(onTap: (){},title: " Website",height: 24,fontSize: 12,fontWeight: FontWeight.w400,fillColor: AppColors.purple500,textColor: Colors.black,)),
                         Expanded(
 
-                            child: TextButton(onPressed: (){}, child: CustomText(text: "Add Review",fontSize: 12,fontWeight: FontWeight.w600,))),
+                            child: TextButton(onPressed: (){
+                              AppRouter.route.pushNamed(RoutePath.reviewScreen);
+                            }, child: CustomText(text: "Add Review",fontSize: 12,fontWeight: FontWeight.w600,))),
                       ],
                     )
                   ],

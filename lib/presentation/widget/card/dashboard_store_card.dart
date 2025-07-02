@@ -1,150 +1,214 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:get/get.dart';
-import 'package:pet_app/core/custom_assets/assets.gen.dart';
-import 'package:pet_app/helper/date_converter/date_converter.dart';
-import 'package:pet_app/helper/image/network_image.dart';
-import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
+import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
+import 'package:pet_app/presentation/components/custom_button/custom_button.dart';
 
-class DashboardStoreCard extends StatelessWidget {
-  const DashboardStoreCard({
+class CustomBookingCard extends StatelessWidget {
+  const CustomBookingCard({
     super.key,
     required this.index,
-    required this.item,
+    required this.logoPath,
+    required this.topTitle,
+    required this.imagePath,
+    required this.visitingDate,
+    required this.mainTitle,
+    required this.subTitle,
+    required this.rating,
+    required this.phoneNumber,
+    required this.address,
+    this.onChat,
+    this.onWebsite,
+    this.onAddReview,
     this.onApprove,
     this.onReject,
   });
 
   final int index;
-  final Widget item;
+  final String logoPath;
+  final String topTitle;
+  final String imagePath;
+  final String visitingDate;
+  final String mainTitle;
+  final String subTitle;
+  final double rating;
+  final String phoneNumber;
+  final String address;
+  final VoidCallback? onChat;
+  final VoidCallback? onWebsite;
+  final VoidCallback? onAddReview;
   final VoidCallback? onApprove;
   final VoidCallback? onReject;
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Container(
-        height: 350,
-        width: double.infinity,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          color: const Color(0xFFE9EFFD),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Image and category label
-            Expanded(
-              child: Stack(
+    return Container(
+      margin: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.3),
+            spreadRadius: 2,
+            blurRadius: 5,
+            offset: const Offset(0, 3),
+          )
+        ],
+      ),
+      child: Column(
+        children: [
+          /// Logo & Top Title
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
                 children: [
-                  Positioned.fill(
-                    child: ClipRRect(
-                      borderRadius: const BorderRadius.only(
-                        topRight: Radius.circular(12),
-                        topLeft: Radius.circular(12),
-                      ),
-                      child: CustomNetworkImage(
-                        imageUrl: /*item.placeType?.categoryImage ??*/ "",
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    top: 5,
-                    left: 5,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6.0),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF9e6d3e),
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: CustomText(text: /*item.placeType?.name ??*/ ""),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            // Name & address
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+                  Image.asset(logoPath, width: 30),
+                  const Gap(6),
                   CustomText(
-                    text: /*item.name ?? */"dgadg",
-                    fontSize: 20,
-                    color: AppColors.blackColor,
-                    maxLines: 2,
-                    textAlign: TextAlign.start,
-                  ),
-                  const Gap(5),
-                  Row(
-                    children: [
-                      Assets.icons.logouticon.svg(),
-                      const Gap(5),
-                      Flexible(
-                        child: CustomText(
-                          text: /*item.address ?? */"dgdasg",
-                          color: AppColors.blackColor,
-                        ),
-                      ),
-                    ],
+                    text: topTitle,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
                   ),
                 ],
               ),
-            ),
+              Image.asset(logoPath, width: 50),
+            ],
+          ),
 
-            // Date
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: CustomText(
-                text: "${"date"} : ${DateConverter.formatDate(/*item.updatedAt ??*/ DateTime.now(), format: 'MMM dd, yyyy hh:mm a')}",
-                color: AppColors.blackColor,
+          const Gap(6),
+
+          /// Main Content
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Image.asset(imagePath, fit: BoxFit.cover),
+                    ),
+                    const Gap(6),
+                    Row(
+                      children: [
+                        const Expanded(child: CustomText(text: "Visiting Date:", fontWeight: FontWeight.w400)),
+                        Expanded(child: CustomText(text: visitingDate, fontWeight: FontWeight.w400)),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
+              const Gap(6),
+              Expanded(
+                flex: 2,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomText(text: mainTitle, fontSize: 18, fontWeight: FontWeight.w500),
+                    const Gap(4),
+                    CustomText(text: subTitle, overflow: TextOverflow.ellipsis),
+                    const Gap(4),
+                    Row(
+                      children: [
+                        ...List.generate(5, (i) => Icon(Icons.star, color: i < rating.round() ? Colors.amber : Colors.grey[300], size: 18)),
+                        const Gap(6),
+                        CustomText(text: "$rating", fontWeight: FontWeight.w500, fontSize: 12),
+                      ],
+                    ),
+                    const Gap(4),
+                    Row(
+                      children: [
+                        const Icon(Icons.call, size: 18),
+                        Expanded(child: CustomText(text: phoneNumber, textAlign: TextAlign.start)),
+                        const Icon(Icons.location_on, size: 18),
+                        Expanded(child: CustomText(text: address, textAlign: TextAlign.start)),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
 
-            const Gap(12),
+          const Gap(10),
 
-            // Buttons depending on tab index
+          /// Action Buttons
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: CustomButton(
+                  onTap: (){},
+                  title: "Chat Now",
+                  height: 24,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  fillColor: AppColors.whiteColor,
+                  textColor: Colors.black,
+                  borderWidth: 1,
+                  showIcon: true,
+                ),
+              ),
+              const Gap(6),
+              Expanded(
+                child: CustomButton(
+                  onTap: (){},
+                  title: "Website",
+                  height: 24,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w400,
+                  fillColor: AppColors.purple500,
+                  textColor: Colors.black,
+                ),
+              ),
+              const Gap(6),
+              Expanded(
+                child: TextButton(
+                  onPressed: onAddReview,
+                  child: const CustomText(
+                    text: "Add Review",
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ],
+          ),
+
+          const Gap(10),
+
+          /// Approve / Reject Section based on index
+          if (index == 0 || index == 1 || index == 2)
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
+              padding: const EdgeInsets.symmetric(horizontal: 0),
               child: Row(
                 children: [
                   if (index == 0 || index == 2)
                     Expanded(
-                      child: GestureDetector(
-                        onTap: onApprove,
-                        child: Container(
-                          height: 35,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            color: AppColors.primaryColor,
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          child: CustomText(text: "approve", color: AppColors.blackColor),
+                      child: ElevatedButton(
+                        onPressed: onApprove,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.primaryColor,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                         ),
+                        child: const CustomText(text: "Approve", color: Colors.white),
                       ),
                     ),
                   if (index == 0) const Gap(12),
                   if (index == 0 || index == 1)
                     Expanded(
-                      child: GestureDetector(
-                        onTap: onReject,
-                        child: Container(
-                          height: 35,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            border: Border.all(color: AppColors.blueColor),
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          child: CustomText(
-                            text: index == 1 ? "removed" : "rejected",
-                            color: AppColors.blackColor,
-                          ),
+                      child: OutlinedButton(
+                        onPressed: onReject,
+                        style: OutlinedButton.styleFrom(
+                          side: BorderSide(color: AppColors.blueColor),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                        ),
+                        child: CustomText(
+                          text: index == 1 ? "Removed" : "Rejected",
+                          color: AppColors.blackColor,
                         ),
                       ),
                     ),
@@ -152,9 +216,8 @@ class DashboardStoreCard extends StatelessWidget {
               ),
             ),
 
-            const Gap(12),
-          ],
-        ),
+          if (index == 0 || index == 1) const Gap(12),
+        ],
       ),
     );
   }

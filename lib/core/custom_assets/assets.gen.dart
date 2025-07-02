@@ -41,6 +41,18 @@ class $AssetsFontsGen {
 class $AssetsIconsGen {
   const $AssetsIconsGen();
 
+  /// File path: assets/icons/Buddy.svg
+  SvgGenImage get buddy => const SvgGenImage('assets/icons/Buddy.svg');
+
+  /// File path: assets/icons/Champ.svg
+  SvgGenImage get champ => const SvgGenImage('assets/icons/Champ.svg');
+
+  /// File path: assets/icons/Champ2.svg
+  SvgGenImage get champ2 => const SvgGenImage('assets/icons/Champ2.svg');
+
+  /// File path: assets/icons/Dearie.svg
+  SvgGenImage get dearie => const SvgGenImage('assets/icons/Dearie.svg');
+
   /// File path: assets/icons/abouticon.svg
   SvgGenImage get abouticon => const SvgGenImage('assets/icons/abouticon.svg');
 
@@ -58,6 +70,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/backarrowicon.svg
   SvgGenImage get backarrowicon =>
       const SvgGenImage('assets/icons/backarrowicon.svg');
+
+  /// File path: assets/icons/bella.svg
+  SvgGenImage get bella => const SvgGenImage('assets/icons/bella.svg');
 
   /// File path: assets/icons/businessowner.svg
   SvgGenImage get businessowner =>
@@ -181,6 +196,9 @@ class $AssetsIconsGen {
   SvgGenImage get proiconsChaticon =>
       const SvgGenImage('assets/icons/proicons_chaticon.svg');
 
+  /// File path: assets/icons/rocky.svg
+  SvgGenImage get rocky => const SvgGenImage('assets/icons/rocky.svg');
+
   /// File path: assets/icons/settingicon.svg
   SvgGenImage get settingicon =>
       const SvgGenImage('assets/icons/settingicon.svg');
@@ -199,11 +217,16 @@ class $AssetsIconsGen {
 
   /// List of all assets
   List<SvgGenImage> get values => [
+        buddy,
+        champ,
+        champ2,
+        dearie,
         abouticon,
         addicon,
         addpeticon,
         animalshelter,
         backarrowicon,
+        bella,
         businessowner,
         changepassword,
         chaticon,
@@ -238,6 +261,7 @@ class $AssetsIconsGen {
         privacypolicy,
         profileicon,
         proiconsChaticon,
+        rocky,
         settingicon,
         termsCondition,
         veryfiyscreenimage,
