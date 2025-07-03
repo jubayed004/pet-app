@@ -17,7 +17,7 @@ class BusinessAllPetsScreen extends StatelessWidget {
           SliverList(
             delegate: SliverChildListDelegate([
               ListTile(
-                leading: Assets.icons.rocky.svg(width: 30), // Correct way to use SVGs
+                leading: Assets.icons.champ.svg(width: 30), // Correct way to use SVGs
                 title: Text("Bella"),
               ),
             ]),
