@@ -8,6 +8,7 @@ import 'package:pet_app/core/route/routes.dart';
 import 'package:pet_app/presentation/components/custom_button/custom_defualt_appbar.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:pet_app/presentation/no_internet/error_card.dart';
+import 'package:pet_app/presentation/screens/category/widgets/category_card_widget.dart';
 import 'package:pet_app/presentation/screens/home/controller/home_controller.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
 
@@ -68,18 +69,17 @@ class CategoryScreen extends StatelessWidget {
                ),
              ),
            ),
-           SliverFillRemaining(
+     /*      SliverFillRemaining(
              child: RefreshIndicator(
                onRefresh: () async {
                  categoryController.pagingController.refresh();
                },
-               child: PagedListView<int, Widget>(
+               child: PagedListView<int, String>(
                  pagingController: categoryController.pagingController,
                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-                 builderDelegate: PagedChildBuilderDelegate<Widget>(
+                 builderDelegate: PagedChildBuilderDelegate<String>(
                    itemBuilder: (context, item, index) {
-                     // final time = GetTimeAgo.parse(item.updatedAt ?? DateTime.now());
-                     return   item;
+                     return CategoryCardWidget();
                    },
                    firstPageErrorIndicatorBuilder: (context) => Center(
                      child: ErrorCard(
@@ -90,7 +90,8 @@ class CategoryScreen extends StatelessWidget {
                  ),
                ),
              ),
-           ),
+           ),*/
+
 /*           /// 👇 এই অংশটায় ক্লিক করা আইটেম অনুযায়ী UI দেখাবো
            SliverToBoxAdapter(
              child: Obx(() {
@@ -130,5 +131,4 @@ class CategoryScreen extends StatelessWidget {
        ),
      );
    }
-
 }
