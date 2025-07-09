@@ -209,7 +209,7 @@ class SignInScreen extends StatelessWidget {
                           style: TextStyle(color: AppColors.purple500,fontWeight: FontWeight.w600),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              AppRouter.route.goNamed(RoutePath.signUpScreen);
+                              AppRouter.route.goNamed(RoutePath.vendorSelectionScreen);
                             },
                         ),
                       ],

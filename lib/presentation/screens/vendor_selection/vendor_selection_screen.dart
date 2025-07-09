@@ -42,7 +42,7 @@ class _VendorSelectionScreenState extends State<VendorSelectionScreen> {
             CustomButton(
               onTap: (){
                 _authController.isUser.value = true;
-                AppRouter.route.goNamed(RoutePath.signInScreen);
+                AppRouter.route.goNamed(RoutePath.signUpScreen);
               },
               title: AppStrings.petOwner,
               textColor: Colors.red,
@@ -54,7 +54,7 @@ class _VendorSelectionScreenState extends State<VendorSelectionScreen> {
             CustomButton(
               onTap: (){
                 _authController.isUser.value = false;
-                AppRouter.route.goNamed(RoutePath.signInScreen);
+                AppRouter.route.goNamed(RoutePath.signUpScreen);
               },
               fillColor: Colors.white,
 

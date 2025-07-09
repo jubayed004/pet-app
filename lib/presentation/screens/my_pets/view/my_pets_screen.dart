@@ -11,7 +11,9 @@ import 'package:pet_app/presentation/widget/align/custom_align_text.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
 
 class MyPetsScreen extends StatelessWidget {
-   MyPetsScreen({super.key});
+  final String name ;
+  final String imageUrl;
+   MyPetsScreen({super.key, required this.name, required this.imageUrl});
    final controller = GetControllers.instance.getMyPetsProfileController();
   @override
   Widget build(BuildContext context) {
@@ -23,8 +25,16 @@ class MyPetsScreen extends StatelessWidget {
            pinned: true,
            expandedHeight: 200,
            centerTitle: true,
-           title: CustomText(text: 'My Pet',fontWeight: FontWeight.w600,fontSize: 24,color: Colors.black,),
+           title: CustomText(text: name,fontWeight: FontWeight.w600,fontSize: 24,color: Colors.black,),
            flexibleSpace: FlexibleSpaceBar(
+             background: Image.network(
+               imageUrl,
+               fit: BoxFit.cover,
+               width: double.infinity,
+               height: double.infinity,
+             ),
+           ),
+          /* flexibleSpace: FlexibleSpaceBar(
              background: Obx(() {
                return controller.selectedImage.value != null
                    ? Image.file(
@@ -40,7 +50,7 @@ class MyPetsScreen extends StatelessWidget {
                  height: double.infinity,
                );
              }),
-           ),
+           ),*/
          ),
          SliverToBoxAdapter(
            child: Padding(
@@ -58,7 +68,7 @@ class MyPetsScreen extends StatelessWidget {
                        Column(
                          crossAxisAlignment: CrossAxisAlignment.start,
                          children: [
-                           CustomText(text: 'Bella \nBorder Collie ',textAlign: TextAlign.start,fontWeight: FontWeight.w600,),
+                           CustomText(text: name ,textAlign: TextAlign.start,fontWeight: FontWeight.w600,),
                              Gap(6),
                              CustomText(text: "Female",textAlign: TextAlign.start,fontWeight: FontWeight.w600,color: AppColors.purple500,),
                          ],
@@ -82,7 +92,7 @@ class MyPetsScreen extends StatelessWidget {
                    children: [
                       Icon(Icons.account_box_outlined),
                      Gap(6),
-                     CustomText(text: "About Bella",fontWeight: FontWeight.w600,fontSize: 16,)
+                     CustomText(text: "About $name",fontWeight: FontWeight.w600,fontSize: 16,)
                    ],
                  ),
                  Gap(16),
@@ -143,7 +153,7 @@ class MyPetsScreen extends StatelessWidget {
                          borderRadius: BorderRadius.circular(10),
                        ), child: Row(
                          children: [
-                           CustomText(text: "Contact Vet",fontSize: 14,fontWeight: FontWeight.w400,color: Colors.white,),
+                           CustomText(text: "Health Status",fontSize: 14,fontWeight: FontWeight.w400,color: Colors.white,),
                            Icon(Icons.arrow_forward_ios_rounded,size: 18,color: Colors.white,)
                          ],
                        ),

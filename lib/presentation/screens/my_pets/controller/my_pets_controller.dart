@@ -127,6 +127,42 @@ class MyPetsProfileController extends GetxController {
     }*/
   }
 
+  var petList = <Map<String, String>>[].obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    loadPets();
+  }
+
+  void loadPets() {
+    petList.value = [
+      {
+        "name": "Bella",
+        "image": "https://images.unsplash.com/photo-1558788353-f76d92427f16"
+      },
+      {
+        "name": "Rocky",
+        "image": "https://images.unsplash.com/photo-1518717758536-85ae29035b6d"
+      },
+
+      {
+        "name": "Champ",
+        "image": "https://images.unsplash.com/photo-1560807707-8cc77767d783"
+      },
+      {
+        "name": "Champ",
+        "image": "https://images.unsplash.com/photo-1574158622682-e40e69881006"
+      },
+    ];
+  }
+
+  void onPetTap(int index) {
+    print("Tapped: ${petList[index]['name']}");
+  }
+
+
+
   Future<void> getAdmin() async{
     final role = await dbHelper.getUserRole();
     print(role);

@@ -136,7 +136,7 @@ class OnboardingPageCard extends StatelessWidget {
                   _controller.currentIndex.value =
                       _controller.currentIndex.value + 1;
                 } else {
-                  AppRouter.route.pushNamed(RoutePath.vendorSelectionScreen);
+                  AppRouter.route.pushNamed(RoutePath.signInScreen);
                 }
               },
               textColor: AppColors.blackColor,

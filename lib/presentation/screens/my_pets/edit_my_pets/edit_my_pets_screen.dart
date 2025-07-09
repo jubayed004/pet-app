@@ -86,7 +86,7 @@ class EditMyPetsScreen extends StatelessWidget {
                     fieldBorderColor: AppColors.purple500,
                     fieldBorderRadius: 10,
                     fillColor: Colors.white,
-                    keyboardType: TextInputType.phone,
+                    keyboardType: TextInputType.text,
                     textEditingController: _authController.emailSignUp,
                   ),
                   Gap(14),
@@ -130,7 +130,6 @@ class EditMyPetsScreen extends StatelessWidget {
                     fieldBorderRadius: 10,
                     fillColor: Colors.white,
                     hintText: AppStrings.enterWight,
-
                     keyboardType: TextInputType.visiblePassword,
                     textEditingController: _authController.passwordSignUp,
                   ),

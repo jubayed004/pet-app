@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:pet_app/controller/get_controllers.dart';
+import 'package:pet_app/core/route/route_path.dart';
+import 'package:pet_app/core/route/routes.dart';
 import 'package:pet_app/presentation/components/custom_button/custom_button.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:pet_app/presentation/components/custom_text_field/custom_text_field.dart';
@@ -42,6 +44,7 @@ class SetNewPassword extends StatelessWidget {
                 CustomAlignText(text: "password"),
                 const Gap(8),
                 CustomTextField(
+                  fillColor: AppColors.kWhiteColor,
                   hintText: "enter your password",
                   isPassword: true,
                   keyboardType: TextInputType.text,
@@ -59,16 +62,17 @@ class SetNewPassword extends StatelessWidget {
 
                 ///=============================== Confirm Password text ==================================
                 const Gap(24),
-                CustomAlignText(text: "confirm_password"),
+                CustomAlignText(text: "Confirm Password"),
                 const Gap(8),
                 CustomTextField(
+                  fillColor: AppColors.kWhiteColor,
                   hintText: "confirm your password",
                   isPassword: true,
                   keyboardType: TextInputType.text,
                   textEditingController: _authController.resetConfirmPassword,
                   validator: (value) {
                     if (value!.isEmpty) {
-                      return "field_can_t_be_empty";
+                      return "field can't be empty";
                     } else if (value != _authController.resetPassword.text) {
                       return "password should match";
                     }
@@ -80,9 +84,10 @@ class SetNewPassword extends StatelessWidget {
                   return CustomButton(
                     isLoading: _authController.resetLoading.value,
                       title: "confirm", onTap: () {
-                    if (_formKey.currentState!.validate()) {
+                   /* if (_formKey.currentState!.validate()) {
                       _authController.reset(email: email);
-                    }
+                    }*/
+                    AppRouter.route.goNamed(RoutePath.signInScreen);
                   });
                 }),
                 Gap(24),

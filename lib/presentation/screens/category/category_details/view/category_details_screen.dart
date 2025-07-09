@@ -14,7 +14,10 @@ import 'package:pet_app/utils/app_colors/app_colors.dart';
 import 'package:pet_app/utils/app_strings/app_strings.dart';
 
 class CategoryDetailsScreen extends StatelessWidget {
-   CategoryDetailsScreen({super.key});
+   CategoryDetailsScreen({super.key, required this.showWebsite, required this.isPetHotel});
+    final bool  showWebsite;
+    final bool  isPetHotel;
+
   final controller = GetControllers.instance.getMyPetsProfileController();
   @override
   Widget build(BuildContext context) {
@@ -76,7 +79,7 @@ class CategoryDetailsScreen extends StatelessWidget {
                              SizedBox(height: 8),
                              CustomText(text: AppStrings.withOver5Years,maxLines: 10,),
                              Gap(16),
-                              CustomButton(onTap: (){
+                             showWebsite? CustomButton(onTap: (){
 
                               },title: "Visit Website",
                                 textColor: Color(0xFF1E1E1E),
@@ -87,7 +90,7 @@ class CategoryDetailsScreen extends StatelessWidget {
                                 borderColor: Colors.black,
                                 borderWidth: 1,
                                 isBorder: true,
-                              ),
+                              ):SizedBox(),
                            ],
                          ),
                        ),
@@ -207,7 +210,7 @@ class CategoryDetailsScreen extends StatelessWidget {
                    ),
                    Gap(24),
                    CustomButton(onTap: (){
-                     AppRouter.route.pushNamed(RoutePath.serviceScreen);
+                     AppRouter.route.pushNamed(RoutePath.serviceScreen,extra: isPetHotel);
                    },title: "What service do you want?",textColor: Colors.black,),
                    Gap(24),
                  ],

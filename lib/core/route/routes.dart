@@ -1,9 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pet_app/helper/extension/base_extension.dart';
 import 'package:pet_app/my_textscreen.dart';
 import 'package:pet_app/presentation/screens/add_pet/view/add_pet_screen.dart';
+import 'package:pet_app/presentation/screens/auth/account_active_otp/account_active_otp_screen.dart';
 import 'package:pet_app/presentation/screens/auth/forgot/forgot_pass.dart';
 import 'package:pet_app/presentation/screens/auth/otp/verify_otp_screen.dart';
 import 'package:pet_app/presentation/screens/auth/password/set_new_password.dart';
@@ -32,6 +32,7 @@ import 'package:pet_app/presentation/screens/chat/view/chatting_page.dart';
 import 'package:pet_app/presentation/screens/faq/help_faq_screen.dart';
 import 'package:pet_app/presentation/screens/my_appointment/view/my_appointment_screen.dart';
 import 'package:pet_app/presentation/screens/my_pets/edit_my_pets/edit_my_pets_screen.dart';
+import 'package:pet_app/presentation/screens/my_pets/view/my_pets_screen.dart';
 import 'package:pet_app/presentation/screens/nav/navigation_page.dart';
 import 'package:pet_app/presentation/screens/notify/view/notify_screen.dart';
 import 'package:pet_app/presentation/screens/onboarding/onboarding_screen.dart';
@@ -57,16 +58,18 @@ class AppRouter {
       GoRoute(
         name: RoutePath.splashScreen,
         path: RoutePath.splashScreen.addBasePath,
-        pageBuilder: (context, state) => _buildPageWithAnimation(child: SplashScreen(), state: state),
+        pageBuilder:
+            (context, state) =>
+                _buildPageWithAnimation(child: SplashScreen(), state: state),
       ),
       GoRoute(
         name: RoutePath.onboardingScreen,
         path: RoutePath.onboardingScreen.addBasePath,
         pageBuilder:
             (context, state) => _buildPageWithAnimation(
-          child: OnboardingScreen(),
-          state: state,
-        ),
+              child: OnboardingScreen(),
+              state: state,
+            ),
       ),
 
       GoRoute(
@@ -74,11 +77,10 @@ class AppRouter {
         path: RoutePath.vendorSelectionScreen.addBasePath,
         pageBuilder:
             (context, state) => _buildPageWithAnimation(
-          child: VendorSelectionScreen(),
-          state: state,
-        ),
+              child: VendorSelectionScreen(),
+              state: state,
+            ),
       ),
-
 
       ///======================= Auth Route =======================
       GoRoute(
@@ -99,8 +101,10 @@ class AppRouter {
         name: RoutePath.petRegistrationScreen,
         path: RoutePath.petRegistrationScreen.addBasePath,
         pageBuilder:
-            (context, state) =>
-                _buildPageWithAnimation(child: PetRegistrationScreen(), state: state),
+            (context, state) => _buildPageWithAnimation(
+              child: PetRegistrationScreen(),
+              state: state,
+            ),
       ),
       GoRoute(
         name: RoutePath.forgotPassScreen,
@@ -114,10 +118,27 @@ class AppRouter {
       GoRoute(
         name: RoutePath.verifyOtpScreen,
         path: RoutePath.verifyOtpScreen.addBasePath,
-        pageBuilder: (context, state){
+        pageBuilder: (context, state) {
           final extra = state.extra as Map<String, dynamic>? ?? {};
           return _buildPageWithAnimation(
-            child: VerifyOtpScreen(email: extra["email"] as String? ?? "", isSignUp: extra["isSignUp"] as bool? ?? false,),
+            child: VerifyOtpScreen(
+              email: extra["email"] as String? ?? "",
+              isSignUp: extra["isSignUp"] as bool? ?? false,
+            ),
+            state: state,
+          );
+        },
+      ),
+      GoRoute(
+        name: RoutePath.accountActiveOtpScreen,
+        path: RoutePath.accountActiveOtpScreen.addBasePath,
+        pageBuilder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>? ?? {};
+          return _buildPageWithAnimation(
+            child: AccountActiveOtpScreen(
+              email: extra["email"] as String? ?? "",
+              isSignUp: extra["isSignUp"] as bool? ?? false,
+            ),
             state: state,
           );
         },
@@ -131,6 +152,7 @@ class AppRouter {
               state: state,
             ),
       ),
+
       ///======================= Navigation Route =======================
       GoRoute(
         name: RoutePath.navigationPage,
@@ -138,31 +160,33 @@ class AppRouter {
         pageBuilder:
             (context, state) => _buildPageWithAnimation(
               child: NavigationPage(
-                index: state.extra != null && (state.extra is int) ? state.extra as int : 0,
+                index:
+                    state.extra != null && (state.extra is int)
+                        ? state.extra as int
+                        : 0,
               ),
               state: state,
             ),
       ),
+
       ///======================= Massage Route =======================
       GoRoute(
         name: RoutePath.chatScreen,
         path: RoutePath.chatScreen.addBasePath,
         pageBuilder:
-            (context, state) => _buildPageWithAnimation(
-              child: ChatScreen(),
-              state: state,
-            ),
+            (context, state) =>
+                _buildPageWithAnimation(child: ChatScreen(), state: state),
       ),
-      ///======================= MY Pets Route =======================
 
+      ///======================= MY Pets Route =======================
       GoRoute(
         name: RoutePath.editMyPetsScreen,
         path: RoutePath.editMyPetsScreen.addBasePath,
         pageBuilder:
             (context, state) => _buildPageWithAnimation(
-          child: EditMyPetsScreen(),
-          state: state,
-        ),
+              child: EditMyPetsScreen(),
+              state: state,
+            ),
       ),
 
       GoRoute(
@@ -170,7 +194,7 @@ class AppRouter {
         path: RoutePath.editProfileScreen.addBasePath,
         pageBuilder:
             (context, state) => _buildPageWithAnimation(
-              child:  EditProfileScreen(),
+              child: EditProfileScreen(),
               state: state,
             ),
       ),
@@ -179,30 +203,40 @@ class AppRouter {
         name: RoutePath.addPetScreen,
         path: RoutePath.addPetScreen.addBasePath,
         pageBuilder:
-            (context, state) => _buildPageWithAnimation(
-              child:  AddPetScreen(),
-              state: state,
-            ),
+            (context, state) =>
+                _buildPageWithAnimation(child: AddPetScreen(), state: state),
       ),
 
       GoRoute(
         name: RoutePath.petHealthScreen,
         path: RoutePath.petHealthScreen.addBasePath,
         pageBuilder:
-            (context, state) => _buildPageWithAnimation(
-              child:  PetHealthScreen(),
-              state: state,
-            ),
+            (context, state) =>
+                _buildPageWithAnimation(child: PetHealthScreen(), state: state),
       ),
 
       GoRoute(
         name: RoutePath.settingsPage,
         path: RoutePath.settingsPage.addBasePath,
         pageBuilder:
-            (context, state) => _buildPageWithAnimation(
-              child:  SettingsPage(),
-              state: state,
-            ),
+            (context, state) =>
+                _buildPageWithAnimation(child: SettingsPage(), state: state),
+      ),
+
+
+      GoRoute(
+        name: RoutePath.myPetsScreen,
+        path: RoutePath.myPetsScreen.addBasePath,
+        pageBuilder: (context, state) {
+          final args = state.extra as Map<String, dynamic>;
+
+          return _buildPageWithAnimation(
+            child: MyPetsScreen(
+              name: args['name'] ?? '',
+              imageUrl: args['image'] ?? '',
+            ), state: state,
+          );
+        },
       ),
 
       ///======================= Category Route =======================
@@ -210,57 +244,80 @@ class AppRouter {
         name: RoutePath.categoryScreen,
         path: RoutePath.categoryScreen.addBasePath,
         pageBuilder:
-            (context, state) => _buildPageWithAnimation(
-          child:  CategoryScreen(),
-          state: state,
-        ),
+            (context, state) =>
+                _buildPageWithAnimation(child: CategoryScreen(), state: state),
       ),
       GoRoute(
         name: RoutePath.categoryDetailsScreen,
         path: RoutePath.categoryDetailsScreen.addBasePath,
-        pageBuilder:
-            (context, state) => _buildPageWithAnimation(
-          child: CategoryDetailsScreen(),
-          state: state,
-        ),
+        pageBuilder: (context, state) {
+          final extra = state.extra;
+          final haveData = extra != null;
+
+          if(haveData){
+            final data = extra as List;
+            final showWebsite = data[0];
+            final isPetHotel = data[1];
+            return _buildPageWithAnimation(
+              child: CategoryDetailsScreen(
+                showWebsite: showWebsite,
+                isPetHotel: isPetHotel,
+              ),
+              state: state,
+            );
+          }
+          return _buildPageWithAnimation(
+            child: CategoryDetailsScreen(
+              showWebsite: false,
+              isPetHotel: false,
+            ),
+            state: state,
+          );
+        },
       ),
       GoRoute(
         name: RoutePath.serviceScreen,
         path: RoutePath.serviceScreen.addBasePath,
         pageBuilder:
             (context, state) => _buildPageWithAnimation(
-          child: ServiceScreen(),
-          state: state,
-        ),
+              child: ServiceScreen(
+                bookingTime: state.extra != null ? state.extra as bool : false,
+              ),
+              state: state,
+            ),
       ),
       GoRoute(
         name: RoutePath.bookAnAppointmentScreen,
         path: RoutePath.bookAnAppointmentScreen.addBasePath,
         pageBuilder:
             (context, state) => _buildPageWithAnimation(
-          child: BookAnAppointmentScreen(),
-          state: state,
-        ),
+              child: BookAnAppointmentScreen(
+                bookingTime: state.extra != null ? state.extra as bool : false,
+              ),
+              state: state,
+            ),
       ),
       GoRoute(
         name: RoutePath.congratulationScreen,
         path: RoutePath.congratulationScreen.addBasePath,
         pageBuilder:
             (context, state) => _buildPageWithAnimation(
-          child: CongratulationScreen(),
-          state: state,
-        ),
+              child: CongratulationScreen(),
+              state: state,
+            ),
       ),
+
       ///======================= MY Appointments Route =======================
       GoRoute(
         name: RoutePath.myAppointmentScreen,
         path: RoutePath.myAppointmentScreen.addBasePath,
         pageBuilder:
             (context, state) => _buildPageWithAnimation(
-          child:  MyAppointmentScreen(),
-          state: state,
-        ),
+              child: MyAppointmentScreen(),
+              state: state,
+            ),
       ),
+
       ///======================= Notify Route =======================
       GoRoute(
         name: RoutePath.notifyScreen,
@@ -335,10 +392,8 @@ class AppRouter {
         name: RoutePath.helpFaqScreen,
         path: RoutePath.helpFaqScreen.addBasePath,
         pageBuilder:
-            (context, state) => _buildPageWithAnimation(
-              child: HelpFaqScreen(),
-              state: state,
-            ),
+            (context, state) =>
+                _buildPageWithAnimation(child: HelpFaqScreen(), state: state),
       ),
       GoRoute(
         name: RoutePath.helpCenterScreen,
@@ -351,7 +406,6 @@ class AppRouter {
       ),
 
       ///======================= Subscription =======================
-
       GoRoute(
         name: RoutePath.subscriptionScreen,
         path: RoutePath.subscriptionScreen.addBasePath,
@@ -381,9 +435,9 @@ class AppRouter {
               state: state,
             ),
       ),
-      ///======================= Business Owner =======================
 
-       GoRoute(
+      ///======================= Business Owner =======================
+      GoRoute(
         name: RoutePath.petShopRegistrationScreen,
         path: RoutePath.petShopRegistrationScreen.addBasePath,
         pageBuilder:
@@ -392,7 +446,7 @@ class AppRouter {
               state: state,
             ),
       ),
-       GoRoute(
+      GoRoute(
         name: RoutePath.businessNavigationPage,
         path: RoutePath.businessNavigationPage.addBasePath,
         pageBuilder:
@@ -401,7 +455,7 @@ class AppRouter {
               state: state,
             ),
       ),
-       GoRoute(
+      GoRoute(
         name: RoutePath.businessAllPetsScreen,
         path: RoutePath.businessAllPetsScreen.addBasePath,
         pageBuilder:
@@ -410,7 +464,7 @@ class AppRouter {
               state: state,
             ),
       ),
-       GoRoute(
+      GoRoute(
         name: RoutePath.businessShopProfileScreen,
         path: RoutePath.businessShopProfileScreen.addBasePath,
         pageBuilder:
@@ -419,7 +473,7 @@ class AppRouter {
               state: state,
             ),
       ),
-       GoRoute(
+      GoRoute(
         name: RoutePath.businessServiceScreen,
         path: RoutePath.businessServiceScreen.addBasePath,
         pageBuilder:
@@ -428,7 +482,7 @@ class AppRouter {
               state: state,
             ),
       ),
-       GoRoute(
+      GoRoute(
         name: RoutePath.businessAddServiceScreen,
         path: RoutePath.businessAddServiceScreen.addBasePath,
         pageBuilder:
@@ -437,7 +491,7 @@ class AppRouter {
               state: state,
             ),
       ),
-       GoRoute(
+      GoRoute(
         name: RoutePath.businessEditServiceScreen,
         path: RoutePath.businessEditServiceScreen.addBasePath,
         pageBuilder:
@@ -446,7 +500,7 @@ class AppRouter {
               state: state,
             ),
       ),
-       GoRoute(
+      GoRoute(
         name: RoutePath.businessBookingScreen,
         path: RoutePath.businessBookingScreen.addBasePath,
         pageBuilder:
@@ -455,7 +509,7 @@ class AppRouter {
               state: state,
             ),
       ),
-       GoRoute(
+      GoRoute(
         name: RoutePath.businessAdvertisementScreen,
         path: RoutePath.businessAdvertisementScreen.addBasePath,
         pageBuilder:
@@ -464,17 +518,13 @@ class AppRouter {
               state: state,
             ),
       ),
-       GoRoute(
+      GoRoute(
         name: RoutePath.reviewScreen,
         path: RoutePath.reviewScreen.addBasePath,
         pageBuilder:
-            (context, state) => _buildPageWithAnimation(
-              child: ReviewScreen(),
-              state: state,
-            ),
+            (context, state) =>
+                _buildPageWithAnimation(child: ReviewScreen(), state: state),
       ),
-
-
     ],
   );
 

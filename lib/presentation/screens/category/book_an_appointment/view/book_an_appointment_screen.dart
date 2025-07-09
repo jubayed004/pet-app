@@ -12,8 +12,8 @@ import 'package:pet_app/presentation/widget/align/custom_align_text.dart';
 import 'package:pet_app/utils/app_const/padding_constant.dart';
 
 class BookAnAppointmentScreen extends StatelessWidget {
-  BookAnAppointmentScreen({super.key});
-
+  BookAnAppointmentScreen({super.key, required this.bookingTime});
+final bool bookingTime;
   final controller = GetControllers.instance.getBookAnAppointmentController();
 
   @override
@@ -47,6 +47,20 @@ class BookAnAppointmentScreen extends StatelessWidget {
               ),
             ),
           ),
+          SliverGap(16),
+          bookingTime ? SliverToBoxAdapter(
+            child: Padding(
+              padding: padding16H,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CustomText(text: "Arrival time",fontWeight: FontWeight.w500,fontSize: 14,),
+                  CustomText(text: "Receipt time",fontWeight: FontWeight.w500,fontSize: 14)
+                ],
+              ),
+            ),
+          ):SliverToBoxAdapter(),
           SliverGap(16),
           Obx(
             () => SliverGrid.count(

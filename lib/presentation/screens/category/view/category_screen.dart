@@ -11,9 +11,11 @@ import 'package:pet_app/presentation/no_internet/error_card.dart';
 import 'package:pet_app/presentation/screens/category/widgets/category_card_widget.dart';
 import 'package:pet_app/presentation/screens/home/controller/home_controller.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
+import 'package:pet_app/utils/app_const/padding_constant.dart';
 
 class CategoryScreen extends StatelessWidget {
    CategoryScreen({super.key});
+
   final homeController = GetControllers.instance.getHomeController();
    final categoryController = GetControllers.instance.getCategoryController();
    @override
@@ -40,6 +42,31 @@ class CategoryScreen extends StatelessWidget {
                          GestureDetector(
                            onTap: () {
                              homeController.selectedIndex.value = index;
+                             if(index == 5){
+                               showModalBottomSheet(
+                                 context: context,
+                                 builder: (_){
+                                   return Container(
+                                     padding: padding16,
+                                     width: double.infinity,
+                                     height: MediaQuery.of(context).size.height/2,
+                                     child: Column(
+                                       crossAxisAlignment: CrossAxisAlignment.start,
+                                       spacing: 20,
+                                       mainAxisSize: MainAxisSize.min,
+                                       children: [
+                                         CustomText(text: 'Standard Boarding',fontSize: 14,fontWeight: FontWeight.w500,),
+                                         CustomText(text: 'Luxury Suites',fontSize: 14,fontWeight: FontWeight.w500,),
+                                         CustomText(text: 'Daycare',fontSize: 14,fontWeight: FontWeight.w500,),
+                                         CustomText(text: 'Specialized Care',fontSize: 14,fontWeight: FontWeight.w500,),
+                                         CustomText(text: 'Extras ',fontSize: 14,fontWeight: FontWeight.w500,),
+
+                                       ],
+                                     ),
+                                   );
+                                 }
+                               );
+                             }
                            },
                            child: Card(
                              shape: RoundedRectangleBorder(
@@ -69,28 +96,35 @@ class CategoryScreen extends StatelessWidget {
                ),
              ),
            ),
-     /*      SliverFillRemaining(
-             child: RefreshIndicator(
-               onRefresh: () async {
-                 categoryController.pagingController.refresh();
-               },
-               child: PagedListView<int, String>(
-                 pagingController: categoryController.pagingController,
-                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-                 builderDelegate: PagedChildBuilderDelegate<String>(
-                   itemBuilder: (context, item, index) {
-                     return CategoryCardWidget();
-                   },
-                   firstPageErrorIndicatorBuilder: (context) => Center(
-                     child: ErrorCard(
-                       onTap: () => categoryController.pagingController.refresh(),
-                       text: categoryController.pagingController.error.toString(),
+           Obx((){
+             print(homeController.selectedIndex.value);
+             return SliverFillRemaining(
+               child: RefreshIndicator(
+                 onRefresh: () async {
+                   categoryController.pagingController[homeController.selectedIndex.value].refresh();
+                 },
+                 child: PagedListView<int, String>(
+                   key: ValueKey(homeController.selectedIndex.value),
+                   pagingController: categoryController.pagingController[homeController.selectedIndex.value],
+                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                   builderDelegate: PagedChildBuilderDelegate<String>(
+                     itemBuilder: (context, item, index) {
+                       return CategoryCardWidget(
+                         showWebsite: homeController.selectedIndex.value == 1,
+                         isPetHotel: homeController.selectedIndex.value == 3,
+                       );
+                     },
+                     firstPageErrorIndicatorBuilder: (context) => Center(
+                       child: ErrorCard(
+                         onTap: () => categoryController.pagingController[homeController.selectedIndex.value].refresh(),
+                         text: categoryController.pagingController[homeController.selectedIndex.value].error.toString(),
+                       ),
                      ),
                    ),
                  ),
                ),
-             ),
-           ),*/
+             );
+           }),
 
 /*           /// 👇 এই অংশটায় ক্লিক করা আইটেম অনুযায়ী UI দেখাবো
            SliverToBoxAdapter(

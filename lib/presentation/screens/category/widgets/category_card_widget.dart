@@ -10,13 +10,16 @@ import '../../../components/custom_image/custom_image.dart';
 import '../../../components/custom_text/custom_text.dart';
 
 class CategoryCardWidget extends StatelessWidget {
-  const CategoryCardWidget({super.key});
+  const CategoryCardWidget({super.key, this.showWebsite = false, this.isPetHotel = false});
+  final bool showWebsite;
+  final bool  isPetHotel;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        AppRouter.route.pushNamed(RoutePath.categoryDetailsScreen);
+
+        AppRouter.route.pushNamed(RoutePath.categoryDetailsScreen, extra: [showWebsite, isPetHotel]);
       },
       child: Container(
         margin: EdgeInsets.only(bottom: 10),
@@ -171,7 +174,7 @@ class CategoryCardWidget extends StatelessWidget {
                   ),
                 ),*/
                 Expanded(child: SizedBox()),
-                Expanded(
+                showWebsite?Expanded(
                   child: CustomButton(
                     onTap: () {},
                     title: " Website",
@@ -181,7 +184,7 @@ class CategoryCardWidget extends StatelessWidget {
                     fillColor: AppColors.purple500,
                     textColor: Colors.black,
                   ),
-                ),
+                ):Expanded(child: SizedBox()),
                 Expanded(child: SizedBox()),
                 /*
 Expanded(

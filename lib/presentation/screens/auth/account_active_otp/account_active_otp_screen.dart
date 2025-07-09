@@ -14,8 +14,8 @@ import 'package:pet_app/presentation/widget/text_field/otp_text_field.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
 import 'package:pet_app/utils/app_strings/app_strings.dart';
 
-class VerifyOtpScreen extends StatelessWidget {
-  VerifyOtpScreen({super.key, required this.email, required this.isSignUp});
+class AccountActiveOtpScreen extends StatelessWidget {
+  AccountActiveOtpScreen({super.key, required this.email, required this.isSignUp});
 
   final String email;
   final bool isSignUp;
@@ -175,15 +175,17 @@ class VerifyOtpScreen extends StatelessWidget {
                       _authController.otpVerify(email: email);
                     }*/
 
-                    if (isSignUp){
-                      if(_authController.isUser.value){
-                        AppRouter.route.goNamed(RoutePath.petRegistrationScreen);
-                      }else{
-                        AppRouter.route.goNamed(RoutePath.petShopRegistrationScreen);
-                      }
+                    if(_authController.isUser.value){
+                      AppRouter.route.goNamed(RoutePath.petRegistrationScreen);
+                    }else{
+                      AppRouter.route.goNamed(RoutePath.petShopRegistrationScreen);
+                    }
+
+               /*     if (isSignUp){
+
                     }else{
                       AppRouter.route.pushNamed(RoutePath.setNewPassword,extra: "text@gmail.com");
-                    }
+                    }*/
 
                   },
 

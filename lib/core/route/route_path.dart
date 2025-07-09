@@ -20,6 +20,7 @@ class RoutePath{
   static const String signUpScreen = 'signUpScreen';
   static const String forgotPassScreen = 'forgotPassScreen';
   static const String verifyOtpScreen = 'verifyOtpScreen';
+  static const String accountActiveOtpScreen = 'accountActiveOtpScreen';
   static const String setNewPassword = 'setNewPassword';
 
   static const String navigationPage = 'navigationPage';
@@ -34,6 +35,7 @@ class RoutePath{
   static const String addPetScreen = 'addPetScreen';
   static const String petHealthScreen = 'petHealthScreen';
   static const String settingsPage = 'settingsPage';
+  static const String myPetsScreen = 'myPetsScreen';
   static const String editMyPetsScreen = 'editMyPetsScreen';
   static const String notifyScreen = 'notifyScreen';
   static const String searchScreen = 'searchScreen';

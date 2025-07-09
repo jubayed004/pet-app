@@ -8,13 +8,16 @@ import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:pet_app/presentation/widget/align/custom_align_text.dart';
 
 class ServiceScreen extends StatefulWidget {
-   const ServiceScreen({super.key});
+   const ServiceScreen({super.key, required this.bookingTime});
 
+   final bool bookingTime;
   @override
   State<ServiceScreen> createState() => _ServiceScreenState();
 }
 
 class _ServiceScreenState extends State<ServiceScreen> {
+
+
   List<String> choiceOfTopCookies = [
     "General Health Exams",
     "Vaccinations & Immunizations",
@@ -59,7 +62,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                     Gap(24),
                     CustomButton(onTap: (){
 
-                      AppRouter.route.pushNamed(RoutePath.bookAnAppointmentScreen);
+                      AppRouter.route.pushNamed(RoutePath.bookAnAppointmentScreen, extra: widget.bookingTime);
                     },title: "Book an Appointment ",textColor: Colors.black,icon: Icon(Icons.calendar_month_outlined,color: Colors.black,),showIcon: true,)
                   ],
                 ),
