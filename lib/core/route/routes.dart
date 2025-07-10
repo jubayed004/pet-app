@@ -13,6 +13,7 @@ import 'package:pet_app/presentation/screens/auth/sign_in/sign_in.dart';
 import 'package:pet_app/presentation/screens/auth/sign_up/sign_up.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_advertisement/view/business_advertisement_screen.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_all_pets/view/business_all_pets_screen.dart';
+import 'package:pet_app/presentation/screens/business_owners/business_all_pets/view/business_pet_details_screen.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_booking/view/business_booking_screen.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_home/review_screen.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_nav/business_navigation_page.dart';
@@ -30,6 +31,7 @@ import 'package:pet_app/presentation/screens/category/service/view/service_scree
 import 'package:pet_app/presentation/screens/category/view/category_screen.dart';
 import 'package:pet_app/presentation/screens/chat/view/chatting_page.dart';
 import 'package:pet_app/presentation/screens/faq/help_faq_screen.dart';
+import 'package:pet_app/presentation/screens/my_appointment/view/my_appointment_details_screen.dart';
 import 'package:pet_app/presentation/screens/my_appointment/view/my_appointment_screen.dart';
 import 'package:pet_app/presentation/screens/my_pets/edit_my_pets/edit_my_pets_screen.dart';
 import 'package:pet_app/presentation/screens/my_pets/view/my_pets_screen.dart';
@@ -238,6 +240,20 @@ class AppRouter {
           );
         },
       ),
+      GoRoute(
+        name: RoutePath.businessPetsDetailsScreen,
+        path: RoutePath.businessPetsDetailsScreen.addBasePath,
+        pageBuilder: (context, state) {
+          final args = state.extra as Map<String, dynamic>;
+
+          return _buildPageWithAnimation(
+            child: BusinessPetsDetailsScreen(
+              name: args['name'] ?? '',
+              imageUrl: args['image'] ?? '',
+            ), state: state,
+          );
+        },
+      ),
 
       ///======================= Category Route =======================
       GoRoute(
@@ -308,12 +324,22 @@ class AppRouter {
       ),
 
       ///======================= MY Appointments Route =======================
+
       GoRoute(
         name: RoutePath.myAppointmentScreen,
         path: RoutePath.myAppointmentScreen.addBasePath,
         pageBuilder:
             (context, state) => _buildPageWithAnimation(
               child: MyAppointmentScreen(),
+              state: state,
+            ),
+      ),
+      GoRoute(
+        name: RoutePath.myAppointmentDetailsScreen,
+        path: RoutePath.myAppointmentDetailsScreen.addBasePath,
+        pageBuilder:
+            (context, state) => _buildPageWithAnimation(
+              child: MyAppointmentDetailsScreen(),
               state: state,
             ),
       ),

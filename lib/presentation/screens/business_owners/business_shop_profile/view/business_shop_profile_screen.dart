@@ -22,9 +22,9 @@ class BusinessShopProfileScreen extends StatelessWidget {
       backgroundColor: Colors.white,
        body: CustomScrollView(
          slivers: [
-        /*   CustomDefaultAppbar(
-             title: "Category Details ",
-           ),*/
+           CustomDefaultAppbar(
+             title: "Shop Profile ",
+           ),
 
            SliverToBoxAdapter(
              child: SizedBox(
@@ -48,18 +48,14 @@ class BusinessShopProfileScreen extends StatelessWidget {
                        height: 250,
                      );
                    }),
-                   Positioned(
-                     top: 30,
-                       left: 30,
-                       child: IconButton(onPressed: (){
-                        AppRouter.route.pop();
-                       }, icon: Icon(Icons.arrow_back,color: Colors.black,))),
+
                    // Card positioned below image, no fixed height, mainAxisSize.min ensures height matches content
                    Positioned(
                      top: 160,
                      left: 30,
                      right: 30,
                      child: Card(
+                       color: AppColors.kWhiteColor,
                        elevation: 6,
                        shape: RoundedRectangleBorder(
                          borderRadius: BorderRadius.circular(16),
@@ -129,34 +125,7 @@ class BusinessShopProfileScreen extends StatelessWidget {
                padding: const EdgeInsets.only(left: 16.0,right: 16),
                child: Column(
                  children: [
-                   SizedBox(
-                     width: MediaQuery.of(context).size.width/2-30,
-                     child: Card(
-                       elevation: 4,
-                       child: Padding(
-                         padding: const EdgeInsets.all(8.0),
-                         child: Column(
-                           children: [
-                             CustomText(text: "Rating"),
-                             Gap(10),
-                             Row(
-                               mainAxisAlignment: MainAxisAlignment.center,
-                               crossAxisAlignment: CrossAxisAlignment.center,
-                               children: [
-                                 Row(
-                                   mainAxisAlignment: MainAxisAlignment.start,
-                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                   children: List.generate(5, (index) => Icon(Icons.star, color: Colors.amber,size: 18,)),
-                                 ),
-                                 Gap(6),
-                                 CustomText(text: "5.0 ",fontWeight: FontWeight.w500, fontSize: 12,)
-                               ],
-                             ),
-                           ],
-                         ),
-                       ),
-                     ),
-                   ),
+
                    Gap(16),
                    Row(
                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -205,10 +174,10 @@ class BusinessShopProfileScreen extends StatelessWidget {
                      ),
                      child: CustomText(text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",maxLines: 20,textAlign: TextAlign.start,),
                    ),
-                   Gap(24),
+          /*         Gap(24),
                    CustomButton(onTap: (){
                      AppRouter.route.pushNamed(RoutePath.serviceScreen);
-                   },title: "What service do you want?",textColor: Colors.black,),
+                   },title: "What service do you want?",textColor: Colors.black,),*/
                    Gap(24),
                  ],
                ),

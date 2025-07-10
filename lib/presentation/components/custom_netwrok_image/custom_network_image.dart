@@ -4,8 +4,8 @@ import 'package:shimmer/shimmer.dart';
 
 class CustomNetworkImage extends StatelessWidget {
   final String imageUrl;
-  final double height;
-  final double width;
+  final double? height;
+  final double? width;
   final Border? border;
   final BorderRadius? borderRadius;
   final BoxShape boxShape;
@@ -18,8 +18,8 @@ class CustomNetworkImage extends StatelessWidget {
       this.colorFilter,
       required this.imageUrl,
       this.backgroundColor,
-      required this.height,
-      required this.width,
+ this.height,
+    this.width,
       this.border,
       this.borderRadius,
       this.boxShape = BoxShape.rectangle});

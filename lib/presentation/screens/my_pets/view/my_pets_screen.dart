@@ -13,7 +13,8 @@ import 'package:pet_app/utils/app_colors/app_colors.dart';
 class MyPetsScreen extends StatelessWidget {
   final String name ;
   final String imageUrl;
-   MyPetsScreen({super.key, required this.name, required this.imageUrl});
+
+   MyPetsScreen({super.key, required this.name, required this.imageUrl, });
    final controller = GetControllers.instance.getMyPetsProfileController();
   @override
   Widget build(BuildContext context) {
@@ -121,7 +122,7 @@ class MyPetsScreen extends StatelessWidget {
                    children: [
                      Icon(Icons.safety_divider_outlined),
                      Gap(6),
-                     CustomText(text: "Bella’s Status",fontWeight: FontWeight.w600,fontSize: 16,)
+                     CustomText(text: "$name’s Status",fontWeight: FontWeight.w600,fontSize: 16,)
                    ],
                  ),
                  Gap(16),

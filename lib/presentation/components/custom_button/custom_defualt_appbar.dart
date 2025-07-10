@@ -65,7 +65,7 @@ class CustomDefaultAppbar extends StatelessWidget
          // crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-          Gap(20),
+          Gap(24),
             titleWidget ??
                 CustomText(
                   text: title ?? "",

@@ -70,68 +70,54 @@ class PetShopRegistrationScreen extends StatelessWidget {
                 fontWeight: FontWeight.w500,
               ),
               Gap(8.0),
-              DropdownButtonFormField2<String>(
-                isExpanded: true,
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.symmetric(vertical: 16),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(color: AppColors.purple500,), // Default border
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(color:AppColors.purple500,),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(color: AppColors.purple500, width: 1.5),
-                  ),
-                  errorBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(color: AppColors.purple500,),
-                  ),
-                  focusedErrorBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(color: AppColors.purple500,),
-                  ),
-                  fillColor: Colors.white,
-                  filled: true,
-                  hintStyle: TextStyle(color: AppColors.purple500),
-                ),
-                hint: CustomText(
-                  text: "select business type",
-                  color: AppColors.blackColor,
-                  fontSize: 16,
-                ),
-                items: _petShopRegistrationController.analystType
-                    .map((item) => DropdownMenuItem<String>(
-                  value: item,
-                  child: CustomText(text: item,fontSize: 16,fontWeight: FontWeight.w400),
-                ))
-                    .toList(),
-                onChanged: (value) {
-                  if (value != null) {
-                    _petShopRegistrationController.selectedAnalystType.value = value;
-                  }
+              GestureDetector(
+                onTap: () {
+                  showModalBottomSheet(
+                    context: context,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                    ),
+                    builder: (context) {
+                      return Obx(() => Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: _petShopRegistrationController.analystType.map((item) {
+                          final isSelected = _petShopRegistrationController.selectedAnalystTypes.contains(item);
+                          return CheckboxListTile(
+                            title: Text(item),
+                            value: isSelected,
+                            onChanged: (_) {
+                              _petShopRegistrationController.toggleSelection(item);
+                            },
+                          );
+                        }).toList(),
+                      ));
+                    },
+                  );
                 },
-                style: TextStyle(color: AppColors.blackColor,fontSize: 16,fontWeight: FontWeight.w400),
-                buttonStyleData: const ButtonStyleData(
-                  padding: EdgeInsets.only(right: 8),
-                ),
-                iconStyleData: const IconStyleData(
-                  icon: Icon(Icons.arrow_downward_rounded, color: AppColors.blackColor),
-                  iconSize: 24,
-                ),
-                dropdownStyleData: DropdownStyleData(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    color: AppColors.whiteColor,
-                  ),
-                ),
-                menuItemStyleData: const MenuItemStyleData(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                ),
+                child: Obx(() {
+                  final selected = _petShopRegistrationController.selectedAnalystTypes.join(', ');
+                  return InputDecorator(
+                    decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide(color: AppColors.purple500),
+                      ),
+                      hintText: "Select business types",
+                      filled: true,
+                      fillColor: Colors.white,
+                    ),
+                    child: Text(
+                      selected.isEmpty ? "Select business types" : selected,
+                      style: TextStyle(
+                        color: selected.isEmpty ? AppColors.purple500 : AppColors.blackColor,
+                        fontSize: 16,
+                      ),
+                    ),
+                  );
+                }),
               ),
+
               Gap(14),
               CustomAlignText(
                 text: AppStrings.businessAddress,
@@ -177,7 +163,73 @@ class PetShopRegistrationScreen extends StatelessWidget {
               ),
               Gap(14),
               CustomAlignText(
-                text: AppStrings.petPhoto,
+                text: "Shop logo ",
+                fontWeight: FontWeight.w500,
+              ),
+              Gap(8.0),
+              GestureDetector(
+                onTap: _profileController.pickImage,
+                child: SizedBox(
+                  height: 156.h,
+                  width: double.infinity,
+                  child: Obx(() {
+                    final image = _profileController.selectedImage.value?.path;
+                    return Stack(
+                      children: [
+                        Positioned.fill(
+                          child:
+                          image != null && image.isNotEmpty
+                              ? ClipRRect(
+                            borderRadius: BorderRadius.circular(6),
+                            child: Image.file(
+                              File(
+                                _profileController
+                                    .selectedImage
+                                    .value
+                                    ?.path ??
+                                    "",
+                              ),
+                              height: 156.h,
+                              width: MediaQuery.of(context).size.width,
+                              fit: BoxFit.cover,
+                            ),
+                          )
+                              : CustomNetworkImage(
+                            imageUrl:
+                            "https://www.rawpixel.com/image/12143311/png",
+                            height: 156.h,
+                            borderRadius: BorderRadius.circular(6),
+                            width: MediaQuery.of(context).size.width,
+                          ),
+                        ),
+                        image != null && image.isNotEmpty
+                            ? SizedBox()
+                            : Center(
+                          child: Container(
+                            height: 30.h,
+                            width: 30.w,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Color(0xffC2C2C2),
+                                width: 1.w,
+                              ),
+                              color: AppColors.whiteColor700,
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(
+                              Icons.image_outlined,
+                              size: 18.sp,
+                              color: AppColors.purple500,
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  }),
+                ),
+              ),
+              CustomAlignText(
+                text: "Shop pic ",
                 fontWeight: FontWeight.w500,
               ),
               Gap(8.0),

@@ -25,6 +25,7 @@ class RoutePath{
 
   static const String navigationPage = 'navigationPage';
   static const String myAppointmentScreen = 'myAppointmentScreen';
+  static const String myAppointmentDetailsScreen = 'myAppointmentDetailsScreen';
   static const String categoryScreen = 'categoryScreen';
   static const String categoryDetailsScreen = 'categoryDetailsScreen';
   static const String serviceScreen = 'serviceScreen';
@@ -36,6 +37,7 @@ class RoutePath{
   static const String petHealthScreen = 'petHealthScreen';
   static const String settingsPage = 'settingsPage';
   static const String myPetsScreen = 'myPetsScreen';
+  static const String businessPetsDetailsScreen = 'businessPetsDetailsScreen';
   static const String editMyPetsScreen = 'editMyPetsScreen';
   static const String notifyScreen = 'notifyScreen';
   static const String searchScreen = 'searchScreen';

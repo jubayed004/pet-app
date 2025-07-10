@@ -25,9 +25,9 @@ class CategoryDetailsScreen extends StatelessWidget {
       backgroundColor: Colors.white,
        body: CustomScrollView(
          slivers: [
-        /*   CustomDefaultAppbar(
+           CustomDefaultAppbar(
              title: "Category Details ",
-           ),*/
+           ),
 
            SliverToBoxAdapter(
              child: SizedBox(
@@ -51,12 +51,12 @@ class CategoryDetailsScreen extends StatelessWidget {
                        height: 250,
                      );
                    }),
-                   Positioned(
+               /*    Positioned(
                      top: 30,
                        left: 30,
                        child: IconButton(onPressed: (){
                         AppRouter.route.pop();
-                       }, icon: Icon(Icons.arrow_back,color: Colors.black,))),
+                       }, icon: Icon(Icons.arrow_back,color: Colors.black,))),*/
                    // Card positioned below image, no fixed height, mainAxisSize.min ensures height matches content
                    Positioned(
                      top: 160,

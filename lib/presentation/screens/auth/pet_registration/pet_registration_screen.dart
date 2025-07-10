@@ -323,7 +323,7 @@ class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
                     /*    if (_formKey.currentState!.validate()) {
                           _authController.signUp();
                         }*/
-                    AppRouter.route.goNamed(RoutePath.verifyOtpScreen);
+                    AppRouter.route.goNamed(RoutePath.navigationPage);
                   },
                 );
               }),

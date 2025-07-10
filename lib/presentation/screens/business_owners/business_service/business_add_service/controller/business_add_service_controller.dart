@@ -1,6 +1,10 @@
 import 'package:get/get.dart';
 
 class BusinessAddServiceController extends GetxController{
+
+
+  final selectedAnalystType = ''.obs;
+
   final List<String> analystType = [
     "Pet Vets",
     "Pet Grooming",
@@ -10,5 +14,13 @@ class BusinessAddServiceController extends GetxController{
     "Friendly Place",
   ];
 
-  final selectedAnalystType = ''.obs;
+  final RxList<String> selectedAnalystTypes = <String>[].obs;
+
+  void toggleSelection(String item) {
+    if (selectedAnalystTypes.contains(item)) {
+      selectedAnalystTypes.remove(item);
+    } else {
+      selectedAnalystTypes.add(item);
+    }
+  }
 }

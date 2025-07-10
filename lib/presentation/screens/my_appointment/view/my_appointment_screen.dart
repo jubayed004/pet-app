@@ -14,6 +14,7 @@ import 'package:pet_app/utils/app_strings/app_strings.dart';
 class MyAppointmentScreen extends StatelessWidget {
    MyAppointmentScreen({super.key});
   final myAppointmentController = GetControllers.instance.getMyAppointmentController();
+   final navController = GetControllers.instance.getNavigationControllerMain();
   @override
   Widget build(BuildContext context) {
     return Scaffold(

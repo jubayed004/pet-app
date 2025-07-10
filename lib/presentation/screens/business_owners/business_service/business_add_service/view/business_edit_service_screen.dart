@@ -102,7 +102,54 @@ class BusinessEditServiceScreen extends StatelessWidget {
                   Gap(14),
                   CustomText(text: "Service Type",fontWeight: FontWeight.w400,fontSize: 16,),
                   Gap(8),
-                  DropdownButtonFormField2<String>(
+                  GestureDetector(
+                    onTap: () {
+                      showModalBottomSheet(
+                        context: context,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                        ),
+                        builder: (context) {
+                          return Obx(() => Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: _petShopRegistrationController.analystType.map((item) {
+                              final isSelected = _petShopRegistrationController.selectedAnalystTypes.contains(item);
+                              return CheckboxListTile(
+                                title: Text(item),
+                                value: isSelected,
+                                onChanged: (_) {
+                                  _petShopRegistrationController.toggleSelection(item);
+                                },
+                              );
+                            }).toList(),
+                          ));
+                        },
+                      );
+                    },
+                    child: Obx(() {
+                      final selected = _petShopRegistrationController.selectedAnalystTypes.join(', ');
+                      return InputDecorator(
+                        decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(color: AppColors.purple500),
+                          ),
+                          hintText: "Select business types",
+                          filled: true,
+                          fillColor: Colors.white,
+                        ),
+                        child: Text(
+                          selected.isEmpty ? "Select business types" : selected,
+                          style: TextStyle(
+                            color: selected.isEmpty ? AppColors.purple500 : AppColors.blackColor,
+                            fontSize: 16,
+                          ),
+                        ),
+                      );
+                    }),
+                  ),
+                 /* DropdownButtonFormField2<String>(
                     isExpanded: true,
                     decoration: InputDecoration(
                       contentPadding: const EdgeInsets.symmetric(vertical: 16),
@@ -163,7 +210,7 @@ class BusinessEditServiceScreen extends StatelessWidget {
                     menuItemStyleData: const MenuItemStyleData(
                       padding: EdgeInsets.symmetric(horizontal: 16),
                     ),
-                  ),
+                  ),*/
                   Gap(14),
                   CustomText(text: "Service name",fontWeight: FontWeight.w400,fontSize: 16),
                   Gap(8),

@@ -193,7 +193,7 @@ class BusinessHomeScreen extends StatelessWidget {
           SliverToBoxAdapter(
             child: Padding(
                 padding: EdgeInsets.only(left: 16),
-                child: CustomText(text: AppStrings.findWhatYouNeed,
+                child: CustomText(text: "Find You Business ",
                   textAlign: TextAlign.start,
                   fontWeight: FontWeight.w400,
                   fontSize: 18,)),
@@ -215,8 +215,8 @@ class BusinessHomeScreen extends StatelessWidget {
                         GestureDetector(
                           onTap: () {
 
-                            //homeController.selectedIndex.value = index;
-                            AppRouter.route.pushNamed(RoutePath.categoryScreen);
+                         /*   //homeController.selectedIndex.value = index;
+                            AppRouter.route.pushNamed(RoutePath.categoryScreen);*/
                           },
                           child: Card(
                             shape: RoundedRectangleBorder(

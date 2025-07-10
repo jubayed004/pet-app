@@ -17,11 +17,15 @@ class CustomBookingCard extends StatelessWidget {
     required this.rating,
     required this.phoneNumber,
     required this.address,
-    this.onChat,
-    this.onWebsite,
+    required this.onChat,
+    required this.onWebsite,
     this.onAddReview,
     this.onApprove,
     this.onReject,
+    this.onComplete = false,
+    this.onRejected = false,
+    this.showApproveButton = false,
+    this.showRejectButton = false,
   });
 
   final int index;
@@ -34,11 +38,15 @@ class CustomBookingCard extends StatelessWidget {
   final double rating;
   final String phoneNumber;
   final String address;
-  final VoidCallback? onChat;
-  final VoidCallback? onWebsite;
+  final VoidCallback onChat;
+  final VoidCallback onWebsite;
   final VoidCallback? onAddReview;
   final VoidCallback? onApprove;
   final VoidCallback? onReject;
+  final bool onComplete;
+  final bool onRejected;
+  final bool showApproveButton;
+  final bool showRejectButton;
 
   @override
   Widget build(BuildContext context) {
@@ -141,7 +149,7 @@ class CustomBookingCard extends StatelessWidget {
             children: [
               Expanded(
                 child: CustomButton(
-                  onTap: (){},
+                  onTap: onChat ,
                   title: "Chat Now",
                   height: 24,
                   fontSize: 12,
@@ -155,7 +163,7 @@ class CustomBookingCard extends StatelessWidget {
               const Gap(6),
               Expanded(
                 child: CustomButton(
-                  onTap: (){},
+                  onTap: onWebsite,
                   title: "Website",
                   height: 24,
                   fontSize: 12,
@@ -180,13 +188,13 @@ class CustomBookingCard extends StatelessWidget {
 
           const Gap(10),
 
-          /// Approve / Reject Section based on index
-          if (index == 0 || index == 1 || index == 2)
+          /// Approve / Reject Section
+          if (showApproveButton || showRejectButton)
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 0),
               child: Row(
                 children: [
-                  if (index == 0 || index == 2)
+                  if (showApproveButton)
                     Expanded(
                       child: ElevatedButton(
                         onPressed: onApprove,
@@ -197,8 +205,8 @@ class CustomBookingCard extends StatelessWidget {
                         child: const CustomText(text: "Approve", color: Colors.white),
                       ),
                     ),
-                  if (index == 0) const Gap(12),
-                  if (index == 0 || index == 1)
+                  if (showApproveButton && showRejectButton) const Gap(12),
+                  if (showRejectButton)
                     Expanded(
                       child: OutlinedButton(
                         onPressed: onReject,
@@ -206,8 +214,8 @@ class CustomBookingCard extends StatelessWidget {
                           side: BorderSide(color: AppColors.blueColor),
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                         ),
-                        child: CustomText(
-                          text: index == 1 ? "Removed" : "Rejected",
+                        child: const CustomText(
+                          text: "Reject",
                           color: AppColors.blackColor,
                         ),
                       ),
@@ -216,7 +224,7 @@ class CustomBookingCard extends StatelessWidget {
               ),
             ),
 
-          if (index == 0 || index == 1) const Gap(12),
+          const Gap(10),
         ],
       ),
     );

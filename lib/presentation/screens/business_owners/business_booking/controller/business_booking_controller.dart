@@ -9,36 +9,50 @@ import 'package:pet_app/service/api_url.dart';
 class BusinessBookingController extends GetxController {
   final RxInt selectedTabIndex = 0.obs;
 
-  final PagingController<int, Widget> pendingController = PagingController(firstPageKey: 1);
-  final PagingController<int, Widget> approvedController = PagingController(firstPageKey: 1);
+  final PagingController<int, Widget> upcomingController = PagingController(firstPageKey: 1);
+  final PagingController<int, Widget> ongoingController = PagingController(firstPageKey: 1);
+  final PagingController<int, Widget> completedController = PagingController(firstPageKey: 1);
   final PagingController<int, Widget> rejectedController = PagingController(firstPageKey: 1);
 
-  RxBool isLoadingPending = false.obs;
-  RxBool isLoadingApproved = false.obs;
+  RxBool isLoadingUpcoming = false.obs;
+  RxBool isLoadingOngoing = false.obs;
+  RxBool isLoadingCompleted = false.obs;
   RxBool isLoadingRejected = false.obs;
 
-  Future<void> getPending(int pageKey) async {
-    final mockPending = List.generate(10, (index) => CustomText(text: "Pending $index"));
-    pendingController.appendLastPage(mockPending);
+  Future<void> getUpcoming(int pageKey) async {
+    await Future.delayed(Duration(seconds: 1));
+    final mockUpcoming= List.generate(10, (index) => CustomText(text: "Upcoming $index"));
+    upcomingController.appendLastPage(mockUpcoming);
   }
 
-  Future<void> getApproved(int pageKey) async {
-    final mockApproved = List.generate(10, (index) => CustomText(text: "Approved $index"));
-    approvedController.appendLastPage(mockApproved);
+  Future<void> getOngoing(int pageKey) async {
+    await Future.delayed(Duration(seconds: 1));
+    final mockOngoing = List.generate(10, (index) => CustomText(text: "Ongoing  $index"));
+    ongoingController.appendLastPage(mockOngoing);
+  }
+
+  Future<void> getCompleted(int pageKey) async {
+    await Future.delayed(Duration(seconds: 1));
+    final mockCompleted = List.generate(10, (index) => CustomText(text: "Completed $index"));
+    completedController.appendLastPage(mockCompleted);
   }
 
   Future<void> getRejected(int pageKey) async {
+    await Future.delayed(Duration(seconds: 1));
     final mockRejected = List.generate(10, (index) => CustomText(text: "Rejected $index"));
     rejectedController.appendLastPage(mockRejected);
   }
 
   @override
   void onInit() {
-    pendingController.addPageRequestListener((pageKey) {
-      getPending(pageKey);
+    upcomingController.addPageRequestListener((pageKey) {
+      getUpcoming(pageKey);
     });
-    approvedController.addPageRequestListener((pageKey) {
-      getApproved(pageKey);
+    ongoingController.addPageRequestListener((pageKey) {
+      getOngoing(pageKey);
+    });
+    completedController.addPageRequestListener((pageKey) {
+      getCompleted(pageKey);
     });
     rejectedController.addPageRequestListener((pageKey) {
       getRejected(pageKey);
