@@ -70,7 +70,7 @@ class OnboardingPageCard extends StatelessWidget {
                     alignment: Alignment.topRight,
                     child: InkWell(
                       onTap: () {
-                        AppRouter.route.goNamed(RoutePath.vendorSelectionScreen);
+                        AppRouter.route.goNamed(RoutePath.signInScreen);
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),

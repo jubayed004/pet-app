@@ -168,12 +168,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 Gap(24),
                 Obx(() {
                   return CustomButton(
-                    isLoading: _authController.loginLoading.value,
+                    isLoading: _authController.signUpLoading.value,
                     title: " Continue   ",
                    textColor: Colors.black,
                    showIcon : false,
                     onTap: () {
-                      AppRouter.route.pushNamed(RoutePath.accountActiveOtpScreen);
+                      if (_formKey.currentState!.validate()) {
+                        _authController.signUp();
+                      }
+
                     },
                   );
                 }),

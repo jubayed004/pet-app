@@ -168,18 +168,13 @@ class AccountActiveOtpScreen extends StatelessWidget {
                           : _authController.otpLoading.value,
                   title: "Confirm",
                   onTap: () {
-               /*     print("verifyOtpScreen");
+                    print("verifyOtpScreen");
                     if (isSignUp) {
                       _authController.activeAccount(email: email);
                     } else {
                       _authController.otpVerify(email: email);
-                    }*/
-
-                    if(_authController.isUser.value){
-                      AppRouter.route.goNamed(RoutePath.petRegistrationScreen);
-                    }else{
-                      AppRouter.route.goNamed(RoutePath.petShopRegistrationScreen);
                     }
+
 
                /*     if (isSignUp){
 

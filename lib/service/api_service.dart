@@ -40,7 +40,7 @@ Future<Map<String, String>> bearerHeaderInfo() async {
   return {
     HttpHeaders.acceptHeader: "application/json",
     HttpHeaders.contentTypeHeader: "application/json",
-    HttpHeaders.authorizationHeader: token,
+    HttpHeaders.authorizationHeader: "Bearer $token",
   };
 }
 

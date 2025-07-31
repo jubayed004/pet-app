@@ -1,12 +1,13 @@
 class ApiUrl {
   ApiUrl._();
-  static String base = "http://10.0.60.26:8003";
+  static String base = "http://10.10.20.52:8001/api";
 
   static socketUrl({required String userID}) => '$base?id=$userID';
 
   ///Create Account
   static register() => '$base/auth/register';
-  static activateOtp() => '$base/auth/activate-account';
+  static test() => 'http://10.10.20.52:8001';
+  static activateOtp() => '$base/auth/verify-email';
   static resendActiveOtp() => '$base/auth/activation-code-resend';
 
   /// Forget Password Flow
@@ -17,10 +18,13 @@ class ApiUrl {
   /// Login Flow
 
   static login() => '$base/auth/login';
-
   static profile() => '$base/user/profile';
   static changePassword() => '$base/auth/change-password';
   static deleteUser() => '$base/user/delete-account';
+
+  /// Pet Shop Registration
+
+  static shopRegistration() => '$base/business/create';
 
   ///=====================================
   static getTerms() => '$base/manage/get-terms-conditions';

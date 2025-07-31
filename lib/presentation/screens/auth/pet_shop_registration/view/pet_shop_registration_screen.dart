@@ -10,6 +10,7 @@ import 'package:pet_app/controller/get_controllers.dart';
 import 'package:pet_app/core/route/route_path.dart';
 import 'package:pet_app/core/route/routes.dart';
 import 'package:pet_app/helper/image/network_image.dart';
+import 'package:pet_app/helper/toast_message/toast_message.dart';
 import 'package:pet_app/presentation/components/custom_button/custom_button.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:pet_app/presentation/components/custom_text_field/custom_text_field.dart';
@@ -20,7 +21,7 @@ import 'package:pet_app/utils/app_strings/app_strings.dart';
 class PetShopRegistrationScreen extends StatelessWidget {
    PetShopRegistrationScreen({super.key});
   final _authController = GetControllers.instance.getAuthController();
-  final _profileController = GetControllers.instance.getProfileController();
+  /*final _profileController = GetControllers.instance.getProfileController();*/
   final _petShopRegistrationController = GetControllers.instance.getPetShopRegistrationController();
   final _formKey = GlobalKey<FormState>();
 
@@ -53,7 +54,7 @@ class PetShopRegistrationScreen extends StatelessWidget {
                 fillColor: Colors.white,
                 hintText: "Enter your pet shop name",
                 keyboardType: TextInputType.text,
-                textEditingController: _authController.nameSignUp,
+                textEditingController: _authController.businessName,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter your pet shop name';
@@ -64,7 +65,7 @@ class PetShopRegistrationScreen extends StatelessWidget {
                   return null; // Valid
                 },
               ),
-              Gap(14),
+           /*   Gap(14),
               CustomAlignText(
                 text: AppStrings.businessType,
                 fontWeight: FontWeight.w500,
@@ -116,7 +117,7 @@ class PetShopRegistrationScreen extends StatelessWidget {
                     ),
                   );
                 }),
-              ),
+              ),*/
 
               Gap(14),
               CustomAlignText(
@@ -125,7 +126,7 @@ class PetShopRegistrationScreen extends StatelessWidget {
               ),
               Gap(8.0),
               CustomTextField(
-                textEditingController: _authController.phoneNumberSignUp,
+                textEditingController: _authController.address,
                 fieldBorderColor: AppColors.purple500,
                 fieldBorderRadius: 10,
                 fillColor: Colors.white,
@@ -144,7 +145,7 @@ class PetShopRegistrationScreen extends StatelessWidget {
                 fillColor: Colors.white,
                 hintText: "website link",
                 keyboardType: TextInputType.visiblePassword,
-                textEditingController: _authController.passwordSignUp,
+                textEditingController: _authController.website,
               ),
               Gap(14),
               CustomAlignText(
@@ -159,7 +160,7 @@ class PetShopRegistrationScreen extends StatelessWidget {
                 hintText: AppStrings.enterMoreInformation,
 
                 keyboardType: TextInputType.text,
-                textEditingController: _authController.confirmPasswordSignUp,
+                textEditingController: _authController.moreInfo,
               ),
               Gap(14),
               CustomAlignText(
@@ -168,12 +169,12 @@ class PetShopRegistrationScreen extends StatelessWidget {
               ),
               Gap(8.0),
               GestureDetector(
-                onTap: _profileController.pickImage,
+                onTap: _authController.shopLogo,
                 child: SizedBox(
                   height: 156.h,
                   width: double.infinity,
                   child: Obx(() {
-                    final image = _profileController.selectedImage.value?.path;
+                    final image = _authController.selectedLogo.value?.path;
                     return Stack(
                       children: [
                         Positioned.fill(
@@ -183,8 +184,8 @@ class PetShopRegistrationScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(6),
                             child: Image.file(
                               File(
-                                _profileController
-                                    .selectedImage
+                                _authController
+                                    .selectedLogo
                                     .value
                                     ?.path ??
                                     "",
@@ -234,12 +235,12 @@ class PetShopRegistrationScreen extends StatelessWidget {
               ),
               Gap(8.0),
               GestureDetector(
-                onTap: _profileController.pickImage,
+                onTap: _authController.shopPic,
                 child: SizedBox(
                   height: 156.h,
                   width: double.infinity,
                   child: Obx(() {
-                    final image = _profileController.selectedImage.value?.path;
+                    final image = _authController.selectedPic.value?.path;
                     return Stack(
                       children: [
                         Positioned.fill(
@@ -249,8 +250,8 @@ class PetShopRegistrationScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(6),
                             child: Image.file(
                               File(
-                                _profileController
-                                    .selectedImage
+                                _authController
+                                    .selectedPic
                                     .value
                                     ?.path ??
                                     "",
@@ -372,10 +373,15 @@ class PetShopRegistrationScreen extends StatelessWidget {
                   textColor: Colors.black,
                   showIcon: false,
                   onTap: () {
-                    /*    if (_formKey.currentState!.validate()) {
-                          _authController.signUp();
-                        }*/
-               AppRouter.route.goNamed(RoutePath.subscriptionScreen);
+                    if(_authController.rememberMe.value){
+                      if (_formKey.currentState!.validate()) {
+                        _authController.petShopRegistration();
+                      }
+                    }else{
+                      toastMessage(message:"Please agree trems and conditions");
+                    }
+
+       /*        AppRouter.route.goNamed(RoutePath.subscriptionScreen);*/
                   },
                 );
               }),

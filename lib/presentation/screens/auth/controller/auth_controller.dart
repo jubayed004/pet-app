@@ -1,13 +1,20 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:pet_app/core/dependency/get_it_injection.dart';
+import 'package:pet_app/core/route/route_path.dart';
+import 'package:pet_app/core/route/routes.dart';
 import 'package:pet_app/helper/local_db/local_db.dart';
+import 'package:pet_app/helper/toast_message/toast_message.dart';
 import 'package:pet_app/service/api_service.dart';
 import 'package:pet_app/service/api_url.dart';
 
 class AuthController extends GetxController {
   RxBool rememberMe = false.obs;
+  final ImagePicker _imagePicker = ImagePicker();
   final ApiClient apiClient = serviceLocator();
   final DBHelper dbHelper = serviceLocator();
 
@@ -186,28 +193,27 @@ class AuthController extends GetxController {
   final TextEditingController phoneNumberSignUp = TextEditingController();
 
   Future<void> signUp()  async {
-/*    try{
+    try{
       signUpLoadingMethod(true);
       final body = {
         "name": nameSignUp.text,
         "email": emailSignUp.text,
         "password": passwordSignUp.text,
         "confirmPassword": confirmPasswordSignUp.text,
-        "phoneNumber":phoneNumberSignUp.text,
-        "role": "USER"
-
+        "phone":phoneNumberSignUp.text,
+        "role": isUser.value?"user": "owner",
       };
 
-      var response = await apiClient.post(body: body, url: ApiUrl.register(),isBasic: true);
+      var response = await apiClient.post(body: body, url: ApiUrl.register(), isBasic: true);
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         signUpLoadingMethod(false);
         toastMessage(message: response.body?['message'].toString());
         final body ={
           "email": emailSignUp.text,
           "isSignUp": true,
         };
-        AppRouter.route.pushNamed(RoutePath.verifyOtpScreen, extra: body);
+        AppRouter.route.pushNamed(RoutePath.accountActiveOtpScreen,extra: body);
         nameSignUp.clear();
         emailSignUp.clear();
         passwordSignUp.clear();
@@ -219,7 +225,7 @@ class AuthController extends GetxController {
       }
     }catch (err){
       signUpLoadingMethod(false);
-    }*/
+    }
   }
 
   /// ============================= Active Account Otp =====================================
@@ -230,30 +236,39 @@ class AuthController extends GetxController {
   final TextEditingController accountVerifyOtp = TextEditingController();
 
   Future<void> activeAccount({required String email}) async {
-/*    try {
+    try {
       activeMethod(true);
 
       final body = {
         "email": email,
-        "activationCode": accountVerifyOtp.text.trim()
+        "code": accountVerifyOtp.text.trim()
       };
       print("verifyOtpScreen1");
       var response = await apiClient.post(body: body, url: ApiUrl.activateOtp(), isBasic: true);
       print("verifyOtpScreen2");
-      if (response.statusCode == 201) {
-        final accessToken = response.body?['data']?['accessToken'];
+      if (response.statusCode == 200) {
+        final accessToken = response.body?['accessToken'];
 
         Map<String, dynamic> decodedToken = JwtDecoder.decode(accessToken??'');
-
+        final role = decodedToken['role'] ?? "";
         dbHelper.saveUserdata(
           token: accessToken??'',
           id: decodedToken['userId']??"",
           email: decodedToken['email']??"",
-          role:  decodedToken['role']??"",
+          role:  role,
         ).then((value){
           activeMethod(false);
-         AppRouter.route.goNamed(RoutePath.navigationPage,);
-          accountVerifyOtp.clear();
+      /*   AppRouter.route.goNamed(RoutePath.navigationPage,);*/
+          if(role == "user"){
+            AppRouter.route.goNamed(RoutePath.petRegistrationScreen);
+            accountVerifyOtp.clear();
+
+          }else{
+            AppRouter.route.goNamed(RoutePath.petShopRegistrationScreen);
+            accountVerifyOtp.clear();
+          }
+
+         /* accountVerifyOtp.dispose();*/
         }).onError((error,stack){
           activeMethod(false);
           toastMessage(message: error.toString());
@@ -264,14 +279,14 @@ class AuthController extends GetxController {
       }
     } catch (err) {
       activeMethod(false);
-    }*/
+    }
   }
 
   /// ============================= Resend OTP Account Active =====================================
   RxBool resendActiveLoading = false.obs;
   resendActiveLoadingMethod(bool status) => resendActiveLoading.value = status;
   Future<void> resendActiveOTP({required String email}) async {
-/*    try {
+    try {
       resendActiveLoadingMethod(true);
       var response = await apiClient.post(body: {"email": email}, url: ApiUrl.resendActiveOtp(), isBasic: true);
       if (response.statusCode == 200) {
@@ -283,7 +298,74 @@ class AuthController extends GetxController {
       }
     } catch (err) {
       resendActiveLoadingMethod(false);
-    }*/
+    }
+  }
+
+
+
+
+  ///Pet Shop Registration
+  RxBool shopRegistrationUpLoading = false.obs;
+  Rx<XFile?> selectedLogo = Rx<XFile?>(null);
+  Rx<XFile?> selectedPic = Rx<XFile?>(null);
+  shopRegistrationUpLoadingMethod(bool status) => shopRegistrationUpLoading.value = status;
+
+  final TextEditingController businessName = TextEditingController();
+  final TextEditingController address = TextEditingController();
+  final TextEditingController website = TextEditingController();
+  final TextEditingController moreInfo = TextEditingController();
+
+  Future<void> shopLogo() async {
+    XFile? image = await _imagePicker.pickImage(source: ImageSource.gallery, imageQuality: 80);
+    if (image != null) {
+      selectedLogo.value = image;
+    }
+  }
+
+
+  Future<void> shopPic() async {
+    XFile? image = await _imagePicker.pickImage(source: ImageSource.gallery, imageQuality: 80);
+    if (image != null) {
+      selectedPic.value = image;
+    }
+  }
+
+
+  Future<void> petShopRegistration()  async {
+    try{
+      shopRegistrationUpLoadingMethod(true);
+      final body = {
+        "businessName": businessName.text,
+        "address": address.text,
+        "website": website.text,
+        "moreInfo": moreInfo.text,
+      };
+      final List<MultipartBody> multipartBody = [];
+      if(selectedLogo.value != null){
+        multipartBody.add(MultipartBody("shopLogo", File(selectedLogo.value?.path?? "")));
+      }
+      if(selectedPic.value != null){
+        multipartBody.add(MultipartBody("shopPic", File(selectedPic.value?.path?? "")));
+      }
+      var response = await apiClient.multipartRequest(body: body, url: ApiUrl.shopRegistration(), reqType: 'POST', multipartBody: multipartBody);
+
+      if (response.statusCode == 201) {
+        shopRegistrationUpLoadingMethod(false);
+        toastMessage(message: response.body?['message'].toString());
+
+        AppRouter.route.pushNamed(RoutePath.subscriptionScreen,);
+        businessName.clear();
+        address.clear();
+        website.clear();
+        moreInfo.clear();
+      } else {
+        shopRegistrationUpLoadingMethod(false);
+        toastMessage(message: response.body?['message'].toString());
+      }
+    }catch (err){
+      shopRegistrationUpLoadingMethod(false);
+    }
   }
 
 }
+

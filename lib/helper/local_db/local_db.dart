@@ -29,6 +29,26 @@ class DBHelper {
     }
   }
 
+  Future<bool> saveProfile() async {
+    try{
+      SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+      return sharedPreferences.getBool('isAlreadySubscribe') ?? false;
+    }catch(e){
+      log.i('|📍📍📍|----------------- [[ DB HELPER ]] Subscribe Error -----------------|📍📍📍|');
+      return false;
+    }
+  }
+
+  Future<bool> getProfile() async {
+    try{
+      SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+      return sharedPreferences.getBool('isAlreadySubscribe') ?? false;
+    }catch(e){
+      log.i('|📍📍📍|----------------- [[ DB HELPER ]] Subscribe Error -----------------|📍📍📍|');
+      return false;
+    }
+  }
+
 
   /// ====================== Get Token ====================
   Future<String> getToken() async {
