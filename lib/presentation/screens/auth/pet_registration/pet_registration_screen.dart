@@ -10,6 +10,7 @@ import 'package:pet_app/core/custom_assets/assets.gen.dart';
 import 'package:pet_app/core/route/route_path.dart';
 import 'package:pet_app/core/route/routes.dart';
 import 'package:pet_app/helper/image/network_image.dart';
+import 'package:pet_app/helper/toast_message/toast_message.dart';
 import 'package:pet_app/presentation/components/custom_button/custom_button.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:pet_app/presentation/components/custom_text_field/custom_text_field.dart';
@@ -27,7 +28,7 @@ class PetRegistrationScreen extends StatefulWidget {
 
 class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
   final _authController = GetControllers.instance.getAuthController();
-  final _profileController = GetControllers.instance.getProfileController();
+/*  final _profileController = GetControllers.instance.getProfileController();*/
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -59,7 +60,7 @@ class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
                 fillColor: Colors.white,
                 hintText: "Enter your pet name",
                 keyboardType: TextInputType.text,
-                textEditingController: _authController.nameSignUp,
+                textEditingController: _authController.name,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter your name';
@@ -82,7 +83,7 @@ class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
                 fieldBorderRadius: 10,
                 fillColor: Colors.white,
                 keyboardType: TextInputType.phone,
-                textEditingController: _authController.emailSignUp,
+                textEditingController: _authController.age,
               ),
               Gap(14),
               CustomAlignText(
@@ -91,7 +92,7 @@ class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
               ),
               Gap(8.0),
               CustomTextField(
-                textEditingController: _authController.phoneNumberSignUp,
+                textEditingController: _authController.gender,
                 fieldBorderColor: AppColors.purple500,
                 fieldBorderRadius: 10,
                 fillColor: Colors.white,
@@ -113,7 +114,7 @@ class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
                 hintText: AppStrings.enterWight,
 
                 keyboardType: TextInputType.visiblePassword,
-                textEditingController: _authController.passwordSignUp,
+                textEditingController: _authController.weight,
               ),
               Gap(14),
               CustomAlignText(
@@ -128,7 +129,7 @@ class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
                 hintText: AppStrings.enterHeight,
 
                 keyboardType: TextInputType.visiblePassword,
-                textEditingController: _authController.confirmPasswordSignUp,
+                textEditingController: _authController.height,
               ),
               Gap(14),
               CustomAlignText(
@@ -143,7 +144,7 @@ class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
                 hintText: AppStrings.enterColor,
 
                 keyboardType: TextInputType.text,
-                textEditingController: _authController.confirmPasswordSignUp,
+                textEditingController: _authController.color,
               ),
               Gap(14),
               CustomAlignText(
@@ -158,7 +159,7 @@ class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
                 hintText: AppStrings.enterPetBreed,
 
                 keyboardType: TextInputType.text,
-                textEditingController: _authController.confirmPasswordSignUp,
+                textEditingController: _authController.breed,
               ),
               Gap(14),
               CustomAlignText(
@@ -173,7 +174,7 @@ class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
                 hintText: AppStrings.enterMoreInformation,
 
                 keyboardType: TextInputType.text,
-                textEditingController: _authController.confirmPasswordSignUp,
+                textEditingController: _authController.description,
               ),
               Gap(14),
               CustomAlignText(
@@ -182,12 +183,12 @@ class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
               ),
               Gap(8.0),
               GestureDetector(
-                onTap: _profileController.pickImage,
+                onTap: _authController.petPhoto,
                 child: SizedBox(
                   height: 156.h,
                   width: double.infinity,
                   child: Obx(() {
-                    final image = _profileController.selectedImage.value?.path;
+                    final image = _authController.selectedPetPhoto.value?.path;
                     return Stack(
                       children: [
                         Positioned.fill(
@@ -197,8 +198,8 @@ class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
                                     borderRadius: BorderRadius.circular(6),
                                     child: Image.file(
                                       File(
-                                        _profileController
-                                                .selectedImage
+                                        _authController
+                                                .selectedPetPhoto
                                                 .value
                                                 ?.path ??
                                             "",
@@ -315,15 +316,21 @@ class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
               Gap(24),
               Obx(() {
                 return CustomButton(
-                  isLoading: _authController.loginLoading.value,
-                  title: " Continue   ",
+                  isLoading: _authController.petRegistrationUpLoading.value,
+                  title: " Continue",
                   textColor: Colors.black,
                   showIcon: false,
                   onTap: () {
-                    /*    if (_formKey.currentState!.validate()) {
-                          _authController.signUp();
-                        }*/
-                    AppRouter.route.goNamed(RoutePath.navigationPage);
+
+                    if(_authController.rememberMe.value){
+
+                      if (_formKey.currentState!.validate()) {
+                        _authController.petRegistration();
+                      }
+                    }else{
+                      toastMessage(message:"Please agree trems and conditions");
+                    }
+                  /*  AppRouter.route.goNamed(RoutePath.navigationPage);*/
                   },
                 );
               }),

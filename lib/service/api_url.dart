@@ -25,6 +25,7 @@ class ApiUrl {
   /// Pet Shop Registration
 
   static shopRegistration() => '$base/business/create';
+  static petRegistration() => '$base/pet/create';
 
   ///=====================================
   static getTerms() => '$base/manage/get-terms-conditions';

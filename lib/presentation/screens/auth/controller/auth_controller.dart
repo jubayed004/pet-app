@@ -204,6 +204,8 @@ class AuthController extends GetxController {
         "role": isUser.value?"user": "owner",
       };
 
+      print(body);
+
       var response = await apiClient.post(body: body, url: ApiUrl.register(), isBasic: true);
 
       if (response.statusCode == 201) {
@@ -259,7 +261,7 @@ class AuthController extends GetxController {
         ).then((value){
           activeMethod(false);
       /*   AppRouter.route.goNamed(RoutePath.navigationPage,);*/
-          if(role == "user"){
+          if(role == "USER"){
             AppRouter.route.goNamed(RoutePath.petRegistrationScreen);
             accountVerifyOtp.clear();
 
@@ -304,7 +306,7 @@ class AuthController extends GetxController {
 
 
 
-  ///Pet Shop Registration
+  ///==============Pet Shop Registration
   RxBool shopRegistrationUpLoading = false.obs;
   Rx<XFile?> selectedLogo = Rx<XFile?>(null);
   Rx<XFile?> selectedPic = Rx<XFile?>(null);
@@ -364,6 +366,77 @@ class AuthController extends GetxController {
       }
     }catch (err){
       shopRegistrationUpLoadingMethod(false);
+    }
+  }
+
+
+
+
+  ///==============Pet Registration
+  RxBool petRegistrationUpLoading = false.obs;
+  Rx<XFile?> selectedPetPhoto = Rx<XFile?>(null);
+  petRegistrationUpLoadingMethod(bool status) => petRegistrationUpLoading.value = status;
+
+  final TextEditingController name = TextEditingController();
+  final TextEditingController animalType = TextEditingController();
+  final TextEditingController breed = TextEditingController();
+  final TextEditingController age = TextEditingController();
+  final TextEditingController gender = TextEditingController();
+  final TextEditingController weight = TextEditingController();
+  final TextEditingController height = TextEditingController();
+  final TextEditingController color = TextEditingController();
+  final TextEditingController description = TextEditingController();
+
+
+  Future<void> petPhoto() async {
+    XFile? image = await _imagePicker.pickImage(source: ImageSource.gallery, imageQuality: 80);
+    if (image != null) {
+      selectedPetPhoto.value = image;
+    }
+  }
+
+
+  Future<void> petRegistration()  async {
+    try{
+      petRegistrationUpLoadingMethod(true);
+      final body = {
+        "name": name.text,
+        "animalType": animalType.text,
+        "breed": breed.text,
+        "gender": gender.text,
+        "weight": weight.text,
+        "height": height.text,
+        "color": color.text,
+        "description": description.text,
+      };
+      print(body);
+
+      final List<MultipartBody> multipartBody = [];
+
+      if(selectedPetPhoto.value != null){
+        multipartBody.add(MultipartBody("petPhoto", File(selectedPetPhoto.value?.path?? "")));
+      }
+      var response = await apiClient.multipartRequest(body: body, url: ApiUrl.petRegistration(), reqType: 'POST', multipartBody: multipartBody);
+
+      if (response.statusCode == 201) {
+        petRegistrationUpLoadingMethod(false);
+        toastMessage(message: response.body?['message'].toString());
+
+        AppRouter.route.pushNamed(RoutePath.subscriptionScreen,);
+        name.clear();
+        animalType.clear();
+        breed.clear();
+        gender.clear();
+        weight.clear();
+        height.clear();
+        color.clear();
+        description.clear();
+      } else {
+        petRegistrationUpLoadingMethod(false);
+        toastMessage(message: response.body?['message'].toString());
+      }
+    }catch (err){
+      petRegistrationUpLoadingMethod(false);
     }
   }
 
