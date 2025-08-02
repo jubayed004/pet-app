@@ -73,9 +73,9 @@ class ForgotPassScreen extends StatelessWidget {
                     isLoading: _authController.forgetLoading.value,
                     title: "Send Code", onTap: () {
 
-              /*      if (_formKey.currentState!.validate()) {
+                    if (_formKey.currentState!.validate()) {
                       _authController.forget();
-                    }*/
+                    }
                     
                     AppRouter.route.pushNamed(RoutePath.verifyOtpScreen);
                   },

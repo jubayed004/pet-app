@@ -9,6 +9,7 @@ import 'package:pet_app/core/route/route_path.dart';
 import 'package:pet_app/core/route/routes.dart';
 import 'package:pet_app/helper/local_db/local_db.dart';
 import 'package:pet_app/helper/toast_message/toast_message.dart';
+import 'package:pet_app/presentation/screens/auth/model/login_model.dart';
 import 'package:pet_app/service/api_service.dart';
 import 'package:pet_app/service/api_url.dart';
 
@@ -27,16 +28,12 @@ class AuthController extends GetxController {
   ///Login
   ///yodihe8254@oziere.com
   ///siwonej364@framitag.com
-  final TextEditingController email = TextEditingController();
-  final TextEditingController password = TextEditingController();
 
-  Future<void> login() async {
-/*    try {
+
+  Future<void> login({required Map<String, String> body}) async {
+    try {
       loginMethod(true);
-      final body = {
-        "email": email.text.trim(),
-        "password": password.text
-      };
+
 
       var response = await apiClient.post(body: body, url: ApiUrl.login(), isBasic: true);
 
@@ -54,8 +51,6 @@ class AuthController extends GetxController {
         ).then((value){
           loginMethod(false);
           AppRouter.route.goNamed(RoutePath.navigationPage);
-          email.clear();
-          password.clear();
         }).onError((error,stack){
           loginMethod(false);
           toastMessage(message: error.toString());
@@ -66,7 +61,7 @@ class AuthController extends GetxController {
       }
     } catch (err) {
       loginMethod(false);
-    }*/
+    }
   }
 
   /// ============================= Forget Password =====================================
@@ -373,19 +368,13 @@ class AuthController extends GetxController {
 
 
   ///==============Pet Registration
+
+  var genderSelected = Rx<String>("MALE");
   RxBool petRegistrationUpLoading = false.obs;
   Rx<XFile?> selectedPetPhoto = Rx<XFile?>(null);
   petRegistrationUpLoadingMethod(bool status) => petRegistrationUpLoading.value = status;
 
-  final TextEditingController name = TextEditingController();
-  final TextEditingController animalType = TextEditingController();
-  final TextEditingController breed = TextEditingController();
-  final TextEditingController age = TextEditingController();
-  final TextEditingController gender = TextEditingController();
-  final TextEditingController weight = TextEditingController();
-  final TextEditingController height = TextEditingController();
-  final TextEditingController color = TextEditingController();
-  final TextEditingController description = TextEditingController();
+
 
 
   Future<void> petPhoto() async {
@@ -396,19 +385,9 @@ class AuthController extends GetxController {
   }
 
 
-  Future<void> petRegistration()  async {
+  Future<void> petRegistration({required Map<String, String> body})  async {
     try{
       petRegistrationUpLoadingMethod(true);
-      final body = {
-        "name": name.text,
-        "animalType": animalType.text,
-        "breed": breed.text,
-        "gender": gender.text,
-        "weight": weight.text,
-        "height": height.text,
-        "color": color.text,
-        "description": description.text,
-      };
       print(body);
 
       final List<MultipartBody> multipartBody = [];
@@ -423,14 +402,6 @@ class AuthController extends GetxController {
         toastMessage(message: response.body?['message'].toString());
 
         AppRouter.route.pushNamed(RoutePath.subscriptionScreen,);
-        name.clear();
-        animalType.clear();
-        breed.clear();
-        gender.clear();
-        weight.clear();
-        height.clear();
-        color.clear();
-        description.clear();
       } else {
         petRegistrationUpLoadingMethod(false);
         toastMessage(message: response.body?['message'].toString());

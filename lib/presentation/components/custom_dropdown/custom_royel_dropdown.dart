@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:service_provider_app/core/components/custom_Controller/custom_controller.dart';
 import 'package:service_provider_app/core/components/custom_text/custom_text.dart';
 import 'package:service_provider_app/core/utils/app_colors/app_colors.dart';
@@ -49,10 +50,9 @@ class CustomRoyelDropdown extends StatelessWidget {
           borderRadius: BorderRadius.circular(15.0),
           border: Border.all(
               color: Colors.black, style: BorderStyle.solid, width: 1),
-        */
-/*  border: isBorder
+          border: isBorder
               ? Border.all(color: textColor, width: borderWidth ?? .05)
-              : null,*//*
+              : null,
 
          color: fillColor,
         ),
@@ -99,4 +99,5 @@ class CustomRoyelDropdown extends StatelessWidget {
       );
     });
   }
-}*/
+}
+*/

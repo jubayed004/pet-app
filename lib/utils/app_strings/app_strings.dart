@@ -173,6 +173,7 @@ static const String confirmYourNewPassword = "Confirm your new password";
   static const String editProfile  = "Edit Profile ";
   static const String reviews  = "Reviews ";
   static const String shareMore  = "Share more about your experience ";
+  static const String petType  = "PetType";
 
 
 

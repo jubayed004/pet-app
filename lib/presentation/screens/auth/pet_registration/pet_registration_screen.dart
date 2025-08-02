@@ -12,6 +12,7 @@ import 'package:pet_app/core/route/routes.dart';
 import 'package:pet_app/helper/image/network_image.dart';
 import 'package:pet_app/helper/toast_message/toast_message.dart';
 import 'package:pet_app/presentation/components/custom_button/custom_button.dart';
+import 'package:pet_app/presentation/components/custom_dropdown/custom_drop_down_button.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:pet_app/presentation/components/custom_text_field/custom_text_field.dart';
 import 'package:pet_app/presentation/widget/align/custom_align_text.dart';
@@ -20,6 +21,7 @@ import 'package:pet_app/utils/app_images/app_images.dart';
 import 'package:pet_app/utils/app_strings/app_strings.dart';
 
 class PetRegistrationScreen extends StatefulWidget {
+
   const PetRegistrationScreen({super.key});
 
   @override
@@ -27,6 +29,30 @@ class PetRegistrationScreen extends StatefulWidget {
 }
 
 class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
+
+  final TextEditingController name = TextEditingController();
+  final TextEditingController animalType = TextEditingController();
+  final TextEditingController breed = TextEditingController();
+  final TextEditingController age = TextEditingController();
+  final TextEditingController gender = TextEditingController();
+  final TextEditingController weight = TextEditingController();
+  final TextEditingController height = TextEditingController();
+  final TextEditingController color = TextEditingController();
+  final TextEditingController description = TextEditingController();
+
+  @override
+  void dispose() {
+    name.dispose();
+    animalType.dispose();
+    breed.dispose();
+    age.dispose();
+    gender.dispose();
+    weight.dispose();
+    height.dispose();
+    color.dispose();
+    description.dispose();
+    super.dispose();
+  }
   final _authController = GetControllers.instance.getAuthController();
 /*  final _profileController = GetControllers.instance.getProfileController();*/
   final _formKey = GlobalKey<FormState>();
@@ -60,7 +86,7 @@ class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
                 fillColor: Colors.white,
                 hintText: "Enter your pet name",
                 keyboardType: TextInputType.text,
-                textEditingController: _authController.name,
+                textEditingController: name,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter your name';
@@ -71,6 +97,31 @@ class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
                   return null; // Valid
                 },
               ),
+
+              Gap(14),
+              CustomAlignText(
+                text: AppStrings.petType,
+                fontWeight: FontWeight.w500,
+              ),
+              Gap(8.0),
+              CustomTextField(
+                hintText: AppStrings.petType,
+                fieldBorderColor: AppColors.purple500,
+                fieldBorderRadius: 10,
+                fillColor: Colors.white,
+                keyboardType: TextInputType.text,
+                textEditingController: animalType,
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return 'Pet type is required';
+                  }
+                  if (value.length < 3) {
+                    return 'Pet type must be at least 3 characters';
+                  }
+                  return null;
+                },
+              ),
+
               Gap(14),
               CustomAlignText(
                 text: AppStrings.age,
@@ -83,22 +134,56 @@ class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
                 fieldBorderRadius: 10,
                 fillColor: Colors.white,
                 keyboardType: TextInputType.phone,
-                textEditingController: _authController.age,
+                textEditingController: age,
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return 'Age is required';
+                  }
+                  final age = int.tryParse(value.trim());
+                  if (age == null) {
+                    return 'Please enter a valid number';
+                  }
+                  if (age <= 0) {
+                    return 'Age must be greater than 0';
+                  }
+                  return null;
+                },
               ),
+
               Gap(14),
-              CustomAlignText(
+          /*    CustomAlignText(
                 text: AppStrings.gender,
                 fontWeight: FontWeight.w500,
               ),
-              Gap(8.0),
-              CustomTextField(
-                textEditingController: _authController.gender,
+              Gap(8.0),*/
+              CustomDropdown(
+                onChanged: (value){
+                 if( value!=null){
+                   _authController.genderSelected.value = value;
+                 }
+                },
+                selectedValue: _authController.genderSelected.value,
+                title: AppStrings.gender,
+                items: ["MALE", "FEMALE"],
+              ),
+     /*         CustomTextField(
+                textEditingController: gender,
                 fieldBorderColor: AppColors.purple500,
                 fieldBorderRadius: 10,
                 fillColor: Colors.white,
                 hintText: AppStrings.enterGender,
                 keyboardType: TextInputType.text,
-              ),
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return 'Gender is required';
+                  }
+                  final lower = value.trim().toLowerCase();
+                  if (lower != 'male' && lower != 'female' && lower != 'other') {
+                    return 'Enter Male, Female, or Other';
+                  }
+                  return null;
+                },
+              ),*/
 
               Gap(14),
 
@@ -112,9 +197,8 @@ class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
                 fieldBorderRadius: 10,
                 fillColor: Colors.white,
                 hintText: AppStrings.enterWight,
-
                 keyboardType: TextInputType.visiblePassword,
-                textEditingController: _authController.weight,
+                textEditingController: weight,
               ),
               Gap(14),
               CustomAlignText(
@@ -127,9 +211,8 @@ class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
                 fieldBorderRadius: 10,
                 fillColor: Colors.white,
                 hintText: AppStrings.enterHeight,
-
                 keyboardType: TextInputType.visiblePassword,
-                textEditingController: _authController.height,
+                textEditingController: height,
               ),
               Gap(14),
               CustomAlignText(
@@ -142,9 +225,8 @@ class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
                 fieldBorderRadius: 10,
                 fillColor: Colors.white,
                 hintText: AppStrings.enterColor,
-
                 keyboardType: TextInputType.text,
-                textEditingController: _authController.color,
+                textEditingController: color,
               ),
               Gap(14),
               CustomAlignText(
@@ -157,10 +239,19 @@ class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
                 fieldBorderRadius: 10,
                 fillColor: Colors.white,
                 hintText: AppStrings.enterPetBreed,
-
                 keyboardType: TextInputType.text,
-                textEditingController: _authController.breed,
+                textEditingController: breed,
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return 'Pet breed is required';
+                  }
+                  if (value.trim().length < 2) {
+                    return 'Pet breed must be at least 2 characters';
+                  }
+                  return null;
+                },
               ),
+
               Gap(14),
               CustomAlignText(
                 text: AppStrings.moreInfo,
@@ -172,9 +263,8 @@ class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
                 fieldBorderRadius: 10,
                 fillColor: Colors.white,
                 hintText: AppStrings.enterMoreInformation,
-
                 keyboardType: TextInputType.text,
-                textEditingController: _authController.description,
+                textEditingController: description,
               ),
               Gap(14),
               CustomAlignText(
@@ -325,7 +415,18 @@ class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
                     if(_authController.rememberMe.value){
 
                       if (_formKey.currentState!.validate()) {
-                        _authController.petRegistration();
+                        final body = {
+                          "name": name.text,
+                          "animalType": animalType.text,
+                          "breed": breed.text,
+                          "gender":  _authController.genderSelected.value,
+                          "weight": weight.text,
+                          "height": height.text,
+                          "color": color.text,
+                          "age": age.text,
+                          "description": description.text,
+                        };
+                        _authController.petRegistration(body: body);
                       }
                     }else{
                       toastMessage(message:"Please agree trems and conditions");

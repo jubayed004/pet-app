@@ -8,6 +8,7 @@ import 'package:pet_app/controller/get_controllers.dart';
 import 'package:pet_app/core/custom_assets/assets.gen.dart';
 import 'package:pet_app/core/route/route_path.dart';
 import 'package:pet_app/core/route/routes.dart';
+import 'package:pet_app/helper/toast_message/toast_message.dart';
 import 'package:pet_app/presentation/components/custom_button/custom_button.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:pet_app/presentation/components/custom_text_field/custom_text_field.dart';
@@ -15,10 +16,25 @@ import 'package:pet_app/presentation/widget/align/custom_align_text.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
 import 'package:pet_app/utils/app_strings/app_strings.dart';
 
-class SignInScreen extends StatelessWidget {
+class SignInScreen extends StatefulWidget {
   SignInScreen({super.key});
+
+  @override
+  State<SignInScreen> createState() => _SignInScreenState();
+}
+
+class _SignInScreenState extends State<SignInScreen> {
+  final TextEditingController email = TextEditingController();
+  final TextEditingController password = TextEditingController();
   final _authController = GetControllers.instance.getAuthController();
   final _formKey = GlobalKey<FormState>();
+
+  @override
+  void dispose() {
+    email.dispose();
+    password.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +72,7 @@ class SignInScreen extends StatelessWidget {
                   fieldBorderRadius: 10,
                   fillColor: Colors.white,
                   keyboardType: TextInputType.emailAddress,
-                  textEditingController: _authController.email,
+                  textEditingController: email,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Email_is_required';
@@ -81,7 +97,7 @@ class SignInScreen extends StatelessWidget {
                   hintText: AppStrings.enterYourPassword,
                   isPassword: true,
                   keyboardType: TextInputType.text,
-                  textEditingController: _authController.password,
+                  textEditingController: password,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Password_is_required'.tr;
@@ -161,19 +177,26 @@ class SignInScreen extends StatelessWidget {
 
                 Gap(24),
               CustomButton(
-                // isLoading: _authController.loginLoading.value,
+                isLoading: _authController.loginLoading.value,
                 textColor: Colors.black,
                 title: AppStrings.signIn,
                 onTap: () {
-                  /*      if (_formKey.currentState!.validate()) {
-                        _authController.login();
-                      }*/
-
-                  if(_authController.isUser.value){
+                   if(_authController.rememberMe.value){
+                     if (_formKey.currentState!.validate()) {
+                       final body = {
+                         "email": email.text.trim(),
+                         "password": password.text
+                       };
+                       _authController.login(body:body);
+                     }
+                   }else{
+                     toastMessage(message:"Selected Remember Me");
+                   }
+          /*        if(_authController.isUser.value){
                     AppRouter.route.goNamed(RoutePath.navigationPage);
                   }else{
                     AppRouter.route.goNamed(RoutePath.navigationPage);
-                  }
+                  }*/
                 },
               ),
               /*  Obx(() {

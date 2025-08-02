@@ -86,4 +86,24 @@ class CustomButton extends StatelessWidget {
 }
 
 
+class DefaultProgressIndicator extends StatelessWidget {
+  final Color? color;
+  final double? strokeWidth;
+  const DefaultProgressIndicator({
+    super.key,
+    this.color,
+    this.strokeWidth,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox( height: 15.w,
+      width: 15.w,
+      child: CircularProgressIndicator(
+        color: color ?? AppColors.kWhiteColor,
+        strokeWidth: strokeWidth ?? 2,
+      ),
+    );
+  }
+}
 

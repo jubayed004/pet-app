@@ -20,6 +20,7 @@ import 'package:pet_app/utils/app_strings/app_strings.dart';
 
 class PetShopRegistrationScreen extends StatelessWidget {
    PetShopRegistrationScreen({super.key});
+
   final _authController = GetControllers.instance.getAuthController();
   /*final _profileController = GetControllers.instance.getProfileController();*/
   final _petShopRegistrationController = GetControllers.instance.getPetShopRegistrationController();
