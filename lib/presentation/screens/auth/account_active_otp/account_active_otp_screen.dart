@@ -14,24 +14,37 @@ import 'package:pet_app/presentation/widget/text_field/otp_text_field.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
 import 'package:pet_app/utils/app_strings/app_strings.dart';
 
-class AccountActiveOtpScreen extends StatelessWidget {
+class AccountActiveOtpScreen extends StatefulWidget {
   AccountActiveOtpScreen({super.key, required this.email, required this.isSignUp});
 
   final String email;
   final bool isSignUp;
 
+  @override
+  State<AccountActiveOtpScreen> createState() => _AccountActiveOtpScreenState();
+}
+
+class _AccountActiveOtpScreenState extends State<AccountActiveOtpScreen> {
   final _authController = GetControllers.instance.getAuthController();
+
   final _formKey = GlobalKey<FormState>();
+  final TextEditingController accountVerifyOtp = TextEditingController();
+
+  @override
+  void dispose() {
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    print(isSignUp);
+    print(widget.isSignUp);
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
-    print(isSignUp);
-    print(email);
+    print(widget.isSignUp);
+    print(widget.email);
 
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
@@ -54,7 +67,7 @@ class AccountActiveOtpScreen extends StatelessWidget {
                 Gap(8),
                 CustomText(
                   text:
-                      "${"Please enter the code we've sent to michelle.rivera@example.com"} $email",
+                      "${"Please enter the code we've sent to michelle.rivera@example.com"} ${widget.email}",
                   color: AppColors.secondTextColor,
                   maxLines: 2,
                   textAlign: TextAlign.center,
@@ -64,23 +77,16 @@ class AccountActiveOtpScreen extends StatelessWidget {
                 const Gap(24),
 
                 ///==================== PIN Put input Field =======================
-                isSignUp
-                    ? Align(
+                Align(
                       alignment: Alignment.center,
                       child: OtpTextField(
-                        controller: _authController.accountVerifyOtp,
-                      ),
-                    )
-                    : Align(
-                      alignment: Alignment.center,
-                      child: OtpTextField(
-                        controller: _authController.verifyOtp,
+                        controller:accountVerifyOtp,
                       ),
                     ),
+
                 Gap(8),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
-
                   children: [
                     RichText(
                       text: TextSpan(
@@ -92,13 +98,10 @@ class AccountActiveOtpScreen extends StatelessWidget {
                         ),
                         children: [
                           TextSpan(
-                            text: isSignUp
-                                ? (_authController.resendActiveLoading.value
-                                ? "loading"
-                                : "Resend Otp")
-                                : (_authController.resendOTPLoading.value
+                            text:(_authController.resendActiveLoading.value
                                 ? "loading"
                                 : "Resend Otp"),
+
                             style: TextStyle(
                               color: AppColors.purple500,
                               fontWeight: FontWeight.w600,
@@ -106,14 +109,8 @@ class AccountActiveOtpScreen extends StatelessWidget {
                             ),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
-                                if (isSignUp) {
-                                  if (!_authController.resendActiveLoading.value) {
-                                    _authController.resendActiveOTP(email: email);
-                                  }
-                                } else {
-                                  if (!_authController.resendOTPLoading.value) {
-                                    _authController.resendOTP(email: email);
-                                  }
+                                if (!_authController.resendActiveLoading.value) {
+                                  _authController.resendActiveOTP(email: widget.email);
                                 }
 
                               },
@@ -121,7 +118,6 @@ class AccountActiveOtpScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-
                     /* Obx(
                           () => TextButton(
                         onPressed: () {
@@ -160,30 +156,25 @@ class AccountActiveOtpScreen extends StatelessWidget {
                   ],
                 ),
                 Gap(24),
-
                 CustomButton(
                   isLoading:
-                      isSignUp
+                      widget.isSignUp
                           ? _authController.activeLoading.value
                           : _authController.otpLoading.value,
                   title: "Confirm",
                   onTap: () {
                     print("verifyOtpScreen");
-                    if (isSignUp) {
-                      _authController.activeAccount(email: email);
+                    if (widget.isSignUp) {
+                      _authController.activeAccount(email: widget.email);
                     } else {
-                      _authController.otpVerify(email: email);
+                      _authController.otpVerify(email: widget.email);
                     }
-
-
                /*     if (isSignUp){
-
                     }else{
                       AppRouter.route.pushNamed(RoutePath.setNewPassword,extra: "text@gmail.com");
                     }*/
 
                   },
-
                   /*    isLoading: isSignUp
                         ? _authController.activeLoading.value
                         : _authController.otpLoading.value,

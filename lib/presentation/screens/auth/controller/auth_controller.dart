@@ -41,12 +41,12 @@ class AuthController extends GetxController {
 
         final loginModel = LoginModel.fromJson(response.body);
 
-        Map<String, dynamic> decodedToken = JwtDecoder.decode(loginModel.data?.accessToken??'');
+        Map<String, dynamic> decodedToken = JwtDecoder.decode(loginModel.accessToken??'');
 
         dbHelper.saveUserdata(
-          token: loginModel.data?.accessToken??'',
-          id: loginModel.data?.profileId??"",
-          email: decodedToken['email']??"",
+          token: loginModel.accessToken??'',
+          id: decodedToken['id']??"",
+          email: loginModel.user?.email ?? "",
           role:  decodedToken['role']??"",
         ).then((value){
           loginMethod(false);
@@ -61,35 +61,32 @@ class AuthController extends GetxController {
       }
     } catch (err) {
       loginMethod(false);
+      print(err.toString());
+
     }
   }
 
   /// ============================= Forget Password =====================================
   RxBool forgetLoading = false.obs;
   forgetMethod(bool status) => forgetLoading.value = status;
-  final TextEditingController forgetEmail = TextEditingController();
 
-  void forget() async {
-/*    try {
+  void forget({required String email}) async {
+    try {
       forgetMethod(true);
-      var response = await apiClient.post(body: {"email": forgetEmail.text}, url: ApiUrl.forget(), isBasic: true);
+      var response = await apiClient.post(body: {"email": email}, url: ApiUrl.forget(), isBasic: true);
 
       if (response.statusCode == 200) {
         forgetMethod(false);
         toastMessage(message: response.body?['message']?.toString());
-        final body = {
-          "email":forgetEmail.text,
-          "isSignUp": false,
-        };
-        AppRouter.route.pushNamed(RoutePath.verifyOtpScreen, extra: body);
-        forgetEmail.clear();
+
+        AppRouter.route.pushNamed(RoutePath.verifyOtpScreen, extra: email);
       } else {
         forgetMethod(false);
         toastMessage(message: response.body?['message']?.toString());
       }
     } catch (err) {
       forgetMethod(false);
-    }*/
+    }
   }
 
   /// ============================= Verify OTP =====================================
@@ -98,7 +95,7 @@ class AuthController extends GetxController {
   final TextEditingController verifyOtp = TextEditingController();
 
   void otpVerify({required String email}) async {
-/*    try {
+    try {
       otpMethod(true);
       final body = {
         "email": email,
@@ -119,7 +116,7 @@ class AuthController extends GetxController {
       }
     } catch (err) {
       otpMethod(false);
-    }*/
+    }
 
   }
 
@@ -147,17 +144,12 @@ class AuthController extends GetxController {
   /// ============================= Reset Password =====================================
   RxBool resetLoading = false.obs;
   resetMethod(bool status) => resetLoading.value = status;
-  final TextEditingController resetPassword = TextEditingController();
-  final TextEditingController resetConfirmPassword = TextEditingController();
 
-  void reset({required String email}) async {
-/*    try {
+
+  void reset({ required Map<String, dynamic> body }) async {
+    try {
       resetMethod(true);
-      final body = {
-        "email": email,
-        "password": resetPassword.text,
-        "confirmPassword": resetConfirmPassword.text
-      };
+
 
       var response = await apiClient.post(body: body, url: ApiUrl.reset(), isBasic: true);
 
@@ -165,15 +157,14 @@ class AuthController extends GetxController {
         resetMethod(false);
         toastMessage(message: response.body?['message']?.toString());
         AppRouter.route.goNamed(RoutePath.signInScreen);
-        resetPassword.clear();
-        resetConfirmPassword.clear();
+
       } else {
         resetMethod(false);
         toastMessage(message: response.body?['message']?.toString());
       }
     } catch (err) {
       resetMethod(false);
-    }*/
+    }
   }
 
   /// ============================= Sign Up ===========================================

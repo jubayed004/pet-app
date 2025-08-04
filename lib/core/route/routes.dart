@@ -121,11 +121,10 @@ class AppRouter {
         name: RoutePath.verifyOtpScreen,
         path: RoutePath.verifyOtpScreen.addBasePath,
         pageBuilder: (context, state) {
-          final extra = state.extra as Map<String, dynamic>? ?? {};
+          final extra = state.extra != null && state.extra is String ? state.extra as String : "";
           return _buildPageWithAnimation(
             child: VerifyOtpScreen(
-              email: extra["email"] as String? ?? "",
-              isSignUp: extra["isSignUp"] as bool? ?? false,
+              email: extra,
             ),
             state: state,
           );
@@ -150,7 +149,7 @@ class AppRouter {
         path: RoutePath.setNewPassword.addBasePath,
         pageBuilder:
             (context, state) => _buildPageWithAnimation(
-              child: SetNewPassword(email: state.extra as String),
+              child: SetNewPassword(email: state.extra as String, code: state.extra as String,),
               state: state,
             ),
       ),

@@ -10,14 +10,21 @@ import 'package:pet_app/presentation/components/custom_text_field/custom_text_fi
 import 'package:pet_app/presentation/widget/align/custom_align_text.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
 
-class SetNewPassword extends StatelessWidget {
-  SetNewPassword({super.key, required this.email});
+class SetNewPassword extends StatefulWidget {
+  SetNewPassword({super.key, required this.email, required this.code});
 
   final String email;
+  final String code;
 
+  @override
+  State<SetNewPassword> createState() => _SetNewPasswordState();
+}
+
+class _SetNewPasswordState extends State<SetNewPassword> {
   final _authController = GetControllers.instance.getAuthController();
   final _formKey = GlobalKey<FormState>();
-
+  final TextEditingController resetPassword = TextEditingController();
+  final TextEditingController resetConfirmPassword = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,14 +48,14 @@ class SetNewPassword extends StatelessWidget {
 
                 ///=============================== Password text ==================================
                 const Gap(12),
-                CustomAlignText(text: "password"),
+                CustomAlignText(text: "New password"),
                 const Gap(8),
                 CustomTextField(
                   fillColor: AppColors.kWhiteColor,
                   hintText: "enter your password",
                   isPassword: true,
                   keyboardType: TextInputType.text,
-                  textEditingController: _authController.resetPassword,
+                  textEditingController: resetPassword,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Password is required';
@@ -69,11 +76,11 @@ class SetNewPassword extends StatelessWidget {
                   hintText: "confirm your password",
                   isPassword: true,
                   keyboardType: TextInputType.text,
-                  textEditingController: _authController.resetConfirmPassword,
+                  textEditingController: resetConfirmPassword,
                   validator: (value) {
                     if (value!.isEmpty) {
                       return "field can't be empty";
-                    } else if (value != _authController.resetPassword.text) {
+                    } else if (value != resetPassword.text) {
                       return "password should match";
                     }
                     return null;
@@ -84,10 +91,16 @@ class SetNewPassword extends StatelessWidget {
                   return CustomButton(
                     isLoading: _authController.resetLoading.value,
                       title: "confirm", onTap: () {
-                   /* if (_formKey.currentState!.validate()) {
-                      _authController.reset(email: email);
-                    }*/
-                    AppRouter.route.goNamed(RoutePath.signInScreen);
+                    if (_formKey.currentState!.validate()) {
+                      final body = {
+                        "email": widget.email,
+                        "code": widget.code,
+                        "password": resetPassword.text,
+                        "confirmPassword": resetConfirmPassword.text
+                      };
+                      _authController.reset(body: body);
+                    }
+                  /*  AppRouter.route.goNamed(RoutePath.signInScreen);*/
                   });
                 }),
                 Gap(24),

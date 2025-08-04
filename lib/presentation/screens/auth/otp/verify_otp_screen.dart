@@ -15,22 +15,22 @@ import 'package:pet_app/utils/app_colors/app_colors.dart';
 import 'package:pet_app/utils/app_strings/app_strings.dart';
 
 class VerifyOtpScreen extends StatelessWidget {
-  VerifyOtpScreen({super.key, required this.email, required this.isSignUp});
+  VerifyOtpScreen({super.key, required this.email,});
 
   final String email;
-  final bool isSignUp;
+
 
   final _authController = GetControllers.instance.getAuthController();
   final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    print(isSignUp);
+
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
-    print(isSignUp);
+
     print(email);
 
     return Scaffold(
@@ -64,14 +64,8 @@ class VerifyOtpScreen extends StatelessWidget {
                 const Gap(24),
 
                 ///==================== PIN Put input Field =======================
-                isSignUp
-                    ? Align(
-                      alignment: Alignment.center,
-                      child: OtpTextField(
-                        controller: _authController.accountVerifyOtp,
-                      ),
-                    )
-                    : Align(
+
+                  Align(
                       alignment: Alignment.center,
                       child: OtpTextField(
                         controller: _authController.verifyOtp,
@@ -92,11 +86,7 @@ class VerifyOtpScreen extends StatelessWidget {
                         ),
                         children: [
                           TextSpan(
-                            text: isSignUp
-                                ? (_authController.resendActiveLoading.value
-                                ? "loading"
-                                : "Resend Otp")
-                                : (_authController.resendOTPLoading.value
+                            text: (_authController.resendOTPLoading.value
                                 ? "loading"
                                 : "Resend Otp"),
                             style: TextStyle(
@@ -106,14 +96,8 @@ class VerifyOtpScreen extends StatelessWidget {
                             ),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
-                                if (isSignUp) {
-                                  if (!_authController.resendActiveLoading.value) {
-                                    _authController.resendActiveOTP(email: email);
-                                  }
-                                } else {
-                                  if (!_authController.resendOTPLoading.value) {
-                                    _authController.resendOTP(email: email);
-                                  }
+                                if (!_authController.resendOTPLoading.value) {
+                                  _authController.resendOTP(email: email);
                                 }
 
                               },
@@ -162,20 +146,12 @@ class VerifyOtpScreen extends StatelessWidget {
                 Gap(24),
 
                 CustomButton(
-                  isLoading:
-                      isSignUp
-                          ? _authController.activeLoading.value
-                          : _authController.otpLoading.value,
+                  isLoading: _authController.otpLoading.value,
                   title: "Confirm",
                   onTap: () {
-               /*     print("verifyOtpScreen");
-                    if (isSignUp) {
-                      _authController.activeAccount(email: email);
-                    } else {
-                      _authController.otpVerify(email: email);
-                    }*/
-
-                    if (isSignUp){
+                    print("verifyOtpScreen");
+                    _authController.otpVerify(email: email);
+                /*    if (isSignUp){
                       if(_authController.isUser.value){
                         AppRouter.route.goNamed(RoutePath.petRegistrationScreen);
                       }else{
@@ -183,10 +159,8 @@ class VerifyOtpScreen extends StatelessWidget {
                       }
                     }else{
                       AppRouter.route.pushNamed(RoutePath.setNewPassword,extra: "text@gmail.com");
-                    }
-
+                    }*/
                   },
-
                   /*    isLoading: isSignUp
                         ? _authController.activeLoading.value
                         : _authController.otpLoading.value,

@@ -12,12 +12,24 @@ import 'package:pet_app/utils/app_colors/app_colors.dart';
 import 'package:pet_app/utils/app_strings/app_strings.dart';
 
 
-class ForgotPassScreen extends StatelessWidget {
-  ForgotPassScreen({super.key});
+class ForgotPassScreen extends StatefulWidget {
+  const ForgotPassScreen({super.key});
 
+  @override
+  State<ForgotPassScreen> createState() => _ForgotPassScreenState();
+}
+
+class _ForgotPassScreenState extends State<ForgotPassScreen> {
   final _authController = GetControllers.instance.getAuthController();
-  final _formKey = GlobalKey<FormState>();
 
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController forgetEmail = TextEditingController();
+
+  @override
+  void dispose() {
+    forgetEmail.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,7 +64,7 @@ class ForgotPassScreen extends StatelessWidget {
                   fillColor: Colors.white,
                   hintText: "Verify Your Email",
                   keyboardType: TextInputType.emailAddress,
-                  textEditingController: _authController.forgetEmail,
+                  textEditingController: forgetEmail,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Email_is_required'.tr;
@@ -74,10 +86,9 @@ class ForgotPassScreen extends StatelessWidget {
                     title: "Send Code", onTap: () {
 
                     if (_formKey.currentState!.validate()) {
-                      _authController.forget();
+                      _authController.forget(email : forgetEmail.text);
                     }
-                    
-                    AppRouter.route.pushNamed(RoutePath.verifyOtpScreen);
+          /* AppRouter.route.pushNamed(RoutePath.verifyOtpScreen);*/
                   },
                   );
                 }),

@@ -12,7 +12,7 @@ class ApiUrl {
 
   /// Forget Password Flow
   static forget() => '$base/auth/forgot-password';
-  static forgotOtp() => '$base/auth/forget-pass-otp-verify';
+  static forgotOtp() => '$base/auth/verify-code';
   static reset() => '$base/auth/reset-password';
 
   /// Login Flow
