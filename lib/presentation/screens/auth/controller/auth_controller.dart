@@ -42,15 +42,19 @@ class AuthController extends GetxController {
         final loginModel = LoginModel.fromJson(response.body);
 
         Map<String, dynamic> decodedToken = JwtDecoder.decode(loginModel.accessToken??'');
-
+      final role= decodedToken['role']??"";
         dbHelper.saveUserdata(
           token: loginModel.accessToken??'',
           id: decodedToken['id']??"",
           email: loginModel.user?.email ?? "",
-          role:  decodedToken['role']??"",
+          role:  role,
         ).then((value){
           loginMethod(false);
-          AppRouter.route.goNamed(RoutePath.navigationPage);
+          if(role == "USER"){
+            AppRouter.route.goNamed(RoutePath.navigationPage);
+          }else{
+            AppRouter.route.goNamed(RoutePath.businessNavigationPage);
+          }
         }).onError((error,stack){
           loginMethod(false);
           toastMessage(message: error.toString());
@@ -92,23 +96,21 @@ class AuthController extends GetxController {
   /// ============================= Verify OTP =====================================
   RxBool otpLoading = false.obs;
   otpMethod(bool status) => otpLoading.value = status;
-  final TextEditingController verifyOtp = TextEditingController();
 
-  void otpVerify({required String email}) async {
+
+  void otpVerify({required String email, required String code}) async {
     try {
       otpMethod(true);
       final body = {
         "email": email,
-
+        "code": code,
       };
 
       var response = await apiClient.post(body: body, url: ApiUrl.forgotOtp(), isBasic: true);
 
       if (response.statusCode == 200) {
-
         otpMethod(false);
-        AppRouter.route.pushNamed(RoutePath.setNewPassword, extra: email);
-        verifyOtp.clear();
+        AppRouter.route.pushNamed(RoutePath.setNewPassword, extra: body);
         toastMessage(message: response.body?['message']?.toString());
       } else {
         otpMethod(false);
@@ -126,9 +128,9 @@ class AuthController extends GetxController {
   resendOTPLoadingMethod(bool status) => resendOTPLoading.value = status;
 
   Future<void> resendOTP({required String email}) async {
-/*    try {
+    try {
       resendOTPLoadingMethod(true);
-      var response = await apiClient.post(body: {"email": forgetEmail.text}, url: ApiUrl.forget(), isBasic: true);
+      var response = await apiClient.post(body: {"email": email}, url: ApiUrl.forget(), isBasic: true);
       if (response.statusCode == 200) {
         resendOTPLoadingMethod(false);
         toastMessage(message: response.body?['message']?.toString());
@@ -138,7 +140,7 @@ class AuthController extends GetxController {
       }
     } catch (err) {
       resendOTPLoadingMethod(false);
-    }*/
+    }
   }
 
   /// ============================= Reset Password =====================================
@@ -221,15 +223,15 @@ class AuthController extends GetxController {
   activeMethod(bool status) => activeLoading.value = status;
 
   ///Active Account
-  final TextEditingController accountVerifyOtp = TextEditingController();
 
-  Future<void> activeAccount({required String email}) async {
+
+  Future<void> activeAccount({required String email, required String code}) async {
     try {
       activeMethod(true);
 
       final body = {
         "email": email,
-        "code": accountVerifyOtp.text.trim()
+        "code":code
       };
       print("verifyOtpScreen1");
       var response = await apiClient.post(body: body, url: ApiUrl.activateOtp(), isBasic: true);
@@ -249,11 +251,11 @@ class AuthController extends GetxController {
       /*   AppRouter.route.goNamed(RoutePath.navigationPage,);*/
           if(role == "USER"){
             AppRouter.route.goNamed(RoutePath.petRegistrationScreen);
-            accountVerifyOtp.clear();
+
 
           }else{
             AppRouter.route.goNamed(RoutePath.petShopRegistrationScreen);
-            accountVerifyOtp.clear();
+
           }
 
          /* accountVerifyOtp.dispose();*/

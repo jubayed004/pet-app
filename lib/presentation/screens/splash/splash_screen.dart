@@ -27,11 +27,17 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> checkLoginStatus() async {
+
 final token = await dbHelper.getToken();
+final role = await dbHelper.getUserRole();
 
     Future.delayed(Duration(seconds: 2), () {
       if (token.isNotEmpty && !(JwtDecoder.isExpired(token))) {
-        AppRouter.route.goNamed(RoutePath.navigationPage);
+        if(role == "USER"){
+          AppRouter.route.goNamed(RoutePath.navigationPage);
+        }else{
+          AppRouter.route.goNamed(RoutePath.businessNavigationPage);
+        }
       } else {
         AppRouter.route.goNamed(RoutePath.onboardingScreen);
       }

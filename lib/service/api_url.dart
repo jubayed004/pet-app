@@ -8,7 +8,7 @@ class ApiUrl {
   static register() => '$base/auth/register';
   static test() => 'http://10.10.20.52:8001';
   static activateOtp() => '$base/auth/verify-email';
-  static resendActiveOtp() => '$base/auth/activation-code-resend';
+  static resendActiveOtp() => '$base/auth/resend-verification-code';
 
   /// Forget Password Flow
   static forget() => '$base/auth/forgot-password';
@@ -19,6 +19,10 @@ class ApiUrl {
 
   static login() => '$base/auth/login';
   static profile() => '$base/user/profile';
+
+  static businessProfile() => '$base/owner/get-owner-details';
+
+
   static changePassword() => '$base/auth/change-password';
   static deleteUser() => '$base/user/delete-account';
 

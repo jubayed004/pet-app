@@ -21,9 +21,12 @@ class _VendorSelectionScreenState extends State<VendorSelectionScreen> {
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+      ),
       backgroundColor: Colors.white,
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16,vertical: 20),
+        padding: EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -31,10 +34,7 @@ class _VendorSelectionScreenState extends State<VendorSelectionScreen> {
                Column(
                  crossAxisAlignment: CrossAxisAlignment.center,
                  children: [
-                   Padding(
-                     padding: const EdgeInsets.all(40.0),
-                     child: Assets.images.onbordingone.image(),
-                   ),
+                   Assets.images.onbordingone.image(),
 
                  ],
                ),

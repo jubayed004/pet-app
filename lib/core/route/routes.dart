@@ -121,11 +121,12 @@ class AppRouter {
         name: RoutePath.verifyOtpScreen,
         path: RoutePath.verifyOtpScreen.addBasePath,
         pageBuilder: (context, state) {
-          final extra = state.extra != null && state.extra is String ? state.extra as String : "";
+          final extra =
+              state.extra != null && state.extra is String
+                  ? state.extra as String
+                  : "";
           return _buildPageWithAnimation(
-            child: VerifyOtpScreen(
-              email: extra,
-            ),
+            child: VerifyOtpScreen(email: extra),
             state: state,
           );
         },
@@ -138,7 +139,6 @@ class AppRouter {
           return _buildPageWithAnimation(
             child: AccountActiveOtpScreen(
               email: extra["email"] as String? ?? "",
-              isSignUp: extra["isSignUp"] as bool? ?? false,
             ),
             state: state,
           );
@@ -147,11 +147,17 @@ class AppRouter {
       GoRoute(
         name: RoutePath.setNewPassword,
         path: RoutePath.setNewPassword.addBasePath,
-        pageBuilder:
-            (context, state) => _buildPageWithAnimation(
-              child: SetNewPassword(email: state.extra as String, code: state.extra as String,),
-              state: state,
+        pageBuilder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>? ?? {};
+
+          return _buildPageWithAnimation(
+            child: SetNewPassword(
+              email: extra["email"] as String? ?? "",
+              code: extra["code"] as String? ?? "",
             ),
+            state: state,
+          );
+        },
       ),
 
       ///======================= Navigation Route =======================
@@ -224,7 +230,6 @@ class AppRouter {
                 _buildPageWithAnimation(child: SettingsPage(), state: state),
       ),
 
-
       GoRoute(
         name: RoutePath.myPetsScreen,
         path: RoutePath.myPetsScreen.addBasePath,
@@ -235,7 +240,8 @@ class AppRouter {
             child: MyPetsScreen(
               name: args['name'] ?? '',
               imageUrl: args['image'] ?? '',
-            ), state: state,
+            ),
+            state: state,
           );
         },
       ),
@@ -249,7 +255,8 @@ class AppRouter {
             child: BusinessPetsDetailsScreen(
               name: args['name'] ?? '',
               imageUrl: args['image'] ?? '',
-            ), state: state,
+            ),
+            state: state,
           );
         },
       ),
@@ -269,7 +276,7 @@ class AppRouter {
           final extra = state.extra;
           final haveData = extra != null;
 
-          if(haveData){
+          if (haveData) {
             final data = extra as List;
             final showWebsite = data[0];
             final isPetHotel = data[1];
@@ -282,10 +289,7 @@ class AppRouter {
             );
           }
           return _buildPageWithAnimation(
-            child: CategoryDetailsScreen(
-              showWebsite: false,
-              isPetHotel: false,
-            ),
+            child: CategoryDetailsScreen(showWebsite: false, isPetHotel: false),
             state: state,
           );
         },
@@ -323,7 +327,6 @@ class AppRouter {
       ),
 
       ///======================= MY Appointments Route =======================
-
       GoRoute(
         name: RoutePath.myAppointmentScreen,
         path: RoutePath.myAppointmentScreen.addBasePath,

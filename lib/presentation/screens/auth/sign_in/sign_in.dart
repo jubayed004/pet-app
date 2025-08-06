@@ -232,7 +232,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           style: TextStyle(color: AppColors.purple500,fontWeight: FontWeight.w600),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              AppRouter.route.goNamed(RoutePath.vendorSelectionScreen);
+                              AppRouter.route.pushNamed(RoutePath.vendorSelectionScreen);
                             },
                         ),
                       ],

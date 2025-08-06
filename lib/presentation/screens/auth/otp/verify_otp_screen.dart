@@ -14,24 +14,32 @@ import 'package:pet_app/presentation/widget/text_field/otp_text_field.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
 import 'package:pet_app/utils/app_strings/app_strings.dart';
 
-class VerifyOtpScreen extends StatelessWidget {
-  VerifyOtpScreen({super.key, required this.email,});
+class VerifyOtpScreen extends StatefulWidget {
+  VerifyOtpScreen({super.key, required this.email});
 
   final String email;
 
+  @override
+  State<VerifyOtpScreen> createState() => _VerifyOtpScreenState();
+}
 
+class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
   final _authController = GetControllers.instance.getAuthController();
   final _formKey = GlobalKey<FormState>();
+  final TextEditingController verifyOtp = TextEditingController();
+
+  @override
+  void dispose() {
+    verifyOtp.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-
-
-    print(email);
+    print(widget.email);
 
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
@@ -54,7 +62,7 @@ class VerifyOtpScreen extends StatelessWidget {
                 Gap(8),
                 CustomText(
                   text:
-                      "${"Please enter the code we've sent to michelle.rivera@example.com"} $email",
+                      "${"Please enter the code we've sent to michelle.rivera@example.com"} ${widget.email}",
                   color: AppColors.secondTextColor,
                   maxLines: 2,
                   textAlign: TextAlign.center,
@@ -64,13 +72,10 @@ class VerifyOtpScreen extends StatelessWidget {
                 const Gap(24),
 
                 ///==================== PIN Put input Field =======================
-
-                  Align(
-                      alignment: Alignment.center,
-                      child: OtpTextField(
-                        controller: _authController.verifyOtp,
-                      ),
-                    ),
+                Align(
+                  alignment: Alignment.center,
+                  child: OtpTextField(controller: verifyOtp),
+                ),
                 Gap(8),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -86,21 +91,26 @@ class VerifyOtpScreen extends StatelessWidget {
                         ),
                         children: [
                           TextSpan(
-                            text: (_authController.resendOTPLoading.value
-                                ? "loading"
-                                : "Resend Otp"),
+                            text:
+                                (_authController.resendOTPLoading.value
+                                    ? "loading"
+                                    : "Resend Otp"),
                             style: TextStyle(
                               color: AppColors.purple500,
                               fontWeight: FontWeight.w600,
                               decoration: TextDecoration.underline,
                             ),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () {
-                                if (!_authController.resendOTPLoading.value) {
-                                  _authController.resendOTP(email: email);
-                                }
-
-                              },
+                            recognizer:
+                                TapGestureRecognizer()
+                                  ..onTap = () {
+                                    if (!_authController
+                                        .resendOTPLoading
+                                        .value) {
+                                      _authController.resendOTP(
+                                        email: widget.email,
+                                      );
+                                    }
+                                  },
                           ),
                         ],
                       ),
@@ -149,33 +159,9 @@ class VerifyOtpScreen extends StatelessWidget {
                   isLoading: _authController.otpLoading.value,
                   title: "Confirm",
                   onTap: () {
-                    print("verifyOtpScreen");
-                    _authController.otpVerify(email: email);
-                /*    if (isSignUp){
-                      if(_authController.isUser.value){
-                        AppRouter.route.goNamed(RoutePath.petRegistrationScreen);
-                      }else{
-                        AppRouter.route.goNamed(RoutePath.petShopRegistrationScreen);
-                      }
-                    }else{
-                      AppRouter.route.pushNamed(RoutePath.setNewPassword,extra: "text@gmail.com");
-                    }*/
+                    _authController.otpVerify(email: widget.email, code: verifyOtp.text);
                   },
-                  /*    isLoading: isSignUp
-                        ? _authController.activeLoading.value
-                        : _authController.otpLoading.value,
-                    title: "confirm",
-                    onTap: () {
-                      print("verifyOtpScreen");
-                      if (isSignUp) {
-                        _authController.activeAccount(email: email);
-                      } else {
-                        _authController.otpVerify(email: email);
-                      }
-                    },
-*/
                 ),
-
                 Gap(24),
               ],
             ),

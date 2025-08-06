@@ -148,7 +148,7 @@ class PetShopRegistrationScreen extends StatelessWidget {
                 keyboardType: TextInputType.visiblePassword,
                 textEditingController: _authController.website,
               ),
-              Gap(14),
+     /*         Gap(14),
               CustomAlignText(
                 text: AppStrings.moreInfo,
                 fontWeight: FontWeight.w500,
@@ -162,7 +162,7 @@ class PetShopRegistrationScreen extends StatelessWidget {
 
                 keyboardType: TextInputType.text,
                 textEditingController: _authController.moreInfo,
-              ),
+              ),*/
               Gap(14),
               CustomAlignText(
                 text: "Shop logo ",

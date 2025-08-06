@@ -11,7 +11,7 @@ import 'package:pet_app/presentation/widget/align/custom_align_text.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
 
 class SetNewPassword extends StatefulWidget {
-  SetNewPassword({super.key, required this.email, required this.code});
+  const SetNewPassword({super.key, required this.email, required this.code});
 
   final String email;
   final String code;
