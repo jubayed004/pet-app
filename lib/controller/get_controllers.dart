@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:pet_app/presentation/screens/auth/controller/auth_controller.dart';
 import 'package:pet_app/presentation/screens/auth/pet_shop_registration/controller/pet_shop_registration_controller.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_advertisement/controller/business_advertisement_controller.dart';
+import 'package:pet_app/presentation/screens/business_owners/business_all_pets/controller/business_all_pet_controller.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_booking/controller/business_booking_controller.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_nav/controller/navigation_controller.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_profile/controller/business_profile_controller.dart';
@@ -205,6 +206,15 @@ AuthController getAuthController() {
       Get.put(BusinessProfileController());
     }
     return Get.find<BusinessProfileController>();
+
+  }
+
+
+  BusinessAllPetController getBusinessAllPetController() {
+    if (!Get.isRegistered<BusinessAllPetController>()) {
+      Get.put(BusinessAllPetController());
+    }
+    return Get.find<BusinessAllPetController>();
 
   }
 

@@ -1,6 +1,7 @@
 class ApiUrl {
   ApiUrl._();
   static String base = "http://10.10.20.52:8001/api";
+  static String imageBase = "http://10.10.20.52:8001/";
 
   static socketUrl({required String userID}) => '$base?id=$userID';
 
@@ -50,9 +51,11 @@ class ApiUrl {
 
 
   ///Update Profile=============
-  static updateProfile() => '$base/normal-user/update-profile';
+  static businessUpdateProfile() => '$base/owner/update-owner-details';
+  static updateProfile() => '$base/owner/update-owner-details';
 
-
+///Business All Pets
+  static getBusinessAllPets() => '$base/owner/get-all-pets-who-booked';
 
   //static updateVideo({required String id}) => '$base/video/update-video/$id';
 

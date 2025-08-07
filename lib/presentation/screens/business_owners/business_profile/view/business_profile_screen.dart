@@ -19,10 +19,11 @@ import 'package:pet_app/utils/app_strings/app_strings.dart';
 class BusinessProfileScreen extends StatelessWidget {
   BusinessProfileScreen({super.key});
 
- // final profileController = GetControllers.instance.getProfileController();
+  // final profileController = GetControllers.instance.getProfileController();
   final _controller = GetControllers.instance.getMyPetsProfileController();
   final controller = GetControllers.instance.getNavigationControllerMain();
-  final businessProfileController = GetControllers.instance.getBusinessProfileController();
+  final businessProfileController =
+      GetControllers.instance.getBusinessProfileController();
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +79,10 @@ class BusinessProfileScreen extends StatelessWidget {
               flexibleSpace: FlexibleSpaceBar(
                 background: Obx(() {
                   return businessProfileController.selectedImage.value != null
-                      ? Image.file(File(businessProfileController.selectedImage.value!.path),
+                      ? Image.file(
+                        File(
+                          businessProfileController.selectedImage.value!.path,
+                        ),
                         fit: BoxFit.cover,
                         width: double.infinity,
                         height: double.infinity,
@@ -110,16 +114,20 @@ class BusinessProfileScreen extends StatelessWidget {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                CustomText(
-                                  text:
-                                      businessProfileController.profile.value.ownerDetails?.name?? "",
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.w700,
-                                ),
+                                Obx(() {
+                                  return Expanded(
+                                    child: CustomText(
+                                      text: businessProfileController.profile.value.ownerDetails?.name ??"",
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.w700,
+                                      maxLines: 1,
+                                    ),
+                                  );
+                                }),
                                 GestureDetector(
                                   onTap: () {
                                     AppRouter.route.pushNamed(
-                                      RoutePath.editProfileScreen,
+                                      RoutePath.businessEditProfileScreen,
                                     );
                                   },
                                   child: Card(
@@ -157,12 +165,19 @@ class BusinessProfileScreen extends StatelessWidget {
                               children: [
                                 Assets.icons.emailicon.svg(),
                                 Gap(6),
-                                CustomText(
-                                  text:
-                                  businessProfileController.profile.value.ownerDetails?.email?? "",
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 14,
-                                ),
+                                Obx(() {
+                                  return CustomText(
+                                    text:
+                                        businessProfileController
+                                            .profile
+                                            .value
+                                            .ownerDetails
+                                            ?.email ??
+                                        "",
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 14,
+                                  );
+                                }),
                               ],
                             ),
                             Gap(16),
@@ -170,11 +185,19 @@ class BusinessProfileScreen extends StatelessWidget {
                               children: [
                                 Assets.icons.phoneicon.svg(),
                                 Gap(6),
-                                CustomText(
-                                  text: businessProfileController.profile.value.ownerDetails?.phone?? "",
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 14,
-                                ),
+                                Obx(() {
+                                  return CustomText(
+                                    text:
+                                        businessProfileController
+                                            .profile
+                                            .value
+                                            .ownerDetails
+                                            ?.phone ??
+                                        "",
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 14,
+                                  );
+                                }),
                               ],
                             ),
                             Gap(16),
@@ -187,7 +210,14 @@ class BusinessProfileScreen extends StatelessWidget {
                                 ),
                                 Gap(6),
                                 CustomText(
-                                  text: businessProfileController.profile.value.ownerDetails?.business?.address?? "",
+                                  text:
+                                      businessProfileController
+                                          .profile
+                                          .value
+                                          .ownerDetails
+                                          ?.business
+                                          ?.address ??
+                                      "",
                                   fontWeight: FontWeight.w400,
                                   fontSize: 14,
                                 ),

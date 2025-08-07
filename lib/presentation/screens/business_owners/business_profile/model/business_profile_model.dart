@@ -1,5 +1,4 @@
 
-
 class BusinessProfileModel {
   final bool? success;
   final String? message;
@@ -97,7 +96,7 @@ class Business {
   final String? moreInfo;
   final String? shopLogo;
   final List<String>? shopPic;
-  final List<String>? services;
+  final List<dynamic>? services;
   final List<dynamic>? reviews;
   final DateTime? createdAt;
   final int? v;
@@ -126,7 +125,7 @@ class Business {
     moreInfo: json["moreInfo"],
     shopLogo: json["shopLogo"],
     shopPic: json["shopPic"] == null ? [] : List<String>.from(json["shopPic"]!.map((x) => x)),
-    services: json["services"] == null ? [] : List<String>.from(json["services"]!.map((x) => x)),
+    services: json["services"] == null ? [] : List<dynamic>.from(json["services"]!.map((x) => x)),
     reviews: json["reviews"] == null ? [] : List<dynamic>.from(json["reviews"]!.map((x) => x)),
     createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
     v: json["__v"],

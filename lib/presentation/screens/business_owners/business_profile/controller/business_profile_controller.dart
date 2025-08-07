@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pet_app/core/dependency/get_it_injection.dart';
+import 'package:pet_app/core/route/routes.dart';
 import 'package:pet_app/helper/local_db/local_db.dart';
+import 'package:pet_app/helper/toast_message/toast_message.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_profile/model/business_profile_model.dart';
 import 'package:pet_app/service/api_service.dart';
 import 'package:pet_app/service/api_url.dart';
@@ -28,12 +32,6 @@ class BusinessProfileController extends GetxController{
       if (response.statusCode == 200) {
         final newData = BusinessProfileModel.fromJson(response.body);
         profile.value = newData;
-
-        name = TextEditingController(text: newData.ownerDetails?.name?? "");
-        email = TextEditingController(text: newData.ownerDetails?.email?? "");
-        phone = TextEditingController(text: newData.ownerDetails?.phone?? "");
-        /*address = TextEditingController(text: newData.owner?.address?? "");*/
-
         loadingMethod(Status.completed);
       } else {
         if (response.statusCode == 503) {
@@ -54,12 +52,6 @@ class BusinessProfileController extends GetxController{
 
   Rx<XFile?> selectedImage = Rx<XFile?>(null);
   RxBool isUpdateLoading = false.obs;
-
-  TextEditingController name = TextEditingController();
-  TextEditingController email = TextEditingController();
-  TextEditingController phone = TextEditingController();
-  TextEditingController address = TextEditingController();
-
   Future<void> pickImage() async {
     XFile? image = await _imagePicker.pickImage(source: ImageSource.gallery, imageQuality: 80);
     if (image != null) {
@@ -67,27 +59,24 @@ class BusinessProfileController extends GetxController{
     }
   }
 
-  Future<void> updateProfile() async{
-/*    try{
+  Future<void> businessUpdateProfile({required Map<String, String> body}) async{
+    try{
       isUpdateLoading.value = true;
 
-      final body = {
-        "data": jsonEncode({
-          "firstName": name.text,
 
-        }),
-      };
 
       final List<MultipartBody> multipartBody = [];
       if(selectedImage.value != null){
-        multipartBody.add(MultipartBody("profile_image", File(selectedImage.value?.path?? "")));
+        multipartBody.add(MultipartBody("profilePic", File(selectedImage.value?.path?? "")));
       }
 
+      print("weiurterit ertioyertoguiopdrtdrthporthndrtpgrtphnrth");
+
       print(body);
-      final response = await apiClient.multipartRequest(url: ApiUrl.updateProfile(), body: body, multipartBody: multipartBody, reqType: "PATCH");
+      final response = await apiClient.multipartRequest(url: ApiUrl.businessUpdateProfile(), body: body, multipartBody: multipartBody, reqType: "PUT");
 
       if(response.statusCode == 200){
-        await getProfile();
+        await getBusinessProfile();
         isUpdateLoading.value = false;
         AppRouter.route.pop();
       }else{
@@ -96,7 +85,7 @@ class BusinessProfileController extends GetxController{
       }
     }catch(error){
       isUpdateLoading.value = false;
-    }*/
+    }
   }
 
 

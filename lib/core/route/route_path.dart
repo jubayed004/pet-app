@@ -66,5 +66,6 @@ class RoutePath{
   static const String imageViewScreen = 'imageViewScreen';
   static const String checkNotify = 'CheckNotify';
   static const String addToOrderScrreen = 'addToOrderScrreen';
+  static const String businessEditProfileScreen = 'businessEditProfileScreen';
 
 }

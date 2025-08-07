@@ -6,6 +6,7 @@ import 'core/dependency/get_it_injection.dart';
 import 'core/route/routes.dart';
 import 'helper/device_utils/device_utils.dart';
 import 'package:device_preview/device_preview.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   DeviceUtils.lockDevicePortrait();

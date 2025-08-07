@@ -15,31 +15,31 @@ import 'package:pet_app/presentation/widget/align/custom_align_text.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
 import 'package:pet_app/utils/app_strings/app_strings.dart';
 
-class EditProfileScreen extends StatefulWidget {
-   EditProfileScreen({super.key});
+class BusinessEditProfileScreen extends StatefulWidget {
+  const BusinessEditProfileScreen({super.key});
 
   @override
-  State<EditProfileScreen> createState() => _EditProfileScreenState();
+  State<BusinessEditProfileScreen> createState() => _BusinessEditProfileScreenState();
 }
 
-class _EditProfileScreenState extends State<EditProfileScreen> {
-  final profileController = GetControllers.instance.getProfileController();
+class _BusinessEditProfileScreenState extends State<BusinessEditProfileScreen> {
+  final businessProfileController = GetControllers.instance.getBusinessProfileController();
 
   final controller = GetControllers.instance.getNavigationControllerMain();
 
-   final _authController = GetControllers.instance.getAuthController();
+  final _authController = GetControllers.instance.getAuthController();
 
-   TextEditingController name = TextEditingController();
+  TextEditingController name = TextEditingController();
 
-   TextEditingController phone = TextEditingController();
+  TextEditingController phone = TextEditingController();
 
-   TextEditingController address = TextEditingController();
+  TextEditingController address = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-   @override
+  @override
   void dispose() {
-name.dispose();
-phone.dispose();
-address.dispose();
+    name.dispose();
+    phone.dispose();
+    address.dispose();
     super.dispose();
   }
 
@@ -75,9 +75,9 @@ address.dispose();
                   background:Obx(() {
                     return Stack(
                       children: [
-                        profileController.selectedImage.value != null
+                        businessProfileController.selectedImage.value != null
                             ? Image.file(
-                          File(profileController.selectedImage.value!.path),
+                          File(businessProfileController.selectedImage.value!.path),
                           fit: BoxFit.cover,
                           width: double.infinity,
                           height: double.infinity,
@@ -88,22 +88,22 @@ address.dispose();
                           width: double.infinity,
                           height: double.infinity,
                         ),
-                          Positioned(
-                            top: 0,
-                            bottom: 0,
-                            left: 0,
-                            right: 0,
-                            child: GestureDetector(
-                              onTap: () {
-                                profileController.pickImage();
-                              },
-                              child: Icon(
-                                Icons.camera_alt,
-                                size: 40,
-                                color: AppColors.primaryColor,
-                              ),
+                        Positioned(
+                          top: 0,
+                          bottom: 0,
+                          left: 0,
+                          right: 0,
+                          child: GestureDetector(
+                            onTap: () {
+                              businessProfileController.pickImage();
+                            },
+                            child: Icon(
+                              Icons.camera_alt,
+                              size: 40,
+                              color: AppColors.primaryColor,
                             ),
                           ),
+                        ),
                       ],
                     );
 
@@ -128,19 +128,6 @@ address.dispose();
                       fillColor: Colors.white,
                       keyboardType: TextInputType.text,
                       textEditingController: name,
-                      validator: (value) {
-                        if (value == null || value.trim().isEmpty) {
-                          return 'Name is required';
-                        }
-                        if (value.trim().length < 2) {
-                          return 'Name must be at least 2 characters';
-                        }
-                        final nameRegExp = RegExp(r"^[a-zA-Z\s]+$");
-                        if (!nameRegExp.hasMatch(value.trim())) {
-                          return 'Name can only contain letters and spaces';
-                        }
-                        return null; // Valid
-                      },
                     ),
 
                     Gap(16),
@@ -157,18 +144,6 @@ address.dispose();
                       fillColor: Colors.white,
                       keyboardType: TextInputType.phone,
                       textEditingController: phone,
-                      validator: (value) {
-                        if (value == null || value.trim().isEmpty) {
-                          return 'Phone number is required';
-                        }
-
-                        final phoneRegExp = RegExp(r'^\+?\d{10,15}$');
-                        if (!phoneRegExp.hasMatch(value.trim())) {
-                          return 'Enter a valid phone number';
-                        }
-
-                        return null; // Valid
-                      },
                     ),
 
                     Gap(16),
@@ -184,15 +159,6 @@ address.dispose();
                       fillColor: Colors.white,
                       keyboardType: TextInputType.streetAddress,
                       textEditingController: address,
-                      validator: (value) {
-                        if (value == null || value.trim().isEmpty) {
-                          return 'Address is required';
-                        }
-                        if (value.length < 5) {
-                          return 'Please enter a valid address';
-                        }
-                        return null; // Valid
-                      },
                     ),
                     Gap(24),
                     CustomButton(onTap: (){
@@ -200,15 +166,12 @@ address.dispose();
                         "name": name.text,
                         "phone": phone.text,
                         "address": address.text,
-
                       };
-                      if(_formKey.currentState!.validate()){
-                        profileController.updateProfile(body : body);
-                      }
+                      businessProfileController.businessUpdateProfile(body : body);
 
                     },
                       title: "Save",
-                    textColor: Colors.black,
+                      textColor: Colors.black,
                     )
                   ],
                 ),

@@ -1,14 +1,14 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:pet_app/controller/get_controllers.dart';
 import 'package:pet_app/core/route/route_path.dart';
 import 'package:pet_app/core/route/routes.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
-import 'package:pet_app/presentation/screens/my_pets/widgets/health_history_section.dart';
-import 'package:pet_app/presentation/widget/align/custom_align_text.dart';
+import 'package:pet_app/presentation/screens/business_owners/business_all_pets/widgets/custom_add_health_dialog.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
+import 'package:pet_app/utils/app_const/padding_constant.dart';
 
 class BusinessPetsDetailsScreen extends StatelessWidget {
   final String name ;
@@ -135,9 +135,10 @@ class BusinessPetsDetailsScreen extends StatelessWidget {
                         ],
                       ),
                       GestureDetector(
-                        onTap: (){
-                          AppRouter.route.pushNamed(RoutePath.petHealthScreen);
+                        onTap: () {
+                          showAddHealthDialog(context); // 👈 Show the dialog
                         },
+
                         child: Container(
                           padding: EdgeInsets.all(8),
                           decoration: BoxDecoration(
@@ -153,143 +154,95 @@ class BusinessPetsDetailsScreen extends StatelessWidget {
                       )
                     ],
                   ),
-                  Gap(16),
-                  Column(
-                    children: [
-                      // Past Vaccinations
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: const [
-                              Text(
-                                "Past vaccinations",
-                                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                              ),
-                              Icon(Icons.edit, size: 18, color: Colors.pink),
-                            ],
-                          ),
-                          SizedBox(height: 12),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Container(
-                                  padding: const EdgeInsets.all(12),
-                                  decoration: BoxDecoration(
-                                    color: Color(0xFFF7F7F7),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: const Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text("Rabies vaccination", style: TextStyle(fontWeight: FontWeight.w700)),
-                                      SizedBox(height: 4),
-                                      Text("Mon 24 Jan", style: TextStyle(color: Colors.black54)),
-                                      Text("Dr. Green", style: TextStyle(color: Colors.black54)),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              SizedBox(width: 12),
-                              Expanded(
-                                child: Container(
-                                  padding: const EdgeInsets.all(12),
-                                  decoration: BoxDecoration(
-                                    color: Color(0xFFF7F7F7),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: const Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text("Calicivirus", style: TextStyle(fontWeight: FontWeight.w700)),
-                                      SizedBox(height: 4),
-                                      Text("Tue 12 Feb", style: TextStyle(color: Colors.black54)),
-                                      Text("Dr. Raam", style: TextStyle(color: Colors.black54)),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                       Gap(16),
-                      // Next Vaccinations
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            "Next vaccinations",
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                          ),
-                          SizedBox(height: 12),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Container(
-                                  padding: const EdgeInsets.all(12),
-                                  decoration: BoxDecoration(
-                                    color: Color(0xFFF7F7F7),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: const Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text("Rabies vaccination", style: TextStyle(fontWeight: FontWeight.w700)),
-                                      SizedBox(height: 4),
-                                      Text("Mon 24 Jan", style: TextStyle(color: Colors.black54)),
-                                      Text("Dr. Green", style: TextStyle(color: Colors.black54)),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              SizedBox(width: 12),
-                              Expanded(
-                                child: Container(
-                                  padding: const EdgeInsets.all(12),
-                                  decoration: BoxDecoration(
-                                    color: Color(0xFFF7F7F7),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: const Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text("Calicivirus", style: TextStyle(fontWeight: FontWeight.w700)),
-                                      SizedBox(height: 4),
-                                      Text("Tue 12 Feb", style: TextStyle(color: Colors.black54)),
-                                      Text("Dr. Raam", style: TextStyle(color: Colors.black54)),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  Gap(16),
-                  Container(
-                    padding: EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: AppColors.purple500)
-                    ),
-                    child:CustomText(text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut ",fontSize: 16,fontWeight: FontWeight.w400,maxLines: 6,textAlign: TextAlign.start,),
-                  )
+
                 ],
               ),
             ),
           ),
-/*         SliverList(
-           delegate: SliverChildBuilderDelegate(
-                 (context, index) => ListTile(
-               title: Text('Item #$index'),
+         SliverToBoxAdapter(
+           child:  Padding(
+             padding: padding16H,
+             child: Row(
+               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+               children: const [
+                 Text(
+                   "Past vaccinations",
+                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                 ),
+                 Icon(Icons.edit, size: 18, color: Colors.pink),
+               ],
              ),
-             childCount: 20,
            ),
-         ),*/
+         ),
+         SliverGrid(
+           delegate: SliverChildBuilderDelegate(
+                 (context, index) => Container(
+                   padding: const EdgeInsets.all(12),
+                   decoration: BoxDecoration(
+                     color: Color(0xFFF7F7F7),
+                     borderRadius: BorderRadius.circular(10),
+                   ),
+                   child: const Column(
+                     crossAxisAlignment: CrossAxisAlignment.start,
+                     children: [
+                       Text("Rabies vaccination", style: TextStyle(fontWeight: FontWeight.w700)),
+                       SizedBox(height: 4),
+                       Text("Mon 24 Jan", style: TextStyle(color: Colors.black54)),
+                       Text("Dr. Green", style: TextStyle(color: Colors.black54)),
+                     ],
+                   ),
+                 ),
+             childCount: 5,
+           ), gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2,mainAxisExtent: 100),
+         ),
+          SliverToBoxAdapter(
+            child:  Padding(
+              padding: padding16H,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: const [
+                  Text(
+                    "Next vaccinations",
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                  ),
+                  Icon(Icons.edit, size: 18, color: Colors.pink),
+                ],
+              ),
+            ),
+          ),
+         SliverGrid(
+           delegate: SliverChildBuilderDelegate(
+                 (context, index) => Container(
+                   padding: const EdgeInsets.all(12),
+                   decoration: BoxDecoration(
+                     color: Color(0xFFF7F7F7),
+                     borderRadius: BorderRadius.circular(10),
+                   ),
+                   child: const Column(
+                     crossAxisAlignment: CrossAxisAlignment.start,
+                     children: [
+                       Text("Rabies vaccination", style: TextStyle(fontWeight: FontWeight.w700)),
+                       SizedBox(height: 4),
+                       Text("Mon 24 Jan", style: TextStyle(color: Colors.black54)),
+                       Text("Dr. Green", style: TextStyle(color: Colors.black54)),
+                     ],
+                   ),
+                 ),
+             childCount: 5,
+           ), gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2,mainAxisExtent: 100),
+         ),
+
+          SliverToBoxAdapter(
+            child:      Container(
+              margin: paddingH16V8,
+              padding: EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: AppColors.purple500)
+              ),
+              child:CustomText(text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut ",fontSize: 16,fontWeight: FontWeight.w400,maxLines: 6,textAlign: TextAlign.start,),
+            ),
+          )
         ],
       ),
     );
