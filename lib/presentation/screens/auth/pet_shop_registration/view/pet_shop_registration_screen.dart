@@ -185,10 +185,7 @@ class PetShopRegistrationScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(6),
                             child: Image.file(
                               File(
-                                _authController
-                                    .selectedLogo
-                                    .value
-                                    ?.path ??
+                                _authController.selectedLogo.value?.path ??
                                     "",
                               ),
                               height: 156.h,

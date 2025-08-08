@@ -56,7 +56,12 @@ class ApiUrl {
 
 ///Business All Pets
   static getBusinessAllPets() => '$base/owner/get-all-pets-who-booked';
+  static businessPetDetails({required String id}) => '$base/owner/get-pet-details-by-pet-id/$id';
 
+
+  ///Health update
+
+  static getHealthHistory({required String id}) => '$base/pet-medical-history/get-medicalHist-by-pet-id/$id';
   //static updateVideo({required String id}) => '$base/video/update-video/$id';
 
   static searchPlace() => '$base/search-place';

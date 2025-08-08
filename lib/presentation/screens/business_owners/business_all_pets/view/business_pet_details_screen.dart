@@ -1,67 +1,87 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:intl/intl.dart';
 import 'package:pet_app/controller/get_controllers.dart';
+import 'package:pet_app/core/custom_assets/assets.gen.dart';
 import 'package:pet_app/core/route/route_path.dart';
 import 'package:pet_app/core/route/routes.dart';
+import 'package:pet_app/presentation/components/custom_button/custom_defualt_appbar.dart';
+import 'package:pet_app/presentation/components/custom_image/custom_image.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_all_pets/widgets/custom_add_health_dialog.dart';
+import 'package:pet_app/presentation/screens/business_owners/business_all_pets/widgets/details_card.dart';
+import 'package:pet_app/presentation/screens/business_owners/business_all_pets/widgets/health_card.dart';
+import 'package:pet_app/service/api_url.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
 import 'package:pet_app/utils/app_const/padding_constant.dart';
 
-class BusinessPetsDetailsScreen extends StatelessWidget {
-  final String name ;
-  final String imageUrl;
+class BusinessPetsDetailsScreen extends StatefulWidget {
+  final String id;
 
-  BusinessPetsDetailsScreen({super.key, required this.name, required this.imageUrl,});
+  const BusinessPetsDetailsScreen({super.key, required this.id});
+
+  @override
+  State<BusinessPetsDetailsScreen> createState() =>
+      _BusinessPetsDetailsScreenState();
+}
+
+class _BusinessPetsDetailsScreenState extends State<BusinessPetsDetailsScreen> {
   final controller = GetControllers.instance.getMyPetsProfileController();
+
+  final businessAllPetController =
+      GetControllers.instance.getBusinessAllPetController();
+
+  @override
+  void initState() {
+    businessAllPetController.businessPetDetails(id: widget.id);
+    businessAllPetController.getHealthHistoryUpdate(id: widget.id);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.kWhiteColor,
       body: CustomScrollView(
         slivers: [
-          SliverAppBar(
-            backgroundColor: AppColors.primaryColor,
-            pinned: true,
-            expandedHeight: 200,
-            centerTitle: true,
-            title: CustomText(text: name,fontWeight: FontWeight.w600,fontSize: 24,color: Colors.black,),
-            flexibleSpace: FlexibleSpaceBar(
-              background: Image.network(
-                imageUrl,
-                fit: BoxFit.cover,
-                width: double.infinity,
-                height: double.infinity,
-              ),
-            ),
-            /* flexibleSpace: FlexibleSpaceBar(
-             background: Obx(() {
-               return controller.selectedImage.value != null
-                   ? Image.file(
-                 File(controller.selectedImage.value!.path),
-                 fit: BoxFit.cover,
-                 width: double.infinity,
-                 height: double.infinity,
-               )
-                   : Image.network(
-                 'https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=800&q=80',
-                 fit: BoxFit.cover,
-                 width: double.infinity,
-                 height: double.infinity,
-               );
-             }),
-           ),*/
+          Obx(() {
+            return CustomDefaultAppbar(
+              title: businessAllPetController.details.value.pet?.name ?? "",
+            );
+          }),
+          SliverToBoxAdapter(
+            child: Obx(() {
+              final pet = businessAllPetController.details.value.pet?.petPhoto;
+              final image =
+                  pet != null && pet.isNotEmpty ? pet.first ?? "" : "";
+              return image.isNotEmpty
+                  ? Image.network(ApiUrl.imageBase + image)
+                  : Image.network(
+                    'https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=800&q=80',
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                    height: 100,
+                  );
+            }),
           ),
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
               child: Column(
                 children: [
                   Card(
                     elevation: 4,
                     child: Padding(
-                      padding: const EdgeInsets.only(left: 18.0,right: 18,top: 8,bottom: 8),
+                      padding: const EdgeInsets.only(
+                        left: 18.0,
+                        right: 18,
+                        top: 8,
+                        bottom: 8,
+                      ),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -69,12 +89,35 @@ class BusinessPetsDetailsScreen extends StatelessWidget {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              CustomText(text: name ,textAlign: TextAlign.start,fontWeight: FontWeight.w600,fontSize: 16,),
+                              Obx(() {
+                                return CustomText(
+                                  text:
+                                      businessAllPetController
+                                          .details
+                                          .value
+                                          .pet
+                                          ?.name ??
+                                      "",
+                                  textAlign: TextAlign.start,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 16,
+                                );
+                              }),
                               Gap(6),
-                              CustomText(text: "Female",textAlign: TextAlign.start,fontWeight: FontWeight.w600,color: AppColors.purple500,),
+                              CustomText(
+                                text:
+                                    businessAllPetController
+                                        .details
+                                        .value
+                                        .pet
+                                        ?.gender ??
+                                    "",
+                                textAlign: TextAlign.start,
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.purple500,
+                              ),
                             ],
                           ),
-
                         ],
                       ),
                     ),
@@ -84,40 +127,59 @@ class BusinessPetsDetailsScreen extends StatelessWidget {
                     children: [
                       Icon(Icons.account_box_outlined),
                       Gap(6),
-                      CustomText(text: "About $name",fontWeight: FontWeight.w600,fontSize: 16,)
+                      Obx(() {
+                        return CustomText(
+                          text:
+                              "About ${businessAllPetController.details.value.pet?.name ?? ""}",
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                        );
+                      }),
                     ],
                   ),
                   Gap(16),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: List.generate(6, (index){
-                        return  Card(
-                          color: Color(0xFFd2ead1),
-                          child: Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                CustomText(text: "Age",fontWeight: FontWeight.w400,fontSize: 14,),
-                                CustomText(text: "1y 4m 11d",color: Color(0xFF064E57),fontSize: 14,fontWeight: FontWeight.w600,),
-                              ],
-                            ),
+                  SizedBox(
+                    height: 80, // fixed height for the list items
+                    child: Obx(() {
+                      final pet = businessAllPetController.details.value.pet;
+                      return ListView(
+                        scrollDirection: Axis.horizontal,
+                        children: [
+                          DetailsCard(
+                            age: "Age",
+                            date: pet?.age.toString() ?? "",
                           ),
-                        );
-                      }),
-                    ),
+                          DetailsCard(age: "Gender", date: pet?.gender ?? ""),
+                          DetailsCard(
+                            age: "Height",
+                            date: pet?.height.toString() ?? "",
+                          ),
+                          DetailsCard(
+                            age: "Weight",
+                            date: pet?.weight.toString() ?? "",
+                          ),
+                          DetailsCard(age: "Color", date: pet?.color ?? ""),
+                          DetailsCard(age: "Breed", date: pet?.breed ?? ""),
+                        ],
+                      );
+                    }),
                   ),
+
                   Gap(16),
                   Row(
                     children: [
                       Icon(Icons.safety_divider_outlined),
                       Gap(6),
-                      CustomText(text: "$name’s Status",fontWeight: FontWeight.w600,fontSize: 16,)
+                      CustomText(
+                        text:
+                            "${businessAllPetController.details.value.pet?.name ?? ""} ’s Status",
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16,
+                      ),
                     ],
                   ),
                   Gap(16),
-                  Divider(height: 1,color: Colors.grey,),
+                  Divider(height: 1, color: Colors.grey),
                   Gap(16),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -128,111 +190,123 @@ class BusinessPetsDetailsScreen extends StatelessWidget {
                           CircleAvatar(
                             radius: 24,
                             backgroundColor: Color(0xFFE54D4D),
-                            child: Icon(Icons.health_and_safety,size: 24,color: Colors.white,),
+                            child: Icon(
+                              Icons.health_and_safety,
+                              size: 24,
+                              color: Colors.white,
+                            ),
                           ),
                           Gap(6),
-                          CustomText(text: "Health",fontSize: 16,fontWeight:FontWeight.w600,),
+                          CustomText(
+                            text: "Health",
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ],
                       ),
                       GestureDetector(
                         onTap: () {
                           showAddHealthDialog(context); // 👈 Show the dialog
                         },
-
                         child: Container(
                           padding: EdgeInsets.all(8),
                           decoration: BoxDecoration(
                             color: Color(0xFFE54D4D),
                             borderRadius: BorderRadius.circular(10),
-                          ), child: Row(
-                          children: [
-                            CustomText(text: "Add Health Update ",fontSize: 14,fontWeight: FontWeight.w400,color: Colors.white,),
-                            Icon(Icons.arrow_forward_ios_rounded,size: 18,color: Colors.white,)
-                          ],
+                          ),
+                          child: Row(
+                            children: [
+                              CustomText(
+                                text: "Add Health Update ",
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.white,
+                              ),
+                              Icon(
+                                Icons.arrow_forward_ios_rounded,
+                                size: 18,
+                                color: Colors.white,
+                              ),
+                            ],
+                          ),
                         ),
-                        ),
-                      )
+                      ),
                     ],
                   ),
-
                 ],
               ),
             ),
           ),
-         SliverToBoxAdapter(
-           child:  Padding(
-             padding: padding16H,
-             child: Row(
-               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-               children: const [
-                 Text(
-                   "Past vaccinations",
-                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                 ),
-                 Icon(Icons.edit, size: 18, color: Colors.pink),
-               ],
-             ),
-           ),
-         ),
-         SliverGrid(
-           delegate: SliverChildBuilderDelegate(
-                 (context, index) => Container(
-                   padding: const EdgeInsets.all(12),
-                   decoration: BoxDecoration(
-                     color: Color(0xFFF7F7F7),
-                     borderRadius: BorderRadius.circular(10),
-                   ),
-                   child: const Column(
-                     crossAxisAlignment: CrossAxisAlignment.start,
-                     children: [
-                       Text("Rabies vaccination", style: TextStyle(fontWeight: FontWeight.w700)),
-                       SizedBox(height: 4),
-                       Text("Mon 24 Jan", style: TextStyle(color: Colors.black54)),
-                       Text("Dr. Green", style: TextStyle(color: Colors.black54)),
-                     ],
-                   ),
-                 ),
-             childCount: 5,
-           ), gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2,mainAxisExtent: 100),
-         ),
           SliverToBoxAdapter(
-            child:  Padding(
+            child: Padding(
+              padding: padding14H,
+              child: Text(
+                "Past vaccinations",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.blackColor,
+                ),
+              ),
+            ),
+          ),
+          SliverGap(16),
+          SliverPadding(
+            padding:padding14H,
+            sliver: Obx(() {
+              return SliverGrid(
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                    final petHealth = businessAllPetController.healthHistory.value.petMedicalHistory?[index];
+                    return HealthCard(
+                      title: petHealth?.treatmentName ?? "",
+                      dateOfMonth: DateFormat("dd MMMM yyyy").format(petHealth?.treatmentDate ?? DateTime.now()),
+                      drName: petHealth?.doctorName?? "",
+                      status: petHealth?.treatmentStatus?? "",
+                      statusColor: Colors.green,
+                    );
+                  },
+                  childCount: businessAllPetController.healthHistory.value.petMedicalHistory?.length,
+                ),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisExtent: 160,
+                ),
+              );
+            }),
+          ),
+          SliverToBoxAdapter(
+            child: Padding(
               padding: padding16H,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  Text(
-                    "Next vaccinations",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                  ),
-                  Icon(Icons.edit, size: 18, color: Colors.pink),
-                ],
+              child: Text(
+                "Next vaccinations",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
               ),
             ),
           ),
-         SliverGrid(
-           delegate: SliverChildBuilderDelegate(
-                 (context, index) => Container(
-                   padding: const EdgeInsets.all(12),
-                   decoration: BoxDecoration(
-                     color: Color(0xFFF7F7F7),
-                     borderRadius: BorderRadius.circular(10),
-                   ),
-                   child: const Column(
-                     crossAxisAlignment: CrossAxisAlignment.start,
-                     children: [
-                       Text("Rabies vaccination", style: TextStyle(fontWeight: FontWeight.w700)),
-                       SizedBox(height: 4),
-                       Text("Mon 24 Jan", style: TextStyle(color: Colors.black54)),
-                       Text("Dr. Green", style: TextStyle(color: Colors.black54)),
-                     ],
-                   ),
-                 ),
-             childCount: 5,
-           ), gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2,mainAxisExtent: 100),
-         ),
+          SliverGap(16),
+          SliverPadding(
+            padding:padding14H,
 
-          SliverToBoxAdapter(
+            sliver: SliverGrid(
+              delegate: SliverChildBuilderDelegate(
+                (context, index) => HealthCard(
+                  title: 'Rabies vaccination',
+                  dateOfMonth: 'Mon 24 Jan',
+                  drName: 'Dr. Green',
+                  status: 'PENDING',
+                  statusColor: AppColors.purple500,
+                ),
+                childCount: 5,
+              ),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                mainAxisExtent: 140,
+              ),
+            ),
+          ),
+
+          /*      SliverToBoxAdapter(
             child:      Container(
               margin: paddingH16V8,
               padding: EdgeInsets.all(12),
@@ -242,11 +316,9 @@ class BusinessPetsDetailsScreen extends StatelessWidget {
               ),
               child:CustomText(text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut ",fontSize: 16,fontWeight: FontWeight.w400,maxLines: 6,textAlign: TextAlign.start,),
             ),
-          )
+          )*/
         ],
       ),
     );
   }
 }
-
-

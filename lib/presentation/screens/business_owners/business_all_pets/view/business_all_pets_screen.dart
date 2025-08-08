@@ -29,7 +29,7 @@ class BusinessAllPetsScreen extends StatelessWidget {
                   final name = item?.name ?? "";
                   return GestureDetector(
                     onTap: () {
-                  AppRouter.route.pushNamed(RoutePath.businessPetsDetailsScreen, extra: {"name":name, "image": photo},);
+                  AppRouter.route.pushNamed(RoutePath.businessPetsDetailsScreen, extra: item?.id ?? "");
 
                     },
                     child: Padding(

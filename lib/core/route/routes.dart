@@ -250,12 +250,10 @@ class AppRouter {
         name: RoutePath.businessPetsDetailsScreen,
         path: RoutePath.businessPetsDetailsScreen.addBasePath,
         pageBuilder: (context, state) {
-          final args = state.extra as Map<String, dynamic>;
-
+          final args = state.extra as String;
           return _buildPageWithAnimation(
-            child: BusinessPetsDetailsScreen(
-              name: args['name'] ?? '',
-              imageUrl: args['image'] ?? '',
+            child: BusinessPetsDetailsScreen(id: args,
+
             ),
             state: state,
           );

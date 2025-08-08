@@ -61,7 +61,6 @@ class _CustomDropdownState<T> extends State<CustomDropdown<T>> {
       children: [
         widget.title != null
             ? Row(
-
                 children: [
                   Text(
                     widget.title ?? '',
@@ -89,8 +88,7 @@ class _CustomDropdownState<T> extends State<CustomDropdown<T>> {
           decoration: BoxDecoration(
             color: Colors.transparent,
             border: Border.all(
-              width: 1.w
-              ,
+              width: 1.w,
               color: widget.borderColor ?? AppColors.kPrimaryColor,
             ),
             borderRadius: BorderRadius.circular(widget.radius ?? 8.r),
