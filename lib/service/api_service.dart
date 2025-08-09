@@ -51,7 +51,7 @@ Future<Map<String, String>> bearerHeaderInfoForDelete() async {
   log.i('|📍📍📍|----------------- [[ DELETE TOKEN ]] $token -----------------|📍📍📍|');
 
   return {
-    HttpHeaders.authorizationHeader: token,
+    HttpHeaders.authorizationHeader: "Bearer $token",
   };
 }
 
@@ -468,9 +468,9 @@ class ApiClient {
 
   Future<Response> put(
       {required String url,
-        bool? isBasic,
+        bool isBasic = false,
         required Map<String, dynamic> body,
-        int code = 202,
+        int code = 200,
         int duration = 30,
       }) async {
     try {
@@ -487,7 +487,7 @@ class ApiClient {
       final response = await http.put(
         Uri.parse(url),
         body: jsonEncode(body),
-        headers: isBasic! ? basicHeaderInfo() : await bearerHeaderInfo(),
+        headers: isBasic ? basicHeaderInfo() : await bearerHeaderInfo(),
       ).timeout(Duration(seconds: duration));
 
       log.d("Body => ${response.body}");

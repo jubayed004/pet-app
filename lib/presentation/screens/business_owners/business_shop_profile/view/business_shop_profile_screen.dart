@@ -23,7 +23,7 @@ class BusinessShopProfileScreen extends StatelessWidget {
        body: CustomScrollView(
          slivers: [
            CustomDefaultAppbar(
-             title: "Shop Profile ",
+             title: "Business Profile ",
            ),
 
            SliverToBoxAdapter(
