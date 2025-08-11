@@ -23,6 +23,7 @@ class CategoryDetailsController extends GetxController{
         final newData = BusinessAllPetsModel.fromJson(response.body);
         profile.value = newData;
         loadingMethod(Status.completed);
+
       } else {
         if (response.statusCode == 503) {
           loadingMethod(Status.internetError);
