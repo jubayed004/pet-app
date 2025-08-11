@@ -273,7 +273,7 @@ class _BusinessPetsDetailsScreenState extends State<BusinessPetsDetailsScreen> {
                     itemBuilder: (_, item, _){
                       return HealthCard(
                         title: item.treatmentName ?? "",
-                        dateOfMonth: DateFormat("dd MMMM yyyy").format(item.treatmentDate ?? DateTime.now()),
+                        dateOfMonth: DateFormat("dd MMMM yyyy").format(item.treatmentDate?.toLocal() ?? DateTime.now()),
                         drName: item.doctorName?? "",
                         status: item.treatmentStatus?? "",
                         statusColor: Colors.green, id: item.id ?? "",

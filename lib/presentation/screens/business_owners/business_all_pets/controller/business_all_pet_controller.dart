@@ -138,6 +138,7 @@ class BusinessAllPetController extends GetxController {
 
   RxBool isUpdateLoading = false.obs;
   RxString statusValue = "COMPLETED".obs;
+  Rx<DateTime> selectedDate = DateTime.now().obs;
 
   Future<void> addHealth({required Map<String, String> body, required String id, required String status,}) async {
     try {
