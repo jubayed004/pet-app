@@ -276,6 +276,7 @@ class _BusinessPetsDetailsScreenState extends State<BusinessPetsDetailsScreen> {
                         dateOfMonth: DateFormat("dd MMMM yyyy").format(item.treatmentDate?.toLocal() ?? DateTime.now()),
                         drName: item.doctorName?? "",
                         status: item.treatmentStatus?? "",
+
                         statusColor: Colors.green, id: item.id ?? "",
                       );
                     }
