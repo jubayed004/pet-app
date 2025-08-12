@@ -52,7 +52,7 @@ class CustomDefaultAppbar extends StatelessWidget
     return SliverAppBar(
       surfaceTintColor: Colors.transparent,
       pinned: true,
-      //floating: true,
+      floating: true,
       //snap: true,
       automaticallyImplyLeading: true,
        //floating: false,

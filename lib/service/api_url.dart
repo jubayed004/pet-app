@@ -20,10 +20,7 @@ class ApiUrl {
 
   static login() => '$base/auth/login';
   static profile() => '$base/user/profile';
-
   static businessProfile() => '$base/owner/get-owner-details';
-
-
   static changePassword() => '$base/auth/change-password';
 
 
@@ -40,25 +37,20 @@ class ApiUrl {
 
   ///Subscription============
   //static subscription() => '$base/subcription/purchase-subscription';
-
  // static connectStripe() => '$base/stripe/connect-stripe';
 
-
-
   ///Categories==================
+
   static getCategories() => '$base/category/all-categories';
-
-
-
   ///Update Profile=============
+
   static businessUpdateProfile() => '$base/owner/update-owner-details';
   static updateProfile() => '$base/owner/update-owner-details';
+  static getBusinessShopProfile() => '$base/business/get';
+ ///Business All Pets
 
-///Business All Pets
   static getBusinessAllPets() => '$base/owner/get-all-pets-who-booked';
   static businessPetDetails({required String id}) => '$base/owner/get-pet-details-by-pet-id/$id';
-
-
   ///Health update
 
   static getPetBusiness() => '$base/owner/get-all-pets-who-booked';
@@ -69,9 +61,13 @@ class ApiUrl {
   static healthHistoryUpdate({required String id}) => '$base/pet-medical-history/update/$id';
   static deleteHealthHistory({required String id}) => '$base/pet-medical-history/delete/$id';
   //static updateVideo({required String id}) => '$base/video/update-video/$id';
+  ///Business Service
+  static getBusinessService() => '$base/services/getServices';
+
+
+
 
   static searchPlace() => '$base/search-place';
-
   static createRegulation() => '$base/regulation/create-regulation';
   static updateRegulation({required String id}) => '$base/regulation/update-regulation/$id';
 

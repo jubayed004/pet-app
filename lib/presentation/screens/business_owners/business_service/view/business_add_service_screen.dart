@@ -10,6 +10,8 @@ import 'package:pet_app/core/route/routes.dart';
 import 'package:pet_app/helper/image/network_image.dart';
 import 'package:pet_app/presentation/components/custom_button/custom_button.dart';
 import 'package:pet_app/presentation/components/custom_button/custom_defualt_appbar.dart';
+import 'package:pet_app/presentation/components/custom_dropdown/custom_drop_down_button.dart';
+import 'package:pet_app/presentation/components/custom_dropdown/custom_drop_down_field.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:pet_app/presentation/components/custom_text_field/custom_text_field.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
@@ -20,6 +22,9 @@ class BusinessAddServiceScreen extends StatelessWidget {
   final _profileController = GetControllers.instance.getProfileController();
    final _petShopRegistrationController = GetControllers.instance.getBusinessAddServiceController();
    final _authController = GetControllers.instance.getAuthController();
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -101,7 +106,7 @@ class BusinessAddServiceScreen extends StatelessWidget {
                     Gap(14),
                     CustomText(text: "Service Type",fontWeight: FontWeight.w400,fontSize: 16,),
                     Gap(8),
-                    DropdownButtonFormField2<String>(
+                  /*  DropdownButtonFormField2<String>(
                       isExpanded: true,
                       decoration: InputDecoration(
                         contentPadding: const EdgeInsets.symmetric(vertical: 16),
@@ -162,6 +167,19 @@ class BusinessAddServiceScreen extends StatelessWidget {
                       menuItemStyleData: const MenuItemStyleData(
                         padding: EdgeInsets.symmetric(horizontal: 16),
                       ),
+                    ),*/
+
+                    CustomDropdownField(
+
+                      hintText: "Service Type",
+                      items: _petShopRegistrationController.analystType.map((item){
+                        return  item;
+                      }).toList(),
+                      onChanged: (value) {
+                        if (value != null) {
+                          _petShopRegistrationController.selectedAnalystType.value = value ?? "";
+                        }
+                      },
                     ),
                     Gap(14),
                     CustomText(text: "Service name",fontWeight: FontWeight.w400,fontSize: 16),
@@ -208,42 +226,26 @@ class BusinessAddServiceScreen extends StatelessWidget {
                     Gap(14),
                     CustomText(text: "Opening time",fontWeight: FontWeight.w500,fontSize: 16),
                     Gap(8),
-                    CustomTextField(
-                      fieldBorderColor: AppColors.blackColor,
-                      fieldBorderRadius: 10,
-                      fillColor: Colors.white,
-                      hintText: "Enter opening time",
-                      keyboardType: TextInputType.text,
-                      textEditingController: _authController.nameSignUp,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Enter opening time';
-                        }
-                        if (value.length < 3) {
-                          return 'Name must be at least 3 characters';
-                        }
-                        return null; // Valid
-                      },
+                    Container(
+                      decoration: BoxDecoration(
+                          color: AppColors.whiteColor,
+                          border: Border.all(color: AppColors.blackColor),
+                          borderRadius: BorderRadius.circular(6)
+                      ),
+                      height: 56,
+                      width: MediaQuery.of(context).size.width,
                     ),
                     Gap(14),
                     CustomText(text: "Closing  time",fontWeight: FontWeight.w500,fontSize: 16),
                     Gap(8),
-                    CustomTextField(
-                      fieldBorderColor: AppColors.blackColor,
-                      fieldBorderRadius: 10,
-                      fillColor: Colors.white,
-                      hintText: "Enter closing time",
-                      keyboardType: TextInputType.text,
-                      textEditingController: _authController.nameSignUp,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Enter closing time';
-                        }
-                        if (value.length < 3) {
-                          return 'Name must be at least 3 characters';
-                        }
-                        return null; // Valid
-                      },
+                    Container(
+                      decoration: BoxDecoration(
+                          color: AppColors.whiteColor,
+                          border: Border.all(color: AppColors.blackColor),
+                          borderRadius: BorderRadius.circular(6)
+                      ),
+                      height: 56,
+                      width: MediaQuery.of(context).size.width,
                     ),
                     Gap(14),
                     CustomText(text: "Off day",fontWeight: FontWeight.w500,fontSize: 16),
@@ -265,27 +267,38 @@ class BusinessAddServiceScreen extends StatelessWidget {
                         return null; // Valid
                       },
                     ),
-                    Gap(14),
-                    CustomText(text: "Website Link",fontWeight: FontWeight.w500,fontSize: 16),
-                    Gap(8),
-                    CustomTextField(
-                      fieldBorderColor: AppColors.blackColor,
-                      fieldBorderRadius: 10,
-                      fillColor: Colors.white,
-                      hintText: "link here",
-                      keyboardType: TextInputType.text,
-                      textEditingController: _authController.nameSignUp,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'link here';
-                        }
-                        if (value.length < 3) {
-                          return 'Name must be at least 3 characters';
-                        }
-                        return null; // Valid
-                      },
-                    ),
-                    
+                    Obx((){
+                      final value = _petShopRegistrationController.selectedAnalystType.value;
+                      if(["Pet Shops", "Pet Hotels"].contains(value)) {
+                        return Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Gap(14),
+                            CustomText(text: "Website Link",fontWeight: FontWeight.w500,fontSize: 16),
+                            Gap(8),
+                            CustomTextField(
+                              fieldBorderColor: AppColors.blackColor,
+                              fieldBorderRadius: 10,
+                              fillColor: Colors.white,
+                              hintText: "link here",
+                              keyboardType: TextInputType.text,
+                              textEditingController: _authController.nameSignUp,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'link here';
+                                }
+                                if (value.length < 3) {
+                                  return 'Name must be at least 3 characters';
+                                }
+                                return null; // Valid
+                              },
+                            ),
+                          ],
+                        );
+                      }
+                      return SizedBox();
+                    }),
                     Gap(24),
                     CustomButton(onTap: (){
                       AppRouter.route.pop();

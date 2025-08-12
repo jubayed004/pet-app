@@ -257,7 +257,7 @@ class BusinessProfileScreen extends StatelessWidget {
                           ),
                           ButtonSectionAll(
                             icon: Assets.icons.addpeticon.svg(),
-                            text: "Shop Profile",
+                            text: "Business Profile",
                             onTap: () {
                               AppRouter.route.pushNamed(
                                 RoutePath.businessShopProfileScreen,

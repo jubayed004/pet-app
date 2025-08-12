@@ -80,6 +80,7 @@ dependencies:
   flutter_switch: ^0.3.2
   flutter_easy_faq: ^1.0.1
   fl_chart: ^1.0.0
+  url_launcher: ^6.3.2
   # File Management
   file_picker: ^9.0.2
   permission_handler: ^11.3.1

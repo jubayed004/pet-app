@@ -18,8 +18,8 @@ import 'package:pet_app/presentation/screens/business_owners/business_booking/vi
 import 'package:pet_app/presentation/screens/business_owners/business_home/review_screen.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_nav/business_navigation_page.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_profile/view/business_edit_profile.dart';
-import 'package:pet_app/presentation/screens/business_owners/business_service/business_add_service/view/business_add_service_screen.dart';
-import 'package:pet_app/presentation/screens/business_owners/business_service/business_add_service/view/business_edit_service_screen.dart';
+import 'package:pet_app/presentation/screens/business_owners/business_service/view/business_add_service_screen.dart';
+import 'package:pet_app/presentation/screens/business_owners/business_service/view/business_edit_service_screen.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_service/view/business_service_screen.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_shop_profile/view/business_shop_profile_screen.dart';
 import 'package:pet_app/presentation/screens/business_owners/subscription/change_subscription/change_subscription_screen.dart';

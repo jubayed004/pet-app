@@ -6,8 +6,9 @@ import 'package:pet_app/presentation/screens/business_owners/business_all_pets/c
 import 'package:pet_app/presentation/screens/business_owners/business_booking/controller/business_booking_controller.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_nav/controller/navigation_controller.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_profile/controller/business_profile_controller.dart';
-import 'package:pet_app/presentation/screens/business_owners/business_service/business_add_service/controller/business_add_service_controller.dart';
+import 'package:pet_app/presentation/screens/business_owners/business_service/controller/business_add_service_controller.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_service/controller/business_service_controller.dart';
+import 'package:pet_app/presentation/screens/business_owners/business_shop_profile/controller/category_details_controller.dart';
 import 'package:pet_app/presentation/screens/business_owners/subscription/subscription_screen.dart';
 import 'package:pet_app/presentation/screens/category/book_an_appointment/controller/book_an_appointment_controller.dart';
 import 'package:pet_app/presentation/screens/category/category_details/controller/category_details_controller.dart';
@@ -215,6 +216,15 @@ AuthController getAuthController() {
       Get.put(BusinessAllPetController());
     }
     return Get.find<BusinessAllPetController>();
+
+  }
+
+
+  BusinessShopProfileController getBusinessShopProfileController() {
+    if (!Get.isRegistered<BusinessShopProfileController>()) {
+      Get.put(BusinessShopProfileController());
+    }
+    return Get.find<BusinessShopProfileController>();
 
   }
 
