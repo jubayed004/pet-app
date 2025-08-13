@@ -331,21 +331,12 @@ Future<void> defaultYesNoDialog({
           title: const Text("Are you sure you want to delete this record?"),
           content: SizedBox(
             height: 100,
-            width: MediaQuery
-                .of(context)
-                .size
-                .width,
+            width: MediaQuery.of(context).size.width,
             child: SingleChildScrollView(
               child: ConstrainedBox(
                 constraints: BoxConstraints(
-                  maxHeight: MediaQuery
-                      .of(context)
-                      .size
-                      .height * 0.6,
-                  maxWidth: MediaQuery
-                      .of(context)
-                      .size
-                      .width * 0.9,
+                  maxHeight: MediaQuery.of(context).size.height * 0.6,
+                  maxWidth: MediaQuery.of(context).size.width * 0.9,
                 ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,

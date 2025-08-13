@@ -5,346 +5,509 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:pet_app/controller/get_controllers.dart';
 import 'package:pet_app/core/route/route_path.dart';
 import 'package:pet_app/core/route/routes.dart';
 import 'package:pet_app/helper/image/network_image.dart';
 import 'package:pet_app/presentation/components/custom_button/custom_button.dart';
 import 'package:pet_app/presentation/components/custom_button/custom_defualt_appbar.dart';
+import 'package:pet_app/presentation/components/custom_dropdown/custom_drop_down_field.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:pet_app/presentation/components/custom_text_field/custom_text_field.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
 import 'package:pet_app/utils/app_const/padding_constant.dart';
 
-class BusinessEditServiceScreen extends StatelessWidget {
-   BusinessEditServiceScreen({super.key});
-  final _profileController = GetControllers.instance.getProfileController();
-  final _petShopRegistrationController = GetControllers.instance.getBusinessAddServiceController();
-  final _authController = GetControllers.instance.getAuthController();
+class BusinessEditServiceScreen extends StatefulWidget {
+  BusinessEditServiceScreen({super.key});
+
+  @override
+  State<BusinessEditServiceScreen> createState() =>
+      _BusinessEditServiceScreenState();
+}
+
+class _BusinessEditServiceScreenState extends State<BusinessEditServiceScreen> {
+  final businessAddServiceController =
+      GetControllers.instance.getBusinessAddServiceController();
+
+  final TextEditingController serviceName = TextEditingController();
+
+  final TextEditingController phoneNumber = TextEditingController();
+
+  final TextEditingController location = TextEditingController();
+
+  final TextEditingController webSiteLInk = TextEditingController();
+
+  final ValueNotifier<List<TextEditingController>> serviceController =
+      ValueNotifier([TextEditingController()]);
+
+  final _formKey = GlobalKey<FormState>();
+
+  void dispose() {
+    serviceName.dispose();
+    phoneNumber.dispose();
+    location.dispose();
+    webSiteLInk.dispose();
+
+    serviceController.dispose();
+    super.dispose();
+  }
+
+  void _addBeltField() {
+    serviceController.value = [
+      ...serviceController.value,
+      TextEditingController(),
+    ];
+  }
+
+  void _removeBeltField(int index) {
+    if (serviceController.value.length > 1) {
+      final removed = serviceController.value[index];
+      removed.dispose();
+      final updated = [...serviceController.value]..removeAt(index);
+      serviceController.value = updated;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-  return  Scaffold(
+    return Scaffold(
       backgroundColor: Colors.white,
-      body: CustomScrollView(
-        slivers: [
-          CustomDefaultAppbar(
-            title: "Edit Service",
-          ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: paddingH16V8,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CustomText(text: "Service  Photo",fontWeight: FontWeight.w400,fontSize: 16,),
-                  Gap(8),
-                  GestureDetector(
-                    onTap: _profileController.pickImage,
-                    child: SizedBox(
-                      height: 156.h,
-                      width: double.infinity,
-                      child: Obx(() {
-                        final image = _profileController.selectedImage.value?.path;
-                        return Stack(
-                          children: [
-                            Positioned.fill(
-                              child:
-                              image != null && image.isNotEmpty
-                                  ? ClipRRect(
-                                borderRadius: BorderRadius.circular(6),
-                                child: Image.file(
-                                  File(
-                                    _profileController
-                                        .selectedImage
-                                        .value
-                                        ?.path ??
-                                        "",
-                                  ),
-                                  height: 156.h,
-                                  width: MediaQuery.of(context).size.width,
-                                  fit: BoxFit.cover,
-                                ),
-                              )
-                                  : CustomNetworkImage(
-                                imageUrl:
-                                "https://www.rawpixel.com/image/12143311/png",
-                                height: 156.h,
-                                borderRadius: BorderRadius.circular(6),
-                                width: MediaQuery.of(context).size.width,
-                              ),
-                            ),
-                            image != null && image.isNotEmpty
-                                ? SizedBox()
-                                : Center(
-                              child: Container(
-                                height: 30.h,
-                                width: 30.w,
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Color(0xffC2C2C2),
-                                    width: 1.w,
-                                  ),
-                                  color: AppColors.whiteColor700,
-                                  shape: BoxShape.circle,
-                                ),
-                                child: Icon(
-                                  Icons.image_outlined,
-                                  size: 18.sp,
-                                  color: AppColors.purple500,
-                                ),
-                              ),
-                            ),
-                          ],
-                        );
-                      }),
-                    ),
-                  ),
-                  Gap(14),
-                  CustomText(text: "Service Type",fontWeight: FontWeight.w400,fontSize: 16,),
-                  Gap(8),
-                  GestureDetector(
-                    onTap: () {
-                      showModalBottomSheet(
-                        context: context,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-                        ),
-                        builder: (context) {
-                          return Obx(() => Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: _petShopRegistrationController.analystType.map((item) {
-                              final isSelected = _petShopRegistrationController.selectedAnalystTypes.contains(item);
-                              return CheckboxListTile(
-                                title: Text(item),
-                                value: isSelected,
-                                onChanged: (_) {
-                                  _petShopRegistrationController.toggleSelection(item);
-                                },
-                              );
-                            }).toList(),
-                          ));
-                        },
-                      );
-                    },
+      appBar: AppBar(
+        scrolledUnderElevation: 0,
+        backgroundColor: AppColors.whiteColor,
+        centerTitle: true,
+        title: CustomText(
+          fontWeight: FontWeight.w600,
+          fontSize: 16,
+          text: "Ädd Service",
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: paddingH16V8,
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CustomText(
+                  text: "Service  Photo",
+                  fontWeight: FontWeight.w400,
+                  fontSize: 16,
+                ),
+                Gap(8),
+                GestureDetector(
+                  onTap: businessAddServiceController.pickImage,
+                  child: SizedBox(
+                    height: 156.h,
+                    width: double.infinity,
                     child: Obx(() {
-                      final selected = _petShopRegistrationController.selectedAnalystTypes.join(', ');
-                      return InputDecorator(
-                        decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: AppColors.purple500),
+                      final image =
+                          businessAddServiceController
+                              .selectedImage
+                              .value
+                              ?.path;
+                      return Stack(
+                        children: [
+                          Positioned.fill(
+                            child:
+                                image != null && image.isNotEmpty
+                                    ? ClipRRect(
+                                      borderRadius: BorderRadius.circular(6),
+                                      child: Image.file(
+                                        File(image),
+                                        height: 156.h,
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    )
+                                    : CustomNetworkImage(
+                                      imageUrl:
+                                          "https://www.rawpixel.com/image/12143311/png",
+                                      height: 156.h,
+                                      borderRadius: BorderRadius.circular(6),
+                                      width: MediaQuery.of(context).size.width,
+                                    ),
                           ),
-                          hintText: "Select business types",
-                          filled: true,
-                          fillColor: Colors.white,
-                        ),
-                        child: Text(
-                          selected.isEmpty ? "Select business types" : selected,
-                          style: TextStyle(
-                            color: selected.isEmpty ? AppColors.purple500 : AppColors.blackColor,
-                            fontSize: 16,
-                          ),
-                        ),
+                          image != null && image.isNotEmpty
+                              ? SizedBox()
+                              : Center(
+                                child: Container(
+                                  height: 30.h,
+                                  width: 30.w,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: Color(0xffC2C2C2),
+                                      width: 1.w,
+                                    ),
+                                    color: AppColors.whiteColor700,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Icon(
+                                    Icons.image_outlined,
+                                    size: 18.sp,
+                                    color: AppColors.purple500,
+                                  ),
+                                ),
+                              ),
+                        ],
                       );
                     }),
                   ),
-                 /* DropdownButtonFormField2<String>(
-                    isExpanded: true,
-                    decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.symmetric(vertical: 16),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(color: AppColors.blackColor,), // Default border
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(color:AppColors.blackColor,),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(color: AppColors.blackColor, width: 1.5),
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(color: AppColors.blackColor,),
-                      ),
-                      focusedErrorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(color: AppColors.blackColor,),
-                      ),
-                      fillColor: Colors.white,
-                      filled: true,
-                      hintStyle: TextStyle(color: AppColors.blackColor),
-                    ),
-                    hint: CustomText(
-                      text: "select business type",
-                      color: AppColors.blackColor,
-                      fontSize: 16,
-                    ),
-                    items: _petShopRegistrationController.analystType
-                        .map((item) => DropdownMenuItem<String>(
-                      value: item,
-                      child: CustomText(text: item,fontSize: 16,fontWeight: FontWeight.w400),
-                    ))
-                        .toList(),
-                    onChanged: (value) {
-                      if (value != null) {
-                        _petShopRegistrationController.selectedAnalystType.value = value;
+                ),
+                Gap(14),
+                CustomText(
+                  text: "Service Type",
+                  fontWeight: FontWeight.w500,
+                  fontSize: 16,
+                ),
+                Gap(8),
+                CustomDropdownField(
+                  hintText: "Service Type",
+                  items:
+                      businessAddServiceController.analystType.map((item) {
+                        return item;
+                      }).toList(),
+                  onChanged: (value) {
+                    if (value != null) {
+                      businessAddServiceController.selectedAnalystType.value =
+                          value ?? "";
+                    }
+                  },
+                ),
+                Gap(16),
+                CustomText(
+                  text: "Providing Service",
+                  fontWeight: FontWeight.w500,
+                  fontSize: 16,
+                ),
+                Gap(8),
+                ValueListenableBuilder<List<TextEditingController>>(
+                  valueListenable: serviceController,
+                  builder: (context, list, _) {
+                    return Column(
+                      children: List.generate(list.length, (index) {
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Expanded(
+                                child: CustomTextField(
+                                  textEditingController: list[index],
+                                  fieldBorderColor: AppColors.blackColor,
+                                  fieldBorderRadius: 10,
+                                  fillColor: Colors.white,
+                                  hintText: "Enter Providing Service",
+                                  keyboardType: TextInputType.text,
+                                  validator: (value) {
+                                    final v = (value ?? '').trim();
+
+                                    // No "required" check anymore
+                                    if (v.isNotEmpty) {
+                                      if (v.length < 3)
+                                        return 'At least 3 characters';
+                                      if (v.length > 50)
+                                        return 'Must be 50 characters or fewer';
+
+                                      // Allow letters, numbers, spaces, and - / . , ( ) ' &
+                                      final ok = RegExp(
+                                        r"^[A-Za-z0-9&/.,\-()' ]+$",
+                                      );
+                                      if (!ok.hasMatch(v)) {
+                                        return "Only letters, numbers, spaces, and -/.,()'& are allowed";
+                                      }
+
+                                      // Require at least one letter or number (if something is entered)
+                                      final hasAlnum = RegExp(
+                                        r'[A-Za-z0-9]',
+                                      ).hasMatch(v);
+                                      if (!hasAlnum)
+                                        return 'Enter a meaningful service name';
+                                    }
+
+                                    return null; // Valid or empty
+                                  },
+                                ),
+                              ),
+                              const Gap(5),
+                              index == 0
+                                  ? IconButton(
+                                    onPressed: _addBeltField,
+                                    icon: const Icon(Iconsax.add_circle),
+                                  )
+                                  : IconButton(
+                                    onPressed: () => _removeBeltField(index),
+                                    icon: const Icon(Icons.remove_circle_outline,),
+                              ),
+                            ],
+                          ),
+                        );
+                      }),
+                    );
+                  },
+                ),
+                Gap(14),
+                CustomText(
+                  text: "Service Name",
+                  fontWeight: FontWeight.w500,
+                  fontSize: 16,
+                ),
+                Gap(8),
+                CustomTextField(
+                  fieldBorderColor: AppColors.blackColor,
+                  fieldBorderRadius: 10,
+                  fillColor: Colors.white,
+                  hintText: "Enter service name",
+                  keyboardType: TextInputType.text,
+                  textEditingController: serviceName,
+                  validator: (value) {
+                    final v = (value ?? '').trim();
+
+                    // Only check length if something was entered
+                    if (v.isNotEmpty && v.length < 3) {
+                      return 'Name must be at least 3 characters';
+                    }
+                    return null; // valid if empty or >= 3 chars
+                  },
+                ),
+
+                Gap(14),
+                CustomText(
+                  text: "Phone Number",
+                  fontWeight: FontWeight.w500,
+                  fontSize: 16,
+                ),
+                Gap(8),
+                CustomTextField(
+                  fieldBorderColor: AppColors.blackColor,
+                  fieldBorderRadius: 10,
+                  fillColor: Colors.white,
+                  hintText: "Enter phone number",
+                  keyboardType: TextInputType.phone,
+                  textEditingController: phoneNumber,
+                  validator: (value) {
+                    final v = (value ?? '').trim();
+
+                    // Only validate if something was entered
+                    if (v.isNotEmpty) {
+                      final phoneRegExp = RegExp(r'^\+?\d{7,15}$');
+                      if (!phoneRegExp.hasMatch(v)) {
+                        return "Enter a valid phone number";
                       }
-                    },
-                    style: TextStyle(color: AppColors.blackColor,fontSize: 16,fontWeight: FontWeight.w400),
-                    buttonStyleData: const ButtonStyleData(
-                      padding: EdgeInsets.only(right: 8),
-                    ),
-                    iconStyleData: const IconStyleData(
-                      icon: Icon(Icons.arrow_downward_rounded, color: AppColors.blackColor),
-                      iconSize: 24,
-                    ),
-                    dropdownStyleData: DropdownStyleData(
+                    }
+
+                    return null; // valid if empty or matches pattern
+                  },
+                ),
+
+                Gap(14),
+                CustomText(
+                  text: "Location",
+                  fontWeight: FontWeight.w500,
+                  fontSize: 16,
+                ),
+                Gap(8),
+                CustomTextField(
+                  fieldBorderColor: AppColors.blackColor,
+                  fieldBorderRadius: 10,
+                  fillColor: Colors.white,
+                  hintText: "Enter your location",
+                  keyboardType: TextInputType.streetAddress,
+                  textEditingController: location,
+                  validator: (value) {
+                    final v = (value ?? '').trim();
+                    if (v.isEmpty) return null; // not required
+                    if (v.length < 3) return 'Too short';
+                    return null;
+                  },
+                ),
+
+                Gap(14),
+                CustomText(
+                  text: " Time Duration",
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16,
+                ),
+                Gap(14),
+
+                CustomText(
+                  text: "Opening time",
+                  fontWeight: FontWeight.w500,
+                  fontSize: 16,
+                ),
+                Gap(8),
+                Obx(() {
+                  return GestureDetector(
+                    onTap:
+                        () => businessAddServiceController.pickOpeningTime(
+                          context,
+                        ),
+                    child: Container(
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
                         color: AppColors.whiteColor,
+                        border: Border.all(color: AppColors.blackColor),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      height: 56,
+                      width: MediaQuery.of(context).size.width,
+                      alignment: Alignment.centerLeft,
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: Text(
+                        businessAddServiceController.openingTime.value == null
+                            ? "Select opening time"
+                            : businessAddServiceController.openingTime.value!
+                                .format(context),
+                        style: TextStyle(
+                          fontSize: 16,
+                          color:
+                              businessAddServiceController.openingTime.value ==
+                                      null
+                                  ? Colors.grey
+                                  : Colors.black,
+                        ),
                       ),
                     ),
-                    menuItemStyleData: const MenuItemStyleData(
-                      padding: EdgeInsets.symmetric(horizontal: 16),
+                  );
+                }),
+                Gap(14),
+                CustomText(
+                  text: "Closing time",
+                  fontWeight: FontWeight.w500,
+                  fontSize: 16,
+                ),
+                Gap(8),
+                Obx(() {
+                  return GestureDetector(
+                    onTap:
+                        () => businessAddServiceController.pickClosingTime(
+                          context,
+                        ),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: AppColors.whiteColor,
+                        border: Border.all(color: AppColors.blackColor),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      height: 56,
+                      width: MediaQuery.of(context).size.width,
+                      alignment: Alignment.centerLeft,
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: Text(
+                        businessAddServiceController.closingTime.value == null
+                            ? "Select closing time"
+                            : businessAddServiceController.closingTime.value!
+                                .format(context),
+                        style: TextStyle(
+                          fontSize: 16,
+                          color:
+                              businessAddServiceController.closingTime.value ==
+                                      null
+                                  ? Colors.grey
+                                  : Colors.black,
+                        ),
+                      ),
                     ),
-                  ),*/
-                  Gap(14),
-                  CustomText(text: "Service name",fontWeight: FontWeight.w400,fontSize: 16),
-                  Gap(8),
-                  CustomTextField(
-                    fieldBorderColor: AppColors.blackColor,
-                    fieldBorderRadius: 10,
-                    fillColor: Colors.white,
-                    hintText: "Enter service name",
-                    keyboardType: TextInputType.text,
-                    textEditingController: _authController.nameSignUp,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Enter service name';
-                      }
-                      if (value.length < 3) {
-                        return 'Name must be at least 3 characters';
-                      }
-                      return null; // Valid
-                    },
-                  ),
-                  Gap(14),
-                  CustomText(text: "Location",fontWeight: FontWeight.w400,fontSize: 16),
-                  Gap(8),
-                  CustomTextField(
-                    fieldBorderColor: AppColors.blackColor,
-                    fieldBorderRadius: 10,
-                    fillColor: Colors.white,
-                    hintText: "Enter service name",
-                    keyboardType: TextInputType.text,
-                    textEditingController: _authController.nameSignUp,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Enter service name';
-                      }
-                      if (value.length < 3) {
-                        return 'Name must be at least 3 characters';
-                      }
-                      return null; // Valid
-                    },
-                  ),
-                  Gap(14),
-                  CustomText(text: " Time Duration",fontWeight: FontWeight.w600,fontSize: 16),
-                  Gap(14),
-                  CustomText(text: "Opening time",fontWeight: FontWeight.w500,fontSize: 16),
-                  Gap(8),
-                  CustomTextField(
-                    fieldBorderColor: AppColors.blackColor,
-                    fieldBorderRadius: 10,
-                    fillColor: Colors.white,
-                    hintText: "Enter opening time",
-                    keyboardType: TextInputType.text,
-                    textEditingController: _authController.nameSignUp,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Enter opening time';
-                      }
-                      if (value.length < 3) {
-                        return 'Name must be at least 3 characters';
-                      }
-                      return null; // Valid
-                    },
-                  ),
-                  Gap(14),
-                  CustomText(text: "Closing  time",fontWeight: FontWeight.w500,fontSize: 16),
-                  Gap(8),
-                  CustomTextField(
-                    fieldBorderColor: AppColors.blackColor,
-                    fieldBorderRadius: 10,
-                    fillColor: Colors.white,
-                    hintText: "Enter closing time",
-                    keyboardType: TextInputType.text,
-                    textEditingController: _authController.nameSignUp,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Enter closing time';
-                      }
-                      if (value.length < 3) {
-                        return 'Name must be at least 3 characters';
-                      }
-                      return null; // Valid
-                    },
-                  ),
-                  Gap(14),
-                  CustomText(text: "Off day",fontWeight: FontWeight.w500,fontSize: 16),
-                  Gap(8),
-                  CustomTextField(
-                    fieldBorderColor: AppColors.blackColor,
-                    fieldBorderRadius: 10,
-                    fillColor: Colors.white,
-                    hintText: "Enter off day ",
-                    keyboardType: TextInputType.text,
-                    textEditingController: _authController.nameSignUp,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Enter off day ';
-                      }
-                      if (value.length < 3) {
-                        return 'Name must be at least 3 characters';
-                      }
-                      return null; // Valid
-                    },
-                  ),
-                  Gap(14),
-                  CustomText(text: "Website Link",fontWeight: FontWeight.w500,fontSize: 16),
-                  Gap(8),
-                  CustomTextField(
-                    fieldBorderColor: AppColors.blackColor,
-                    fieldBorderRadius: 10,
-                    fillColor: Colors.white,
-                    hintText: "link here",
-                    keyboardType: TextInputType.text,
-                    textEditingController: _authController.nameSignUp,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'link here';
-                      }
-                      if (value.length < 3) {
-                        return 'Name must be at least 3 characters';
-                      }
-                      return null; // Valid
-                    },
-                  ),
+                  );
+                }),
 
-                  Gap(24),
-                  CustomButton(onTap: (){
-                 AppRouter.route.pop(RoutePath.businessServiceScreen);
-                  },title: "Update service",textColor: Colors.black)
+                Gap(14),
+                CustomText(
+                  text: "Off day",
+                  fontWeight: FontWeight.w500,
+                  fontSize: 16,
+                ),
+                Gap(8),
+                CustomDropdownField(
+                  hintText: "Off Day Type",
+                  items:
+                      businessAddServiceController.weekly.map((item) {
+                        return item;
+                      }).toList(),
+                  onChanged: (value) {
+                    if (value != null) {
+                      businessAddServiceController.selectedWeek.value =
+                          value ?? "";
+                    }
+                  },
+                ),
+                Obx(() {
+                  final value = businessAddServiceController.selectedWeek.value;
+                  if (["Pet Shops", "Pet Hotels"].contains(value)) {
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Gap(14),
+                        CustomText(
+                          text: "Website Link",
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16,
+                        ),
+                        Gap(8),
+                        CustomTextField(
+                          fieldBorderColor: AppColors.blackColor,
+                          fieldBorderRadius: 10,
+                          fillColor: Colors.white,
+                          hintText: "link here",
+                          keyboardType: TextInputType.text,
+                          textEditingController: webSiteLInk,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'link here';
+                            }
+                            if (value.length < 3) {
+                              return 'Name must be at least 3 characters';
+                            }
+                            return null; // Valid
+                          },
+                        ),
+                      ],
+                    );
+                  }
+                  return SizedBox();
+                }),
+                Gap(24),
+                CustomButton(
+                  onTap: () {
+                    final List<String> services =
+                        serviceController.value
+                            .map((controller) => controller.text)
+                            .toList();
 
-                ],
-              ),
+                    final body = {
+                      "serviceType":
+                          businessAddServiceController
+                              .selectedAnalystType
+                              .value,
+                      "serviceName": serviceName.text,
+                      "providings": services.join(','),
+                      "location": location.text,
+                      "phone": phoneNumber.text,
+                      "openingTime":
+                          businessAddServiceController.openingTime.value
+                              ?.format(context) ??
+                          "",
+                      "closingTime":
+                          businessAddServiceController.closingTime.value
+                              ?.format(context) ??
+                          "",
+                      "offDay": businessAddServiceController.selectedWeek.value,
+                    };
+
+                    if (_formKey.currentState!.validate()) {
+                      businessAddServiceController.addService(body: body);
+                    }
+                  },
+                  title: "Add service",
+                  textColor: Colors.black,
+                ),
+              ],
             ),
-          )
-
-        ],
+          ),
+        ),
       ),
     );
   }

@@ -276,7 +276,8 @@ class _BusinessPetsDetailsScreenState extends State<BusinessPetsDetailsScreen> {
                         dateOfMonth: DateFormat("dd MMMM yyyy").format(item.treatmentDate?.toLocal() ?? DateTime.now()),
                         drName: item.doctorName?? "",
                         status: item.treatmentStatus?? "",
-                        statusColor: Colors.green, id: item.id ?? "",
+                        statusColor: Colors.green,
+                        id: item.id ?? "",
                       );
                     }
                   ),
@@ -309,7 +310,8 @@ class _BusinessPetsDetailsScreenState extends State<BusinessPetsDetailsScreen> {
                           dateOfMonth: DateFormat("dd MMMM yyyy").format(item.treatmentDate ?? DateTime.now()),
                           drName: item.doctorName?? "",
                           status: item.treatmentStatus?? "",
-                          statusColor: Colors.cyan, id: item.id ?? "",
+                          statusColor: Colors.cyan,
+                          id: item.id ?? "",
                         );
                       }
                   ),

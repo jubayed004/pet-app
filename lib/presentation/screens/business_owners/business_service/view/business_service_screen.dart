@@ -13,6 +13,8 @@ import 'package:pet_app/presentation/components/custom_image/custom_image.dart';
 import 'package:pet_app/presentation/components/custom_netwrok_image/custom_network_image.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:pet_app/presentation/no_internet/error_card.dart';
+import 'package:pet_app/presentation/screens/business_owners/business_all_pets/widgets/custom_add_health_dialog.dart';
+import 'package:pet_app/presentation/screens/business_owners/business_service/widgets/default_dialog.dart';
 import 'package:pet_app/service/api_url.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -20,8 +22,7 @@ import 'package:url_launcher/url_launcher.dart';
 class BusinessServiceScreen extends StatelessWidget {
   BusinessServiceScreen({super.key});
 
-  final businessServiceController =
-      GetControllers.instance.getBusinessServiceController();
+  final businessServiceController = GetControllers.instance.getBusinessServiceController();
 
   @override
   Widget build(BuildContext context) {
@@ -36,13 +37,13 @@ class BusinessServiceScreen extends StatelessWidget {
             CustomDefaultAppbar(title: "Services"),
             SliverToBoxAdapter(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Assets.icons.animalshelter.svg(),
                   GestureDetector(
                     onTap: () {
-                      AppRouter.route.pushNamed(
-                        RoutePath.businessAddServiceScreen,
-                      );
+                      AppRouter.route.pushNamed(RoutePath.businessAddServiceScreen,);
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -75,8 +76,17 @@ class BusinessServiceScreen extends StatelessWidget {
                     final serviceImage = item[index].servicesImages ?? [];
                     final serviceLogo = item[index].shopLogo ?? "";
                     final logo = serviceLogo.isNotEmpty ? serviceLogo : "";
-                    final image = serviceImage.isNotEmpty ? serviceImage.first : "";
-
+                    final image =
+                        serviceImage.isNotEmpty ? serviceImage.first : "";
+                    final provider = item[index].providings ?? [];
+                    final stringProvider =
+                        provider.isNotEmpty ? provider.first : "";
+                    final List<String> providerList =
+                        stringProvider
+                            .split(',')
+                            .map((e) => e.trim())
+                            .where((e) => e.isNotEmpty)
+                            .toList();
                     print("${ApiUrl.imageBase}$image");
                     return GestureDetector(
                       onTap: () {
@@ -106,6 +116,8 @@ class BusinessServiceScreen extends StatelessWidget {
                           ],
                         ),
                         child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Gap(6),
                             Row(
@@ -114,13 +126,23 @@ class BusinessServiceScreen extends StatelessWidget {
                               children: [
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: [
                                       image.isNotEmpty
                                           ? CustomNetworkImage(
-                                        borderRadius: BorderRadius.circular(6),
-                                        height: MediaQuery.of(context).size.height/10,
-                                            width: MediaQuery.of(context).size.width,
+                                            borderRadius: BorderRadius.circular(
+                                              6,
+                                            ),
+                                            height:
+                                                MediaQuery.of(
+                                                  context,
+                                                ).size.height /
+                                                10,
+                                            width:
+                                                MediaQuery.of(
+                                                  context,
+                                                ).size.width,
                                             imageUrl:
                                                 "${ApiUrl.imageBase}${image.replaceAll("\\", "/")}",
                                           )
@@ -129,7 +151,7 @@ class BusinessServiceScreen extends StatelessWidget {
                                                 "assets/images/womandogimage.png",
                                             boxFit: BoxFit.cover,
                                           ),
-                                      Gap(8),
+                                      Gap(6),
                                       CustomText(
                                         text: "Open",
                                         color: AppColors.primaryColor,
@@ -172,23 +194,55 @@ class BusinessServiceScreen extends StatelessWidget {
                                           ),
                                         ],
                                       ),
-
+                                      Row(
+                                        children: [
+                                          Icon(Icons.phone, size: 18),
+                                          Expanded(
+                                            child: CustomText(
+                                              text: item[index].phone ?? "",
+                                              overflow: TextOverflow.ellipsis,
+                                              textAlign: TextAlign.start,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ],
                                   ),
                                 ),
                                 logo.isNotEmpty
                                     ? CustomNetworkImage(
-
-                                boxShape: BoxShape.circle,
-                                width: MediaQuery.of(context).size.width/8,
-                                  height: MediaQuery.of(context).size.height/10,
-                                  imageUrl:
-                                  "${ApiUrl.imageBase}${logo.replaceAll("\\", "/")}",
-                                )
-                                    :CustomImage(
-                                  imageSrc: "assets/images/petshoplogo.png",
-                                  sizeWidth: 50,
+                                      boxShape: BoxShape.circle,
+                                      width: MediaQuery.of(context).size.width / 8,
+                                      height: MediaQuery.of(context).size.height / 10,
+                                      imageUrl: "${ApiUrl.imageBase}${logo.replaceAll("\\", "/")}",
+                                    )
+                                    : CustomImage(
+                                      imageSrc: "assets/images/petshoplogo.png",
+                                      sizeWidth: 50,
+                                    ),
+                              ],
+                            ),
+                            Gap(8),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                CustomText(
+                                  text: "Service Provided :",
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
                                 ),
+                                ...List.generate(providerList.length, (
+                                  subIndex,
+                                ) {
+                                  return CustomText(
+                                    fontSize: 14,
+                                    textAlign: TextAlign.start,
+                                    maxLines: 5,
+                                    text:
+                                        "${subIndex + 1}.  ${providerList[subIndex]} ",
+                                  );
+                                }),
                               ],
                             ),
                             Gap(8),
@@ -201,36 +255,45 @@ class BusinessServiceScreen extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     CustomText(
-                                      text: businessServiceController.getOpenDaysTextComplete(
-                                        offDay: item[index].offDay ?? "",
-                                        openingTime: item[index].openingTime ?? "",
-                                        closingTime: item[index].closingTime ?? "",
-                                      ),
+                                      text: businessServiceController
+                                          .getOpenDaysTextComplete(
+                                            offDay: item[index].offDay ?? "",
+                                            openingTime:
+                                                item[index].openingTime ?? "",
+                                            closingTime:
+                                                item[index].closingTime ?? "",
+                                          ),
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                     CustomText(
-                                      text: "${"Off day -"}${item[index].offDay ?? ""}",
+                                      text:
+                                          "${"Off day -"}${item[index].offDay ?? ""}",
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                   ],
                                 ),
                                 Spacer(),
                                 Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     GestureDetector(
                                       onTap: () {
-                                        AppRouter.route.pushNamed(
-                                          RoutePath.businessEditServiceScreen,
-                                        );
+                                        AppRouter.route.pushNamed(RoutePath.businessEditServiceScreen,extra: {'serviceName':"",});
                                       },
-                                      child: Assets.icons.editico.svg(
-                                        width: 26,
-                                      ),
+                                      child: Assets.icons.editico.svg(width: 26,),
                                     ),
                                     GestureDetector(
-                                      onTap: () {},
+                                      onTap: () {
+                                        defaultDeletedYesNoDialog(
+                                          context: context,
+                                          title: 'Are you sure you want to delete this Service?',
+
+                                          onYes: () {
+                                            businessServiceController.deletedService(id: item[index].id ?? "",);
+                                          },
+
+                                        );
+                                      },
                                       child: Assets.icons.deletedicon.svg(
                                         width: 36,
                                         colorFilter: ColorFilter.mode(
@@ -244,61 +307,53 @@ class BusinessServiceScreen extends StatelessWidget {
                               ],
                             ),
                             Gap(8),
-                           if(["SHOP", "HOTEL"].contains(item[index].serviceType)) Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Expanded(child: SizedBox()),
-                                Expanded(
-                                  child: CustomButton(
-                                    onTap: () async {
-                                      // Get the website URL
-                                      String? websiteUrl = item[index].websiteLink;
-
-                                      // If website URL is null or empty, use a fallback URL
-                                      if (websiteUrl == null || websiteUrl.isEmpty) {
-                                        websiteUrl = "https://www.defaultwebsite.com"; // Provide a default URL
-                                      }
-
-                                      // Ensure the URL starts with 'http://' or 'https://'
-                                      if (!websiteUrl.startsWith('http://') && !websiteUrl.startsWith('https://')) {
-                                        websiteUrl = 'https://' + websiteUrl; // Prepend 'https://' if not present
-                                      }
-
-                                      final Uri url = Uri.parse(websiteUrl); // Convert the string to Uri
-
-                                      // Check if the URL can be launched
-                                      if (await canLaunchUrl(url)) {
-                                      // Launch the URL if possible
-                                      await launchUrl(url);
-                                      } else {
-                                      // Handle error if the URL can't be launched
-                                      throw 'Could not launch $url';
-                                      }
-                                    },
-                                    title: "Website",
-                                    height: 24,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400,
-                                    fillColor: AppColors.purple500,
-                                    textColor: Colors.black,
+                            if (["SHOP", "HOTEL",].contains(item[index].serviceType))
+                              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Expanded(child: SizedBox()),
+                                  Expanded(
+                                    child: CustomButton(
+                                      onTap: () async {
+                                        // Get the website URL
+                                        String? websiteUrl = item[index].websiteLink;
+                                        // If website URL is null or empty, use a fallback URL
+                                        if (websiteUrl == null ||
+                                            websiteUrl.isEmpty) {websiteUrl = "https://www.defaultwebsite.com"; // Provide a default URL
+                                        }
+                                        // Ensure the URL starts with 'http://' or 'https://'
+                                        if (!websiteUrl.startsWith('http://') &&
+                                            !websiteUrl.startsWith('https://',)) {websiteUrl = 'https://' + websiteUrl; // Prepend 'https://' if not present
+                                        }
+                                        final Uri url = Uri.parse(websiteUrl,
+                                        ); // Convert the string to Uri
+                                        // Check if the URL can be launched
+                                        if (await canLaunchUrl(url)) {
+                                          // Launch the URL if possible
+                                          await launchUrl(url);
+                                        } else {
+                                          // Handle error if the URL can't be launched
+                                          throw 'Could not launch $url';
+                                        }
+                                      },
+                                      title: "Website",
+                                      height: 24,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w400,
+                                      fillColor: AppColors.purple500,
+                                      textColor: Colors.black,
+                                    ),
                                   ),
-                                ),
-                                Expanded(child: SizedBox()),
-                              ],
-                            ),
+                                  Expanded(child: SizedBox()),
+                                ],
+                              ),
                           ],
                         ),
                       ),
                     );
                   },
                   childCount:
-                      businessServiceController
-                          .service
-                          .value
-                          .services
-                          ?.length ??
-                      0, // Set the number of items in your list
+                      businessServiceController.service.value.services?.length ?? 0, // Set the number of items in your list
                 ),
               );
             }),

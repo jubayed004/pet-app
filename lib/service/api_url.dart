@@ -63,7 +63,8 @@ class ApiUrl {
   //static updateVideo({required String id}) => '$base/video/update-video/$id';
   ///Business Service
   static getBusinessService() => '$base/services/getServices';
-
+  static addService() => '$base/services/createService';
+  static deletedService({required String id}) => '$base/services/deleteService/$id';
 
 
 

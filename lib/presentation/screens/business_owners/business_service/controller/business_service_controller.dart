@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -6,6 +7,7 @@ import 'package:pet_app/core/custom_assets/assets.gen.dart';
 import 'package:pet_app/core/dependency/get_it_injection.dart';
 import 'package:pet_app/core/route/route_path.dart';
 import 'package:pet_app/core/route/routes.dart';
+import 'package:pet_app/helper/toast_message/toast_message.dart';
 import 'package:pet_app/presentation/components/custom_button/custom_button.dart';
 import 'package:pet_app/presentation/components/custom_image/custom_image.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
@@ -43,6 +45,26 @@ class BusinessServiceController extends GetxController {
       }
     } catch (e) {
       loadingMethod(Status.error);
+    }
+  }
+
+
+  ///=================== Deleted Service
+
+  Future<void> deletedService ({ required String id})async {
+    try {
+      final response = await apiClient.delete(
+        url: ApiUrl.deletedService(id: id), body: {},);
+
+      if (response.statusCode == 200) {
+        await getBusinessService();
+        toastMessage(message: response.body?['message']?.toString());
+        AppRouter.route.pop();
+      }
+    } catch (error) {
+      if (kDebugMode) {
+        print(error);
+      }
     }
   }
 

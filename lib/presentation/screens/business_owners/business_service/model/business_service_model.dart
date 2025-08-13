@@ -60,7 +60,7 @@ class Service {
   final DateTime? updatedAt;
   final int? v;
   final String? shopLogo;
-  final String? address;
+  final String? phone;
 
   Service({
     this.id,
@@ -79,7 +79,7 @@ class Service {
     this.updatedAt,
     this.v,
     this.shopLogo,
-    this.address,
+    this.phone,
   });
 
   factory Service.fromJson(Map<String, dynamic> json) => Service(
@@ -99,7 +99,7 @@ class Service {
     updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
     v: json["__v"],
     shopLogo: json["shopLogo"],
-    address: json["address"],
+    phone: json["phone"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -119,6 +119,6 @@ class Service {
     "updatedAt": updatedAt?.toIso8601String(),
     "__v": v,
     "shopLogo": shopLogo,
-    "address": address,
+    "phone": phone,
   };
 }

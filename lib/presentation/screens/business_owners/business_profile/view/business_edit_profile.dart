@@ -24,15 +24,9 @@ class BusinessEditProfileScreen extends StatefulWidget {
 
 class _BusinessEditProfileScreenState extends State<BusinessEditProfileScreen> {
   final businessProfileController = GetControllers.instance.getBusinessProfileController();
-
   final controller = GetControllers.instance.getNavigationControllerMain();
-
-  final _authController = GetControllers.instance.getAuthController();
-
   TextEditingController name = TextEditingController();
-
   TextEditingController phone = TextEditingController();
-
   TextEditingController address = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   @override

@@ -1,21 +1,31 @@
+import 'dart:io';
+
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:pet_app/controller/get_controllers.dart';
+import 'package:pet_app/core/dependency/get_it_injection.dart';
+import 'package:pet_app/core/route/routes.dart';
+import 'package:pet_app/helper/toast_message/toast_message.dart';
+import 'package:pet_app/service/api_service.dart';
+import 'package:pet_app/service/api_url.dart';
 
 class BusinessAddServiceController extends GetxController{
-
-
+  final businessServiceController =
+  GetControllers.instance.getBusinessServiceController();
+  ///===============Service Type ==============
   final selectedAnalystType = ''.obs;
-
   final List<String> analystType = [
-    "Pet Vets",
-    "Pet Grooming",
-    "Pet Shops",
-    "Pet Hotels",
-    "Pet Training",
-    "Friendly Place",
+    " Vet",
+    " Grooming",
+    " Shop",
+    " Hotel",
+    " Training",
+    " Friendly ",
   ];
 
+  
   final RxList<String> selectedAnalystTypes = <String>[].obs;
-
   void toggleSelection(String item) {
     if (selectedAnalystTypes.contains(item)) {
       selectedAnalystTypes.remove(item);
@@ -23,4 +33,76 @@ class BusinessAddServiceController extends GetxController{
       selectedAnalystTypes.add(item);
     }
   }
+  
+  /// ===================== Time ============
+  final selectedWeek= ''.obs;
+  final List<String> weekly = [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday",
+  ];
+  final Rx<TimeOfDay?> openingTime = Rx<TimeOfDay?>(null);
+  final Rx<TimeOfDay?> closingTime = Rx<TimeOfDay?>(null);
+  Future<void> pickOpeningTime(BuildContext context) async {
+    final initial = openingTime.value ?? TimeOfDay.now();
+    final result = await showTimePicker(
+      context: context,
+      initialTime: initial,
+    );
+    if (result != null) openingTime.value = result;
+  }
+  Future<void> pickClosingTime(BuildContext context) async {
+    final initial = closingTime.value ?? TimeOfDay.now();
+    final result = await showTimePicker(
+      context: context,
+      initialTime: initial,
+    );
+    if (result != null) closingTime.value = result;
+  }
+  
+  
+  ///===================Add Service Api Function
+
+  final ImagePicker _imagePicker = ImagePicker();
+  final ApiClient apiClient = serviceLocator();
+  Rx<XFile?> selectedImage = Rx<XFile?>(null);
+  RxBool isLoading = false.obs;
+  Future<void> pickImage() async {
+    XFile? image = await _imagePicker.pickImage(source: ImageSource.gallery, imageQuality: 80);
+    if (image != null) {
+      selectedImage.value = image;
+    }
+  }
+  Future<void> addService({required Map<String, String> body}) async{
+    try{
+      isLoading.value = true;
+      final List<MultipartBody> multipartBody = [];
+      if(selectedImage.value != null){
+        multipartBody.add(MultipartBody("servicesImages", File(selectedImage.value?.path?? "")));
+      }
+      print("weiurterit ertioyertoguiopdrtdrthporthndrtpgrtphnrth");
+      print(body);
+      final response = await apiClient.multipartRequest(url: ApiUrl.addService(), body: body, multipartBody: multipartBody, reqType: "POST");
+      if(response.statusCode == 201){
+        await businessServiceController.getBusinessService();
+        isLoading.value = false;
+        AppRouter.route.pop();
+      }else{
+        isLoading.value = false;
+        toastMessage(message: response.body?['message']?.toString());
+      }
+    }catch(error){
+      isLoading.value = false;
+    }
+  }
+
+
+
+
+
+
 }

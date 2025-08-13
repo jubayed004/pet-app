@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:pet_app/controller/get_controllers.dart';
 import 'package:pet_app/core/custom_assets/assets.gen.dart';
+import 'package:pet_app/core/route/routes.dart';
 import 'package:pet_app/presentation/components/custom_button/custom_button.dart';
 import 'package:pet_app/presentation/components/custom_button/custom_defualt_appbar.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
@@ -30,7 +31,6 @@ class HelpCenterScreen extends StatelessWidget {
               children: [
                  CustomAlignText(text: "Submit",fontSize: 16,fontWeight: FontWeight.w600,),
                 Gap(12),
-
                 CustomTextField(
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
@@ -63,7 +63,6 @@ class HelpCenterScreen extends StatelessWidget {
                   ),
                 ),
                 Gap(16),
-
                 PrimaryContainer(
                   radius: 10,
                   child: TextFormField(
@@ -89,69 +88,18 @@ class HelpCenterScreen extends StatelessWidget {
                   ),
                 ),
                 Gap(16),
-                CustomButton(onTap: (){},title: "Submit",textColor: Colors.black,)
+                CustomButton(onTap: (){
+                  AppRouter.route.pop();
+                },title: "Submit",textColor: Colors.black,)
               ],
             ),
           ),
         ),
           SliverToBoxAdapter(child: Gap(20)),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Column(
-                children: [
-                  CustomAlignText(text: "Need More Help?",fontSize: 16,fontWeight: FontWeight.w600,),
-                  Gap(16),
-                  Card(
-                    color: Colors.white,
-                    child: InkWell(
-                      onTap: () => _openDialScreen(context, phoneNumber),
-                      child: ListTile(
-                        leading: Assets.icons.customersupport.svg(),
-                        title: const CustomAlignText(text: "Call Us (+1-212-456-7890)",fontWeight: FontWeight.w600,fontSize: 14,),
-                        subtitle: const Text("Our help line service is active: 24/7"),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          SliverToBoxAdapter(child: Gap(20)),
+
         ],
       ),
     );
   }
-   Future<void> _openDialScreen(BuildContext context, String phoneNumber) async {
-     final Uri dialUri = Uri(scheme: 'tel', path: phoneNumber);
 
-     try {
-       if (await canLaunchUrl(dialUri)) {
-         bool launched = await launchUrl(dialUri, mode: LaunchMode.externalApplication);
-         if (!launched) {
-           _showErrorDialog(context, "Dialer app found but failed to open.");
-         }
-       } else {
-         _showErrorDialog(context, "No dialer app found on this device.");
-       }
-     } catch (e) {
-       _showErrorDialog(context, "Error: ${e.toString()}");
-     }
-   }
-
-   void _showErrorDialog(BuildContext context, String message) {
-     showDialog(
-       context: context,
-       builder: (context) => AlertDialog(
-         title: const Text("Error"),
-         content: Text(message),
-         actions: [
-           TextButton(
-             onPressed: () => Navigator.pop(context),
-             child: const Text("OK"),
-           )
-         ],
-       ),
-     );
-   }
 }

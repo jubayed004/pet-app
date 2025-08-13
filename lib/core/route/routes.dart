@@ -137,9 +137,10 @@ class AppRouter {
         path: RoutePath.accountActiveOtpScreen.addBasePath,
         pageBuilder: (context, state) {
           final extra = state.extra as Map<String, dynamic>? ?? {};
+          final email = extra['email'] as String ?? "";
           return _buildPageWithAnimation(
             child: AccountActiveOtpScreen(
-              email: extra["email"] as String? ?? "",
+              email: email,
             ),
             state: state,
           );
