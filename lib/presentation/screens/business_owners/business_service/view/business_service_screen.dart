@@ -20,7 +20,7 @@ import 'package:pet_app/utils/app_colors/app_colors.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class BusinessServiceScreen extends StatelessWidget {
-  BusinessServiceScreen({super.key});
+  BusinessServiceScreen({super.key,});
 
   final businessServiceController = GetControllers.instance.getBusinessServiceController();
 
@@ -73,20 +73,13 @@ class BusinessServiceScreen extends StatelessWidget {
                   (context, index) {
                     final item =
                         businessServiceController.service.value.services ?? [];
-                    final serviceImage = item[index].servicesImages ?? [];
+                    final serviceImage = item[index].servicesImages ?? "";
                     final serviceLogo = item[index].shopLogo ?? "";
                     final logo = serviceLogo.isNotEmpty ? serviceLogo : "";
-                    final image =
-                        serviceImage.isNotEmpty ? serviceImage.first : "";
+                    final image = serviceImage.isNotEmpty ? serviceImage : "";
                     final provider = item[index].providings ?? [];
-                    final stringProvider =
-                        provider.isNotEmpty ? provider.first : "";
-                    final List<String> providerList =
-                        stringProvider
-                            .split(',')
-                            .map((e) => e.trim())
-                            .where((e) => e.isNotEmpty)
-                            .toList();
+                    final stringProvider = provider.isNotEmpty ? provider.first : "";
+                    final List<String> providerList = stringProvider.split(',').map((e) => e.trim()).where((e) => e.isNotEmpty).toList();
                     print("${ApiUrl.imageBase}$image");
                     return GestureDetector(
                       onTap: () {
@@ -130,27 +123,11 @@ class BusinessServiceScreen extends StatelessWidget {
                                         CrossAxisAlignment.center,
                                     children: [
                                       image.isNotEmpty
-                                          ? CustomNetworkImage(
-                                            borderRadius: BorderRadius.circular(
-                                              6,
-                                            ),
-                                            height:
-                                                MediaQuery.of(
-                                                  context,
-                                                ).size.height /
-                                                10,
-                                            width:
-                                                MediaQuery.of(
-                                                  context,
-                                                ).size.width,
-                                            imageUrl:
-                                                "${ApiUrl.imageBase}${image.replaceAll("\\", "/")}",
+                                          ? CustomNetworkImage(borderRadius: BorderRadius.circular(6,),
+                                            height: MediaQuery.of(context,).size.height / 10, width:
+                                            MediaQuery.of(context,).size.width, imageUrl: "${ApiUrl.imageBase}${image.replaceAll("\\", "/")}",
                                           )
-                                          : CustomImage(
-                                            imageSrc:
-                                                "assets/images/womandogimage.png",
-                                            boxFit: BoxFit.cover,
-                                          ),
+                                          : CustomImage(imageSrc: "assets/images/womandogimage.png", boxFit: BoxFit.cover,),
                                       Gap(6),
                                       CustomText(
                                         text: "Open",
@@ -257,11 +234,9 @@ class BusinessServiceScreen extends StatelessWidget {
                                     CustomText(
                                       text: businessServiceController
                                           .getOpenDaysTextComplete(
-                                            offDay: item[index].offDay ?? "",
-                                            openingTime:
-                                                item[index].openingTime ?? "",
-                                            closingTime:
-                                                item[index].closingTime ?? "",
+                                        offDay: item[index].offDay ?? "",
+                                            openingTime: item[index].openingTime ?? "",
+                                            closingTime: item[index].closingTime ?? "",
                                           ),
                                       overflow: TextOverflow.ellipsis,
                                     ),
@@ -278,7 +253,17 @@ class BusinessServiceScreen extends StatelessWidget {
                                   children: [
                                     GestureDetector(
                                       onTap: () {
-                                        AppRouter.route.pushNamed(RoutePath.businessEditServiceScreen,extra: {'serviceName':"",});
+                                        AppRouter.route.pushNamed(RoutePath.businessEditServiceScreen,
+                                            extra: {
+                                          'id': item[index].id ?? "",
+                                          'serviceName': item[index].serviceName ?? "",
+                                          'location':item[index].location ?? "",
+                                          'websiteLink':item[index].websiteLink ?? "",
+                                          'phoneNumber':item[index].phone ?? "",
+                                          'serviceController': providerList,
+                                            }
+
+                                        );
                                       },
                                       child: Assets.icons.editico.svg(width: 26,),
                                     ),

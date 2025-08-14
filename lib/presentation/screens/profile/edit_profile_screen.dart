@@ -24,15 +24,10 @@ class EditProfileScreen extends StatefulWidget {
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
   final profileController = GetControllers.instance.getProfileController();
-
   final controller = GetControllers.instance.getNavigationControllerMain();
-
    final _authController = GetControllers.instance.getAuthController();
-
    TextEditingController name = TextEditingController();
-
    TextEditingController phone = TextEditingController();
-
    TextEditingController address = TextEditingController();
   final _formKey = GlobalKey<FormState>();
    @override
@@ -42,7 +37,6 @@ phone.dispose();
 address.dispose();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) {

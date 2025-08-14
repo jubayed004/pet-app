@@ -100,7 +100,39 @@ class BusinessAddServiceController extends GetxController{
     }
   }
 
-
+  ///================================= Edit Health Update==============
+  Rx<XFile?> selecteImage = Rx<XFile?>(null);
+  RxBool isEditLoading = false.obs;
+  Future<void> editPickImage() async {
+    XFile? image = await _imagePicker.pickImage(source: ImageSource.gallery, imageQuality: 80);
+    if (image != null) {
+      selecteImage.value = image;
+    }
+  }
+  Future<void> editService({required Map<String, String> body, required String id,}) async {
+    try {
+      isEditLoading.value = true;
+      final List<MultipartBody> multipartBody = [];
+      if(selecteImage.value != null){
+        multipartBody.add(MultipartBody("servicesImages", File(selecteImage.value?.path?? "")));
+      }
+      print("weiurterit ertioyertoguiopdrtdrthporthndrtpgrtphnrth");
+      print(body);
+      print(multipartBody.first.file);
+      print(multipartBody.first.key);
+      final response = await apiClient.multipartRequest(url: ApiUrl.updateService(id: id), body: body, multipartBody: multipartBody, reqType: "PUT");
+      if (response.statusCode == 200) {
+        await businessServiceController.getBusinessService();
+        isEditLoading.value = false;
+        AppRouter.route.pop();
+      } else {
+        isEditLoading.value = false;
+        toastMessage(message: response.body?['message']?.toString());
+      }
+    } catch (error) {
+      isEditLoading.value = false;
+    }
+  }
 
 
 

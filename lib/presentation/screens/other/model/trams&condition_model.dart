@@ -1,36 +1,36 @@
 
-class OtherModel {
+class TermsConditionsModel {
   final bool? success;
   final String? message;
-  final Privacy? privacy;
+  final TermsConditions? termsConditions;
 
-  OtherModel({
+  TermsConditionsModel({
     this.success,
     this.message,
-    this.privacy,
+    this.termsConditions,
   });
 
-  factory OtherModel.fromJson(Map<String, dynamic> json) => OtherModel(
+  factory TermsConditionsModel.fromJson(Map<String, dynamic> json) => TermsConditionsModel(
     success: json["success"],
     message: json["message"],
-    privacy: json["privacy"] == null ? null : Privacy.fromJson(json["privacy"]),
+    termsConditions: json["termsConditions"] == null ? null : TermsConditions.fromJson(json["termsConditions"]),
   );
 
   Map<String, dynamic> toJson() => {
     "success": success,
     "message": message,
-    "privacy": privacy?.toJson(),
+    "termsConditions": termsConditions?.toJson(),
   };
 }
 
-class Privacy {
+class TermsConditions {
   final String? id;
   final String? description;
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final int? v;
 
-  Privacy({
+  TermsConditions({
     this.id,
     this.description,
     this.createdAt,
@@ -38,7 +38,7 @@ class Privacy {
     this.v,
   });
 
-  factory Privacy.fromJson(Map<String, dynamic> json) => Privacy(
+  factory TermsConditions.fromJson(Map<String, dynamic> json) => TermsConditions(
     id: json["_id"],
     description: json["description"],
     createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),

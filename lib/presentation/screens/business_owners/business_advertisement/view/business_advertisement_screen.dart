@@ -1,3 +1,4 @@
+/*
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -27,7 +28,7 @@ class BusinessAdvertisementScreen extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      controller.pickMultipleImages();
+                      controller.pickImage();
                     },
                     child: Container(
                       width: MediaQuery.of(context).size.width / 2,
@@ -57,7 +58,7 @@ class BusinessAdvertisementScreen extends StatelessWidget {
                   Obx(() => ListView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    itemCount: controller.images.length,
+                    itemCount: controller.selectedImage.length,
                     itemBuilder: (context, index) {
                       final image = controller.images[index];
                       return Padding(
@@ -107,3 +108,4 @@ class BusinessAdvertisementScreen extends StatelessWidget {
   }
 }
 
+*/

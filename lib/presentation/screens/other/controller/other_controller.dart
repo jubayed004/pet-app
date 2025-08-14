@@ -1,27 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pet_app/core/dependency/get_it_injection.dart';
+import 'package:pet_app/core/route/routes.dart';
 import 'package:pet_app/helper/local_db/local_db.dart';
+import 'package:pet_app/helper/toast_message/toast_message.dart';
 import 'package:pet_app/presentation/screens/other/model/other_model.dart';
+import 'package:pet_app/presentation/screens/other/model/trams&condition_model.dart';
 import 'package:pet_app/service/api_service.dart';
+import 'package:pet_app/service/api_url.dart';
 import 'package:pet_app/utils/app_const/app_const.dart';
 
 class OtherController extends GetxController{
   final ApiClient apiClient = serviceLocator();
   final DBHelper dbHelper = serviceLocator();
-
   final bool isSubscription = false;
+
   /// ============================= GET Terms Condition =====================================
-  final Rx<OtherModel> termsData = OtherModel().obs;
+
+  final Rx<TermsConditionsModel> termsData = TermsConditionsModel().obs;
   var termsLoading = Status.completed.obs;
   termsLoadingMethod(Status status) => termsLoading.value = status;
-
   Future<void> getTermsCondition() async {
-/*    try{
+    try{
       termsLoadingMethod(Status.loading);
       var response = await apiClient.get(url: ApiUrl.getTerms());
       if (response.statusCode == 200) {
-        termsData.value = OtherModel.fromJson(response.body);
+        termsData.value = TermsConditionsModel.fromJson(response.body);
         termsLoadingMethod(Status.completed);
       } else {
         if (response.statusCode == 503) {
@@ -34,7 +38,7 @@ class OtherController extends GetxController{
       }
     }catch(e){
       termsLoadingMethod(Status.error);
-    }*/
+    }
 
   }
 
@@ -43,9 +47,7 @@ class OtherController extends GetxController{
   final Rx<OtherModel> privacyData = OtherModel().obs;
   var privacyLoading = Status.completed.obs;
   privacyLoadingMethod(Status status) => privacyLoading.value = status;
-
   Future<void> getPrivacyPolicy() async {
-/*
     try{
       privacyLoadingMethod(Status.loading);
       var response = await apiClient.get(url: ApiUrl.privacyPolicy());
@@ -64,31 +66,22 @@ class OtherController extends GetxController{
     }catch(e){
       privacyLoadingMethod(Status.error);
     }
-*/
 
   }
 
   /// ============================= POST Change Password =====================================
   var changePasswordLoading = false.obs;
   changePasswordLoadingMethod(bool loading) => changePasswordLoading.value = loading;
-  final password = TextEditingController();
-  final newPassword = TextEditingController();
-  final confirmPassword = TextEditingController();
 
-  Future<void> changePassword() async {
-/*   try{
+  Future<void> changePassword({required Map<String, String> body}) async {
+   try{
       changePasswordLoadingMethod(true);
-
-      final body = {
-        "oldPassword": password.text,
-        "newPassword": newPassword.text,
-        "confirmNewPassword": confirmPassword.text
-      };
-
-      var response = await apiClient.post(url: ApiUrl.changePassword(),body: body);
+      var response = await apiClient.put(url: ApiUrl.changePassword(),body: body,isBasic: false);
+      print(body);
+      print(body.values);
       if (response.statusCode == 200) {
         changePasswordLoadingMethod(false);
-        toastMessage(message: response.body?['message']?.toString());
+
         AppRouter.route.pop();
       } else {
         toastMessage(message: response.body?['message']?.toString());
@@ -97,7 +90,7 @@ class OtherController extends GetxController{
     }catch(e){
       toastMessage();
       changePasswordLoadingMethod(false);
-    }*/
+    }
 
 
   }

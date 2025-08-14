@@ -96,50 +96,29 @@ class ProfileController extends GetxController {
 
 
   ///=================================give feedback=======================///
-  TextEditingController subject = TextEditingController();
-  TextEditingController feedback = TextEditingController();
 
-  Future<void> giveFeedback() async{
-/*    try{
-      isUpdateLoading.value = true;
-      final body = {
-        "subject": subject.text,
-        "feedback": feedback.text,
-
-      };
+  RxBool feedbackLoading = false.obs;
+  Future<void> giveFeedback({required Map<String, String> body}) async{
+    try{
+      feedbackLoading.value = true;
       final response = await apiClient.post(url: ApiUrl.giveFeedbacks(), body: body,);
-      if(response.statusCode == 200){
-        isUpdateLoading.value = false;
-        toastMessage(message: response.body?['message']?.toString());
-        subject.clear();
-        feedback.clear();
+      if(response.statusCode == 201){
+        feedbackLoading.value = false;
         AppRouter.route.pop();
-
-
-
       }else{
         toastMessage(message: response.body?['message']?.toString());
-        isUpdateLoading.value = false;
-
+        feedbackLoading.value = false;
       }
     }catch(error){
-      isUpdateLoading.value = false;
-    }*/
-  }
-
-
-  Future<void> getAdmin() async{
-    final role = await dbHelper.getUserRole();
-    print(role);
-    if(role == "superAdmin"){
-      isAdmin.value = true;
+      feedbackLoading.value = false;
     }
   }
+
+
 
 @override
   void onReady() {
     Future.wait([
-      getAdmin(),
       getProfile(),
     ]);
     super.onReady();

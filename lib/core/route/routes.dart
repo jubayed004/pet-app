@@ -31,7 +31,6 @@ import 'package:pet_app/presentation/screens/category/category_details/view/cate
 import 'package:pet_app/presentation/screens/category/service/view/service_screen.dart';
 import 'package:pet_app/presentation/screens/category/view/category_screen.dart';
 import 'package:pet_app/presentation/screens/chat/view/chatting_page.dart';
-import 'package:pet_app/presentation/screens/faq/help_faq_screen.dart';
 import 'package:pet_app/presentation/screens/my_appointment/view/my_appointment_details_screen.dart';
 import 'package:pet_app/presentation/screens/my_appointment/view/my_appointment_screen.dart';
 import 'package:pet_app/presentation/screens/my_pets/edit_my_pets/edit_my_pets_screen.dart';
@@ -42,10 +41,12 @@ import 'package:pet_app/presentation/screens/onboarding/onboarding_screen.dart';
 import 'package:pet_app/presentation/screens/other/terms_of_condition.dart';
 import 'package:pet_app/presentation/screens/pet_health/view/pet_health_screen.dart';
 import 'package:pet_app/presentation/screens/profile/change_password_page.dart';
-import 'package:pet_app/presentation/screens/profile/edit_profile/edit_profile_screen.dart';
+import 'package:pet_app/presentation/screens/profile/edit_profile_screen.dart';
+import 'package:pet_app/presentation/screens/profile/faq/help_faq_screen.dart';
 import 'package:pet_app/presentation/screens/profile/help_center_screen.dart';
 import 'package:pet_app/presentation/screens/profile/privacy_policy.dart';
 import 'package:pet_app/presentation/screens/profile/settings_page.dart';
+import 'package:pet_app/presentation/screens/profile/terms_of_condition.dart';
 import 'package:pet_app/presentation/screens/search/search_screen.dart';
 import 'package:pet_app/presentation/screens/splash/splash_screen.dart';
 import 'package:pet_app/presentation/screens/vendor_selection/vendor_selection_screen.dart';
@@ -505,10 +506,13 @@ class AppRouter {
         name: RoutePath.businessServiceScreen,
         path: RoutePath.businessServiceScreen.addBasePath,
         pageBuilder:
-            (context, state) => _buildPageWithAnimation(
-              child: BusinessServiceScreen(),
-              state: state,
-            ),
+            (context, state) {
+
+          return _buildPageWithAnimation(
+          child: BusinessServiceScreen(),
+            state: state,
+          );
+            }
       ),
       GoRoute(
         name: RoutePath.businessAddServiceScreen,
@@ -523,10 +527,25 @@ class AppRouter {
         name: RoutePath.businessEditServiceScreen,
         path: RoutePath.businessEditServiceScreen.addBasePath,
         pageBuilder:
-            (context, state) => _buildPageWithAnimation(
-              child: BusinessEditServiceScreen(),
-              state: state,
+            (context, state) {
+              final extra = state.extra as Map<String, dynamic>? ?? {};
+              final serviceName = extra['serviceName'] as String ?? "";
+              final id = extra['id'] as String ?? "";
+              final phoneNumber = extra['phoneNumber'] as String ?? "";
+              final location = extra['location'] as String ?? "";
+              final webSiteLInk = extra['websiteLink'] as String ?? "";
+              final serviceController = extra['serviceController'] is List<String> ? extra['serviceController'] as List<String> : <String>[];
+          return  _buildPageWithAnimation(
+            child: BusinessEditServiceScreen(
+                serviceName:serviceName,
+                phoneNumber: phoneNumber,
+                location: location,
+                webSiteLInk: webSiteLInk, id: id,
+              serviceList: serviceController,
             ),
+            state: state,
+          );
+            }
       ),
       GoRoute(
         name: RoutePath.businessBookingScreen,
@@ -537,7 +556,7 @@ class AppRouter {
               state: state,
             ),
       ),
-      GoRoute(
+/*      GoRoute(
         name: RoutePath.businessAdvertisementScreen,
         path: RoutePath.businessAdvertisementScreen.addBasePath,
         pageBuilder:
@@ -545,7 +564,7 @@ class AppRouter {
               child: BusinessAdvertisementScreen(),
               state: state,
             ),
-      ),
+      ),*/
       GoRoute(
         name: RoutePath.reviewScreen,
         path: RoutePath.reviewScreen.addBasePath,

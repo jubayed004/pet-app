@@ -1,3 +1,4 @@
+/*
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
@@ -29,7 +30,8 @@ class TermsOfCondition extends StatelessWidget {
         )
         
         
-        /*Obx(() {
+        */
+/*Obx(() {
           switch (controller.termsLoading.value) {
             case Status.loading:
               return Center(
@@ -49,8 +51,10 @@ class TermsOfCondition extends StatelessWidget {
               return  HtmlWidget(controller.termsData.value.data?.description ?? "");
           }
         },
-      ),*/
+      ),*//*
+
     )
     );
   }
 }
+*/

@@ -22,11 +22,7 @@ class TermsOfCondition extends StatelessWidget {
         backgroundColor: Colors.white,
         centerTitle: true,
         title: CustomText(text: "Terms of condition",fontSize: 16,fontWeight: FontWeight.w500,),
-          leading:CustomBackButton(
-            onTap: () {
-              AppRouter.route.pop();
-            },
-          )
+
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
@@ -34,20 +30,15 @@ class TermsOfCondition extends StatelessWidget {
           switch (controller.termsLoading.value) {
             case Status.loading:
               return Center(
-                child: SpinKitCircle(
-                  color: Colors.white,
-                  size: 40.0,
-                ),
-              );
+                child: SpinKitCircle(color: Colors.white, size: 40.0,),);
             case Status.internetError:
               return NoInternetCard(onTap: ()=>controller.getTermsCondition());
             case Status.noDataFound:
               return Center(child: NoDataCard(onTap: ()=>controller.getPrivacyPolicy()));
             case Status.error:
               return ErrorCard(onTap: ()=>controller.getTermsCondition());
-
             case Status.completed:
-              return  HtmlWidget(controller.termsData.value.data?.description ?? "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.");
+              return  HtmlWidget(controller.termsData.value.termsConditions?.description ?? "");
           }
         },
       ),

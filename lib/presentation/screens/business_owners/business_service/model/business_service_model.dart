@@ -52,15 +52,15 @@ class Service {
   final String? closingTime;
   final String? offDay;
   final String? websiteLink;
+  final String? phone;
   final List<String>? providings;
-  final List<String>? servicesImages;
+  final String? servicesImages;
   final List<dynamic>? bookings;
   final String? businessId;
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final int? v;
   final String? shopLogo;
-  final String? phone;
 
   Service({
     this.id,
@@ -71,6 +71,7 @@ class Service {
     this.closingTime,
     this.offDay,
     this.websiteLink,
+    this.phone,
     this.providings,
     this.servicesImages,
     this.bookings,
@@ -79,7 +80,6 @@ class Service {
     this.updatedAt,
     this.v,
     this.shopLogo,
-    this.phone,
   });
 
   factory Service.fromJson(Map<String, dynamic> json) => Service(
@@ -91,15 +91,15 @@ class Service {
     closingTime: json["closingTime"],
     offDay: json["offDay"],
     websiteLink: json["websiteLink"],
+    phone: json["phone"],
     providings: json["providings"] == null ? [] : List<String>.from(json["providings"]!.map((x) => x)),
-    servicesImages: json["servicesImages"] == null ? [] : List<String>.from(json["servicesImages"]!.map((x) => x)),
+    servicesImages: json["servicesImages"],
     bookings: json["bookings"] == null ? [] : List<dynamic>.from(json["bookings"]!.map((x) => x)),
     businessId: json["businessId"],
     createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
     updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
     v: json["__v"],
     shopLogo: json["shopLogo"],
-    phone: json["phone"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -111,14 +111,14 @@ class Service {
     "closingTime": closingTime,
     "offDay": offDay,
     "websiteLink": websiteLink,
+    "phone": phone,
     "providings": providings == null ? [] : List<dynamic>.from(providings!.map((x) => x)),
-    "servicesImages": servicesImages == null ? [] : List<dynamic>.from(servicesImages!.map((x) => x)),
+    "servicesImages": servicesImages,
     "bookings": bookings == null ? [] : List<dynamic>.from(bookings!.map((x) => x)),
     "businessId": businessId,
     "createdAt": createdAt?.toIso8601String(),
     "updatedAt": updatedAt?.toIso8601String(),
     "__v": v,
     "shopLogo": shopLogo,
-    "phone": phone,
   };
 }
