@@ -61,9 +61,9 @@ class _ServiceScreenState extends State<ServiceScreen> {
             )),
                     Gap(24),
                     CustomButton(onTap: (){
-
                       AppRouter.route.pushNamed(RoutePath.bookAnAppointmentScreen, extra: widget.bookingTime);
-                    },title: "Book an Appointment ",textColor: Colors.black,icon: Icon(Icons.calendar_month_outlined,color: Colors.black,),showIcon: true,)
+                    },title: "Book an Appointment ",textColor: Colors.black,
+                      icon: Icon(Icons.calendar_month_outlined,color: Colors.black,),showIcon: true,)
                   ],
                 ),
               ),

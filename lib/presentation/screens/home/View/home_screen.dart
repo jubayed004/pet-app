@@ -98,15 +98,27 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
 
                         Expanded(
-                          child: CustomTextField(
+                          child: GestureDetector(
                             onTap: () {
                               AppRouter.route.pushNamed(RoutePath.searchScreen);
                             },
-                            hintText: AppStrings.searchForServices,
-                            fillColor: AppColors.whiteColor,
-                            fieldBorderColor: AppColors.purple500,
-                            keyboardType: TextInputType.none,
-                          ),
+                            child: Container(
+                              height: 40,
+                              decoration: BoxDecoration(
+                                color: AppColors.kWhiteColor,
+                                border: Border.all(
+                                  color: AppColors.purple500,
+                                ),
+                                borderRadius: BorderRadius.circular(6)
+                              ),
+                              child: Center(
+                                  child: CustomText(
+                                    textAlign: TextAlign.start,
+                                    text: AppStrings.searchForServices,
+                                  )
+                              ),
+                            ),
+                          )
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),

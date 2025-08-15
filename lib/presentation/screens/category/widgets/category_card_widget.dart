@@ -176,7 +176,9 @@ class CategoryCardWidget extends StatelessWidget {
                 Expanded(child: SizedBox()),
                 showWebsite?Expanded(
                   child: CustomButton(
-                    onTap: () {},
+                    onTap: () {
+
+                    },
                     title: " Website",
                     height: 24,
                     fontSize: 12,
@@ -187,8 +189,7 @@ class CategoryCardWidget extends StatelessWidget {
                 ):Expanded(child: SizedBox()),
                 Expanded(child: SizedBox()),
                 /*
-Expanded(
-
+                    Expanded(
                     child: TextButton(onPressed: (){}, child: CustomText(text: "Add Review",fontSize: 12,fontWeight: FontWeight.w600,))),*/
               ],
             ),

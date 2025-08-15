@@ -34,19 +34,34 @@ class BusinessPetsDetailsScreen extends StatefulWidget {
 class _BusinessPetsDetailsScreenState extends State<BusinessPetsDetailsScreen> {
   final controller = GetControllers.instance.getMyPetsProfileController();
 
-  final businessAllPetController = GetControllers.instance.getBusinessAllPetController();
+  final businessAllPetController =
+      GetControllers.instance.getBusinessAllPetController();
 
   @override
   void initState() {
     businessAllPetController.businessPetDetails(id: widget.id);
-    businessAllPetController.getHealthHistoryUpdate(id: widget.id, status: '', page: 1);
+    businessAllPetController.getHealthHistoryUpdate(
+      id: widget.id,
+      status: '',
+      page: 1,
+    );
     businessAllPetController.pagingController.refresh();
     businessAllPetController.pagingController.addPageRequestListener((pageKey) {
-      businessAllPetController.getHealthHistoryUpdate(id: widget.id, status: 'COMPLETED', page: pageKey);
+      businessAllPetController.getHealthHistoryUpdate(
+        id: widget.id,
+        status: 'COMPLETED',
+        page: pageKey,
+      );
     });
     businessAllPetController.pagingController1.refresh();
-    businessAllPetController.pagingController1.addPageRequestListener((pageKey) {
-      businessAllPetController.getHealthHistoryUpdate1(id: widget.id, status: 'PENDING', page: pageKey);
+    businessAllPetController.pagingController1.addPageRequestListener((
+      pageKey,
+    ) {
+      businessAllPetController.getHealthHistoryUpdate1(
+        id: widget.id,
+        status: 'PENDING',
+        page: pageKey,
+      );
     });
     super.initState();
   }
@@ -56,7 +71,7 @@ class _BusinessPetsDetailsScreenState extends State<BusinessPetsDetailsScreen> {
     return Scaffold(
       backgroundColor: AppColors.kWhiteColor,
       body: RefreshIndicator(
-        onRefresh: () async{
+        onRefresh: () async {
           businessAllPetController.pagingController.refresh();
           businessAllPetController.pagingController1.refresh();
         },
@@ -69,11 +84,12 @@ class _BusinessPetsDetailsScreenState extends State<BusinessPetsDetailsScreen> {
             }),
             SliverToBoxAdapter(
               child: Obx(() {
-                final pet = businessAllPetController.details.value.pet?.petPhoto;
+                final pet =
+                    businessAllPetController.details.value.pet?.petPhoto;
                 final image =
                     pet != null && pet.isNotEmpty ? pet.first ?? "" : "";
                 return image.isNotEmpty
-                    ? Image.network(ApiUrl.imageBase + image,height: 100,)
+                    ? Image.network(ApiUrl.imageBase + image, height: 100)
                     : Image.network(
                       'https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=800&q=80',
                       fit: BoxFit.cover,
@@ -84,7 +100,10 @@ class _BusinessPetsDetailsScreenState extends State<BusinessPetsDetailsScreen> {
             ),
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 20,
+                ),
                 child: Column(
                   children: [
                     Card(
@@ -105,13 +124,7 @@ class _BusinessPetsDetailsScreenState extends State<BusinessPetsDetailsScreen> {
                               children: [
                                 Obx(() {
                                   return CustomText(
-                                    text:
-                                        businessAllPetController
-                                            .details
-                                            .value
-                                            .pet
-                                            ?.name ??
-                                        "",
+                                    text: businessAllPetController.details.value.pet?.name ?? "",
                                     textAlign: TextAlign.start,
                                     fontWeight: FontWeight.w600,
                                     fontSize: 16,
@@ -119,13 +132,7 @@ class _BusinessPetsDetailsScreenState extends State<BusinessPetsDetailsScreen> {
                                 }),
                                 Gap(6),
                                 CustomText(
-                                  text:
-                                      businessAllPetController
-                                          .details
-                                          .value
-                                          .pet
-                                          ?.gender ??
-                                      "",
+                                  text: businessAllPetController.details.value.pet?.gender ?? "",
                                   textAlign: TextAlign.start,
                                   fontWeight: FontWeight.w600,
                                   color: AppColors.purple500,
@@ -143,8 +150,7 @@ class _BusinessPetsDetailsScreenState extends State<BusinessPetsDetailsScreen> {
                         Gap(6),
                         Obx(() {
                           return CustomText(
-                            text:
-                                "About ${businessAllPetController.details.value.pet?.name ?? ""}",
+                            text: "About ${businessAllPetController.details.value.pet?.name ?? ""}",
                             fontWeight: FontWeight.w600,
                             fontSize: 16,
                           );
@@ -178,15 +184,13 @@ class _BusinessPetsDetailsScreenState extends State<BusinessPetsDetailsScreen> {
                         );
                       }),
                     ),
-        
                     Gap(16),
                     Row(
                       children: [
                         Icon(Icons.safety_divider_outlined),
                         Gap(6),
                         CustomText(
-                          text:
-                              "${businessAllPetController.details.value.pet?.name ?? ""} ’s Status",
+                          text: "${businessAllPetController.details.value.pet?.name ?? ""} ’s Status",
                           fontWeight: FontWeight.w600,
                           fontSize: 16,
                         ),
@@ -220,7 +224,10 @@ class _BusinessPetsDetailsScreenState extends State<BusinessPetsDetailsScreen> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            showAddHealthDialog(context,widget.id); // 👈 Show the dialog
+                            showAddHealthDialog(
+                              context,
+                              widget.id,
+                            ); // 👈 Show the dialog
                           },
                           child: Container(
                             padding: EdgeInsets.all(8),
@@ -266,28 +273,32 @@ class _BusinessPetsDetailsScreenState extends State<BusinessPetsDetailsScreen> {
             ),
             SliverGap(16),
             SliverPadding(
-              padding:padding14H,
+              padding: padding14H,
               sliver: PagedSliverGrid<int, PetMedicalHistoryByTreatmentStatus>(
-                  pagingController: businessAllPetController.pagingController,
-                  builderDelegate: PagedChildBuilderDelegate<PetMedicalHistoryByTreatmentStatus>(
-                    itemBuilder: (_, item, _){
-                      return HealthCard(
-                        title: item.treatmentName ?? "",
-                        dateOfMonth: DateFormat("dd MMMM yyyy").format(item.treatmentDate?.toLocal() ?? DateTime.now()),
-                        drName: item.doctorName?? "",
-                        status: item.treatmentStatus?? "",
-                        statusColor: Colors.green,
-                        id: item.id ?? "",
-                      );
-                    }
-                  ),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    mainAxisSpacing: 6,
-                    crossAxisSpacing: 2,
-                    crossAxisCount: 2,
-                    mainAxisExtent: 140,
-                  ),
-              )
+                pagingController: businessAllPetController.pagingController,
+                builderDelegate: PagedChildBuilderDelegate<
+                  PetMedicalHistoryByTreatmentStatus
+                >(
+                  itemBuilder: (_, item, _) {
+                    return HealthCard(
+                      title: item.treatmentName ?? "",
+                      dateOfMonth: DateFormat(
+                        "dd MMMM yyyy",
+                      ).format(item.treatmentDate?.toLocal() ?? DateTime.now()),
+                      drName: item.doctorName ?? "",
+                      status: item.treatmentStatus ?? "",
+                      statusColor: Colors.green,
+                      id: item.id ?? "",
+                    );
+                  },
+                ),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  mainAxisSpacing: 6,
+                  crossAxisSpacing: 2,
+                  crossAxisCount: 2,
+                  mainAxisExtent: 140,
+                ),
+              ),
             ),
             SliverToBoxAdapter(
               child: Padding(
@@ -300,27 +311,31 @@ class _BusinessPetsDetailsScreenState extends State<BusinessPetsDetailsScreen> {
             ),
             SliverGap(16),
             SliverPadding(
-                padding:padding14H,
-                sliver: PagedSliverGrid<int, PetMedicalHistoryByTreatmentStatus>(
-                  pagingController: businessAllPetController.pagingController1,
-                  builderDelegate: PagedChildBuilderDelegate<PetMedicalHistoryByTreatmentStatus>(
-                      itemBuilder: (_, item, _){
-                        return HealthCard(
-                          title: item.treatmentName ?? "",
-                          dateOfMonth: DateFormat("dd MMMM yyyy").format(item.treatmentDate ?? DateTime.now()),
-                          drName: item.doctorName?? "",
-                          status: item.treatmentStatus?? "",
-                          statusColor: Colors.cyan,
-                          id: item.id ?? "",
-                        );
-                      }
-                  ),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisExtent: 140,
-                  ),
-                )
-            ),/*
+              padding: padding14H,
+              sliver: PagedSliverGrid<int, PetMedicalHistoryByTreatmentStatus>(
+                pagingController: businessAllPetController.pagingController1,
+                builderDelegate: PagedChildBuilderDelegate<
+                  PetMedicalHistoryByTreatmentStatus
+                >(
+                  itemBuilder: (_, item, _) {
+                    return HealthCard(
+                      title: item.treatmentName ?? "",
+                      dateOfMonth: DateFormat(
+                        "dd MMMM yyyy",
+                      ).format(item.treatmentDate ?? DateTime.now()),
+                      drName: item.doctorName ?? "",
+                      status: item.treatmentStatus ?? "",
+                      statusColor: Colors.cyan,
+                      id: item.id ?? "",
+                    );
+                  },
+                ),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisExtent: 140,
+                ),
+              ),
+            ) /*
             SliverPadding(
               padding:padding14H,
               sliver: SliverGrid(
@@ -339,8 +354,7 @@ class _BusinessPetsDetailsScreenState extends State<BusinessPetsDetailsScreen> {
                   mainAxisExtent: 140,
                 ),
               ),
-            ),*/
-        
+            ),*/,
             /*      SliverToBoxAdapter(
               child:      Container(
                 margin: paddingH16V8,

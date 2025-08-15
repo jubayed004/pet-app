@@ -34,7 +34,7 @@ import 'package:pet_app/presentation/screens/chat/view/chatting_page.dart';
 import 'package:pet_app/presentation/screens/my_appointment/view/my_appointment_details_screen.dart';
 import 'package:pet_app/presentation/screens/my_appointment/view/my_appointment_screen.dart';
 import 'package:pet_app/presentation/screens/my_pets/edit_my_pets/edit_my_pets_screen.dart';
-import 'package:pet_app/presentation/screens/my_pets/view/my_pets_screen.dart';
+import 'package:pet_app/presentation/screens/my_pets/view/my_details_pets_screen.dart';
 import 'package:pet_app/presentation/screens/nav/navigation_page.dart';
 import 'package:pet_app/presentation/screens/notify/view/notify_screen.dart';
 import 'package:pet_app/presentation/screens/onboarding/onboarding_screen.dart';
@@ -237,12 +237,11 @@ class AppRouter {
         name: RoutePath.myPetsScreen,
         path: RoutePath.myPetsScreen.addBasePath,
         pageBuilder: (context, state) {
-          final args = state.extra as Map<String, dynamic>;
+          final args = state.extra as String;
 
           return _buildPageWithAnimation(
-            child: MyPetsScreen(
-              name: args['name'] ?? '',
-              imageUrl: args['image'] ?? '',
+            child: MyDetailsPetsScreen(
+              id: args,
             ),
             state: state,
           );
@@ -556,7 +555,7 @@ class AppRouter {
               state: state,
             ),
       ),
-/*      GoRoute(
+      GoRoute(
         name: RoutePath.businessAdvertisementScreen,
         path: RoutePath.businessAdvertisementScreen.addBasePath,
         pageBuilder:
@@ -564,7 +563,7 @@ class AppRouter {
               child: BusinessAdvertisementScreen(),
               state: state,
             ),
-      ),*/
+      ),
       GoRoute(
         name: RoutePath.reviewScreen,
         path: RoutePath.reviewScreen.addBasePath,

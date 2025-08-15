@@ -45,7 +45,6 @@ class BusinessProfileController extends GetxController{
     }catch(e){
       loadingMethod(Status.error);
     }
-
   }
 
   /// ============================= PUT Profile Update =====================================
@@ -58,18 +57,13 @@ class BusinessProfileController extends GetxController{
       selectedImage.value = image;
     }
   }
-
   Future<void> businessUpdateProfile({required Map<String, String> body}) async{
     try{
       isUpdateLoading.value = true;
-
-
-
       final List<MultipartBody> multipartBody = [];
       if(selectedImage.value != null){
         multipartBody.add(MultipartBody("profilePic", File(selectedImage.value?.path?? "")));
       }
-
       print("weiurterit ertioyertoguiopdrtdrthporthndrtpgrtphnrth");
 
       print(body);

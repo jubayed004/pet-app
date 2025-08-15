@@ -26,7 +26,6 @@ class HomeController extends GetxController{
    Assets.icons.pethotel.svg(),
    Assets.icons.pettraining.svg(),
    Assets.icons.friendlyplace.svg(),
-
  ];
  final List<String> stringList = [
    AppStrings.petVets,
@@ -35,8 +34,6 @@ class HomeController extends GetxController{
    AppStrings.petHotels,
    AppStrings.petTraining,
    AppStrings.friendlyPlace,
-
-
  ];
 
  final List<String> imgList = [
@@ -50,10 +47,6 @@ class HomeController extends GetxController{
 
 
   Future<void> getProject(int pageKey) async {
-
-
-
-
 
 /*    if (isLoadingMove.value) return;
     isLoadingMove.value = true;

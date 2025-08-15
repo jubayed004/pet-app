@@ -38,14 +38,20 @@ class ApiUrl {
   //static subscription() => '$base/subcription/purchase-subscription';
  // static connectStripe() => '$base/stripe/connect-stripe';
 
-  ///Categories==================
+  ///Advertisement==================
+
+  static addAdvertisement()=> '$base/advertisement/add-advertisement';
 
   ///Update Profile=============
 
   static businessUpdateProfile() => '$base/owner/update-owner-details';
   static updateProfile() => '$base/owner/update-owner-details';
   static getBusinessShopProfile() => '$base/business/get';
- ///Business All Pets
+
+ ///======UserAll Pets
+  static getMyAllPet() => '$base/user/my-pets';
+  static myAllPetDetails({required String id}) => '$base/pet/get/$id';
+  ///Business All Pets
 
   static getBusinessAllPets() => '$base/owner/get-all-pets-who-booked';
   static businessPetDetails({required String id}) => '$base/owner/get-pet-details-by-pet-id/$id';

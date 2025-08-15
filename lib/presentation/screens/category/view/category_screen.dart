@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -97,7 +98,9 @@ class CategoryScreen extends StatelessWidget {
              ),
            ),
            Obx((){
-             print(homeController.selectedIndex.value);
+             if (kDebugMode) {
+               print(homeController.selectedIndex.value);
+             }
              return SliverFillRemaining(
                child: RefreshIndicator(
                  onRefresh: () async {

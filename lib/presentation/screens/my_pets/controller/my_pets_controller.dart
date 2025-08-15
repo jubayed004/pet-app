@@ -6,33 +6,31 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pet_app/core/dependency/get_it_injection.dart';
 import 'package:pet_app/helper/local_db/local_db.dart';
+import 'package:pet_app/presentation/screens/my_pets/model/my_all_pet_model.dart';
 import 'package:pet_app/service/api_service.dart';
+import 'package:pet_app/service/api_url.dart';
 import 'package:pet_app/utils/app_const/app_const.dart';
 
+import '../../business_owners/business_all_pets/model/business_all_pets_details_model.dart';
+
 class MyPetsProfileController extends GetxController {
-
-  final ImagePicker _imagePicker = ImagePicker();
   final ApiClient apiClient = serviceLocator();
-  final DBHelper dbHelper = serviceLocator();
+  final ImagePicker _imagePicker = ImagePicker();
 
-  /// ============================= GET Profile Info =====================================
+
+  ///===================== Get All Pet
   var loading = Status.completed.obs;
   loadingMethod(Status status) => loading.value = status;
-  //final Rx<ProfileModel> profile = ProfileModel().obs;
-  final RxBool isAdmin = false.obs;
+  final Rx<MyAllPetModel> profile = MyAllPetModel().obs;
 
-  Future<void> getProfile() async{
-/*    loadingMethod(Status.completed);
-    try{
+  Future<void> getAllPet() async {
+    loadingMethod(Status.completed);
+    try {
       loadingMethod(Status.loading);
-      final response = await apiClient.get(url: ApiUrl.profile());
+      final response = await apiClient.get(url: ApiUrl.getMyAllPet());
       if (response.statusCode == 200) {
-        final newData = ProfileModel.fromJson(response.body);
+        final newData = MyAllPetModel.fromJson(response.body);
         profile.value = newData;
-        name = TextEditingController(text: newData.data?.name??"");
-        email = TextEditingController(text: newData.data?.email?? "");
-        number = TextEditingController(text: newData.data?.phoneNumber?? "");
-
         loadingMethod(Status.completed);
       } else {
         if (response.statusCode == 503) {
@@ -43,11 +41,43 @@ class MyPetsProfileController extends GetxController {
           loadingMethod(Status.error);
         }
       }
-    }catch(e){
+    } catch (e) {
       loadingMethod(Status.error);
-    }*/
-
+    }
   }
+
+  ///======================== BusinessAllPetsDetail
+  var detailsLoading = Status.completed.obs;
+
+  detailsLoadingMethod(Status status) => loading.value = status;
+  final Rx<BusinessAllPetsDetailsModel> details =
+      BusinessAllPetsDetailsModel().obs;
+
+  Future<void> myAllPetDetails({required String id}) async {
+    detailsLoadingMethod(Status.completed);
+    try {
+      detailsLoadingMethod(Status.loading);
+      final response = await apiClient.get(
+        url: ApiUrl.myAllPetDetails(id: id),
+      );
+      if (response.statusCode == 200) {
+        final newData = BusinessAllPetsDetailsModel.fromJson(response.body);
+        details.value = newData;
+        detailsLoadingMethod(Status.completed);
+      } else {
+        if (response.statusCode == 503) {
+          detailsLoadingMethod(Status.internetError);
+        } else if (response.statusCode == 404) {
+          detailsLoadingMethod(Status.noDataFound);
+        } else {
+          detailsLoadingMethod(Status.error);
+        }
+      }
+    } catch (e) {
+      detailsLoadingMethod(Status.error);
+    }
+  }
+
 
   /// ============================= PUT Profile Update =====================================
 
@@ -95,87 +125,16 @@ class MyPetsProfileController extends GetxController {
       isUpdateLoading.value = false;
     }*/
   }
-  ///=================================give feedback=======================///
-  TextEditingController subject = TextEditingController();
-  TextEditingController feedback = TextEditingController();
-
-  Future<void> giveFeedback() async{
-/*    try{
-      isUpdateLoading.value = true;
-      final body = {
-        "subject": subject.text,
-        "feedback": feedback.text,
-
-      };
-      final response = await apiClient.post(url: ApiUrl.giveFeedbacks(), body: body,);
-      if(response.statusCode == 200){
-        isUpdateLoading.value = false;
-        toastMessage(message: response.body?['message']?.toString());
-        subject.clear();
-        feedback.clear();
-        AppRouter.route.pop();
 
 
 
-      }else{
-        toastMessage(message: response.body?['message']?.toString());
-        isUpdateLoading.value = false;
 
-      }
-    }catch(error){
-      isUpdateLoading.value = false;
-    }*/
-  }
-
-  var petList = <Map<String, String>>[].obs;
-
-  @override
-  void onInit() {
-    super.onInit();
-    loadPets();
-  }
-
-  void loadPets() {
-    petList.value = [
-      {
-        "name": "Bella",
-        "image": "https://images.unsplash.com/photo-1558788353-f76d92427f16"
-      },
-      {
-        "name": "Rocky",
-        "image": "https://images.unsplash.com/photo-1518717758536-85ae29035b6d"
-      },
-
-      {
-        "name": "Champ",
-        "image": "https://images.unsplash.com/photo-1560807707-8cc77767d783"
-      },
-      {
-        "name": "Champ",
-        "image": "https://images.unsplash.com/photo-1574158622682-e40e69881006"
-      },
-    ];
-  }
-
-  void onPetTap(int index) {
-    print("Tapped: ${petList[index]['name']}");
-  }
-
-
-
-  Future<void> getAdmin() async{
-    final role = await dbHelper.getUserRole();
-    print(role);
-    if(role == "superAdmin"){
-      isAdmin.value = true;
-    }
-  }
 
   @override
   void onReady() {
     Future.wait([
-      getAdmin(),
-      getProfile(),
+      getAllPet()
+
     ]);
     super.onReady();
   }
