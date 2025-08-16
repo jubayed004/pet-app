@@ -64,7 +64,7 @@ class CustomButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(borderRadius ?? 6),
           color: fillColor,
         ),
-        child: isLoading? Center(child: CircularProgressIndicator(),):
+        child: isLoading? Center(child: CircularProgressIndicator(color: AppColors.purple500,),):
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

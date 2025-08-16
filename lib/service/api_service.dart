@@ -388,7 +388,7 @@ class ApiClient {
       {required String url,
         bool isBasicHeader = false,
         int code = 200,
-        required Map<String, String> body,
+        Map<String, String>? body,
         int duration = 30,
       }) async {
 

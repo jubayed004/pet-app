@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:pet_app/controller/get_controllers.dart';
 import 'package:pet_app/core/custom_assets/assets.gen.dart';
 import 'package:pet_app/core/route/route_path.dart';
@@ -20,8 +21,8 @@ class ProfileScreen extends StatelessWidget {
   ProfileScreen({super.key});
 
   final profileController = GetControllers.instance.getProfileController();
-  final _controller = GetControllers.instance.getMyPetsProfileController();
   final controller = GetControllers.instance.getNavigationControllerMain();
+
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +30,7 @@ class ProfileScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       body: RefreshIndicator(
         onRefresh: () async {
-          // profileController.getProfile();
+          profileController.userProfile();
         },
         child: CustomScrollView(
           slivers: [
@@ -39,21 +40,19 @@ class ProfileScreen extends StatelessWidget {
               backgroundColor: AppColors.primaryColor,
               toolbarHeight: kToolbarHeight,
               centerTitle: true,
-              title: Obx(() {
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SizedBox(width: 40.w,),
-                    CustomText(
-                      text: "Profile",
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black,
-                    ),
-                    _controller.selectedImage.value != null
+              title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CustomText(
+              text: "Profile",
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+              color: Colors.black,
+            ),
+            /*    profileController.selectedImage.value != null
                         ? ClipOval(
                       child: Image.file(
-                        File(_controller.selectedImage.value!.path),
+                        File(profileController.selectedImage.value!.path),
                         width: 40,
                         height: 40,
                         fit: BoxFit.cover,
@@ -64,10 +63,9 @@ class ProfileScreen extends StatelessWidget {
                       backgroundImage: NetworkImage(
                         'https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=800&q=80',
                       ),
-                    ),
-                  ],
-                );
-              }),
+                    ),*/
+          ],
+        ),
             ),
 
             SliverAppBar(
@@ -103,77 +101,88 @@ class ProfileScreen extends StatelessWidget {
                       color: Colors.white,
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                CustomText(
-                                  text: "Pixel Posse",
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                                GestureDetector(
-                                  onTap: (){
-                                    AppRouter.route.pushNamed(RoutePath.editProfileScreen);
-                                  },
-                                  child: Card(
-                                    shape: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: BorderSide(color: AppColors.purple500,width: 1),
-                                    ),
-                                    color: Colors.white,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Row(
-                                        children: [
-                                          CustomText(text: "Edit Profile",fontWeight: FontWeight.w400,fontSize: 12,),
-                                          Gap(6),
-                                          Icon(Icons.edit_outlined,size: 20,color: AppColors.purple500,)
-                                        ],
+                        child: Obx(() {
+                          final item = profileController.profile.value.user;
+                          return Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  CustomText(
+                                    text:item?.name ?? "",
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      AppRouter.route.pushNamed(RoutePath.editProfileScreen,extra: {
+                                        "name": item?.name ?? "",
+                                        "phoneNumber": item?.phone ?? "",
+                                        "address": item?.address ?? "",
+                                      });
+                                      },
+                                    child: Card(
+                                      shape: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: BorderSide(color: AppColors.purple500, width: 1),),
+                                      color: Colors.white,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Row(
+                                          spacing: 6,
+                                          children: [
+                                            CustomText(text: "Edit Profile",
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 12,
+                                            ),
+                                            Icon(Iconsax.edit, size: 20,
+                                              color: AppColors.purple500,)
+                                          ],
+                                        ),
                                       ),
                                     ),
+                                  )
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Assets.icons.emailicon.svg(),
+                                  Gap(6),
+                                  CustomText(
+                                    text: item?.email ?? "",
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 14,
                                   ),
-                                )
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Assets.icons.emailicon.svg(),
-                                Gap(6),
-                                CustomText(
-                                  text: "pixelposse@gmail.com",
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 14,
-                                ),
-                              ],
-                            ),
-                            Gap(16),
-                            Row(
-                              children: [
-                                Assets.icons.phoneicon.svg(),
-                                Gap(6),
-                                CustomText(
-                                  text: "0758519048",
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 14,
-                                ),
-                              ],
-                            ),
-                            Gap(16),
-                            Row(
-                              children: [
-                                Icon(Icons.location_on_outlined,size: 20,color: AppColors.purple500,),
-                                Gap(6),
-                                CustomText(
-                                  text: "123 Main Street, Dhaka, Bangladesh",
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 14,
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+                                ],
+                              ),
+                              Gap(16),
+                              Row(
+                                children: [
+                                  Assets.icons.phoneicon.svg(),
+                                  Gap(6),
+                                  CustomText(
+                                    text: item?.phone ?? "",
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 14,
+                                  ),
+                                ],
+                              ),
+                              Gap(16),
+                              Row(
+                                children: [
+                                  Icon(Icons.location_on_outlined, size: 20,
+                                    color: AppColors.purple500,),
+                                  Gap(6),
+                                  CustomText(
+                                    text: item?.address ?? "",
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 14,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          );
+                        }),
                       ),
                     ),
                     Gap(16),
@@ -183,44 +192,49 @@ class ProfileScreen extends StatelessWidget {
                         children: [
 
                           ButtonSectionAll(
-                              icon: Assets.icons.myappointmenticon.svg(),
-                              text: AppStrings.myAppointments,
+                            icon: Assets.icons.myappointmenticon.svg(),
+                            text: AppStrings.myAppointments,
                             onTap: () {
-                                AppRouter.route.pushNamed(RoutePath.myAppointmentScreen);
+                              AppRouter.route.pushNamed(
+                                  RoutePath.myAppointmentScreen);
                             },),
 
                           ButtonSectionAll(
-                              icon: Assets.icons.mypeticon.svg(colorFilter:ColorFilter.mode(AppColors.purple500, BlendMode.srcIn)),
-                              text: AppStrings.myPets,
+                            icon: Assets.icons.mypeticon.svg(
+                                colorFilter: ColorFilter.mode(
+                                    AppColors.purple500, BlendMode.srcIn)),
+                            text: AppStrings.myPets,
                             onTap: () {
                               controller.selectedNavIndex.value = 3;
                             },),
 
                           ButtonSectionAll(
-                              icon: Assets.icons.addpeticon.svg(),
-                              text: AppStrings.addPet,
+                            icon: Assets.icons.addpeticon.svg(),
+                            text: AppStrings.addPet,
                             onTap: () {
-                                AppRouter.route.pushNamed(RoutePath.addPetScreen);
+                              AppRouter.route.pushNamed(RoutePath.addPetScreen);
                             },),
 
                           ButtonSectionAll(
-                              icon: Assets.icons.chaticon.svg(colorFilter:ColorFilter.mode(AppColors.purple500, BlendMode.srcIn)),
-                              text: AppStrings.chat,
+                            icon: Assets.icons.chaticon.svg(
+                                colorFilter: ColorFilter.mode(
+                                    AppColors.purple500, BlendMode.srcIn)),
+                            text: AppStrings.chat,
                             onTap: () {
                               controller.selectedNavIndex.value = 2;
                             },),
 
                           ButtonSectionAll(
-                              icon: Assets.icons.settingicon.svg(),
-                              text: AppStrings.settings,
+                            icon: Assets.icons.settingicon.svg(),
+                            text: AppStrings.settings,
                             onTap: () {
-                                AppRouter.route.pushNamed(RoutePath.settingsPage);
+                              AppRouter.route.pushNamed(RoutePath.settingsPage);
                             },),
 
                           ButtonSectionAll(
                             showTrailingIcon: false,
-                              icon: Assets.icons.logouticon.svg(),
-                              text: AppStrings.signOut,
+                            icon: Assets.icons.logouticon.svg(),
+                            text: AppStrings.signOut,
                             onTap: () {
                               showCustomAnimatedDialog(
                                 animationSrc: "assets/images/warning.png",
@@ -267,7 +281,7 @@ class ProfileScreen extends StatelessWidget {
                                             height: 36,
                                             width: 100,
                                             onTap: () {
-                                              DBHelper().logOut();// Navigate
+                                              DBHelper().logOut(); // Navigate
                                             },
                                             title: "Confirm",
                                             fontSize: 14,

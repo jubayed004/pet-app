@@ -389,7 +389,6 @@ class AuthController extends GetxController {
         multipartBody.add(MultipartBody("petPhoto", File(selectedPetPhoto.value?.path?? "")));
       }
       var response = await apiClient.multipartRequest(body: body, url: ApiUrl.petRegistration(), reqType: 'POST', multipartBody: multipartBody);
-
       if (response.statusCode == 201) {
         petRegistrationUpLoadingMethod(false);
         toastMessage(message: response.body?['message'].toString());

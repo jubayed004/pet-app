@@ -16,7 +16,16 @@ import 'package:pet_app/utils/app_colors/app_colors.dart';
 import 'package:pet_app/utils/app_strings/app_strings.dart';
 
 class EditProfileScreen extends StatefulWidget {
-   EditProfileScreen({super.key});
+  final String name;
+  final String phoneNumber;
+  final String address;
+
+  const EditProfileScreen({
+    super.key,
+    required this.name,
+    required this.phoneNumber,
+    required this.address,
+  });
 
   @override
   State<EditProfileScreen> createState() => _EditProfileScreenState();
@@ -25,16 +34,25 @@ class EditProfileScreen extends StatefulWidget {
 class _EditProfileScreenState extends State<EditProfileScreen> {
   final profileController = GetControllers.instance.getProfileController();
   final controller = GetControllers.instance.getNavigationControllerMain();
-   final _authController = GetControllers.instance.getAuthController();
-   TextEditingController name = TextEditingController();
-   TextEditingController phone = TextEditingController();
-   TextEditingController address = TextEditingController();
+  TextEditingController name = TextEditingController();
+  TextEditingController phone = TextEditingController();
+  TextEditingController address = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-   @override
+
+
+  @override
+  void initState() {
+    name = TextEditingController(text: widget.name);
+    phone = TextEditingController(text: widget.phoneNumber);
+    address = TextEditingController(text: widget.address);
+    super.initState();
+  }
+
+  @override
   void dispose() {
-name.dispose();
-phone.dispose();
-address.dispose();
+    name.dispose();
+    phone.dispose();
+    address.dispose();
     super.dispose();
   }
 
@@ -43,7 +61,7 @@ address.dispose();
     return Scaffold(
       backgroundColor: Colors.white,
       body: Form(
-        key:_formKey ,
+        key: _formKey,
         child: CustomScrollView(
           slivers: [
             SliverAppBar(
@@ -66,54 +84,49 @@ address.dispose();
               expandedHeight: 200,
               automaticallyImplyLeading: false,
               flexibleSpace: FlexibleSpaceBar(
-                  background:Obx(() {
-                    return Stack(
-                      children: [
-                        profileController.selectedImage.value != null
-                            ? Image.file(
-                          File(profileController.selectedImage.value!.path),
-                          fit: BoxFit.cover,
-                          width: double.infinity,
-                          height: double.infinity,
-                        )
-                            : Image.network(
-                          'https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=800&q=80',
-                          fit: BoxFit.cover,
-                          width: double.infinity,
-                          height: double.infinity,
-                        ),
-                          Positioned(
-                            top: 0,
-                            bottom: 0,
-                            left: 0,
-                            right: 0,
-                            child: GestureDetector(
-                              onTap: () {
-                                profileController.pickImage();
-                              },
-                              child: Icon(
-                                Icons.camera_alt,
-                                size: 40,
-                                color: AppColors.primaryColor,
-                              ),
-                            ),
+                background: Obx(() {
+                  return Stack(
+                    children: [
+                      profileController.selectedImage.value != null
+                          ? Image.file(
+                        File(profileController.selectedImage.value!.path),
+                        fit: BoxFit.cover,
+                        width: double.infinity,
+                        height: 200.h,
+                      )
+                          : Image.network(
+                        'https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=800&q=80',
+                        fit: BoxFit.cover,
+                        width: double.infinity,
+                        height: 200.h,
+                      ),
+                      Positioned(
+                        top: 0,
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        child: GestureDetector(
+                          onTap: () {
+                            profileController.pickImage();
+                          },
+                          child: Icon(
+                            Icons.camera_alt,
+                            size: 40,
+                            color: AppColors.primaryColor,
                           ),
-                      ],
-                    );
-
-                  })
+                        ),
+                      ),
+                    ],
+                  );
+                }),
               ),
             ),
             SliverToBoxAdapter(
               child: Padding(
-                padding: EdgeInsets.only(left: 16,right: 16,top: 20),
+                padding: EdgeInsets.only(left: 16, right: 16, top: 20),
                 child: Column(
                   children: [
-
-                    CustomAlignText(
-                      text: "Name",
-                      fontWeight: FontWeight.w500,
-                    ),
+                    CustomAlignText(text: "Name", fontWeight: FontWeight.w500),
                     Gap(8.0),
                     CustomTextField(
                       hintText: "Enter your name",
@@ -123,10 +136,14 @@ address.dispose();
                       keyboardType: TextInputType.text,
                       textEditingController: name,
                       validator: (value) {
-                        if (value == null || value.trim().isEmpty) {
+                        if (value == null || value
+                            .trim()
+                            .isEmpty) {
                           return 'Name is required';
                         }
-                        if (value.trim().length < 2) {
+                        if (value
+                            .trim()
+                            .length < 2) {
                           return 'Name must be at least 2 characters';
                         }
                         final nameRegExp = RegExp(r"^[a-zA-Z\s]+$");
@@ -152,7 +169,9 @@ address.dispose();
                       keyboardType: TextInputType.phone,
                       textEditingController: phone,
                       validator: (value) {
-                        if (value == null || value.trim().isEmpty) {
+                        if (value == null || value
+                            .trim()
+                            .isEmpty) {
                           return 'Phone number is required';
                         }
 
@@ -179,7 +198,9 @@ address.dispose();
                       keyboardType: TextInputType.streetAddress,
                       textEditingController: address,
                       validator: (value) {
-                        if (value == null || value.trim().isEmpty) {
+                        if (value == null || value
+                            .trim()
+                            .isEmpty) {
                           return 'Address is required';
                         }
                         if (value.length < 5) {
@@ -189,25 +210,27 @@ address.dispose();
                       },
                     ),
                     Gap(24),
-                    CustomButton(onTap: (){
-                      final body = {
-                        "name": name.text,
-                        "phone": phone.text,
-                        "address": address.text,
-
-                      };
-                      if(_formKey.currentState!.validate()){
-                        profileController.updateProfile(body : body);
-                      }
-
-                    },
-                      title: "Save",
-                    textColor: Colors.black,
-                    )
+                    Obx(() {
+                      return CustomButton(
+                        isLoading: profileController.isUpdateLoading.value,
+                        onTap: () {
+                          final body = {
+                            "name": name.text,
+                            "phone": phone.text,
+                            "address": address.text,
+                          };
+                          if (_formKey.currentState!.validate()) {
+                            profileController.updateProfile(body: body);
+                          }
+                        },
+                        title: "Save",
+                        textColor: Colors.black,
+                      );
+                    }),
                   ],
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

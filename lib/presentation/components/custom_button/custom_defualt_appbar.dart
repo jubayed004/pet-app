@@ -51,9 +51,9 @@ class CustomDefaultAppbar extends StatelessWidget
   Widget build(BuildContext context) {
     return SliverAppBar(
       surfaceTintColor: Colors.transparent,
-      pinned: true,
-      floating: true,
-      //snap: true,
+      //pinned: true,
+        floating: true,
+        snap: true,
       automaticallyImplyLeading: true,
        //floating: false,
       backgroundColor:backgroundColor?? Colors.transparent,
@@ -62,10 +62,11 @@ class CustomDefaultAppbar extends StatelessWidget
       leading: leading,
       actions: action,
         title: Row(
-         // crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+         crossAxisAlignment: CrossAxisAlignment.center,
+         mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-          Gap(24),
+            SizedBox(),
+            SizedBox(),
             titleWidget ??
                 CustomText(
                   text: title ?? "",

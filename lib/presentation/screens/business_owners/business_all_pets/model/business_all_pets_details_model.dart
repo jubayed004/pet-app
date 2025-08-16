@@ -34,9 +34,8 @@ class Pet {
   final int? height;
   final String? color;
   final String? description;
-  final String? photo;
   final String? userId;
-  final List<String>? petPhoto;
+  final String? petPhoto;
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final int? v;
@@ -52,7 +51,6 @@ class Pet {
     this.height,
     this.color,
     this.description,
-    this.photo,
     this.userId,
     this.petPhoto,
     this.createdAt,
@@ -71,9 +69,8 @@ class Pet {
     height: json["height"],
     color: json["color"],
     description: json["description"],
-    photo: json["photo"],
     userId: json["userId"],
-    petPhoto: json["petPhoto"] == null ? [] : List<String>.from(json["petPhoto"]!.map((x) => x)),
+    petPhoto: json["petPhoto"],
     createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
     updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
     v: json["__v"],
@@ -90,9 +87,8 @@ class Pet {
     "height": height,
     "color": color,
     "description": description,
-    "photo": photo,
     "userId": userId,
-    "petPhoto": petPhoto == null ? [] : List<dynamic>.from(petPhoto!.map((x) => x)),
+    "petPhoto": petPhoto,
     "createdAt": createdAt?.toIso8601String(),
     "updatedAt": updatedAt?.toIso8601String(),
     "__v": v,

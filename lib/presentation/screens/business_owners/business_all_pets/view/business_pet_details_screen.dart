@@ -87,7 +87,7 @@ class _BusinessPetsDetailsScreenState extends State<BusinessPetsDetailsScreen> {
                 final pet =
                     businessAllPetController.details.value.pet?.petPhoto;
                 final image =
-                    pet != null && pet.isNotEmpty ? pet.first ?? "" : "";
+                    pet != null && pet.isNotEmpty ? pet  : "";
                 return image.isNotEmpty
                     ? Image.network(ApiUrl.imageBase + image, height: 100)
                     : Image.network(
@@ -165,21 +165,13 @@ class _BusinessPetsDetailsScreenState extends State<BusinessPetsDetailsScreen> {
                         return ListView(
                           scrollDirection: Axis.horizontal,
                           children: [
-                            DetailsCard(
-                              age: "Age",
-                              date: pet?.age.toString() ?? "",
-                            ),
-                            DetailsCard(age: "Gender", date: pet?.gender ?? ""),
-                            DetailsCard(
-                              age: "Height",
-                              date: pet?.height.toString() ?? "",
-                            ),
-                            DetailsCard(
-                              age: "Weight",
-                              date: pet?.weight.toString() ?? "",
-                            ),
-                            DetailsCard(age: "Color", date: pet?.color ?? ""),
-                            DetailsCard(age: "Breed", date: pet?.breed ?? ""),
+                            DetailsCard(title: "Age", details: pet?.age.toString() ?? "",),
+                            DetailsCard(title: "Pet Type", details: pet?.animalType ?? "",),
+                            DetailsCard(title: "Gender", details: pet?.gender ?? ""),
+                            DetailsCard(title: "Height", details: pet?.height.toString() ?? "",),
+                            DetailsCard(title: "Weight", details: pet?.weight.toString() ?? "",),
+                            DetailsCard(title: "Color", details: pet?.color ?? ""),
+                            DetailsCard(title: "Breed", details: pet?.breed ?? ""),
                           ],
                         );
                       }),

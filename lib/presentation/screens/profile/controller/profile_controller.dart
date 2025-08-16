@@ -5,7 +5,9 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:pet_app/controller/get_controllers.dart';
 import 'package:pet_app/core/dependency/get_it_injection.dart';
+import 'package:pet_app/core/route/route_path.dart';
 import 'package:pet_app/core/route/routes.dart';
 import 'package:pet_app/helper/local_db/local_db.dart';
 import 'package:pet_app/helper/toast_message/toast_message.dart';
@@ -15,6 +17,8 @@ import 'package:pet_app/service/api_url.dart';
 import 'package:pet_app/utils/app_const/app_const.dart';
 
 class ProfileController extends GetxController {
+  final controller = GetControllers.instance.getNavigationControllerMain();
+  final myPetsController = GetControllers.instance.getMyPetsProfileController();
   RxString selectedCountryCode = "+880".obs;
   final ImagePicker _imagePicker = ImagePicker();
   final ApiClient apiClient = serviceLocator();
@@ -26,17 +30,14 @@ class ProfileController extends GetxController {
   final Rx<ProfileModel> profile = ProfileModel().obs;
   final RxBool isAdmin = false.obs;
 
-  Future<void> getProfile() async{
-/*    loadingMethod(Status.completed);*/
-/*    try{
+  Future<void> userProfile() async{
+    loadingMethod(Status.completed);
+    try{
       loadingMethod(Status.loading);
-      final response = await apiClient.get(url: ApiUrl.profile());
+      final response = await apiClient.get(url: ApiUrl.getProfile());
       if (response.statusCode == 200) {
         final newData = ProfileModel.fromJson(response.body);
         profile.value = newData;
-        name = TextEditingController(text: newData.data?.name?? "");
-        email = TextEditingController(text: newData.data?.email?? "");
-
         loadingMethod(Status.completed);
       } else {
         if (response.statusCode == 503) {
@@ -49,40 +50,31 @@ class ProfileController extends GetxController {
       }
     }catch(e){
       loadingMethod(Status.error);
-    }*/
-
+    }
   }
+
 
   /// ============================= PUT Profile Update =====================================
 
   Rx<XFile?> selectedImage = Rx<XFile?>(null);
   RxBool isUpdateLoading = false.obs;
-
-
-
   Future<void> pickImage() async {
     XFile? image = await _imagePicker.pickImage(source: ImageSource.gallery, imageQuality: 80);
     if (image != null) {
       selectedImage.value = image;
     }
   }
-
   Future<void> updateProfile({required Map<String, String> body}) async{
     try{
       isUpdateLoading.value = true;
-
-
-
       final List<MultipartBody> multipartBody = [];
       if(selectedImage.value != null){
         multipartBody.add(MultipartBody("profilePic", File(selectedImage.value?.path?? "")));
       }
-
       print(body);
       final response = await apiClient.multipartRequest(url: ApiUrl.updateProfile(), body: body, multipartBody: multipartBody, reqType: "PUT");
-
       if(response.statusCode == 200){
-        await getProfile();
+        await userProfile();
         isUpdateLoading.value = false;
         AppRouter.route.pop();
       }else{
@@ -91,6 +83,40 @@ class ProfileController extends GetxController {
       }
     }catch(error){
       isUpdateLoading.value = false;
+    }
+  }
+
+  /// ============================= Add Pet  =====================================
+  var genderSelected = Rx<String>("MALE");
+  Rx<XFile?> selecteImage = Rx<XFile?>(null);
+  RxBool isAddPetLoading = false.obs;
+  Future<void> addPickImage() async {
+    XFile? image = await _imagePicker.pickImage(source: ImageSource.gallery, imageQuality: 80);
+    if (image != null) {
+      selecteImage.value = image;
+    }
+  }
+  Future<void> addPet({required Map<String, String> body}) async{
+    try{
+      isAddPetLoading.value = true;
+      final List<MultipartBody> multipartBody = [];
+      if(selecteImage.value != null){
+        multipartBody.add(MultipartBody("petPhoto", File(selecteImage.value?.path?? "")));
+      }
+      print(body);
+      final response = await apiClient.multipartRequest(url: ApiUrl.addPet(), body: body, multipartBody: multipartBody, reqType: "POST");
+      if(response.statusCode == 201){
+        await myPetsController.getAllPet();
+        isAddPetLoading.value = false;
+        controller.selectedNavIndex.value = 3;
+        AppRouter.route.goNamed(RoutePath.navigationPage);
+      /*  AppRouter.route.pop();*/
+      }else{
+        isAddPetLoading.value = false;
+        toastMessage(message: response.body?['message']?.toString());
+      }
+    }catch(error){
+      isAddPetLoading.value = false;
     }
   }
 
@@ -119,7 +145,7 @@ class ProfileController extends GetxController {
 @override
   void onReady() {
     Future.wait([
-      getProfile(),
+      userProfile(),
     ]);
     super.onReady();
   }

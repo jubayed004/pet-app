@@ -19,11 +19,9 @@ import 'package:pet_app/utils/app_colors/app_colors.dart';
 import 'package:pet_app/utils/app_strings/app_strings.dart';
 
 class PetShopRegistrationScreen extends StatelessWidget {
-   PetShopRegistrationScreen({super.key});
+  PetShopRegistrationScreen({super.key});
 
   final _authController = GetControllers.instance.getAuthController();
-  /*final _profileController = GetControllers.instance.getProfileController();*/
-  final _petShopRegistrationController = GetControllers.instance.getPetShopRegistrationController();
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -47,7 +45,10 @@ class PetShopRegistrationScreen extends StatelessWidget {
           key: _formKey,
           child: Column(
             children: [
-              CustomAlignText(text: "Pet Shop Name", fontWeight: FontWeight.w500),
+              CustomAlignText(
+                text: "Pet Shop Name",
+                fontWeight: FontWeight.w500,
+              ),
               Gap(8.0),
               CustomTextField(
                 fieldBorderColor: AppColors.purple500,
@@ -66,7 +67,8 @@ class PetShopRegistrationScreen extends StatelessWidget {
                   return null; // Valid
                 },
               ),
-           /*   Gap(14),
+
+              /*   Gap(14),
               CustomAlignText(
                 text: AppStrings.businessType,
                 fontWeight: FontWeight.w500,
@@ -119,7 +121,6 @@ class PetShopRegistrationScreen extends StatelessWidget {
                   );
                 }),
               ),*/
-
               Gap(14),
               CustomAlignText(
                 text: AppStrings.businessAddress,
@@ -148,7 +149,7 @@ class PetShopRegistrationScreen extends StatelessWidget {
                 keyboardType: TextInputType.visiblePassword,
                 textEditingController: _authController.website,
               ),
-     /*         Gap(14),
+              /*         Gap(14),
               CustomAlignText(
                 text: AppStrings.moreInfo,
                 fontWeight: FontWeight.w500,
@@ -164,10 +165,7 @@ class PetShopRegistrationScreen extends StatelessWidget {
                 textEditingController: _authController.moreInfo,
               ),*/
               Gap(14),
-              CustomAlignText(
-                text: "Shop logo ",
-                fontWeight: FontWeight.w500,
-              ),
+              CustomAlignText(text: "Shop logo ", fontWeight: FontWeight.w500),
               Gap(8.0),
               GestureDetector(
                 onTap: _authController.shopLogo,
@@ -180,57 +178,57 @@ class PetShopRegistrationScreen extends StatelessWidget {
                       children: [
                         Positioned.fill(
                           child:
-                          image != null && image.isNotEmpty
-                              ? ClipRRect(
-                            borderRadius: BorderRadius.circular(6),
-                            child: Image.file(
-                              File(
-                                _authController.selectedLogo.value?.path ??
-                                    "",
-                              ),
-                              height: 156.h,
-                              width: MediaQuery.of(context).size.width,
-                              fit: BoxFit.cover,
-                            ),
-                          )
-                              : CustomNetworkImage(
-                            imageUrl:
-                            "https://www.rawpixel.com/image/12143311/png",
-                            height: 156.h,
-                            borderRadius: BorderRadius.circular(6),
-                            width: MediaQuery.of(context).size.width,
-                          ),
+                              image != null && image.isNotEmpty
+                                  ? ClipRRect(
+                                    borderRadius: BorderRadius.circular(6),
+                                    child: Image.file(
+                                      File(
+                                        _authController
+                                                .selectedLogo
+                                                .value
+                                                ?.path ??
+                                            "",
+                                      ),
+                                      height: 156.h,
+                                      width: MediaQuery.of(context).size.width,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  )
+                                  : CustomNetworkImage(
+                                    imageUrl:
+                                        "https://www.rawpixel.com/image/12143311/png",
+                                    height: 156.h,
+                                    borderRadius: BorderRadius.circular(6),
+                                    width: MediaQuery.of(context).size.width,
+                                  ),
                         ),
                         image != null && image.isNotEmpty
                             ? SizedBox()
                             : Center(
-                          child: Container(
-                            height: 30.h,
-                            width: 30.w,
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Color(0xffC2C2C2),
-                                width: 1.w,
+                              child: Container(
+                                height: 30.h,
+                                width: 30.w,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Color(0xffC2C2C2),
+                                    width: 1.w,
+                                  ),
+                                  color: AppColors.whiteColor700,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Icon(
+                                  Icons.image_outlined,
+                                  size: 18.sp,
+                                  color: AppColors.purple500,
+                                ),
                               ),
-                              color: AppColors.whiteColor700,
-                              shape: BoxShape.circle,
                             ),
-                            child: Icon(
-                              Icons.image_outlined,
-                              size: 18.sp,
-                              color: AppColors.purple500,
-                            ),
-                          ),
-                        ),
                       ],
                     );
                   }),
                 ),
               ),
-              CustomAlignText(
-                text: "Shop pic ",
-                fontWeight: FontWeight.w500,
-              ),
+              CustomAlignText(text: "Shop pic ", fontWeight: FontWeight.w500),
               Gap(8.0),
               GestureDetector(
                 onTap: _authController.shopPic,
@@ -243,51 +241,51 @@ class PetShopRegistrationScreen extends StatelessWidget {
                       children: [
                         Positioned.fill(
                           child:
-                          image != null && image.isNotEmpty
-                              ? ClipRRect(
-                            borderRadius: BorderRadius.circular(6),
-                            child: Image.file(
-                              File(
-                                _authController
-                                    .selectedPic
-                                    .value
-                                    ?.path ??
-                                    "",
-                              ),
-                              height: 156.h,
-                              width: MediaQuery.of(context).size.width,
-                              fit: BoxFit.cover,
-                            ),
-                          )
-                              : CustomNetworkImage(
-                            imageUrl:
-                            "https://www.rawpixel.com/image/12143311/png",
-                            height: 156.h,
-                            borderRadius: BorderRadius.circular(6),
-                            width: MediaQuery.of(context).size.width,
-                          ),
+                              image != null && image.isNotEmpty
+                                  ? ClipRRect(
+                                    borderRadius: BorderRadius.circular(6),
+                                    child: Image.file(
+                                      File(
+                                        _authController
+                                                .selectedPic
+                                                .value
+                                                ?.path ??
+                                            "",
+                                      ),
+                                      height: 156.h,
+                                      width: MediaQuery.of(context).size.width,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  )
+                                  : CustomNetworkImage(
+                                    imageUrl:
+                                        "https://www.rawpixel.com/image/12143311/png",
+                                    height: 156.h,
+                                    borderRadius: BorderRadius.circular(6),
+                                    width: MediaQuery.of(context).size.width,
+                                  ),
                         ),
                         image != null && image.isNotEmpty
                             ? SizedBox()
                             : Center(
-                          child: Container(
-                            height: 30.h,
-                            width: 30.w,
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Color(0xffC2C2C2),
-                                width: 1.w,
+                              child: Container(
+                                height: 30.h,
+                                width: 30.w,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Color(0xffC2C2C2),
+                                    width: 1.w,
+                                  ),
+                                  color: AppColors.whiteColor700,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Icon(
+                                  Icons.image_outlined,
+                                  size: 18.sp,
+                                  color: AppColors.purple500,
+                                ),
                               ),
-                              color: AppColors.whiteColor700,
-                              shape: BoxShape.circle,
                             ),
-                            child: Icon(
-                              Icons.image_outlined,
-                              size: 18.sp,
-                              color: AppColors.purple500,
-                            ),
-                          ),
-                        ),
                       ],
                     );
                   }),
@@ -303,7 +301,7 @@ class PetShopRegistrationScreen extends StatelessWidget {
                       onTap: () {
                         // Toggling the rememberMe value
                         _authController.rememberMe.value =
-                        !_authController.rememberMe.value;
+                            !_authController.rememberMe.value;
                       },
                       child: Container(
                         alignment: Alignment.center,
@@ -311,9 +309,9 @@ class PetShopRegistrationScreen extends StatelessWidget {
                         width: 16.w,
                         decoration: BoxDecoration(
                           color:
-                          _authController.rememberMe.value
-                              ? AppColors.purple500
-                              : Colors.transparent,
+                              _authController.rememberMe.value
+                                  ? AppColors.purple500
+                                  : Colors.transparent,
                           border: Border.all(
                             width: .5.sp,
                             color: AppColors.secondPrimaryColor,
@@ -322,13 +320,13 @@ class PetShopRegistrationScreen extends StatelessWidget {
                         ),
                         child: Center(
                           child:
-                          _authController.rememberMe.value
-                              ? Icon(
-                            Icons.check,
-                            color: AppColors.whiteColor,
-                            size: 14.sp,
-                          )
-                              : const SizedBox(),
+                              _authController.rememberMe.value
+                                  ? Icon(
+                                    Icons.check,
+                                    color: AppColors.whiteColor,
+                                    size: 14.sp,
+                                  )
+                                  : const SizedBox(),
                         ),
                       ),
                     );
@@ -351,12 +349,12 @@ class PetShopRegistrationScreen extends StatelessWidget {
                             decoration: TextDecoration.underline,
                           ),
                           recognizer:
-                          TapGestureRecognizer()
-                            ..onTap = () {
-                              AppRouter.route.pushNamed(
-                                RoutePath.termsOfCondition,
-                              );
-                            },
+                              TapGestureRecognizer()
+                                ..onTap = () {
+                                  AppRouter.route.pushNamed(
+                                    RoutePath.termsOfCondition,
+                                  );
+                                },
                         ),
                       ],
                     ),
@@ -371,15 +369,17 @@ class PetShopRegistrationScreen extends StatelessWidget {
                   textColor: Colors.black,
                   showIcon: false,
                   onTap: () {
-                    if(_authController.rememberMe.value){
+                    if (_authController.rememberMe.value) {
                       if (_formKey.currentState!.validate()) {
                         _authController.petShopRegistration();
                       }
-                    }else{
-                      toastMessage(message:"Please agree trems and conditions");
+                    } else {
+                      toastMessage(
+                        message: "Please agree trems and conditions",
+                      );
                     }
 
-       /*        AppRouter.route.goNamed(RoutePath.subscriptionScreen);*/
+                    /*        AppRouter.route.goNamed(RoutePath.subscriptionScreen);*/
                   },
                 );
               }),

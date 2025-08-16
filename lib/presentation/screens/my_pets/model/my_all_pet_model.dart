@@ -32,10 +32,10 @@ class Pet {
   final String? description;
   final String? photo;
   final String? userId;
-  final List<String>? petPhoto;
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final int? v;
+  final String? petPhoto;
 
   Pet({
     this.id,
@@ -50,10 +50,10 @@ class Pet {
     this.description,
     this.photo,
     this.userId,
-    this.petPhoto,
     this.createdAt,
     this.updatedAt,
     this.v,
+    this.petPhoto,
   });
 
   factory Pet.fromJson(Map<String, dynamic> json) => Pet(
@@ -69,10 +69,10 @@ class Pet {
     description: json["description"],
     photo: json["photo"],
     userId: json["userId"],
-    petPhoto: json["petPhoto"] == null ? [] : List<String>.from(json["petPhoto"]!.map((x) => x)),
     createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
     updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
     v: json["__v"],
+    petPhoto: json["petPhoto"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -88,9 +88,9 @@ class Pet {
     "description": description,
     "photo": photo,
     "userId": userId,
-    "petPhoto": petPhoto == null ? [] : List<dynamic>.from(petPhoto!.map((x) => x)),
     "createdAt": createdAt?.toIso8601String(),
     "updatedAt": updatedAt?.toIso8601String(),
     "__v": v,
+    "petPhoto": petPhoto,
   };
 }

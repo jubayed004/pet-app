@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 
 class DetailsCard extends StatelessWidget {
-  final String age;
-  final String date;
+  final String title;
+  final String details;
 
-  const DetailsCard({super.key, required this.age, required this.date});
+  const DetailsCard({super.key, required this.title, required this.details});
 
   @override
   Widget build(BuildContext context) {
@@ -17,9 +17,9 @@ class DetailsCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CustomText(text: age, fontWeight: FontWeight.w400, fontSize: 14),
+            CustomText(text: title, fontWeight: FontWeight.w400, fontSize: 14),
             CustomText(
-              text: date,
+              text: details,
               color: const Color(0xFF064E57),
               fontSize: 14,
               fontWeight: FontWeight.w600,

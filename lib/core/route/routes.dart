@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pet_app/helper/extension/base_extension.dart';
 import 'package:pet_app/my_textscreen.dart';
-import 'package:pet_app/presentation/screens/add_pet/view/add_pet_screen.dart';
 import 'package:pet_app/presentation/screens/auth/account_active_otp/account_active_otp_screen.dart';
 import 'package:pet_app/presentation/screens/auth/forgot/forgot_pass.dart';
 import 'package:pet_app/presentation/screens/auth/otp/verify_otp_screen.dart';
@@ -33,13 +32,14 @@ import 'package:pet_app/presentation/screens/category/view/category_screen.dart'
 import 'package:pet_app/presentation/screens/chat/view/chatting_page.dart';
 import 'package:pet_app/presentation/screens/my_appointment/view/my_appointment_details_screen.dart';
 import 'package:pet_app/presentation/screens/my_appointment/view/my_appointment_screen.dart';
-import 'package:pet_app/presentation/screens/my_pets/edit_my_pets/edit_my_pets_screen.dart';
+import 'package:pet_app/presentation/screens/my_pets/view/edit_my_pets_screen.dart';
 import 'package:pet_app/presentation/screens/my_pets/view/my_details_pets_screen.dart';
 import 'package:pet_app/presentation/screens/nav/navigation_page.dart';
 import 'package:pet_app/presentation/screens/notify/view/notify_screen.dart';
 import 'package:pet_app/presentation/screens/onboarding/onboarding_screen.dart';
 import 'package:pet_app/presentation/screens/other/terms_of_condition.dart';
 import 'package:pet_app/presentation/screens/pet_health/view/pet_health_screen.dart';
+import 'package:pet_app/presentation/screens/profile/add_pet/view/add_pet_screen.dart';
 import 'package:pet_app/presentation/screens/profile/change_password_page.dart';
 import 'package:pet_app/presentation/screens/profile/edit_profile_screen.dart';
 import 'package:pet_app/presentation/screens/profile/faq/help_faq_screen.dart';
@@ -124,9 +124,7 @@ class AppRouter {
         path: RoutePath.verifyOtpScreen.addBasePath,
         pageBuilder: (context, state) {
           final extra =
-              state.extra != null && state.extra is String
-                  ? state.extra as String
-                  : "";
+              state.extra != null && state.extra is String ? state.extra as String : "";
           return _buildPageWithAnimation(
             child: VerifyOtpScreen(email: extra),
             state: state,
@@ -192,21 +190,53 @@ class AppRouter {
       GoRoute(
         name: RoutePath.editMyPetsScreen,
         path: RoutePath.editMyPetsScreen.addBasePath,
-        pageBuilder:
-            (context, state) => _buildPageWithAnimation(
-              child: EditMyPetsScreen(),
-              state: state,
+        pageBuilder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>? ?? {};
+          final id = extra['id'] as String ?? "";
+          final name = extra['name'] as String ?? "";
+          final petType = extra['animalType'] as String ?? "";
+          final age = extra['age'] as String ?? "";
+          final gender = extra['gender'] as String ?? "";
+          final weight = extra['weight'] as String ?? "";
+          final height = extra['height'] as String ?? "";
+          final color = extra['color'] as String ?? "";
+          final breed = extra['breed'] as String ?? "";
+          return _buildPageWithAnimation(
+            child: EditMyPetsScreen(
+              id: id,
+              name: name,
+              petType: petType,
+              age: age,
+              gender: gender,
+              weight: weight,
+              height: height,
+              color: color,
+              breed: breed,
             ),
+
+            state: state,
+          );
+            }
       ),
 
       GoRoute(
         name: RoutePath.editProfileScreen,
         path: RoutePath.editProfileScreen.addBasePath,
         pageBuilder:
-            (context, state) => _buildPageWithAnimation(
-              child: EditProfileScreen(),
-              state: state,
+            (context, state) {
+          final extra = state.extra as Map<String , dynamic>;
+          final name = extra['name'] as String;
+          final phoneNumber = extra['phoneNumber'] as String ;
+          final address = extra['address'] as String ?? "";
+          return _buildPageWithAnimation(
+            child: EditProfileScreen(
+              name: name,
+              phoneNumber: phoneNumber
+              , address: address,
             ),
+            state: state,
+          );
+            }
       ),
 
       GoRoute(
@@ -539,7 +569,8 @@ class AppRouter {
                 serviceName:serviceName,
                 phoneNumber: phoneNumber,
                 location: location,
-                webSiteLInk: webSiteLInk, id: id,
+                webSiteLInk: webSiteLInk,
+              id: id,
               serviceList: serviceController,
             ),
             state: state,

@@ -45,12 +45,19 @@ class ApiUrl {
   ///Update Profile=============
 
   static businessUpdateProfile() => '$base/owner/update-owner-details';
-  static updateProfile() => '$base/owner/update-owner-details';
+  static updateProfile() => '$base/user/update-profile';
   static getBusinessShopProfile() => '$base/business/get';
 
  ///======UserAll Pets
+
+
+  static getProfile() => '$base/user/get-profile';
+  static addPet() => '$base/pet/create';
   static getMyAllPet() => '$base/user/my-pets';
   static myAllPetDetails({required String id}) => '$base/pet/get/$id';
+  static updateMyPet({required String id}) => '$base/pet/update/$id';
+  static deletedPet({required String id}) => '$base/pet/delete/$id';
+
   ///Business All Pets
 
   static getBusinessAllPets() => '$base/owner/get-all-pets-who-booked';
