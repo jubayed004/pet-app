@@ -13,12 +13,10 @@ class CategoryCardWidget extends StatelessWidget {
   const CategoryCardWidget({super.key, this.showWebsite = false, this.isPetHotel = false});
   final bool showWebsite;
   final bool  isPetHotel;
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-
         AppRouter.route.pushNamed(RoutePath.categoryDetailsScreen, extra: [showWebsite, isPetHotel]);
       },
       child: Container(
@@ -55,8 +53,6 @@ class CategoryCardWidget extends StatelessWidget {
                   ],
                 ),*/
             /*
-
-
               ],
             ),*/
             //Assets.icons.petshopimage.svg(),

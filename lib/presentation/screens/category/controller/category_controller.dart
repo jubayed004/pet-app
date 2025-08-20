@@ -1,54 +1,92 @@
-import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:pet_app/core/route/route_path.dart';
-import 'package:pet_app/core/route/routes.dart';
-import 'package:pet_app/presentation/components/custom_button/custom_button.dart';
-import 'package:pet_app/presentation/components/custom_image/custom_image.dart';
-import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
-import 'package:pet_app/utils/app_colors/app_colors.dart';
-import 'package:pet_app/utils/app_const/padding_constant.dart';
+import 'package:pet_app/core/dependency/get_it_injection.dart';
+import 'package:pet_app/presentation/screens/category/model/category_model.dart';
+import 'package:pet_app/service/api_service.dart';
+import 'package:pet_app/service/api_url.dart';
 
-class CategoryController extends GetxController{
-  final List<PagingController<int, String>> pagingController = [
-    PagingController(firstPageKey: 1),
-    PagingController(firstPageKey: 1),
-    PagingController(firstPageKey: 1),
-    PagingController(firstPageKey: 1),
-    PagingController(firstPageKey: 1),
-    PagingController(firstPageKey: 1),
-  ];
+import 'package:flutter/foundation.dart';
+import 'package:get/get.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-  Future<void> getMyAppointment({required int pageKey, required PagingController<int, String> controller}) async {
-    try{
-      await Future.delayed(Duration(seconds: 1));
+import 'package:flutter/foundation.dart';
+import 'package:get/get.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-      if(pageKey == 3){
-        controller.appendLastPage([]);
-      }else{
-        final item = [
-          "Apple",
-          "Orange",
-          "Bird",
-          "Lemon",
-          "Mango",
-          "banana"
-        ];
-        controller.appendPage(item, pageKey + 1);
+class CategoryController extends GetxController {
+  final ApiClient apiClient = serviceLocator<ApiClient>();
+  final Rx<CategoryModel> service = CategoryModel().obs;
+  Future<void> getCategoryService({
+    required String type,
+    required int page,
+    required PagingController<int, CategoryServiceItem> pagingController,
+  }) async {
+    try {
+      final response = await apiClient.get(
+        url: ApiUrl.getService(page: page, type: type),
+      );
+
+      if (response.statusCode == 200) {
+        final newData = CategoryModel.fromJson(response.body);
+        final newItems = newData.services ?? [];
+
+        if (kDebugMode) {
+          print('Loaded ${newItems.length} items for $type, page $page');
+        }
+
+        if (newItems.isEmpty) {
+          pagingController.appendLastPage(newItems);
+        } else {
+          pagingController.appendPage(newItems, page + 1);
+        }
+      } else {
+        final statusCode = response.statusCode ?? 0;
+        final errorMessage = _getErrorMessage(statusCode);
+        pagingController.error = errorMessage;
+
+        if (kDebugMode) {
+          print('API Error - Status: $statusCode, Type: $type, Page: $page');
+        }
       }
-    }catch(_){
-      controller.error = "error";
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error in getCategoryService: $e');
+      }
+      pagingController.error = 'An error occurred. Please try again.';
     }
   }
 
-  @override
-  void onInit() {
-    super.onInit();
-    for (var action in pagingController) {
-      action.addPageRequestListener((pageKey){
-        getMyAppointment(pageKey: pageKey, controller: action);
-      });
+  String _getErrorMessage(int statusCode) {
+    switch (statusCode) {
+      case 400:
+        return 'Bad request. Please try again.';
+      case 401:
+        return 'Unauthorized. Please log in again.';
+      case 404:
+        return 'Service not found.';
+      case 500:
+        return 'Server error. Please try again later.';
+      default:
+        return 'An error occurred. Please try again.';
     }
   }
+
+
+  // Future<void> getMyAppointment({
+  //   required int pageKey,
+  //   required PagingController<int, String> controller,
+  // }) async {
+  //   try {
+  //     await Future.delayed(Duration(seconds: 1));
+  //
+  //     if (pageKey == 3) {
+  //       controller.appendLastPage([]);
+  //     } else {
+  //       final item = ["Apple", "Orange", "Bird", "Lemon", "Mango", "banana"];
+  //       controller.appendPage(item, pageKey + 1);
+  //     }
+  //   } catch (_) {
+  //     controller.error = "error";
+  //   }
+  // }
 }

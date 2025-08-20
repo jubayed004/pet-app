@@ -57,6 +57,9 @@ class ApiUrl {
   static myAllPetDetails({required String id}) => '$base/pet/get/$id';
   static updateMyPet({required String id}) => '$base/pet/update/$id';
   static deletedPet({required String id}) => '$base/pet/delete/$id';
+  static getService({required String type,required int page}) => '$base/user-home-page/getServicesByType/$type?limit=10&page=$page';
+
+
 
   ///Business All Pets
 

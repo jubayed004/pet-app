@@ -71,8 +71,7 @@ class BusinessServiceScreen extends StatelessWidget {
               return SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (context, index) {
-                    final item =
-                        businessServiceController.service.value.services ?? [];
+                    final item = businessServiceController.service.value.services ?? [];
                     final serviceImage = item[index].servicesImages ?? "";
                     final serviceLogo = item[index].shopLogo ?? "";
                     final logo = serviceLogo.isNotEmpty ? serviceLogo : "";
@@ -337,8 +336,7 @@ class BusinessServiceScreen extends StatelessWidget {
                       ),
                     );
                   },
-                  childCount:
-                      businessServiceController.service.value.services?.length ?? 0, // Set the number of items in your list
+                  childCount: businessServiceController.service.value.services?.length ?? 0, // Set the number of items in your list
                 ),
               );
             }),

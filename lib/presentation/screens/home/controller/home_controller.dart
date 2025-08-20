@@ -11,7 +11,7 @@ import 'package:pet_app/service/api_service.dart';
 import 'package:pet_app/utils/app_strings/app_strings.dart';
 
 class HomeController extends GetxController{
- final PagingController<int, String> pagingController = PagingController(firstPageKey: 1);
+
  final TextEditingController searchController = TextEditingController();
   final ApiClient apiClient = serviceLocator();
   RxBool isLoadingMove = false.obs;
@@ -74,9 +74,9 @@ class HomeController extends GetxController{
 
   @override
   void onInit() {
-    pagingController.addPageRequestListener((pageKey) {
+/*    pagingController.addPageRequestListener((pageKey) {
     getProject(pageKey);
-    });
+    });*/
     super.onInit();
   }
 }
