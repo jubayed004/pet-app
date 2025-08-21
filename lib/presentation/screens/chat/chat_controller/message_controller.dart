@@ -17,6 +17,8 @@ class MessageController extends GetxController{
   final messages = <ChatMessage>[].obs;
   var tabContent = <Widget>[].obs;
 
+
+
 /*  ApiClient apiClient = ApiClient();
   DBHelper dbHelper = DBHelper();
   RxBool isLoadingMove = false.obs;
