@@ -59,6 +59,8 @@ class ChatMessageCardItemWidget extends StatelessWidget {
                       fontSize: 15,
                     ),
                   ),
+
+
                 ),
 
                 // Timestamp
