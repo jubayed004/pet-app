@@ -236,12 +236,12 @@ class Data {
     // Add static message examples
     messages.addAll([
       ChatMessage(
-        content: "Hello! I'm available to pick you up. I'll be there in about",
+        content: "Hello! I'm available to pick you up. I'll be there in about"*5,
         time: "02:15 PM",
         isFromDriver: true,
       ),
       ChatMessage(
-        content: "Thankyou Sir"*10,
+        content: "Thank you Sir"*10,
         time: "02:20 PM",
         isFromDriver: false,
       ),

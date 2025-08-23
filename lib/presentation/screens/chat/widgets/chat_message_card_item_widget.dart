@@ -23,9 +23,7 @@ class ChatMessageCardItemWidget extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(bottom: 24),
       child: Row(
-        mainAxisAlignment: isDriverMessage
-            ? MainAxisAlignment.start
-            : MainAxisAlignment.end,
+        mainAxisAlignment: isDriverMessage ? MainAxisAlignment.start : MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Driver avatar (only for driver messages)
@@ -59,8 +57,6 @@ class ChatMessageCardItemWidget extends StatelessWidget {
                       fontSize: 15,
                     ),
                   ),
-
-
                 ),
 
                 // Timestamp

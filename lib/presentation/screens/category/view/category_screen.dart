@@ -24,9 +24,7 @@ class CategoryScreen extends StatefulWidget {
 
 class _CategoryScreenState extends State<CategoryScreen> {
   final categoryController = GetControllers.instance.getCategoryController();
-
   final ValueNotifier<int> selectedIndex = ValueNotifier(0);
-
   late final List<CategoryItem> categories;
 
   @override
@@ -77,7 +75,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
     }
 
     selectedIndex.addListener(() {
-
       final category = categories[selectedIndex.value];
       category.pagingController.refresh();
       print("object ${selectedIndex.value}");
@@ -121,7 +118,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
                         itemBuilder: (context, index) {
                           final category = categories[index];
                           final isSelected = currentIndex == index;
-
                           return Padding(
                             padding: const EdgeInsets.only(right: 10),
                             child: Column(
@@ -130,7 +126,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                 GestureDetector(
                                   onTap: () {
                                     selectedIndex.value = index;
-
                                     if (index == 5) {
                                       showModalBottomSheet(
                                         context: context,
