@@ -89,7 +89,7 @@ class _CustomDropdownState<T> extends State<CustomDropdown<T>> {
             color: Colors.transparent,
             border: Border.all(
               width: 1.w,
-              color: widget.borderColor ?? AppColors.kPrimaryColor,
+              color: widget.borderColor ?? AppColors.kBlackColor,
             ),
             borderRadius: BorderRadius.circular(widget.radius ?? 8.r),
           ),

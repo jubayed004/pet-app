@@ -292,7 +292,8 @@ class BusinessServiceScreen extends StatelessWidget {
                             ),
                             Gap(8),
                             if (["SHOP", "HOTEL",].contains(item[index].serviceType))
-                              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Expanded(child: SizedBox()),

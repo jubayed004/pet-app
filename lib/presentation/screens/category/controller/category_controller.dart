@@ -6,16 +6,11 @@ import 'package:pet_app/service/api_service.dart';
 import 'package:pet_app/service/api_url.dart';
 
 import 'package:flutter/foundation.dart';
-import 'package:get/get.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-
-import 'package:flutter/foundation.dart';
-import 'package:get/get.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class CategoryController extends GetxController {
   final ApiClient apiClient = serviceLocator<ApiClient>();
   final Rx<CategoryModel> service = CategoryModel().obs;
+
   Future<void> getCategoryService({
     required String type,
     required int page,

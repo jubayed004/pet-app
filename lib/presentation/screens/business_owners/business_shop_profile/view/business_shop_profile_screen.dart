@@ -20,8 +20,7 @@ class BusinessShopProfileScreen extends StatelessWidget {
   BusinessShopProfileScreen({super.key});
 
   final controller = GetControllers.instance.getMyPetsProfileController();
-  final shopProfileController = GetControllers.instance
-      .getBusinessShopProfileController();
+  final shopProfileController = GetControllers.instance.getBusinessShopProfileController();
 
   @override
   Widget build(BuildContext context) {

@@ -34,7 +34,7 @@ class CustomNetworkImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
   //  final String finalUrl = "https://www.webxcreation.com/event-recruitment/images/profile-1.jpg/$imageUrl";
-
+       print(imageUrl);
     if (imageUrl.isEmpty) {
       print("Empty Image URL: $imageUrl");
       return CachedNetworkImage(
@@ -78,9 +78,8 @@ class CustomNetworkImage extends StatelessWidget {
         ),
       );
     }
-
     return CachedNetworkImage(
-      imageUrl: "https://www.webxcreation.com/event-recruitment/images/profile-1.jpg",
+      imageUrl: imageUrl,
       fit: fit,
       imageBuilder: (context, imageProvider) => Container(
         height: height,

@@ -310,16 +310,22 @@ class AppRouter {
             final data = extra as List;
             final showWebsite = data[0];
             final isPetHotel = data[1];
+            final id = data[2];
             return _buildPageWithAnimation(
               child: CategoryDetailsScreen(
                 showWebsite: showWebsite,
                 isPetHotel: isPetHotel,
+                id: id,
               ),
               state: state,
             );
           }
           return _buildPageWithAnimation(
-            child: CategoryDetailsScreen(showWebsite: false, isPetHotel: false),
+            child: CategoryDetailsScreen(
+              showWebsite: false,
+              isPetHotel: false,
+              id: "id",
+            ),
             state: state,
           );
         },
