@@ -16,9 +16,10 @@ import 'package:pet_app/presentation/widget/align/custom_align_text.dart';
 import '../../../my_pets/model/my_all_pet_model.dart';
 
 class ServiceScreen extends StatefulWidget {
-  const ServiceScreen({super.key, required this.bookingTime});
+  const ServiceScreen({super.key, required this.bookingTime, required this.showWebsite});
 
   final bool bookingTime;
+  final bool showWebsite;
 
   @override
   State<ServiceScreen> createState() => _ServiceScreenState();
@@ -108,7 +109,6 @@ class _ServiceScreenState extends State<ServiceScreen> {
                   Obx(() => Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -136,35 +136,40 @@ class _ServiceScreenState extends State<ServiceScreen> {
                         ],
                       ),
 
-
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          CustomAlignText(
-                            text: "Receipt time",
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                          ),
-                          GestureDetector(
-                            onTap: () => serviceController.pickClosingTime(context),
-                            child: Container(
-                              padding: EdgeInsets.all(10),
-                              margin: EdgeInsets.only(top: 6),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                border: Border.all(color: Colors.black, width: 1),
-                              ),
-                              child: CustomText(
-                                text: serviceController.closingTime.value == null
-                                    ? "Select receipt time"
-                                    : serviceController.closingTime.value!.format(context),
+                      // ✅ Conditional receipt time column
+                      ...widget.showWebsite
+                          ? [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CustomAlignText(
+                              text: "Receipt time",
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            GestureDetector(
+                              onTap: () => serviceController.pickClosingTime(context),
+                              child: Container(
+                                padding: EdgeInsets.all(10),
+                                margin: EdgeInsets.only(top: 6),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(color: Colors.black, width: 1),
+                                ),
+                                child: CustomText(
+                                  text: serviceController.closingTime.value == null
+                                      ? "Select receipt time"
+                                      : serviceController.closingTime.value!.format(context),
+                                ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
+                          ],
+                        ),
+                      ]
+                          : [],
                     ],
                   )),
+
 
                   /*     ...List.generate(
               choiceOfTopCookies.length,

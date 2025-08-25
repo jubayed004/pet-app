@@ -337,6 +337,7 @@ class AppRouter {
             (context, state) => _buildPageWithAnimation(
               child: ServiceScreen(
                 bookingTime: state.extra != null ? state.extra as bool : false,
+                showWebsite: state.extra != null ? state.extra as bool : false,
               ),
               state: state,
             ),
