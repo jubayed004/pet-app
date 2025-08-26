@@ -37,7 +37,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
     CategoryItem(icon: Assets.icons.pettraining.svg(), title: AppStrings.petTraining, type: "TRAINING"),
     CategoryItem(icon: Assets.icons.friendlyplace.svg(), title: AppStrings.friendlyPlace, type: "FRIENDLY"),
   ];
-
   @override
   void dispose() {
     selectedIndex.dispose();
@@ -50,12 +49,13 @@ class _CategoryScreenState extends State<CategoryScreen> {
       top: false,
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Category"),
+          backgroundColor: Colors.white,
+          centerTitle: true,
+          title: CustomText(text: "Category",fontWeight: FontWeight.w600,fontSize: 16,),
         ),
         backgroundColor: AppColors.whiteColor,
         body: Column(
           children: [
-
             /// Category Header (Horizontal List)
             SizedBox(
               height: 130,
@@ -127,7 +127,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 },
               ),
             ),
-
             /// PagedSliverList - changes with category
             Expanded(
               child: ValueListenableBuilder<int>(

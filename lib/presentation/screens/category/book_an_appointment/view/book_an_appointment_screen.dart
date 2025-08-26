@@ -1,3 +1,4 @@
+/*
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
@@ -101,7 +102,9 @@ final bool bookingTime;
             child: Padding(
               padding: padding16H,
               child: CustomButton(onTap: () {
-                AppRouter.route.pushNamed(RoutePath.congratulationScreen);
+               */
+/* AppRouter.route.pushNamed(RoutePath.congratulationScreen);*//*
+
               }, title: "Book an Appointment ",textColor: Colors.black,),
             ),
           ),
@@ -111,3 +114,4 @@ final bool bookingTime;
     );
   }
 }
+*/

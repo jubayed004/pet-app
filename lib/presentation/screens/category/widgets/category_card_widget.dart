@@ -114,6 +114,17 @@ class CategoryCardWidget extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                       ),
                       Row(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: List.generate(5, (index) => Icon(Icons.star, color: Colors.amber,size: 18,)),
+                          ),
+                          Gap(6),
+                          CustomText(text: "5.0 ",fontWeight: FontWeight.w500, fontSize: 12,)
+                        ],
+                      ),
+                      Row(
                         spacing: 6,
                         children: [
                           Icon(Icons.location_on_sharp, size: 18),
@@ -230,6 +241,7 @@ class CategoryCardWidget extends StatelessWidget {
                 ),*/
               ],
             ),
+            Gap(8),
             if (["SHOP", "HOTEL"].contains(item.serviceType))
               Row(
                 children: [
@@ -255,9 +267,9 @@ class CategoryCardWidget extends StatelessWidget {
                       title: "Website",
                       height: 24,
                       fontSize: 12,
-                      fontWeight: FontWeight.w400,
+                      fontWeight: FontWeight.w600,
                       fillColor: AppColors.purple500,
-                      textColor: Colors.black,
+                      textColor: Colors.white,
                     ),
                   ),
                   Expanded(child: SizedBox()),

@@ -128,12 +128,12 @@ AuthController getAuthController() {
   }
 
 
-  BookAnAppointmentController getBookAnAppointmentController() {
+/*  BookAnAppointmentController getBookAnAppointmentController() {
     if (!Get.isRegistered<BookAnAppointmentController>()) {
       Get.put(BookAnAppointmentController());
     }
     return Get.find<BookAnAppointmentController>();
-  }
+  }*/
 
   MessageController getMessageController() {
     if (!Get.isRegistered<MessageController>()) {

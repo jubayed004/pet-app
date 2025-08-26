@@ -8,7 +8,6 @@ import 'package:pet_app/utils/app_const/padding_constant.dart';
 import 'package:pet_app/utils/app_const/text_style_constant.dart';
 
 
-
 class CustomDropdown<T> extends StatefulWidget {
   final String? title;
   final String? hintText;
@@ -22,6 +21,7 @@ class CustomDropdown<T> extends StatefulWidget {
   final T? selectedValue;
   final List<T>? items; // Dynamic list of items
   final ValueChanged<T?>? onChanged; // Callback for selected value
+  final String? Function(T?)? validator; // Added validator function
 
   const CustomDropdown({
     super.key,
@@ -35,7 +35,9 @@ class CustomDropdown<T> extends StatefulWidget {
     this.items, // Pass dropdown items dynamically
     this.onChanged,
     this.selectedValue,
-    this.isRequired = false, this.isLoading=false, // Selected value managed externally
+    this.isRequired = false,
+    this.isLoading = false, // Selected value managed externally
+    this.validator, // Accept validator function
   });
 
   @override
@@ -61,90 +63,100 @@ class _CustomDropdownState<T> extends State<CustomDropdown<T>> {
       children: [
         widget.title != null
             ? Row(
-                children: [
-                  Text(
-                    widget.title ?? '',
-                    style: poppinsSemiBold.copyWith(
-                      color: AppColors.kBlackColor,
-                        fontSize: getFontSizeSemiSmall()),
-                  ),
-                  widget.isRequired == true
-                      ? Padding(
-                          padding: const EdgeInsets.only(left: 4),
-                          child: Text(
-                            '*',
-                            style: poppinsRegular.copyWith(
-                                color: Colors.red,
-                                fontSize: getFontSizeSemiSmall()),
-                          ),
-                        )
-                      : const SizedBox.shrink(),
-                ],
-              )
+          children: [
+            Text(
+              widget.title ?? '',
+              style: poppinsSemiBold.copyWith(
+                color: AppColors.kBlackColor,
+                fontSize: getFontSizeSemiSmall(),
+              ),
+            ),
+            widget.isRequired == true
+                ? Padding(
+              padding: const EdgeInsets.only(left: 4),
+              child: Text(
+                '*',
+                style: poppinsRegular.copyWith(
+                    color: Colors.red,
+                    fontSize: getFontSizeSemiSmall()),
+              ),
+            )
+                : const SizedBox.shrink(),
+          ],
+        )
             : const SizedBox.shrink(),
         widget.title != null ? space8H : const SizedBox.shrink(),
-        Container(
-          padding: padding12H,
-          decoration: BoxDecoration(
-            color: Colors.transparent,
-            border: Border.all(
-              width: 1.w,
-              color: widget.borderColor ?? AppColors.kBlackColor,
-            ),
-            borderRadius: BorderRadius.circular(widget.radius ?? 8.r),
-          ),
-          child: DropdownButton<T>(
-dropdownColor: AppColors.kWhiteColor,
-            padding: EdgeInsets.zero,
-            value: selectedValue, // Use local state here
-            isExpanded: true,
-            underline: const SizedBox(), // Removes the default underline
-            style: poppinsMedium.copyWith(
-              color: widget.hintColor ?? AppColors.kSeeAllColor,
-              fontWeight: FontWeight.w400,
-              fontSize: getFontSizeSemiSmall(),
-            ),
-            hint: Text(
-              widget.hintText ?? "Select One",
-              style: poppinsMedium.copyWith(
+        FormField<T>(
+          validator: widget.validator, // Validate the selected value
+          builder: (FormFieldState<T> state) {
+            return Container(
+              padding: padding12H,
+              decoration: BoxDecoration(
+                color: Colors.transparent,
+                border: Border.all(
+                  width: 1.w,
+                  color: widget.borderColor ?? AppColors.kBlackColor,
+                ),
+                borderRadius: BorderRadius.circular(widget.radius ?? 8.r),
+              ),
+              child: DropdownButton<T>(
+                dropdownColor: AppColors.kWhiteColor,
+                padding: EdgeInsets.zero,
+                value: selectedValue, // Use local state here
+                isExpanded: true,
+                underline: const SizedBox(), // Removes the default underline
+                style: poppinsMedium.copyWith(
                   color: widget.hintColor ?? AppColors.kSeeAllColor,
                   fontWeight: FontWeight.w400,
-                  fontSize: getFontSizeSemiSmall()),
-            ),
-
-            icon:widget.isLoading==true?
-                SizedBox(   height: 12,
+                  fontSize: getFontSizeSemiSmall(),
+                ),
+                hint: Text(
+                  widget.hintText ?? "Select One",
+                  style: poppinsMedium.copyWith(
+                    color: widget.hintColor ?? AppColors.kSeeAllColor,
+                    fontWeight: FontWeight.w400,
+                    fontSize: getFontSizeSemiSmall(),
+                  ),
+                ),
+                icon: widget.isLoading == true
+                    ? SizedBox(
+                  height: 12,
                   width: 12,
-                  child: DefaultProgressIndicator(color: AppColors.kPrimaryColor,
+                  child: DefaultProgressIndicator(
+                    color: AppColors.kPrimaryColor,
                     strokeWidth: 2,
                   ),
-                ): Icon(
-              Icons.keyboard_arrow_down,
-              color: widget.iconColor ?? AppColors.kBlackColor,
-              size: 20.sp,
-            ),
-            items: (widget.items ?? []).map((e) {
-              return DropdownMenuItem<T>(
-                value: e,
-
-                child: Text(
-                  e.toString(),
-                    style: poppinsMedium.copyWith(
+                )
+                    : Icon(
+                  Icons.keyboard_arrow_down,
+                  color: widget.iconColor ?? AppColors.kBlackColor,
+                  size: 20.sp,
+                ),
+                items: (widget.items ?? []).map((e) {
+                  return DropdownMenuItem<T>(
+                    value: e,
+                    child: Text(
+                      e.toString(),
+                      style: poppinsMedium.copyWith(
                         color: AppColors.kBlackColor,
                         fontWeight: FontWeight.w400,
-                        fontSize: getFontSizeSemiSmall())),
-              );
-            }).toList(),
-            onChanged: /* widget.onChanged ??*/
-                (value) {
-              setState(() {
-                selectedValue = value; // Update local state
-              });
-              if (widget.onChanged != null) {
-                widget.onChanged!(value); // Notify parent widget
-              }
-            },
-          ),
+                        fontSize: getFontSizeSemiSmall(),
+                      ),
+                    ),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    selectedValue = value; // Update local state
+                  });
+                  if (widget.onChanged != null) {
+                    widget.onChanged!(value); // Notify parent widget
+                  }
+                  state.didChange(value); // Update form field value
+                },
+              ),
+            );
+          },
         ),
       ],
     );

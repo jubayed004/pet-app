@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:pet_app/controller/get_controllers.dart';
@@ -18,11 +19,12 @@ import 'package:url_launcher/url_launcher.dart';
 
 class CategoryDetailsScreen extends StatefulWidget {
   const CategoryDetailsScreen(
-      {super.key, required this.showWebsite, required this.isPetHotel, required this.id});
+      {super.key, required this.showWebsite, required this.isPetHotel, required this.id,});
 
   final bool showWebsite;
   final bool isPetHotel;
   final String id;
+
 
   @override
   State<CategoryDetailsScreen> createState() => _CategoryDetailsScreenState();
@@ -94,9 +96,11 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Obx(() {
-                                final serviceName = controller.categoryDetails.value.service?.serviceType   ;
+                                final serviceName = controller.categoryDetails.value.service?.serviceType;
                                 return CustomText(text: serviceName ?? "",
-                                  fontWeight: FontWeight.w600, fontSize: 14,);
+                                  fontWeight: FontWeight.w600, fontSize: 14,
+
+                                );
                               }),
                               SizedBox(height: 8),
                               Obx(() {
@@ -110,16 +114,20 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           CustomText(
-                                            fontSize: 14,fontWeight: FontWeight.w600,
-                                            text: controller.getOpenDaysTextComplete(
+                                            textAlign: TextAlign.start,
+                                            maxLines: 2,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w500,
+                                            text: "Open day - ${
+                                                controller.getOpenDaysTextComplete(
                                               offDay: item?.offDay ?? "",
                                               openingTime: item?.openingTime ?? "",
                                               closingTime: item?.closingTime ?? "",
-                                            ),
+                                            )}",
                                             overflow: TextOverflow.ellipsis,
                                           ),
                                           CustomText(
-                                            fontSize: 14,fontWeight: FontWeight.w600,
+                                            fontSize: 14,fontWeight: FontWeight.w500,
                                             text: "Off day - ${item?.offDay ?? ""}",
                                             overflow: TextOverflow.ellipsis,
                                           ),
@@ -165,8 +173,7 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
                                 );
                               }),
                               Gap(16),
-                              widget.showWebsite ? CustomButton(
-
+                              widget.showWebsite ?  CustomButton(
                                 onTap: () async {
                                   // Get the website URL
                                   String? websiteUrl = controller
@@ -195,16 +202,18 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
                                     throw 'Could not launch $url';
                                   }
                                 },
+
                                 title: "Visit Website",
-                                textColor: Color(0xFF1E1E1E),
-                                height: 30,
-                                width: 140,
-                                fontWeight: FontWeight.w400,
-                                fillColor: Colors.white,
-                                borderColor: Colors.black,
+                                textColor: Colors.white,
+                                height: 30.h,
+                                width: 140.w,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14,
+                                fillColor:  AppColors.purple500,
+                                borderColor: Colors.transparent,
                                 borderWidth: 1,
                                 isBorder: true,
-                              ) : SizedBox(),
+                              ):SizedBox(),
                             ],
                           ),
                         ),
@@ -362,8 +371,11 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
 
                     Gap(24),
                     CustomButton(onTap: () {
+                      final businessID = controller.categoryDetails.value.service?.businessId ?? "";
+                      final id = controller.categoryDetails.value.service?.id?? "";
+                      print("***************======================*************$id");
                       AppRouter.route.pushNamed(
-                          RoutePath.serviceScreen, extra: widget.isPetHotel);
+                          RoutePath.serviceScreen, extra:[ widget.isPetHotel, id, businessID ]);
                     },
                       title: "What service do you want?",
                       textColor: Colors.black,),

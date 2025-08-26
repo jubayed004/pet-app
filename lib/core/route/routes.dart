@@ -311,6 +311,7 @@ class AppRouter {
             final showWebsite = data[0];
             final isPetHotel = data[1];
             final id = data[2];
+
             return _buildPageWithAnimation(
               child: CategoryDetailsScreen(
                 showWebsite: showWebsite,
@@ -334,15 +335,25 @@ class AppRouter {
         name: RoutePath.serviceScreen,
         path: RoutePath.serviceScreen.addBasePath,
         pageBuilder:
-            (context, state) => _buildPageWithAnimation(
-              child: ServiceScreen(
-                bookingTime: state.extra != null ? state.extra as bool : false,
-                showWebsite: state.extra != null ? state.extra as bool : false,
-              ),
-              state: state,
+            (context, state){
+
+          final value = state.extra;
+          final List items = value != null && value is List? value : [];
+          final isHotel = items.isNotEmpty? items[0] as bool: true;
+          final id = items.isNotEmpty && items.length <= 1? items[1] as String: "";
+          final businessId = items.isNotEmpty && items.length <= 2? items[2] as String: "";
+          print("============================${id}");
+          return _buildPageWithAnimation(
+            child: ServiceScreen(
+              showWebsite: isHotel,
+              id: id,
+              businessId: businessId,
             ),
+            state: state,
+          );
+            },
       ),
-      GoRoute(
+/*      GoRoute(
         name: RoutePath.bookAnAppointmentScreen,
         path: RoutePath.bookAnAppointmentScreen.addBasePath,
         pageBuilder:
@@ -352,7 +363,7 @@ class AppRouter {
               ),
               state: state,
             ),
-      ),
+      ),*/
       GoRoute(
         name: RoutePath.congratulationScreen,
         path: RoutePath.congratulationScreen.addBasePath,
