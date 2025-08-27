@@ -119,155 +119,140 @@ class MyAppointmentDetailsScreen extends StatelessWidget {
                       ],
                     ),
                   ),*/
-                  Container(
-                    margin: const EdgeInsets.symmetric(vertical: 20),
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black12,
-                          blurRadius: 8,
-                          offset: Offset(0, 4),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+      /*                const Text(
+                        "📅 Upcoming Appointment",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
                         ),
-                      ],
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          "📅 Upcoming Appointment",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
-                        ),
-                        const SizedBox(height: 10),
+                      ),
+                      const SizedBox(height: 10),*/
 
-                        // Each line: Static label + Dynamic value
-                        RichText(
-                          text: TextSpan(
-                            style: TextStyle(color: Colors.black),
-                            children: [
-                              TextSpan(text: "Pet Name: ", style: TextStyle(fontWeight: FontWeight.bold)),
-                              TextSpan(text: "Bella"),
-                            ],
-                          ),
-                        ),
-                        RichText(
-                          text: TextSpan(
-                            style: TextStyle(color: Colors.black),
-                            children: [
-                              TextSpan(text: "Vet Name: ", style: TextStyle(fontWeight: FontWeight.bold)),
-                              TextSpan(text: "pullo"),
-                            ],
-                          ),
-                        ),
-                        RichText(
-                          text: TextSpan(
-                            style: TextStyle(color: Colors.black),
-                            children: [
-                              TextSpan(text: "Clinic: ", style: TextStyle(fontWeight: FontWeight.bold)),
-                              TextSpan(text: "sansal"),
-                            ],
-                          ),
-                        ),
-                        RichText(
-                          text: TextSpan(
-                            style: TextStyle(color: Colors.black),
-                            children: [
-                              TextSpan(text: "Service: ", style: TextStyle(fontWeight: FontWeight.bold)),
-                              TextSpan(text: "general vetenrinary checkup"),
-                            ],
-                          ),
-                        ),
-                        RichText(
-                          text: TextSpan(
-                            style: TextStyle(color: Colors.black),
-                            children: [
-                              TextSpan(text: "Date: ", style: TextStyle(fontWeight: FontWeight.bold)),
-                              TextSpan(text: "25/12/2025"),
-                            ],
-                          ),
-                        ),
-                        RichText(
-                          text: TextSpan(
-                            style: TextStyle(color: Colors.black),
-                            children: [
-                              TextSpan(text: "Time: ", style: TextStyle(fontWeight: FontWeight.bold)),
-                              TextSpan(text: "11: 00 PM"),
-                            ],
-                          ),
-                        ),
-                        RichText(
-                          text: TextSpan(
-                            style: TextStyle(color: Colors.black),
-                            children: [
-                              TextSpan(text: "Location: ", style: TextStyle(fontWeight: FontWeight.bold)),
-                              TextSpan(text: "24542 Wastonishington Ave "),
-                            ],
-                          ),
-                        ),
-                        RichText(
-                          text: TextSpan(
-                            style: TextStyle(color: Colors.black),
-                            children: [
-                              TextSpan(text: "Phone: ", style: TextStyle(fontWeight: FontWeight.bold)),
-                              TextSpan(text: "20524524524"),
-                            ],
-                          ),
-                        ),
-
-
-                        const SizedBox(height: 16),
-
-                        // Action buttons
-                        Row(
-                          spacing: 10,
+                      // Each line: Static label + Dynamic value
+                      RichText(
+                        text: TextSpan(
+                          style: TextStyle(color: Colors.black),
                           children: [
-
-
-                            ElevatedButton(
-                              onPressed: () {
-                                AppRouter.route.pushNamed(RoutePath.reviewScreen);
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.red[300],
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                              ),
-                              child: const Text("Review"),
-                            ),
-                            OutlinedButton.icon(
-                              onPressed: () {},
-                              icon: Icon(Icons.chat, size: 16, color: Colors.green),
-                              label: Text(
-                                "Chat",
-                                style: TextStyle(color: Colors.green),
-                              ),
-                              style: OutlinedButton.styleFrom(
-                                side: BorderSide(color: Colors.green),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                              ),
-                            ),
-                            ElevatedButton(
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.red[300],
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                              ),
-                              child: const Text("Website"),
-                            ),
+                            TextSpan(text: "Pet Name: ", style: TextStyle(fontWeight: FontWeight.bold)),
+                            TextSpan(text: "Bella"),
                           ],
-                        )
-                      ],
-                    ),
+                        ),
+                      ),
+                      RichText(
+                        text: TextSpan(
+                          style: TextStyle(color: Colors.black),
+                          children: [
+                            TextSpan(text: "Vet Name: ", style: TextStyle(fontWeight: FontWeight.bold)),
+                            TextSpan(text: "pullo"),
+                          ],
+                        ),
+                      ),
+                      RichText(
+                        text: TextSpan(
+                          style: TextStyle(color: Colors.black),
+                          children: [
+                            TextSpan(text: "Clinic: ", style: TextStyle(fontWeight: FontWeight.bold)),
+                            TextSpan(text: "sansal"),
+                          ],
+                        ),
+                      ),
+                      RichText(
+                        text: TextSpan(
+                          style: TextStyle(color: Colors.black),
+                          children: [
+                            TextSpan(text: "Service: ", style: TextStyle(fontWeight: FontWeight.bold)),
+                            TextSpan(text: "general vetenrinary checkup"),
+                          ],
+                        ),
+                      ),
+                      RichText(
+                        text: TextSpan(
+                          style: TextStyle(color: Colors.black),
+                          children: [
+                            TextSpan(text: "Date: ", style: TextStyle(fontWeight: FontWeight.bold)),
+                            TextSpan(text: "25/12/2025"),
+                          ],
+                        ),
+                      ),
+                      RichText(
+                        text: TextSpan(
+                          style: TextStyle(color: Colors.black),
+                          children: [
+                            TextSpan(text: "Time: ", style: TextStyle(fontWeight: FontWeight.bold)),
+                            TextSpan(text: "11: 00 PM"),
+                          ],
+                        ),
+                      ),
+                      RichText(
+                        text: TextSpan(
+                          style: TextStyle(color: Colors.black),
+                          children: [
+                            TextSpan(text: "Location: ", style: TextStyle(fontWeight: FontWeight.bold)),
+                            TextSpan(text: "24542 Wastonishington Ave "),
+                          ],
+                        ),
+                      ),
+                      RichText(
+                        text: TextSpan(
+                          style: TextStyle(color: Colors.black),
+                          children: [
+                            TextSpan(text: "Phone: ", style: TextStyle(fontWeight: FontWeight.bold)),
+                            TextSpan(text: "20524524524"),
+                          ],
+                        ),
+                      ),
+
+
+                      const SizedBox(height: 16),
+
+                      // Action buttons
+                      Row(
+                        spacing: 10,
+                        children: [
+
+
+                          ElevatedButton(
+                            onPressed: () {
+                              AppRouter.route.pushNamed(RoutePath.reviewScreen);
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.red[300],
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                            ),
+                            child: const Text("Review"),
+                          ),
+                          OutlinedButton.icon(
+                            onPressed: () {},
+                            icon: Icon(Icons.chat, size: 16, color: Colors.green),
+                            label: Text(
+                              "Chat",
+                              style: TextStyle(color: Colors.green),
+                            ),
+                            style: OutlinedButton.styleFrom(
+                              side: BorderSide(color: Colors.green),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                            ),
+                          ),
+                          ElevatedButton(
+                            onPressed: () {},
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.red[300],
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                            ),
+                            child: const Text("Website"),
+                          ),
+                        ],
+                      )
+                    ],
                   ),
 
                 ],

@@ -10,24 +10,35 @@ import 'package:pet_app/service/api_url.dart';
 class ServiceController extends GetxController{
   final RxString selectedPet = "".obs;
   final RxString selectedService = "".obs;
-  final Rx<TimeOfDay?> openingTime = Rx<TimeOfDay?>(null);
-  final Rx<TimeOfDay?> closingTime = Rx<TimeOfDay?>(null);
-  final Rx<DateTime> selectedDate = Rx<DateTime>(DateTime.now());
-  Future<void> pickOpeningTime(BuildContext context) async {
-    final initial = openingTime.value ?? TimeOfDay.now();
+  final Rx<TimeOfDay?> bookingTime = Rx<TimeOfDay?>(null);
+  final Rx<TimeOfDay?> checkingTime = Rx<TimeOfDay?>(null);
+  final Rx<TimeOfDay?> checkoutTime = Rx<TimeOfDay?>(null);
+  final Rx<DateTime> bookingDate = Rx<DateTime>(DateTime.now());
+  final Rx<DateTime> checkingDate = Rx<DateTime>(DateTime.now());
+  final Rx<DateTime> checkoutDate = Rx<DateTime>(DateTime.now());
+  Future<void> pickBookingTime(BuildContext context) async {
+    final initial = bookingTime.value ?? TimeOfDay.now();
     final result = await showTimePicker(
       context: context,
       initialTime: initial,
     );
-    if (result != null) openingTime.value = result;
+    if (result != null) bookingTime.value = result;
   }
-  Future<void> pickClosingTime(BuildContext context) async {
-    final initial = closingTime.value ?? TimeOfDay.now();
+  Future<void> pickCheckingTime(BuildContext context) async {
+    final initial = checkingTime.value ?? TimeOfDay.now();
     final result = await showTimePicker(
       context: context,
       initialTime: initial,
     );
-    if (result != null) closingTime.value = result;
+    if (result != null) checkingTime.value = result;
+  }
+  Future<void> pickCheckoutTime(BuildContext context) async {
+    final initial = checkoutTime.value ?? TimeOfDay.now();
+    final result = await showTimePicker(
+      context: context,
+      initialTime: initial,
+    );
+    if (result != null) checkoutTime.value = result;
   }
 
   final ApiClient apiClient = serviceLocator();

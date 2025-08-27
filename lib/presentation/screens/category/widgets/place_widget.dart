@@ -46,8 +46,7 @@ class _PlaceWidgetState extends State<PlaceWidget> {
             itemBuilder: (context, item, itemIndex) {
               return CategoryCardWidget(
                 item: item,
-                showWebsite: widget.index == 1,
-                isPetHotel: widget.index == 3,
+                showWebsite: widget.index == 1 || widget.index == 3,
               );
             },
             firstPageErrorIndicatorBuilder:

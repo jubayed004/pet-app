@@ -61,8 +61,8 @@ class ApiUrl {
   static bookingAppointment() => '$base/booking/create-booking';
   static getService({required String type,required int page}) => '$base/user-home-page/getServicesByType/$type?limit=10&page=$page';
 
-
-
+/// Booking MY Appointment
+  static getBookingAppointment() => '$base/booking/get-bookings';
   ///Business All Pets
 
   static getBusinessAllPets() => '$base/owner/get-all-pets-who-booked';

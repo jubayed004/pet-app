@@ -7,11 +7,15 @@ import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pet_app/controller/get_controllers.dart';
 import 'package:pet_app/core/custom_assets/assets.gen.dart';
+import 'package:pet_app/core/dependency/get_it_injection.dart';
 import 'package:pet_app/core/route/route_path.dart';
 import 'package:pet_app/core/route/routes.dart';
 import 'package:pet_app/presentation/components/custom_button/custom_button.dart';
 import 'package:pet_app/presentation/components/custom_image/custom_image.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
+import 'package:pet_app/presentation/screens/my_appointment/model/appointment_booking_model.dart';
+import 'package:pet_app/service/api_service.dart';
+import 'package:pet_app/service/api_url.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
 import 'package:pet_app/utils/app_strings/app_strings.dart';
 
@@ -163,9 +167,32 @@ class MyAppointmentController extends GetxController {
 
     pagingController.appendLastPage(appointmentList);
 
-
   }
 
+
+/*  final ApiClient apiClient = serviceLocator();
+  final PagingController<int, Booking>pagingController1 = PagingController(firstPageKey: 1);
+
+  Future<void> getHealthHistoryUpdate1() async {
+    try {
+      final response = await apiClient.get(
+        url: ApiUrl.getBookingAppointment(),
+      );
+      if (response.statusCode == 200) {
+        final newData = AppointmentBookingModel.fromJson(response.body);
+        final newItems = newData.booking ?? [];
+        if (newItems.isEmpty) {
+          pagingController1.appendLastPage(newItems);
+        } else {
+          pagingController1.appendPage(newItems, page + 1);
+        }
+      } else {
+        pagingController1.error = 'An error occurred';
+      }
+    } catch (e) {
+      pagingController1.error = 'An error occurred';
+    }
+  }*/
   @override
   void onInit() {
     pagingController.addPageRequestListener((pageKey) {

@@ -19,10 +19,9 @@ import 'package:url_launcher/url_launcher.dart';
 
 class CategoryDetailsScreen extends StatefulWidget {
   const CategoryDetailsScreen(
-      {super.key, required this.showWebsite, required this.isPetHotel, required this.id,});
+      {super.key, required this.showWebsite, required this.id,});
 
   final bool showWebsite;
-  final bool isPetHotel;
   final String id;
 
 
@@ -371,11 +370,29 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
 
                     Gap(24),
                     CustomButton(onTap: () {
-                      final businessID = controller.categoryDetails.value.service?.businessId ?? "";
-                      final id = controller.categoryDetails.value.service?.id?? "";
-                      print("***************======================*************$id");
+                      final businessID = controller.categoryDetails.value.service?.businessId;
+                      final id = controller.categoryDetails.value.service?.id;
+
+                      if (id == null || id.isEmpty || businessID == null || businessID.isEmpty) {
+                        debugPrint("🚫 Navigation prevented: id or businessId is null/empty");
+                        return;
+                      }
+
+                      if(!widget.showWebsite){
+                        debugPrint("🚫 Navigation prevented: isPetHotel is ${widget.showWebsite}");
+                      }
+
+                      final extraData = {
+                        'isHotel': widget.showWebsite,
+                        'id': id,
+                        'businessId': businessID,
+                      };
+
                       AppRouter.route.pushNamed(
-                          RoutePath.serviceScreen, extra:[ widget.isPetHotel, id, businessID ]);
+                        RoutePath.serviceScreen,
+                        extra: extraData,
+                      );
+
                     },
                       title: "What service do you want?",
                       textColor: Colors.black,),

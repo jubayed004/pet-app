@@ -309,13 +309,11 @@ class AppRouter {
           if (haveData) {
             final data = extra as List;
             final showWebsite = data[0];
-            final isPetHotel = data[1];
-            final id = data[2];
+            final id = data[1];
 
             return _buildPageWithAnimation(
               child: CategoryDetailsScreen(
                 showWebsite: showWebsite,
-                isPetHotel: isPetHotel,
                 id: id,
               ),
               state: state,
@@ -324,7 +322,6 @@ class AppRouter {
           return _buildPageWithAnimation(
             child: CategoryDetailsScreen(
               showWebsite: false,
-              isPetHotel: false,
               id: "id",
             ),
             state: state,
@@ -334,15 +331,17 @@ class AppRouter {
       GoRoute(
         name: RoutePath.serviceScreen,
         path: RoutePath.serviceScreen.addBasePath,
-        pageBuilder:
-            (context, state){
-
+        pageBuilder: (context, state) {
           final value = state.extra;
-          final List items = value != null && value is List? value : [];
-          final isHotel = items.isNotEmpty? items[0] as bool: true;
-          final id = items.isNotEmpty && items.length <= 1? items[1] as String: "";
-          final businessId = items.isNotEmpty && items.length <= 2? items[2] as String: "";
-          print("============================${id}");
+          final Map data = value != null && value is Map ? value : {};
+
+          final isHotel = data['isHotel'] as bool? ?? false;
+          final id = data['id'] as String? ?? "";
+          final businessId = data['businessId'] as String? ?? "";
+
+          debugPrint("🟢 Navigating with id: $id");
+          debugPrint("🟢 Navigating with businessId: $businessId");
+
           return _buildPageWithAnimation(
             child: ServiceScreen(
               showWebsite: isHotel,
@@ -351,7 +350,7 @@ class AppRouter {
             ),
             state: state,
           );
-            },
+        },
       ),
 /*      GoRoute(
         name: RoutePath.bookAnAppointmentScreen,
