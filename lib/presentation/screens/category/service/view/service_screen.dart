@@ -106,7 +106,6 @@ final _formKey = GlobalKey<FormState>();
                         },
                       );
                     }),
-      
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment:CrossAxisAlignment.start,
@@ -137,7 +136,6 @@ final _formKey = GlobalKey<FormState>();
                                       text: DateFormat('yyyy-MM-dd').format(serviceController.bookingDate.value),
                                     );
                                   }),
-      
                                   GestureDetector(
                                     onTap: () async {
                                       DateTime? pickedDate = await showDatePicker(
@@ -157,7 +155,6 @@ final _formKey = GlobalKey<FormState>();
                             ),
                           ],
                         ),
-      
                         Obx(() =>
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -189,7 +186,6 @@ final _formKey = GlobalKey<FormState>();
                         ),
                       ],
                     ),
-      
                   if (widget.showWebsite) ...[
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,

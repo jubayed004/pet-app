@@ -48,8 +48,7 @@ class ApiUrl {
   static updateProfile() => '$base/user/update-profile';
   static getBusinessShopProfile() => '$base/business/get';
 
- ///======UserAll Pets
-
+ ///======UserAll
 
   static getProfile() => '$base/user/get-profile';
   static addPet() => '$base/pet/create';
@@ -59,10 +58,11 @@ class ApiUrl {
   static deletedPet({required String id}) => '$base/pet/delete/$id';
   static getCategoryDetails({required String id}) => '$base/services/getServicesById/$id';
   static bookingAppointment() => '$base/booking/create-booking';
+  static getBookingAppointmentDetails() => '$base/booking/get-bookings';
   static getService({required String type,required int page}) => '$base/user-home-page/getServicesByType/$type?limit=10&page=$page';
 
 /// Booking MY Appointment
-  static getBookingAppointment() => '$base/booking/get-bookings';
+  static getBookingAppointment({required int page}) => '$base/booking/get-bookings?limit=10&page=$page';
   ///Business All Pets
 
   static getBusinessAllPets() => '$base/owner/get-all-pets-who-booked';

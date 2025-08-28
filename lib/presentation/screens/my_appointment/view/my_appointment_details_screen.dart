@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:pet_app/core/custom_assets/assets.gen.dart';
 import 'package:pet_app/core/route/route_path.dart';
 import 'package:pet_app/core/route/routes.dart';
 import 'package:pet_app/presentation/components/custom_button/custom_defualt_appbar.dart';
+import 'package:pet_app/presentation/components/custom_netwrok_image/custom_network_image.dart';
 
 class MyAppointmentDetailsScreen extends StatelessWidget {
   const MyAppointmentDetailsScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,102 +24,14 @@ class MyAppointmentDetailsScreen extends StatelessWidget {
                   Stack(
                     alignment: Alignment.bottomRight,
                     children: [
-                      CircleAvatar(
-                        radius: 100,
-                        backgroundImage: AssetImage(
-                          'assets/images/womandogimage.png', // Make sure this matches your image path
-                        ),
-                      ),
+                     CustomNetworkImage(imageUrl: ""),
                       Positioned(
                         bottom: 0,
-                        child:   CircleAvatar(
-                          radius: 30,
-                          backgroundImage: AssetImage(
-                            'assets/images/petshoplogo.png', // Make sure this matches your image path
-                          ),
-                        ),
+                        child:   Assets.images.petshoplogo.image(width: 70)
                       ),
                     ],
                   ),
                   const SizedBox(height: 12),
-                  Text(
-                    "Sandal  Land",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                 /* Container(
-                    margin: const EdgeInsets.symmetric(vertical: 20),
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black12,
-                          blurRadius: 8,
-                          offset: Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: const [
-                            Text(
-                              "📅 Upcoming Appointment",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 10),
-                        const Text("Pet Name: Bella"),
-                        const Text("Vet Name: Dr. Emily Harper"),
-                        const Text("Clinic: Sansal Land – Pixel Posse"),
-                        const Text("Service: General Veterinary Checkup"),
-                        const Text("Date: 25/11/2022"),
-                        const Text("Time: 11:00 AM"),
-                        const Text("Location: 4517 Washington Ave. (2.5 km)"),
-                        const Text("Phone: (406) 555-0120"),
-                        const Text("Status: ✅ Confirmed"),
-                        const SizedBox(height: 16),
-                        Row(
-                          children: [
-                            OutlinedButton.icon(
-                              onPressed: () {},
-                              icon: Icon(Icons.chat, size: 16, color: Colors.green),
-                              label: Text(
-                                "Chat",
-                                style: TextStyle(color: Colors.green),
-                              ),
-                              style: OutlinedButton.styleFrom(
-                                side: BorderSide(color: Colors.green),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 10),
-                            ElevatedButton(
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.red[300],
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                              ),
-                              child: const Text("Cancel"),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                  ),*/
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

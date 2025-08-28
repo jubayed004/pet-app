@@ -11,7 +11,10 @@ import 'package:pet_app/core/route/routes.dart';
 import 'package:pet_app/helper/dialog/show_custom_animated_dialog.dart';
 import 'package:pet_app/helper/local_db/local_db.dart';
 import 'package:pet_app/presentation/components/custom_button/custom_button.dart';
+import 'package:pet_app/presentation/components/custom_image/custom_image.dart';
+import 'package:pet_app/presentation/components/custom_netwrok_image/custom_network_image.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
+import 'package:pet_app/service/api_url.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
 import 'package:pet_app/utils/app_strings/app_strings.dart';
 
@@ -74,15 +77,14 @@ class ProfileScreen extends StatelessWidget {
               backgroundColor: Colors.transparent,
               flexibleSpace: FlexibleSpaceBar(
                 background: Obx(() {
-                  return profileController.selectedImage.value != null
-                      ? Image.file(
-                    File(profileController.selectedImage.value!.path),
-                    fit: BoxFit.cover,
+                  final image = profileController.profile.value.user?.profilePic;
+                  return image != null && image.isNotEmpty ? CustomNetworkImage(
+                     imageUrl: "${ApiUrl.imageBase}$image",
                     width: double.infinity,
                     height: double.infinity,
                   )
-                      : Image.network(
-                    'https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=800&q=80',
+                      : CustomImage(
+                   imageSrc:  'https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=800&q=80',
                     fit: BoxFit.cover,
                     width: double.infinity,
                     height: double.infinity,

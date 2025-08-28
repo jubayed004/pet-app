@@ -147,8 +147,7 @@ class BusinessShopProfileScreen extends StatelessWidget {
                         ),
                         child: ClipOval(
                           child: Obx(() {
-                            final logo = shopProfileController.shopProfile.value
-                                .business?.shopLogo;
+                            final logo = shopProfileController.shopProfile.value.business?.shopLogo;
                             return logo != null && logo.isNotEmpty ?
                             CustomNetworkImage(
                               imageUrl: "${ApiUrl.imageBase}$logo",

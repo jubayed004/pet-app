@@ -12,7 +12,7 @@ class CategoryDetailsController extends GetxController{
   loadingMethod(Status status) => loading.value = status;
   final Rx<CategoryDetailsModel> categoryDetails = CategoryDetailsModel().obs;
 
-  ///===================== Business Shop Profile ====================
+  ///===================== Category details ====================
   Future<void> getCategoryDetails({required String id}) async {
     loadingMethod(Status.completed);
     try {

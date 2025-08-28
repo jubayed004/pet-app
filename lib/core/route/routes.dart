@@ -310,11 +310,13 @@ class AppRouter {
             final data = extra as List;
             final showWebsite = data[0];
             final id = data[1];
+            final isShop = data[2];
 
             return _buildPageWithAnimation(
               child: CategoryDetailsScreen(
                 showWebsite: showWebsite,
                 id: id,
+                isShop: isShop,
               ),
               state: state,
             );
@@ -323,6 +325,7 @@ class AppRouter {
             child: CategoryDetailsScreen(
               showWebsite: false,
               id: "id",
+              isShop: false,
             ),
             state: state,
           );

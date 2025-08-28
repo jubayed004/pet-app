@@ -19,10 +19,11 @@ import 'package:url_launcher/url_launcher.dart';
 
 class CategoryDetailsScreen extends StatefulWidget {
   const CategoryDetailsScreen(
-      {super.key, required this.showWebsite, required this.id,});
+      {super.key, required this.showWebsite, required this.id, required this.isShop,});
 
   final bool showWebsite;
   final String id;
+  final bool isShop;
 
 
   @override
@@ -369,7 +370,7 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
                     ),
 
                     Gap(24),
-                    CustomButton(onTap: () {
+                 if(widget.isShop) CustomButton(onTap: () {
                       final businessID = controller.categoryDetails.value.service?.businessId;
                       final id = controller.categoryDetails.value.service?.id;
 

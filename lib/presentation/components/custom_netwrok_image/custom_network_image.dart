@@ -40,7 +40,8 @@ class CustomNetworkImage extends StatelessWidget {
           image: DecorationImage(
               image: imageProvider,
               fit: BoxFit.cover,
-              colorFilter: colorFilter),
+              colorFilter: colorFilter,
+          ),
         ),
         child: child,
       ),

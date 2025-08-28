@@ -3,6 +3,12 @@
         android:label="pet_app"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+
+        <!-- Add the Google Maps API key inside the <application> block -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAszXC1be8aJ37eHuNcBm_-O1clWkPUwV4"/>
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -17,9 +23,9 @@
                  while the Flutter UI initializes. After that, this theme continues
                  to determine the Window background behind the Flutter UI. -->
             <meta-data
-              android:name="io.flutter.embedding.android.NormalTheme"
-              android:resource="@style/NormalTheme"
-              />
+                android:name="io.flutter.embedding.android.NormalTheme"
+                android:resource="@style/NormalTheme"
+                />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -31,13 +37,10 @@
             android:name="flutterEmbedding"
             android:value="2" />
     </application>
-    <meta-data android:name="com.google.android.geo.API_KEY"
-        android:value="AIzaSyAKj_c83i4nhBrLwPGGW5NNVBwNh2V6Lsg"/>
+
     <!-- Required to query activities that can process text, see:
          https://developer.android.com/training/package-visibility and
-         https://developer.android.com/reference/android/content/Intent#ACTION_PROCESS_TEXT.
-
-         In particular, this is used by the Flutter engine in io.flutter.plugin.text.ProcessTextPlugin. -->
+         https://developer.android.com/reference/android/content/Intent#ACTION_PROCESS_TEXT. -->
     <queries>
         <intent>
             <action android:name="android.intent.action.PROCESS_TEXT"/>
@@ -45,3 +48,8 @@
         </intent>
     </queries>
 </manifest>
+
+
+
+
+

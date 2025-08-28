@@ -5,9 +5,9 @@ class AppointmentBookingModel {
   final List<Booking>? bookings;
   final int? totalPages;
   final int? totalBookings;
-  final int? currentPage;
+  final num? currentPage;
   final int? pageSize;
-  final int? limit;
+  final String? limit;
 
   AppointmentBookingModel({
     this.success,
@@ -26,7 +26,7 @@ class AppointmentBookingModel {
     bookings: json["bookings"] == null ? [] : List<Booking>.from(json["bookings"]!.map((x) => Booking.fromJson(x))),
     totalPages: json["totalPages"],
     totalBookings: json["totalBookings"],
-    currentPage: json["currentPage"],
+    currentPage: int.tryParse(json["currentPage"]),
     pageSize: json["pageSize"],
     limit: json["limit"],
   );
@@ -45,10 +45,14 @@ class AppointmentBookingModel {
 
 class Booking {
   final String? id;
-  final String? serviceId;
+  final ServiceId? serviceId;
   final String? userId;
   final DateTime? bookingDate;
   final String? bookingTime;
+  final String? checkInTime;
+  final String? checkOutTime;
+  final DateTime? checkInDate;
+  final DateTime? checkOutDate;
   final String? bookingStatus;
   final String? notes;
   final String? selectedService;
@@ -59,10 +63,6 @@ class Booking {
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final int? v;
-  final String? checkInTime;
-  final String? checkOutTime;
-  final DateTime? checkInDate;
-  final DateTime? checkOutDate;
 
   Booking({
     this.id,
@@ -70,6 +70,10 @@ class Booking {
     this.userId,
     this.bookingDate,
     this.bookingTime,
+    this.checkInTime,
+    this.checkOutTime,
+    this.checkInDate,
+    this.checkOutDate,
     this.bookingStatus,
     this.notes,
     this.selectedService,
@@ -80,18 +84,18 @@ class Booking {
     this.createdAt,
     this.updatedAt,
     this.v,
-    this.checkInTime,
-    this.checkOutTime,
-    this.checkInDate,
-    this.checkOutDate,
   });
 
   factory Booking.fromJson(Map<String, dynamic> json) => Booking(
     id: json["_id"],
-    serviceId: json["serviceId"],
+    serviceId: json["serviceId"] == null ? null : ServiceId.fromJson(json["serviceId"]),
     userId: json["userId"],
     bookingDate: json["bookingDate"] == null ? null : DateTime.parse(json["bookingDate"]),
     bookingTime: json["bookingTime"],
+    checkInTime: json["checkInTime"],
+    checkOutTime: json["checkOutTime"],
+    checkInDate: json["checkInDate"] == null ? null : DateTime.parse(json["checkInDate"]),
+    checkOutDate: json["checkOutDate"] == null ? null : DateTime.parse(json["checkOutDate"]),
     bookingStatus: json["bookingStatus"],
     notes: json["notes"],
     selectedService: json["selectedService"],
@@ -102,18 +106,18 @@ class Booking {
     createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
     updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
     v: json["__v"],
-    checkInTime: json["checkInTime"],
-    checkOutTime: json["checkOutTime"],
-    checkInDate: json["checkInDate"] == null ? null : DateTime.parse(json["checkInDate"]),
-    checkOutDate: json["checkOutDate"] == null ? null : DateTime.parse(json["checkOutDate"]),
   );
 
   Map<String, dynamic> toJson() => {
     "_id": id,
-    "serviceId": serviceId,
+    "serviceId": serviceId?.toJson(),
     "userId": userId,
     "bookingDate": bookingDate?.toIso8601String(),
     "bookingTime": bookingTime,
+    "checkInTime": checkInTime,
+    "checkOutTime": checkOutTime,
+    "checkInDate": checkInDate?.toIso8601String(),
+    "checkOutDate": checkOutDate?.toIso8601String(),
     "bookingStatus": bookingStatus,
     "notes": notes,
     "selectedService": selectedService,
@@ -124,9 +128,53 @@ class Booking {
     "createdAt": createdAt?.toIso8601String(),
     "updatedAt": updatedAt?.toIso8601String(),
     "__v": v,
-    "checkInTime": checkInTime,
-    "checkOutTime": checkOutTime,
-    "checkInDate": checkInDate?.toIso8601String(),
-    "checkOutDate": checkOutDate?.toIso8601String(),
+  };
+}
+
+class ServiceId {
+  final String? id;
+  final String? serviceType;
+  final String? location;
+  final String? shopLogo;
+  final String? phone;
+  final String? servicesImages;
+  final String? businessId;
+  final bool? isOpenNow;
+  final String? serviceIdId;
+
+  ServiceId({
+    this.id,
+    this.serviceType,
+    this.location,
+    this.shopLogo,
+    this.phone,
+    this.servicesImages,
+    this.businessId,
+    this.isOpenNow,
+    this.serviceIdId,
+  });
+
+  factory ServiceId.fromJson(Map<String, dynamic> json) => ServiceId(
+    id: json["_id"],
+    serviceType: json["serviceType"],
+    location: json["location"],
+    shopLogo: json["shopLogo"],
+    phone: json["phone"],
+    servicesImages: json["servicesImages"],
+    businessId: json["businessId"],
+    isOpenNow: json["isOpenNow"],
+    serviceIdId: json["id"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "_id": id,
+    "serviceType": serviceType,
+    "location": location,
+    "shopLogo": shopLogo,
+    "phone": phone,
+    "servicesImages": servicesImages,
+    "businessId": businessId,
+    "isOpenNow": isOpenNow,
+    "id": serviceIdId,
   };
 }

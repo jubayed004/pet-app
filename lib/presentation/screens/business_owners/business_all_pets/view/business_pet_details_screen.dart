@@ -54,9 +54,7 @@ class _BusinessPetsDetailsScreenState extends State<BusinessPetsDetailsScreen> {
       );
     });
     businessAllPetController.pagingController1.refresh();
-    businessAllPetController.pagingController1.addPageRequestListener((
-      pageKey,
-    ) {
+    businessAllPetController.pagingController1.addPageRequestListener((pageKey,) {
       businessAllPetController.getHealthHistoryUpdate1(
         id: widget.id,
         status: 'PENDING',
@@ -86,8 +84,7 @@ class _BusinessPetsDetailsScreenState extends State<BusinessPetsDetailsScreen> {
               child: Obx(() {
                 final pet =
                     businessAllPetController.details.value.pet?.petPhoto;
-                final image =
-                    pet != null && pet.isNotEmpty ? pet  : "";
+                final image = pet != null && pet.isNotEmpty ? pet  : "";
                 return image.isNotEmpty
                     ? Image.network(ApiUrl.imageBase + image, height: 100)
                     : Image.network(

@@ -47,6 +47,7 @@ class _ShopWidgetState extends State<ShopWidget> {
               return CategoryCardWidget(
                 item: item,
                 showWebsite: widget.index == 1 || widget.index == 3,
+                isShop: false,
               );
             },
             firstPageErrorIndicatorBuilder:

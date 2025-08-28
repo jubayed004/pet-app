@@ -22,10 +22,13 @@ class CategoryCardWidget extends StatelessWidget {
     super.key,
     required this.item,
     this.showWebsite = false,
+    this.isShop = true,
+
   });
 
   final CategoryServiceItem item;
   final bool showWebsite;
+  final bool isShop;
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +49,7 @@ class CategoryCardWidget extends StatelessWidget {
       onTap: () {
         AppRouter.route.pushNamed(
           RoutePath.categoryDetailsScreen,
-          extra: [showWebsite, id],
+          extra: [showWebsite, id,isShop],
         );
       },
       child: Container(

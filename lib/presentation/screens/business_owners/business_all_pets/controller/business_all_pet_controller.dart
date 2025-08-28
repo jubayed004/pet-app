@@ -105,8 +105,7 @@ class BusinessAllPetController extends GetxController {
 
   ///========================BusinessMedicalHistory
 
-  final PagingController<int, PetMedicalHistoryByTreatmentStatus>
-  pagingController1 = PagingController(firstPageKey: 1);
+  final PagingController<int, PetMedicalHistoryByTreatmentStatus> pagingController1 = PagingController(firstPageKey: 1);
 
   Future<void> getHealthHistoryUpdate1({
     required String id,
