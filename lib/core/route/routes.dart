@@ -390,10 +390,15 @@ class AppRouter {
         name: RoutePath.myAppointmentDetailsScreen,
         path: RoutePath.myAppointmentDetailsScreen.addBasePath,
         pageBuilder:
-            (context, state) => _buildPageWithAnimation(
-              child: MyAppointmentDetailsScreen(),
-              state: state,
-            ),
+            (context, state) {
+              final args = state.extra as String;
+            return  _buildPageWithAnimation(
+                child: MyAppointmentDetailsScreen(
+                  id: args,
+                ),
+                state: state,
+              );
+            }
       ),
 
       ///======================= Notify Route =======================

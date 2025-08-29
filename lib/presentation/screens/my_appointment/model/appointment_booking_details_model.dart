@@ -1,58 +1,34 @@
 
-class AppointmentBookingModel {
+class AppointmentBookingDetailsModel {
   final bool? success;
   final String? message;
-  final List<BookingItem>? bookings;
-  final int? totalPages;
-  final int? totalBookings;
-  final num? currentPage;
-  final int? pageSize;
-  final String? limit;
+  final Booking? booking;
 
-  AppointmentBookingModel({
+  AppointmentBookingDetailsModel({
     this.success,
     this.message,
-    this.bookings,
-    this.totalPages,
-    this.totalBookings,
-    this.currentPage,
-    this.pageSize,
-    this.limit,
+    this.booking,
   });
 
-  factory AppointmentBookingModel.fromJson(Map<String, dynamic> json) => AppointmentBookingModel(
+  factory AppointmentBookingDetailsModel.fromJson(Map<String, dynamic> json) => AppointmentBookingDetailsModel(
     success: json["success"],
     message: json["message"],
-    bookings: json["bookings"] == null ? [] : List<BookingItem>.from(json["bookings"]!.map((x) => BookingItem.fromJson(x))),
-    totalPages: json["totalPages"],
-    totalBookings: json["totalBookings"],
-    currentPage: int.tryParse(json["currentPage"]),
-    pageSize: json["pageSize"],
-    limit: json["limit"],
+    booking: json["booking"] == null ? null : Booking.fromJson(json["booking"]),
   );
 
   Map<String, dynamic> toJson() => {
     "success": success,
     "message": message,
-    "bookings": bookings == null ? [] : List<dynamic>.from(bookings!.map((x) => x.toJson())),
-    "totalPages": totalPages,
-    "totalBookings": totalBookings,
-    "currentPage": currentPage,
-    "pageSize": pageSize,
-    "limit": limit,
+    "booking": booking?.toJson(),
   };
 }
 
-class BookingItem {
+class Booking {
   final String? id;
   final ServiceId? serviceId;
   final String? userId;
   final DateTime? bookingDate;
   final String? bookingTime;
-  final String? checkInTime;
-  final String? checkOutTime;
-  final DateTime? checkInDate;
-  final DateTime? checkOutDate;
   final String? bookingStatus;
   final String? notes;
   final String? selectedService;
@@ -64,16 +40,12 @@ class BookingItem {
   final DateTime? updatedAt;
   final int? v;
 
-  BookingItem({
+  Booking({
     this.id,
     this.serviceId,
     this.userId,
     this.bookingDate,
     this.bookingTime,
-    this.checkInTime,
-    this.checkOutTime,
-    this.checkInDate,
-    this.checkOutDate,
     this.bookingStatus,
     this.notes,
     this.selectedService,
@@ -86,16 +58,12 @@ class BookingItem {
     this.v,
   });
 
-  factory BookingItem.fromJson(Map<String, dynamic> json) => BookingItem(
+  factory Booking.fromJson(Map<String, dynamic> json) => Booking(
     id: json["_id"],
     serviceId: json["serviceId"] == null ? null : ServiceId.fromJson(json["serviceId"]),
     userId: json["userId"],
     bookingDate: json["bookingDate"] == null ? null : DateTime.parse(json["bookingDate"]),
     bookingTime: json["bookingTime"],
-    checkInTime: json["checkInTime"],
-    checkOutTime: json["checkOutTime"],
-    checkInDate: json["checkInDate"] == null ? null : DateTime.parse(json["checkInDate"]),
-    checkOutDate: json["checkOutDate"] == null ? null : DateTime.parse(json["checkOutDate"]),
     bookingStatus: json["bookingStatus"],
     notes: json["notes"],
     selectedService: json["selectedService"],
@@ -114,10 +82,6 @@ class BookingItem {
     "userId": userId,
     "bookingDate": bookingDate?.toIso8601String(),
     "bookingTime": bookingTime,
-    "checkInTime": checkInTime,
-    "checkOutTime": checkOutTime,
-    "checkInDate": checkInDate?.toIso8601String(),
-    "checkOutDate": checkOutDate?.toIso8601String(),
     "bookingStatus": bookingStatus,
     "notes": notes,
     "selectedService": selectedService,
@@ -135,6 +99,7 @@ class ServiceId {
   final String? id;
   final String? serviceType;
   final String? location;
+  final String? websiteLink;
   final String? shopLogo;
   final String? phone;
   final String? servicesImages;
@@ -146,6 +111,7 @@ class ServiceId {
     this.id,
     this.serviceType,
     this.location,
+    this.websiteLink,
     this.shopLogo,
     this.phone,
     this.servicesImages,
@@ -158,6 +124,7 @@ class ServiceId {
     id: json["_id"],
     serviceType: json["serviceType"],
     location: json["location"],
+    websiteLink: json["websiteLink"],
     shopLogo: json["shopLogo"],
     phone: json["phone"],
     servicesImages: json["servicesImages"],
@@ -170,6 +137,7 @@ class ServiceId {
     "_id": id,
     "serviceType": serviceType,
     "location": location,
+    "websiteLink": websiteLink,
     "shopLogo": shopLogo,
     "phone": phone,
     "servicesImages": servicesImages,

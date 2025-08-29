@@ -2,20 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:pet_app/controller/get_controllers.dart';
 import 'package:pet_app/core/custom_assets/assets.gen.dart';
 import 'package:pet_app/core/route/route_path.dart';
 import 'package:pet_app/core/route/routes.dart';
 import 'package:pet_app/presentation/components/custom_button/custom_button.dart';
-import 'package:pet_app/presentation/components/custom_image/custom_image.dart';
 import 'package:pet_app/presentation/components/custom_netwrok_image/custom_network_image.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
+import 'package:pet_app/presentation/screens/business_owners/business_service/widgets/default_dialog.dart';
 import 'package:pet_app/service/api_url.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
-import 'package:pet_app/utils/app_const/app_const.dart';
-import 'package:pet_app/utils/app_strings/app_strings.dart';
 
 class MyAppointmentContainer extends StatelessWidget {
+  final String id;
   final Widget petLogo;
   final String serviceType;
   final String shopLogo;
@@ -27,6 +27,8 @@ class MyAppointmentContainer extends StatelessWidget {
   final VoidCallback  chatOnTab;
   final VoidCallback  websiteOnTab;
   final VoidCallback  addReviewOnnTab;
+  final VoidCallback  deletedOnTab;
+
 
    MyAppointmentContainer({
     super.key,
@@ -41,6 +43,10 @@ class MyAppointmentContainer extends StatelessWidget {
    required this.chatOnTab,
     required this.websiteOnTab,
     required this.addReviewOnnTab,
+     required this.deletedOnTab,
+     required this.id,
+
+
   });
   final myAppointmentController = GetControllers.instance.getMyAppointmentController();
   @override
@@ -66,7 +72,7 @@ class MyAppointmentContainer extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        AppRouter.route.pushNamed(RoutePath.myAppointmentDetailsScreen);
+        AppRouter.route.pushNamed(RoutePath.myAppointmentDetailsScreen,extra: id);
       },
       child: Container(
         margin: EdgeInsets.only(bottom: 10),
@@ -236,9 +242,9 @@ class MyAppointmentContainer extends StatelessWidget {
                     showIcon: true,
                   ),
                 ),
-                 Expanded(
+                if (serviceType == "HOTEL") Expanded(
                   child: CustomButton(
-                    onTap: websiteOnTab,
+                    onTap: deletedOnTab,
                     title: " Website",
                     height: 24,
                     fontSize: 12,
@@ -259,9 +265,23 @@ class MyAppointmentContainer extends StatelessWidget {
                 ),
               ],
             ),
-            CustomButton(
-              height: 40,
-              onTap: (){},title: "PENDING",
+            Row(
+              children: [
+                Expanded(
+                  flex: 4,
+                    child: Container(
+                  padding: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    
+                    color: Colors.green,
+                    borderRadius: BorderRadius.circular(10)
+                  ),
+                    child: CustomText(text: "PENDING",color: Colors.white,fontSize: 14,fontWeight: FontWeight.w600,)
+                )
+                ),
+                Expanded(
+                    child: IconButton(onPressed: deletedOnTab, icon: Icon(Iconsax.trush_square,color: Colors.red,)))
+              ],
             )
           ],
         ),

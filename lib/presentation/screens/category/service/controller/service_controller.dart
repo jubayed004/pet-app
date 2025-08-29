@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pet_app/controller/get_controllers.dart';
 import 'package:pet_app/core/dependency/get_it_injection.dart';
 import 'package:pet_app/core/route/route_path.dart';
 import 'package:pet_app/core/route/routes.dart';
@@ -48,12 +49,14 @@ class ServiceController extends GetxController{
   Future<void> bookingAppointmentService({required Map<String, String> body}) async {
     try{
       appointmentLoadingMethod(true);
-      var response = await apiClient.post(url: ApiUrl.bookingAppointment(),body: body,isBasic: false);
+      var response = await apiClient.post(url: ApiUrl.createBookingAppointment(),body: body,isBasic: false);
       print(body);
       print(body.values);
       if (response.statusCode == 201) {
         appointmentLoadingMethod(false);
         AppRouter.route.pushNamed(RoutePath.congratulationScreen);
+        final myAppointmentController = GetControllers.instance.getMyAppointmentController();
+        myAppointmentController.pagingController1.refresh();
        // AppRouter.route.pop();
       } else {
         toastMessage(message: response.body?['message']?.toString());

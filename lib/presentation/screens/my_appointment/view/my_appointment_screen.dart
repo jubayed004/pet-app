@@ -12,6 +12,7 @@ import 'package:pet_app/presentation/components/custom_button/custom_defualt_app
 import 'package:pet_app/presentation/components/custom_image/custom_image.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:pet_app/presentation/no_internet/error_card.dart';
+import 'package:pet_app/presentation/screens/business_owners/business_service/widgets/default_dialog.dart';
 import 'package:pet_app/presentation/screens/category/model/category_item_model.dart';
 import 'package:pet_app/presentation/screens/my_appointment/model/appointment_booking_model.dart';
 import 'package:pet_app/presentation/screens/my_appointment/widgets/my_appointment_container.dart';
@@ -31,7 +32,6 @@ class _MyAppointmentScreenState extends State<MyAppointmentScreen> {
 
   @override
   void initState() {
-    myAppointmentController.pagingController1.refresh();
     myAppointmentController.pagingController1.addPageRequestListener((pageKey) {
       myAppointmentController.getAppointmentBooking(page: pageKey);
     });
@@ -50,13 +50,13 @@ class _MyAppointmentScreenState extends State<MyAppointmentScreen> {
               onRefresh: () async {
                 myAppointmentController.pagingController1.refresh();
               },
-              child: PagedListView<int, Booking>(
+              child: PagedListView<int, BookingItem>(
                 pagingController: myAppointmentController.pagingController1,
                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-                builderDelegate: PagedChildBuilderDelegate<Booking>(
+                builderDelegate: PagedChildBuilderDelegate<BookingItem>(
                   itemBuilder: (context, item, index) {
                    // final time = GetTimeAgo.parse(item.updatedAt ?? DateTime.now());
-
+                    final appointmentId = item.id;
                     final serviceType = item.serviceId;
                     final shopLogo = serviceType?.shopLogo;
                     final serviceImage = serviceType?.servicesImages;
@@ -66,8 +66,8 @@ class _MyAppointmentScreenState extends State<MyAppointmentScreen> {
                     final bookingDate = DateFormat(
                       "dd MMMM yyyy",
                     ).format(item.bookingDate ?? DateTime.now());
-
                     return MyAppointmentContainer(
+                        id: appointmentId ?? "" ,
                         petLogo: Assets.images.vet.image(width: 24),
                         serviceType: serviceType?.serviceType ?? "",
                         shopLogo: (shopLogo != null && shopLogo.isNotEmpty) ? shopLogo : "",
@@ -84,7 +84,20 @@ class _MyAppointmentScreenState extends State<MyAppointmentScreen> {
                         websiteOnTab: () {},
                         addReviewOnnTab: () {
                           AppRouter.route.pushNamed(RoutePath.reviewScreen);
-                        }
+                          },
+                      deletedOnTab: (){
+                        defaultDeletedYesNoDialog(
+                          context: context,
+                          title: 'Are you sure you want to delete this Pet?',
+
+                          onYes: (){
+                            myAppointmentController.deletedBookingAppointment(id: appointmentId ?? "");
+                          },
+
+                        );
+                      },
+
+
                     );
                   },
                   firstPageErrorIndicatorBuilder: (context) => Center(

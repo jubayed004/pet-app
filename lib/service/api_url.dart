@@ -57,12 +57,13 @@ class ApiUrl {
   static updateMyPet({required String id}) => '$base/pet/update/$id';
   static deletedPet({required String id}) => '$base/pet/delete/$id';
   static getCategoryDetails({required String id}) => '$base/services/getServicesById/$id';
-  static bookingAppointment() => '$base/booking/create-booking';
-  static getBookingAppointmentDetails() => '$base/booking/get-bookings';
   static getService({required String type,required int page}) => '$base/user-home-page/getServicesByType/$type?limit=10&page=$page';
 
-/// Booking MY Appointment
+  /// Booking MY Appointment
+  static createBookingAppointment() => '$base/booking/create-booking';
+  static getBookingAppointmentDetails({required String id}) => '$base/booking/get-bookings-by-service-id/$id';
   static getBookingAppointment({required int page}) => '$base/booking/get-bookings?limit=10&page=$page';
+  static deletedBookingAppointment({required String id}) => '$base/booking/delete/$id';
   ///Business All Pets
 
   static getBusinessAllPets() => '$base/owner/get-all-pets-who-booked';

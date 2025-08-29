@@ -1,7 +1,11 @@
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pet_app/controller/get_controllers.dart';
 import 'package:pet_app/core/dependency/get_it_injection.dart';
+import 'package:pet_app/core/route/routes.dart';
+import 'package:pet_app/helper/toast_message/toast_message.dart';
+import 'package:pet_app/presentation/screens/my_appointment/model/appointment_booking_details_model.dart';
 import 'package:pet_app/presentation/screens/my_appointment/model/appointment_booking_model.dart';
 import 'package:pet_app/service/api_service.dart';
 import 'package:pet_app/service/api_url.dart';
@@ -13,41 +17,48 @@ class MyAppointmentController extends GetxController {
 
 
   final ApiClient apiClient = serviceLocator();
-  final PagingController<int, Booking>pagingController1 = PagingController(firstPageKey: 1);
+  final PagingController<int, BookingItem> pagingController1 = PagingController(firstPageKey: 1);
+
+  bool isRunning = false;
 
   Future<void> getAppointmentBooking({required int page}) async {
-    final response = await apiClient.get(
-      url: ApiUrl.getBookingAppointment(page: page),
-    );
-    if (response.statusCode == 200) {
-      final newData = AppointmentBookingModel.fromJson(response.body);
-      final newItems = newData.bookings ?? [];
-      if (newItems.isEmpty) {
-        pagingController1.appendLastPage(newItems);
+    if(isRunning)return;
+    isRunning = true;
+    try{
+      final response = await apiClient.get(url: ApiUrl.getBookingAppointment(page: page));
+      if (response.statusCode == 200) {
+        final newData = AppointmentBookingModel.fromJson(response.body);
+        final newItems = newData.bookings ?? [];
+        if (newItems.isEmpty) {
+          pagingController1.appendLastPage(newItems);
+        } else {
+          pagingController1.appendPage(newItems, page + 1);
+        }
       } else {
-        pagingController1.appendPage(newItems, page + 1);
+        pagingController1.error = 'An error occurred';
       }
-    } else {
+    }catch(_){
       pagingController1.error = 'An error occurred';
+    }finally{
+      isRunning = false;
     }
   }
-
 
 
   var loading = Status.completed.obs;
 
   loadingMethod(Status status) => loading.value = status;
-  final Rx<AppointmentBookingModel> appointmentDetails = AppointmentBookingModel().obs;
+  final Rx<AppointmentBookingDetailsModel> appointmentBookingDetails = AppointmentBookingDetailsModel().obs;
 
-  ///===================== Category details ====================
-  Future<void> getAppointmentBookingDetails() async {
+  ///===================== Appointment Booking Details ====================
+  Future<void> getAppointmentBookingDetails({required String id}) async {
     loadingMethod(Status.completed);
     try {
       loadingMethod(Status.loading);
-      final response = await apiClient.get(url: ApiUrl.getBookingAppointmentDetails());
+      final response = await apiClient.get(url: ApiUrl.getBookingAppointmentDetails(id: id));
       if (response.statusCode == 200) {
-        final newData = AppointmentBookingModel.fromJson(response.body);
-        appointmentDetails.value = newData;
+        final newData = AppointmentBookingDetailsModel.fromJson(response.body);
+        appointmentBookingDetails.value = newData;
         loadingMethod(Status.completed);
       } else {
         if (response.statusCode == 503) {
@@ -63,5 +74,23 @@ class MyAppointmentController extends GetxController {
     }
   }
 
+  ///=================== Deleted Booking Appointment
+
+  Future<void> deletedBookingAppointment({required String id})async {
+    try {
+      final response = await apiClient.delete(
+          url: ApiUrl.deletedBookingAppointment(id: id));
+
+      if (response.statusCode == 200) {
+         pagingController1.refresh();
+        toastMessage(message: response.body?['message']?.toString());
+        AppRouter.route.pop();
+      }
+    } catch (error) {
+      if (kDebugMode) {
+        print(error);
+      }
+    }
+  }
 
 }
