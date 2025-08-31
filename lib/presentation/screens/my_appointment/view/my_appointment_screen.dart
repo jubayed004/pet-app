@@ -18,6 +18,7 @@ import 'package:pet_app/presentation/screens/my_appointment/model/appointment_bo
 import 'package:pet_app/presentation/screens/my_appointment/widgets/my_appointment_container.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
 import 'package:pet_app/utils/app_strings/app_strings.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MyAppointmentScreen extends StatefulWidget {
   const MyAppointmentScreen({super.key});
@@ -81,7 +82,22 @@ class _MyAppointmentScreenState extends State<MyAppointmentScreen> {
                           GetControllers.instance.getNavigationControllerMain();
                           navController.selectedNavIndex.value = 2;
                         },
-                        websiteOnTab: () {},
+                        websiteOnTab: () async{
+                          String? websiteUrl = serviceType?.websiteLink ?? "";
+                          if (websiteUrl.isEmpty) {
+                            websiteUrl = "https://www.defaultwebsite.com";
+                          }
+                          if (!websiteUrl.startsWith('http://') &&
+                              !websiteUrl.startsWith('https://')) {
+                            websiteUrl = 'https://$websiteUrl';
+                          }
+                          final Uri url = Uri.parse(websiteUrl);
+                          if (await canLaunchUrl(url)) {
+                          await launchUrl(url);
+                          } else {
+                          throw 'Could not launch $url';
+                          }
+                        },
                         addReviewOnnTab: () {
                           AppRouter.route.pushNamed(RoutePath.reviewScreen);
                           },
@@ -102,10 +118,8 @@ class _MyAppointmentScreenState extends State<MyAppointmentScreen> {
                   },
                   firstPageErrorIndicatorBuilder: (context) => Center(
                     child: ErrorCard(
-                      onTap: () =>
-                          myAppointmentController.pagingController1.refresh(),
-                      text: myAppointmentController.pagingController1.error
-                          .toString(),
+                      onTap: () => myAppointmentController.pagingController1.refresh(),
+                      text: myAppointmentController.pagingController1.error.toString(),
                     ),
                   ),
                 ),

@@ -85,14 +85,17 @@ Future<void> showAddHealthDialog(BuildContext context, String id) {
                       validator: (value) {
                         final v = value?.trim() ?? "";
                         if (v.isEmpty) return "Doctor name is required";
-                        if (v.length < 2)
+                        if (v.length < 2) {
                           return "Doctor name must be at least 2 characters";
+                        }
                         final nameOk = RegExp(r"^[A-Za-z .'-]+$").hasMatch(v);
-                        if (!nameOk)
+                        if (!nameOk) {
                           return "Use letters, spaces, and . ' - only";
+                        }
                         return null;
                       },
                     ),
+
 
                     ///========== Status ==========
                     CustomDropdown(
@@ -173,8 +176,7 @@ Future<void> showAddHealthDialog(BuildContext context, String id) {
 
 Future<void> editAddHealthDialog(BuildContext context, String date,
     String title, String name, String id) {
-  final businessAllPetController = GetControllers.instance
-      .getBusinessAllPetController();
+  final businessAllPetController = GetControllers.instance.getBusinessAllPetController();
   TextEditingController dateController = TextEditingController(text: date);
   TextEditingController treatmentName = TextEditingController(text: title);
   TextEditingController drName = TextEditingController(text: name);

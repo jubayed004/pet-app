@@ -14,7 +14,6 @@ import 'package:pet_app/presentation/screens/business_owners/business_advertisem
 import 'package:pet_app/presentation/screens/business_owners/business_all_pets/view/business_all_pets_screen.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_all_pets/view/business_pet_details_screen.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_booking/view/business_booking_screen.dart';
-import 'package:pet_app/presentation/screens/business_owners/business_home/review_screen.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_nav/business_navigation_page.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_profile/view/business_edit_profile.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_service/view/business_add_service_screen.dart';
@@ -24,7 +23,6 @@ import 'package:pet_app/presentation/screens/business_owners/business_shop_profi
 import 'package:pet_app/presentation/screens/business_owners/subscription/change_subscription/change_subscription_screen.dart';
 import 'package:pet_app/presentation/screens/business_owners/subscription/subscription_screen.dart';
 import 'package:pet_app/presentation/screens/business_owners/subscription/subscription_status/subcription_status_screen.dart';
-import 'package:pet_app/presentation/screens/category/book_an_appointment/view/book_an_appointment_screen.dart';
 import 'package:pet_app/presentation/screens/category/book_an_appointment/view/congratulation_screen.dart';
 import 'package:pet_app/presentation/screens/category/category_details/view/category_details_screen.dart';
 import 'package:pet_app/presentation/screens/category/service/view/service_screen.dart';
@@ -37,7 +35,6 @@ import 'package:pet_app/presentation/screens/my_pets/view/my_details_pets_screen
 import 'package:pet_app/presentation/screens/nav/navigation_page.dart';
 import 'package:pet_app/presentation/screens/notify/view/notify_screen.dart';
 import 'package:pet_app/presentation/screens/onboarding/onboarding_screen.dart';
-import 'package:pet_app/presentation/screens/other/terms_of_condition.dart';
 import 'package:pet_app/presentation/screens/pet_health/view/pet_health_screen.dart';
 import 'package:pet_app/presentation/screens/profile/add_pet/view/add_pet_screen.dart';
 import 'package:pet_app/presentation/screens/profile/change_password_page.dart';
@@ -47,8 +44,10 @@ import 'package:pet_app/presentation/screens/profile/help_center_screen.dart';
 import 'package:pet_app/presentation/screens/profile/privacy_policy.dart';
 import 'package:pet_app/presentation/screens/profile/settings_page.dart';
 import 'package:pet_app/presentation/screens/profile/terms_of_condition.dart';
+import 'package:pet_app/presentation/screens/review/view/review_screen.dart';
 import 'package:pet_app/presentation/screens/search/search_screen.dart';
 import 'package:pet_app/presentation/screens/splash/splash_screen.dart';
+import 'package:pet_app/presentation/screens/text_screen/view/text_screen.dart';
 import 'package:pet_app/presentation/screens/vendor_selection/vendor_selection_screen.dart';
 import 'route_path.dart';
 
@@ -296,8 +295,11 @@ class AppRouter {
         name: RoutePath.categoryScreen,
         path: RoutePath.categoryScreen.addBasePath,
         pageBuilder:
-            (context, state) =>
-                _buildPageWithAnimation(child: CategoryScreen(), state: state),
+            (context, state) {
+          final args = state.extra as int;
+           return   _buildPageWithAnimation(child: CategoryScreen(index: args,), state: state);
+            }
+
       ),
       GoRoute(
         name: RoutePath.categoryDetailsScreen,
@@ -633,6 +635,13 @@ class AppRouter {
         pageBuilder:
             (context, state) =>
                 _buildPageWithAnimation(child: BusinessEditProfileScreen(), state: state),
+      ),
+      GoRoute(
+        name: RoutePath.textScreen,
+        path: RoutePath.textScreen.addBasePath,
+        pageBuilder:
+            (context, state) =>
+                _buildPageWithAnimation(child: TextScreen(), state: state),
       ),
     ],
   );

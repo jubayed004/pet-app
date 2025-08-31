@@ -126,7 +126,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             padding: const EdgeInsets.all(8.0),
                             child: badges.Badge(
                               onTap: (){
-                                AppRouter.route.pushNamed(RoutePath.notifyScreen);
+                            AppRouter.route.pushNamed(RoutePath.notifyScreen);
+                                //AppRouter.route.pushNamed(RoutePath.textScreen);
                               },
                               badgeContent: const Text(
                                 '3',
@@ -261,7 +262,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             onTap: () {
 
                               //homeController.selectedIndex.value = index;
-                              AppRouter.route.pushNamed(RoutePath.categoryScreen);
+                              AppRouter.route.pushNamed(RoutePath.categoryScreen,extra: index);
                             },
                             child: Card(
                               shape: RoundedRectangleBorder(
@@ -457,27 +458,21 @@ class _HomeScreenState extends State<HomeScreen> {
                         viewportFraction: 1.0,
                       ),
                       items: [
-                        // Replace with your actual image assets
                         ClipRRect(
                             borderRadius:  BorderRadius.all(Radius.circular(20)),
-                            child: CustomImage(
-                                imageSrc: "assets/images/topbrandsimage.png", fit: BoxFit.cover)),
+                            child: CustomImage(imageSrc: "assets/images/topbrandsimage.png", fit: BoxFit.cover)),
                         ClipRRect(
                             borderRadius:  BorderRadius.all(Radius.circular(20)),
-                            child: CustomImage(
-                                imageSrc: "assets/images/topbrandsimage.png", fit: BoxFit.cover)),
+                            child: CustomImage(imageSrc: "assets/images/topbrandsimage.png", fit: BoxFit.cover)),
                         ClipRRect(
                             borderRadius:  BorderRadius.all(Radius.circular(20)),
-                            child: CustomImage(
-                                imageSrc: "assets/images/topbrandsimage.png", fit: BoxFit.cover)),
+                            child: CustomImage(imageSrc: "assets/images/topbrandsimage.png", fit: BoxFit.cover)),
                         ClipRRect(
                             borderRadius:  BorderRadius.all(Radius.circular(20)),
-                            child: CustomImage(
-                                imageSrc: "assets/images/topbrandsimage.png", fit: BoxFit.cover)),
+                            child: CustomImage(imageSrc: "assets/images/topbrandsimage.png", fit: BoxFit.cover)),
                         ClipRRect(
                             borderRadius:  BorderRadius.all(Radius.circular(20)),
-                            child: CustomImage(
-                                imageSrc: "assets/images/topbrandsimage.png", fit: BoxFit.cover)),
+                            child: CustomImage(imageSrc: "assets/images/topbrandsimage.png", fit: BoxFit.cover)),
 
                       ],
                     ),

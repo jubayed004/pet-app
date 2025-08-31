@@ -23,7 +23,9 @@ import 'package:pet_app/presentation/screens/onboarding/controller/onboarding_co
 import 'package:pet_app/presentation/screens/other/controller/other_controller.dart';
 import 'package:pet_app/presentation/screens/profile/controller/profile_controller.dart';
 import 'package:pet_app/presentation/screens/profile/faq/controller/faq_controller.dart';
+import 'package:pet_app/presentation/screens/review/controller/review_controller.dart';
 import 'package:pet_app/presentation/screens/search/controller/search_screen_controller.dart';
+import 'package:pet_app/presentation/screens/text_screen/controller/test_controller.dart';
 
 
 class GetControllers {
@@ -225,6 +227,20 @@ AuthController getAuthController() {
       Get.put(BusinessShopProfileController());
     }
     return Get.find<BusinessShopProfileController>();
+
+  }
+  TestController getTestController() {
+    if (!Get.isRegistered<TestController>()) {
+      Get.put(TestController());
+    }
+    return Get.find<TestController>();
+
+  }
+  ReviewController getReviewController() {
+    if (!Get.isRegistered<ReviewController>()) {
+      Get.put(ReviewController());
+    }
+    return Get.find<ReviewController>();
 
   }
 

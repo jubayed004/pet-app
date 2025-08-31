@@ -116,7 +116,6 @@ class MyAppointmentContainer extends StatelessWidget {
                 ),
               ],
             ),
-            //Assets.icons.petshopimage.svg(),
             Gap(6),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -129,8 +128,8 @@ class MyAppointmentContainer extends StatelessWidget {
                     children: [
                       CustomNetworkImage(
                         imageUrl: "${ApiUrl.imageBase}$serviceImage",
-                        height: 70,
-                        width: 100,
+                        height: 70.h,
+                        width: 100.w,
                         borderRadius: BorderRadius.circular(10),
                       ),
                       RichText(
@@ -173,7 +172,7 @@ class MyAppointmentContainer extends StatelessWidget {
                         text: serviceType,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      Gap(4),
+         /*             Gap(4),
                       Row(
                         children: [
                           Row(
@@ -195,7 +194,7 @@ class MyAppointmentContainer extends StatelessWidget {
                             fontSize: 12,
                           ),
                         ],
-                      ),
+                      ),*/
                       Gap(4),
                       Row(
                         children: [
@@ -244,7 +243,7 @@ class MyAppointmentContainer extends StatelessWidget {
                 ),
                 if (serviceType == "HOTEL") Expanded(
                   child: CustomButton(
-                    onTap: deletedOnTab,
+                    onTap: websiteOnTab,
                     title: " Website",
                     height: 24,
                     fontSize: 12,

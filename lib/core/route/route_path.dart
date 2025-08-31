@@ -55,6 +55,7 @@ class RoutePath{
   static const String subscriptionScreen = 'subscriptionScreen';
   static const String subscriptionStatusScreen = 'subscriptionStatusScreen';
   static const String changeSubscriptionScreen = 'changeSubscriptionScreen';
+  static const String textScreen = 'textScreen';
 
 
 

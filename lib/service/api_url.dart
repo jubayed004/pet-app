@@ -83,6 +83,8 @@ class ApiUrl {
   static addService() => '$base/services/createService';
   static deletedService({required String id}) => '$base/services/deleteService/$id';
   static updateService({required String id}) => '$base/services/updateService/$id';
+ /// Review
+  static addReview() => '$base/review/create';
 
 
 

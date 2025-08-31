@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:pet_app/controller/get_controllers.dart';
 import 'package:pet_app/core/custom_assets/assets.gen.dart';
 import 'package:pet_app/core/route/route_path.dart';
 import 'package:pet_app/core/route/routes.dart';
+import 'package:pet_app/presentation/components/custom_button/custom_button.dart';
 import 'package:pet_app/presentation/components/custom_button/custom_defualt_appbar.dart';
 import 'package:pet_app/presentation/components/custom_netwrok_image/custom_network_image.dart';
 import 'package:pet_app/service/api_url.dart';
+import 'package:pet_app/utils/app_colors/app_colors.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MyAppointmentDetailsScreen extends StatefulWidget {
   final String id;
@@ -51,6 +56,22 @@ class _MyAppointmentDetailsScreenState
                  final image = serviceImage != null && serviceImage.isNotEmpty ? serviceImage :"";
                   final serviceLogo = item?.shopLogo;
                   final logo = (serviceLogo != null && serviceLogo.isNotEmpty) ? serviceLogo : "";
+                  final serviceType = item?.serviceType ?? "";
+                  final location = item?.location ?? "";
+                  final phone = item?.phone ?? "";
+                  final website = item?.websiteLink ?? "";
+
+                  final item1 = controller.appointmentBookingDetails.value.booking;
+                  final selectedService = item1?.selectedService ?? "";
+                  final bookingStatus = item1?.bookingStatus ?? "";
+                  final bookingDate = DateFormat("dd MMMM yyyy",).format(item1?.bookingDate ?? DateTime.now());
+                  final bookingTime = item1?.bookingTime ?? "";
+                  final checkInDate = DateFormat("dd MMMM yyyy",).format(item1?.checkInDate?? DateTime.now());
+                  final checkInTime = item1?.checkInTime ?? "";
+                  final checkOutDate = DateFormat("dd MMMM yyyy",).format(item1?.checkOutDate?? DateTime.now());
+                  final checkOutTime = item1?.checkOutTime ?? "";
+                  final notes = item1?.notes ?? "";
+
                   print("===============================================${ApiUrl.imageBase}$image");
                   return Column(
                     children: [
@@ -76,26 +97,28 @@ class _MyAppointmentDetailsScreenState
                       ),
                       const SizedBox(height: 12),
                       Column(
+                        spacing: 8,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          /*                const Text(
-                          "📅 Upcoming Appointment",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
+                          Center(
+                            child: const Text(
+                              textAlign: TextAlign.center,
+                              "Appointment",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                                                    ),
                           ),
-                        ),
-                        const SizedBox(height: 10),*/
-
-                          // Each line: Static label + Dynamic value
+                          const SizedBox(height: 10),
                           RichText(
                             text: TextSpan(
                               style: TextStyle(color: Colors.black),
                               children: [
-                                TextSpan(text: "Pet Name: ",
+                                TextSpan(text: "Service Type : ",
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold)),
-                                TextSpan(text: "Bella"),
+                                TextSpan(text: serviceType),
                               ],
                             ),
                           ),
@@ -103,10 +126,10 @@ class _MyAppointmentDetailsScreenState
                             text: TextSpan(
                               style: TextStyle(color: Colors.black),
                               children: [
-                                TextSpan(text: "Vet Name: ",
+                                TextSpan(text: "Selected Service : ",
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold)),
-                                TextSpan(text: "pull"),
+                                TextSpan(text: selectedService),
                               ],
                             ),
                           ),
@@ -114,14 +137,14 @@ class _MyAppointmentDetailsScreenState
                             text: TextSpan(
                               style: TextStyle(color: Colors.black),
                               children: [
-                                TextSpan(text: "Clinic: ",
+                                TextSpan(text: "Booking Status : ",
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold)),
-                                TextSpan(text: "sandal"),
+                                TextSpan(text: bookingStatus),
                               ],
                             ),
                           ),
-                          RichText(
+               /*           RichText(
                             text: TextSpan(
                               style: TextStyle(color: Colors.black),
                               children: [
@@ -131,15 +154,15 @@ class _MyAppointmentDetailsScreenState
                                 TextSpan(text: "general veterinary checkup"),
                               ],
                             ),
-                          ),
+                          ),*/
                           RichText(
                             text: TextSpan(
                               style: TextStyle(color: Colors.black),
                               children: [
-                                TextSpan(text: "Date: ",
+                                TextSpan(text: "Booking Date : ",
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold)),
-                                TextSpan(text: "25/12/2025"),
+                                TextSpan(text: bookingDate),
                               ],
                             ),
                           ),
@@ -147,13 +170,65 @@ class _MyAppointmentDetailsScreenState
                             text: TextSpan(
                               style: TextStyle(color: Colors.black),
                               children: [
-                                TextSpan(text: "Time: ",
+                                TextSpan(text: "Booking Time: ",
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold)),
-                                TextSpan(text: "11: 00 PM"),
+                                TextSpan(text: bookingTime),
                               ],
                             ),
                           ),
+                          if(["HOTEL"].contains(item?.serviceType)) Column(
+                            spacing: 8,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              RichText(
+                                text: TextSpan(
+                                  style: TextStyle(color: Colors.black),
+                                  children: [
+                                    TextSpan(text: "Check In Date : ",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                    TextSpan(text: checkInDate),
+                                  ],
+                                ),
+                              ),
+                              RichText(
+                                text: TextSpan(
+                                  style: TextStyle(color: Colors.black),
+                                  children: [
+                                    TextSpan(text: "Check In Time: ",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                    TextSpan(text: checkInTime),
+                                  ],
+                                ),
+                              ),
+                              RichText(
+                                text: TextSpan(
+                                  style: TextStyle(color: Colors.black),
+                                  children: [
+                                    TextSpan(text: "Check Out Date : ",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                    TextSpan(text: checkOutDate),
+                                  ],
+                                ),
+                              ),
+                              RichText(
+                                text: TextSpan(
+                                  style: TextStyle(color: Colors.black),
+                                  children: [
+                                    TextSpan(text: "Check Out Time : ",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                    TextSpan(text: checkOutTime),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        
                           RichText(
                             text: TextSpan(
                               style: TextStyle(color: Colors.black),
@@ -161,7 +236,7 @@ class _MyAppointmentDetailsScreenState
                                 TextSpan(text: "Location: ",
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold)),
-                                TextSpan(text: "24542 Wastonishington Ave "),
+                                TextSpan(text: location),
                               ],
                             ),
                           ),
@@ -172,34 +247,72 @@ class _MyAppointmentDetailsScreenState
                                 TextSpan(text: "Phone: ",
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold)),
-                                TextSpan(text: "20524524524"),
+                                TextSpan(text: phone),
+                              ],
+                            ),
+                          ),
+                          RichText(
+                            text: TextSpan(
+                              style: TextStyle(color: Colors.black),
+                              children: [
+                                TextSpan(text: "Extra Information : ",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold)),
+                                TextSpan(text: notes),
                               ],
                             ),
                           ),
 
+                          Gap(16),
 
-                          const SizedBox(height: 16),
-
-                          // Action buttons
                           Row(
                             spacing: 10,
                             children: [
+                              Flexible(
+                                child: CustomButton(
+                                  onTap: () {   AppRouter.route.pushNamed(
+                                      RoutePath.reviewScreen); },
+                                  title: "Review",
+                                  fillColor: Colors.yellow,
+                                  textColor:Colors.black,
 
-
-                              ElevatedButton(
-                                onPressed: () {
-                                  AppRouter.route.pushNamed(
-                                      RoutePath.reviewScreen);
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.red[300],
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
                                 ),
-                                child: const Text("Review"),
                               ),
-                              OutlinedButton.icon(
+                              Flexible(
+                                child: CustomButton(
+                                  onTap: () {   AppRouter.route.pushNamed(
+                                      RoutePath.chatScreen); },
+                                  title: "Chat",
+                                  textColor: Colors.black,
+
+                                ),
+                              ),
+                             if(["HOTEL"].contains(item?.serviceType)) Flexible(
+                                child: CustomButton(
+                                  onTap: ()  async{
+                                    String? websiteUrl = item?.websiteLink ?? "";
+                                    if (websiteUrl.isEmpty) {
+                                      websiteUrl = "https://www.defaultwebsite.com";
+                                    }
+                                    if (!websiteUrl.startsWith('http://') &&
+                                        !websiteUrl.startsWith('https://')) {
+                                      websiteUrl = 'https://$websiteUrl';
+                                    }
+                                    final Uri url = Uri.parse(websiteUrl);
+                                    if (await canLaunchUrl(url)) {
+                                  await launchUrl(url);
+                                  } else {
+                                  throw 'Could not launch $url';
+                                  }
+
+                                    },
+                                  title: "Website",
+                                  fillColor: AppColors.purple500,
+                                  textColor: Colors.black,
+
+                                ),
+                              ),
+                        /*      OutlinedButton.icon(
                                 onPressed: () {},
                                 icon: Icon(
                                     Icons.chat, size: 16, color: Colors.green),
@@ -223,7 +336,7 @@ class _MyAppointmentDetailsScreenState
                                   ),
                                 ),
                                 child: const Text("Website"),
-                              ),
+                              ),*/
                             ],
                           )
                         ],

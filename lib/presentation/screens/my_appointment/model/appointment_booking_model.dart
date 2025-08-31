@@ -5,8 +5,7 @@ class AppointmentBookingModel {
   final List<BookingItem>? bookings;
   final int? totalPages;
   final int? totalBookings;
-  final num? currentPage;
-  final int? pageSize;
+  final String? currentPage;
   final String? limit;
 
   AppointmentBookingModel({
@@ -16,7 +15,6 @@ class AppointmentBookingModel {
     this.totalPages,
     this.totalBookings,
     this.currentPage,
-    this.pageSize,
     this.limit,
   });
 
@@ -26,8 +24,7 @@ class AppointmentBookingModel {
     bookings: json["bookings"] == null ? [] : List<BookingItem>.from(json["bookings"]!.map((x) => BookingItem.fromJson(x))),
     totalPages: json["totalPages"],
     totalBookings: json["totalBookings"],
-    currentPage: int.tryParse(json["currentPage"]),
-    pageSize: json["pageSize"],
+    currentPage: json["currentPage"],
     limit: json["limit"],
   );
 
@@ -38,7 +35,6 @@ class AppointmentBookingModel {
     "totalPages": totalPages,
     "totalBookings": totalBookings,
     "currentPage": currentPage,
-    "pageSize": pageSize,
     "limit": limit,
   };
 }
@@ -135,6 +131,7 @@ class ServiceId {
   final String? id;
   final String? serviceType;
   final String? location;
+  final String? websiteLink;
   final String? shopLogo;
   final String? phone;
   final String? servicesImages;
@@ -146,6 +143,7 @@ class ServiceId {
     this.id,
     this.serviceType,
     this.location,
+    this.websiteLink,
     this.shopLogo,
     this.phone,
     this.servicesImages,
@@ -158,6 +156,7 @@ class ServiceId {
     id: json["_id"],
     serviceType: json["serviceType"],
     location: json["location"],
+    websiteLink: json["websiteLink"],
     shopLogo: json["shopLogo"],
     phone: json["phone"],
     servicesImages: json["servicesImages"],
@@ -170,6 +169,7 @@ class ServiceId {
     "_id": id,
     "serviceType": serviceType,
     "location": location,
+    "websiteLink": websiteLink,
     "shopLogo": shopLogo,
     "phone": phone,
     "servicesImages": servicesImages,

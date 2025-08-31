@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pet_app/controller/get_controllers.dart';
 import 'package:pet_app/core/custom_assets/assets.gen.dart';
@@ -20,15 +22,20 @@ import 'package:pet_app/utils/app_strings/app_strings.dart';
 import '../model/category_model.dart';
 
 class CategoryScreen extends StatefulWidget {
-  const CategoryScreen({super.key});
+  final int index;
+   const CategoryScreen({super.key, required this.index});
+
+
 
   @override
   State<CategoryScreen> createState() => _CategoryScreenState();
 }
 
 class _CategoryScreenState extends State<CategoryScreen> {
+
+  late final ValueNotifier<int> selectedIndex;
+
   final categoryController = GetControllers.instance.getCategoryController();
-  final ValueNotifier<int> selectedIndex = ValueNotifier(0);
   final List<CategoryItem> categories = [
     CategoryItem(icon: Assets.icons.petvets.svg(), title: AppStrings.petVets, type: "VET"),
     CategoryItem(icon: Assets.icons.petshops.svg(), title: AppStrings.petShops, type: "SHOP"),
@@ -37,6 +44,13 @@ class _CategoryScreenState extends State<CategoryScreen> {
     CategoryItem(icon: Assets.icons.pettraining.svg(), title: AppStrings.petTraining, type: "TRAINING"),
     CategoryItem(icon: Assets.icons.friendlyplace.svg(), title: AppStrings.friendlyPlace, type: "FRIENDLY"),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    selectedIndex = ValueNotifier<int>(widget.index);
+  }
+
   @override
   void dispose() {
     selectedIndex.dispose();
@@ -56,7 +70,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
         backgroundColor: AppColors.whiteColor,
         body: Column(
           children: [
-            /// Category Header (Horizontal List)
+            /// Category Header
             SizedBox(
               height: 130,
               child: ValueListenableBuilder<int>(

@@ -1,4 +1,5 @@
 
+
 class AppointmentBookingDetailsModel {
   final bool? success;
   final String? message;
@@ -29,6 +30,10 @@ class Booking {
   final String? userId;
   final DateTime? bookingDate;
   final String? bookingTime;
+  final String? checkInTime;
+  final String? checkOutTime;
+  final DateTime? checkInDate;
+  final DateTime? checkOutDate;
   final String? bookingStatus;
   final String? notes;
   final String? selectedService;
@@ -46,6 +51,10 @@ class Booking {
     this.userId,
     this.bookingDate,
     this.bookingTime,
+    this.checkInTime,
+    this.checkOutTime,
+    this.checkInDate,
+    this.checkOutDate,
     this.bookingStatus,
     this.notes,
     this.selectedService,
@@ -64,6 +73,10 @@ class Booking {
     userId: json["userId"],
     bookingDate: json["bookingDate"] == null ? null : DateTime.parse(json["bookingDate"]),
     bookingTime: json["bookingTime"],
+    checkInTime: json["checkInTime"],
+    checkOutTime: json["checkOutTime"],
+    checkInDate: json["checkInDate"] == null ? null : DateTime.parse(json["checkInDate"]),
+    checkOutDate: json["checkOutDate"] == null ? null : DateTime.parse(json["checkOutDate"]),
     bookingStatus: json["bookingStatus"],
     notes: json["notes"],
     selectedService: json["selectedService"],
@@ -82,6 +95,10 @@ class Booking {
     "userId": userId,
     "bookingDate": bookingDate?.toIso8601String(),
     "bookingTime": bookingTime,
+    "checkInTime": checkInTime,
+    "checkOutTime": checkOutTime,
+    "checkInDate": checkInDate?.toIso8601String(),
+    "checkOutDate": checkOutDate?.toIso8601String(),
     "bookingStatus": bookingStatus,
     "notes": notes,
     "selectedService": selectedService,
