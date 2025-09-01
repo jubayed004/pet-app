@@ -625,9 +625,20 @@ class AppRouter {
       GoRoute(
         name: RoutePath.reviewScreen,
         path: RoutePath.reviewScreen.addBasePath,
-        pageBuilder:
-            (context, state) =>
-                _buildPageWithAnimation(child: ReviewScreen(), state: state),
+        pageBuilder: (context, state) {
+          final extra = state.extra as Map<String, Object>? ?? {};
+           final businessId = extra["businessId"] as String;
+           final ownerId = extra["ownerId"] as String;
+           final serviceId = extra["serviceId"] as String;
+          return  _buildPageWithAnimation(
+              child: ReviewScreen(
+            businessId: businessId,
+            ownerId: ownerId,
+            serviceId: serviceId,
+          ),
+              state: state);
+            }
+
       ),
       GoRoute(
         name: RoutePath.businessEditProfileScreen,

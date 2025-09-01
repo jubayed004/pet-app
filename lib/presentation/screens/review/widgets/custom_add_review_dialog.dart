@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:pet_app/controller/get_controllers.dart';
 import 'package:pet_app/presentation/components/custom_button/custom_button.dart';
 import 'package:pet_app/presentation/components/custom_dropdown/custom_drop_down_button.dart';
@@ -9,7 +10,9 @@ import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:pet_app/presentation/components/custom_text_field/custom_text_field.dart';
 import 'package:pet_app/presentation/components/custom_text_field/description_text_field.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
-Future<void> showAddReviewDialog(BuildContext context, String id, String ownerId, String serviceId) {
+
+Future<void> showAddReviewDialog(BuildContext context, String businessId,
+    String ownerId, String serviceId) {
   final TextEditingController comments = TextEditingController();
   final reviewController = GetControllers.instance.getReviewController();
   final formKey = GlobalKey<FormState>();
@@ -17,95 +20,105 @@ Future<void> showAddReviewDialog(BuildContext context, String id, String ownerId
 
   return showDialog(
     context: context,
-    builder: (context) => AlertDialog(
-      backgroundColor: AppColors.whiteColor,
-      title: const CustomText(
-        text: "Add Review",
-        fontSize: 16,
-        fontWeight: FontWeight.w600,
-      ),
-      content: SingleChildScrollView(
-        child: ConstrainedBox(
-          constraints: BoxConstraints(
-            maxHeight: MediaQuery.of(context).size.height * 0.6,
-            maxWidth: MediaQuery.of(context).size.width * 0.9,
+    builder: (context) =>
+        AlertDialog(
+          backgroundColor: AppColors.whiteColor,
+          title: const CustomText(
+            text: "Add Review",
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
           ),
-          child: Form(
-            key: formKey,
-            child: Column(
-              spacing: 6.h,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // Rating Bar
-                RatingBar.builder(
-                  initialRating: rating,
-                  minRating: 1,
-                  direction: Axis.horizontal,
-                  allowHalfRating: true,
-                  itemCount: 5,
-                  itemSize: 40.0,
-                  itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                  itemBuilder: (context, _) => Icon(
-                    Icons.star,
-                    color: Colors.amber,
-                  ),
-                  onRatingUpdate: (newRating) {
-                    rating = newRating;
-                  },
-                ),
+          content: SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxHeight: MediaQuery
+                    .of(context)
+                    .size
+                    .height * 0.6,
+                maxWidth: MediaQuery
+                    .of(context)
+                    .size
+                    .width * 0.9,
+              ),
+              child: Form(
+                key: formKey,
+                child: Column(
+                  spacing: 6.h,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Rating Bar
+                    RatingBar.builder(
+                      initialRating: rating,
+                      minRating: 1,
+                      direction: Axis.horizontal,
+                      allowHalfRating: true,
+                      itemCount: 5,
+                      itemSize: 40.0,
+                      itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                      itemBuilder: (context, _) =>
+                          Icon(
+                            Icons.star,
+                            color: Colors.amber,
+                          ),
+                      onRatingUpdate: (newRating) {
+                        rating = newRating;
+                      },
+                    ),
 
-                // Comment Section
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: CustomText(
-                    text: "Share more about your experience",
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                DescriptionTextField(
-                  hintText: "Share details of your own experience at this place",
-                  backgroundColor: Colors.white,
-                  radius: 20,
-                  contentPadding: EdgeInsets.only(left: 20, right: 20, bottom: 10, top: 10),
-                  controller: comments,
-                  maxLines: 10,
+                    // Comment Section
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: CustomText(
+                        text: "Share more about your experience",
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    DescriptionTextField(
+                      hintText: "Share details of your own experience at this place",
+                      hintStyle: TextStyle(color: Colors.grey.withAlpha(958)),
+                      backgroundColor: Colors.white,
+                      radius: 20,
+                      contentPadding: EdgeInsets.only(left: 20, right: 20, bottom: 10, top: 10),
+                      controller: comments,
+                      maxLines: 10,
+                    ),
 
-                ),
-
-                CustomButton(
-                  onTap: () {
-
-                    final body = {
-                      "comment": comments.text,
-                      "rating": rating.toString(),
-                      "businessId": id,
-                      "ownerId": ownerId,
-                      "serviceId": serviceId,
-                    };
-
-                    if (formKey.currentState!.validate()) {
-                      reviewController.addReview(
-                        body: body,
+                    Obx(() {
+                      return CustomButton(
+                        isLoading: reviewController.isLoading.value,
+                        onTap: () {
+                          final body = {
+                            "comment": comments.text,
+                            "rating": rating.toString(),
+                            "businessId": businessId,
+                            "ownerId": ownerId,
+                            "serviceId": serviceId,
+                          };
+                          if (formKey.currentState!.validate()) {
+                            reviewController.addReview(
+                              body: body,
+                              id: serviceId,
+                            );
+                          }
+                        },
+                        title: "Submit",
                       );
-                    }
-                  },
-                  title: "Submit",
+                    }),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
         ),
-      ),
-    ),
   );
 }
 
 
-
 Future<void> editAddReviewDialog(BuildContext context, String date,
     String title, String name, String id) {
-  final businessAllPetController = GetControllers.instance.getBusinessAllPetController();
+  final businessAllPetController = GetControllers.instance
+      .getBusinessAllPetController();
   TextEditingController dateController = TextEditingController(text: date);
   TextEditingController treatmentName = TextEditingController(text: title);
   TextEditingController drName = TextEditingController(text: name);
@@ -121,8 +134,14 @@ Future<void> editAddReviewDialog(BuildContext context, String date,
           content: SingleChildScrollView(
             child: ConstrainedBox(
               constraints: BoxConstraints(
-                maxHeight: MediaQuery.of(context).size.height * 0.6,
-                maxWidth: MediaQuery.of(context).size.width * 0.9,
+                maxHeight: MediaQuery
+                    .of(context)
+                    .size
+                    .height * 0.6,
+                maxWidth: MediaQuery
+                    .of(context)
+                    .size
+                    .width * 0.9,
               ),
               child: Form(
                 key: formKey,
@@ -130,6 +149,7 @@ Future<void> editAddReviewDialog(BuildContext context, String date,
                   spacing: 6.h,
                   mainAxisSize: MainAxisSize.min,
                   children: [
+
                     ///============ Treatment Name
                     Align(
                       alignment: Alignment.topLeft,
@@ -160,6 +180,7 @@ Future<void> editAddReviewDialog(BuildContext context, String date,
                       hintText: " Dr name",
                       fillColor: AppColors.whiteColor,
                     ),
+
                     ///====== Status
                     CustomDropdown(
                       onChanged: (v) {
@@ -214,7 +235,8 @@ Future<void> editAddReviewDialog(BuildContext context, String date,
                           "treatmentName": treatmentName.text,
                           "doctorName": drName.text,
                           "treatmentDate": dateController.text,
-                          "treatmentStatus": businessAllPetController.statusValue.value,
+                          "treatmentStatus": businessAllPetController
+                              .statusValue.value,
                         };
                         if (kDebugMode) {
                           print(body);
@@ -222,7 +244,8 @@ Future<void> editAddReviewDialog(BuildContext context, String date,
                         if (formKey.currentState!.validate()) {
                           businessAllPetController.editHealth(body: body,
                               id: id,
-                              status: businessAllPetController.statusValue.value);
+                              status: businessAllPetController.statusValue
+                                  .value);
                         }
                       },
 

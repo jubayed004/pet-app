@@ -13,6 +13,7 @@ import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_service/widgets/default_dialog.dart';
 import 'package:pet_app/service/api_url.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
+import 'package:pet_app/utils/app_const/padding_constant.dart';
 
 class MyAppointmentContainer extends StatelessWidget {
   final String id;
@@ -21,12 +22,14 @@ class MyAppointmentContainer extends StatelessWidget {
   final String shopLogo;
   final String serviceImage;
   final String bookingDate;
+  final String bookingTime;
   final String selectedService;
   final String address;
   final String phone;
-  final VoidCallback  chatOnTab;
-  final VoidCallback  websiteOnTab;
-  final VoidCallback  addReviewOnnTab;
+  final String bookingStatus;
+/*  final VoidCallback chatOnTab;
+  final VoidCallback websiteOnTab;
+  final VoidCallback addReviewOnnTab;*/
   final VoidCallback  deletedOnTab;
 
 
@@ -40,11 +43,13 @@ class MyAppointmentContainer extends StatelessWidget {
     required this.selectedService,
     required this.address,
     required this.phone,
-   required this.chatOnTab,
+/*  required this.chatOnTab,
     required this.websiteOnTab,
-    required this.addReviewOnnTab,
+  required this.addReviewOnnTab,*/
      required this.deletedOnTab,
      required this.id,
+     required this.bookingTime,
+     required this.bookingStatus,
 
 
   });
@@ -90,6 +95,7 @@ class MyAppointmentContainer extends StatelessWidget {
           ],
         ),
         child: Column(
+          spacing: 12,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -106,72 +112,55 @@ class MyAppointmentContainer extends StatelessWidget {
                     ),
                   ],
                 ),
-
-                CustomNetworkImage(
-                  imageUrl: "${ApiUrl.imageBase}$shopLogo",
-                  width: 50,
-                  height: 50,
-                  boxShape: BoxShape.circle,
-
-                ),
+                if(["PENDING", "COMPLETED"].contains(bookingStatus))Container(
+                  padding: padding8,
+                  decoration: BoxDecoration(
+                    color: bookingStatus == "PENDING" ? Color(0xffE0F2FE) :  Color(0xffDCFCE7),
+                   borderRadius: BorderRadius.circular(10)
+                  ),
+                  child: CustomText(text: bookingStatus,fontWeight: FontWeight.w500,fontSize: 12,color:bookingStatus == "PENDING" ? Color(0xff0EA5E9):Color(0xff22C55E),),
+                )
               ],
             ),
-            Gap(6),
+
             Row(
+              spacing: 6,
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(
-                  child: Column(
-                    spacing: 6.h,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CustomNetworkImage(
-                        imageUrl: "${ApiUrl.imageBase}$serviceImage",
-                        height: 70.h,
-                        width: 100.w,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      RichText(
-                        textAlign: TextAlign.start,
-                        text: TextSpan(
-                          children: [
-                            TextSpan(
-                              text: "Booking Date : ",
-                              style: TextStyle(
-                                fontWeight: FontWeight.w400,
-                                color: Colors.black, // You can customize the text color here
-                              ),
-                            ),
-                            TextSpan(
-                              text: bookingDate,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w400,
-                                color: Colors.black, // You can customize the text color here
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+                Column(
+                  spacing: 6.h,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomNetworkImage(
+                      imageUrl: "${ApiUrl.imageBase}$serviceImage",
+                      height: 70.h,
+                      width: 100.w,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+
+                  ],
                 ),
                 Gap(6),
                 Expanded(
                   flex: 2,
                   child: Column(
+                    spacing: 6,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomText(
-                        text: selectedService,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      Gap(4),
-                      CustomText(
                         text: serviceType,
                         overflow: TextOverflow.ellipsis,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
                       ),
+                      CustomText(
+                        text: selectedService,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+
          /*             Gap(4),
                       Row(
                         children: [
@@ -195,16 +184,15 @@ class MyAppointmentContainer extends StatelessWidget {
                           ),
                         ],
                       ),*/
-                      Gap(4),
+
                       Row(
+                        spacing: 6,
                         children: [
                           Icon(Icons.call, size: 18),
-                          Expanded(
-                            child: CustomText(
-                              text: phone,
-                              fontWeight: FontWeight.w400,
-                              textAlign: TextAlign.start,
-                            ),
+                          CustomText(
+                            text: phone,
+                            fontWeight: FontWeight.w400,
+                            textAlign: TextAlign.start,
                           ),
                           Icon(Icons.location_on_sharp, size: 18),
                           Expanded(
@@ -226,60 +214,77 @@ class MyAppointmentContainer extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Expanded(
-                  child: CustomButton(
-                    onTap: chatOnTab,
-                    title: "Chat Now",
-                    height: 24,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                    fillColor: AppColors.whiteColor,
-                    textColor: Colors.black,
-                    //borderColor: Colors.black,
-                    borderWidth: 1,
-                    //isBorder: true,
-                    // icon: Icon(Icons.chat,color: Colors.black,size: 16,),
-                    showIcon: true,
-                  ),
-                ),
-                if (serviceType == "HOTEL") Expanded(
-                  child: CustomButton(
-                    onTap: websiteOnTab,
-                    title: " Website",
-                    height: 24,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                    fillColor: AppColors.purple500,
-                    textColor: Colors.black,
-                  ),
-                ),
-                Expanded(
-                  child: TextButton(
-                    onPressed: addReviewOnnTab,
-                    child: CustomText(
-                      text: "Add Review",
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
+                  child: RichText(
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.start,
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: "Booking Date : ",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black,
+                          ),
+                        ),
+                        TextSpan(
+                          text: bookingDate,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
                     ),
+                  ),
+                ),
+                RichText(
+                  textAlign: TextAlign.start,
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: "Booking Time : ",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          color: Colors.black,
+                        ),
+                      ),
+                      TextSpan(
+                        text: bookingTime,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Expanded(
-                  flex: 4,
-                    child: Container(
-                  padding: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    
-                    color: Colors.green,
-                    borderRadius: BorderRadius.circular(10)
-                  ),
-                    child: CustomText(text: "PENDING",color: Colors.white,fontSize: 14,fontWeight: FontWeight.w600,)
-                )
+                OutlinedButton(
+                    onPressed: (){
+                      AppRouter.route.pushNamed(RoutePath.myAppointmentDetailsScreen,extra: id);
+                    },
+                    child: CustomText(text: "View Details",fontSize: 12,fontWeight: FontWeight.w400,)
                 ),
-                Expanded(
-                    child: IconButton(onPressed: deletedOnTab, icon: Icon(Iconsax.trush_square,color: Colors.red,)))
+                OutlinedButton(
+                  style: ButtonStyle(
+                    side: MaterialStateProperty.all(
+                      BorderSide(color: Colors.red, width: 1), // Set the border color here
+                    ),
+                  ),
+                  onPressed: deletedOnTab,
+                  child: CustomText(
+                    text: "Cancel",
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.red,
+                  ),
+                )
+
+                /* IconButton(onPressed: deletedOnTab, icon: Icon(Iconsax.trush_square,color: Colors.red,size: 28,)),*/
               ],
             )
           ],

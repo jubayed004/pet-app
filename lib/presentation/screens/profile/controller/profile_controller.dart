@@ -144,9 +144,8 @@ class ProfileController extends GetxController {
 
 @override
   void onReady() {
-    Future.wait([
-      userProfile(),
-    ]);
+  userProfile();
     super.onReady();
   }
+
 }

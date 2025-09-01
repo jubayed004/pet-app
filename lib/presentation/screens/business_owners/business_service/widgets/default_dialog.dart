@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pet_app/presentation/components/custom_button/custom_button.dart';
+import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
 
 Future<void> defaultDeletedYesNoDialog({
@@ -13,9 +14,9 @@ Future<void> defaultDeletedYesNoDialog({
     builder: (dialogCtx) =>
         AlertDialog(
           backgroundColor: AppColors.whiteColor,
-          title:  Text(title),
+          title:  CustomText(text:  title,maxLines: 2,fontWeight: FontWeight.w400,fontSize: 14,),
           content: SizedBox(
-            height: 100,
+            height: 100.h,
             width: MediaQuery.of(context).size.width,
             child: SingleChildScrollView(
               child: ConstrainedBox(
@@ -30,20 +31,25 @@ Future<void> defaultDeletedYesNoDialog({
                       children: [
                         Expanded(
                           child: CustomButton(
+                            height: 45.h,
                             borderRadius: 8.r,
                             onTap: onYes,
                             title: "Yes",
-                            borderColor: AppColors.kPrimaryDarkColor,
-                            textColor: AppColors.kPrimaryDarkColor,
+                          fillColor: Colors.white,
+                            borderColor: Colors.black,
+                            isBorder: true,
+                            textColor: AppColors.blackColor,
 
                           ),
                         ),
                         const SizedBox(width: 12),
                         Expanded(
                           child: CustomButton(
+                            height: 45.h,
                             borderRadius: 8.r,
                             onTap: () => Navigator.of(dialogCtx).pop(),
                             title: "No",
+                            textColor: Colors.red,
                           ),
                         ),
                       ],

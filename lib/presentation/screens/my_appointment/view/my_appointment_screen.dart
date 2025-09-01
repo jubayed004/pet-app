@@ -58,11 +58,13 @@ class _MyAppointmentScreenState extends State<MyAppointmentScreen> {
                   itemBuilder: (context, item, index) {
                    // final time = GetTimeAgo.parse(item.updatedAt ?? DateTime.now());
                     final appointmentId = item.id;
+                    final bookingTime = item.bookingTime;
                     final serviceType = item.serviceId;
                     final shopLogo = serviceType?.shopLogo;
                     final serviceImage = serviceType?.servicesImages;
                     final phone = serviceType?.phone;
                     final address = serviceType?.location;
+                    final bookingStatus = item.bookingStatus;
                     final selectedService = item.selectedService ?? "";
                     final bookingDate = DateFormat(
                       "dd MMMM yyyy",
@@ -74,10 +76,12 @@ class _MyAppointmentScreenState extends State<MyAppointmentScreen> {
                         shopLogo: (shopLogo != null && shopLogo.isNotEmpty) ? shopLogo : "",
                         serviceImage: (serviceImage != null && serviceImage.isNotEmpty) ? serviceImage : "",
                         bookingDate: bookingDate,
+                        bookingTime: bookingTime ?? "",
+                      bookingStatus: bookingStatus ?? "",
                         selectedService: selectedService,
                         address: address ?? "",
                         phone: phone ?? "",
-                        chatOnTab: () {
+               /*         chatOnTab: () {
                           final navController =
                           GetControllers.instance.getNavigationControllerMain();
                           navController.selectedNavIndex.value = 2;
@@ -100,11 +104,12 @@ class _MyAppointmentScreenState extends State<MyAppointmentScreen> {
                         },
                         addReviewOnnTab: () {
                           AppRouter.route.pushNamed(RoutePath.reviewScreen);
-                          },
+                          },*/
                       deletedOnTab: (){
                         defaultDeletedYesNoDialog(
                           context: context,
-                          title: 'Are you sure you want to delete this Pet?',
+                          title: 'Are you sure you want to Cancel this Appointment?',
+
 
                           onYes: (){
                             myAppointmentController.deletedBookingAppointment(id: appointmentId ?? "");

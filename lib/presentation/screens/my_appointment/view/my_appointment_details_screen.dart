@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -95,7 +96,7 @@ class _MyAppointmentDetailsScreenState
                           ),
                         ],
                       ),
-                      const SizedBox(height: 12),
+                       SizedBox(height: 12.h),
                       Column(
                         spacing: 8,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -110,7 +111,7 @@ class _MyAppointmentDetailsScreenState
                             ),
                                                     ),
                           ),
-                          const SizedBox(height: 10),
+                           SizedBox(height: 10.h),
                           RichText(
                             text: TextSpan(
                               style: TextStyle(color: Colors.black),
@@ -228,7 +229,6 @@ class _MyAppointmentDetailsScreenState
                               ),
                             ],
                           ),
-                        
                           RichText(
                             text: TextSpan(
                               style: TextStyle(color: Colors.black),
@@ -262,16 +262,18 @@ class _MyAppointmentDetailsScreenState
                               ],
                             ),
                           ),
-
                           Gap(16),
-
                           Row(
                             spacing: 10,
                             children: [
                               Flexible(
                                 child: CustomButton(
-                                  onTap: () {   AppRouter.route.pushNamed(
-                                      RoutePath.reviewScreen); },
+                                  onTap: () {
+                                    AppRouter.route.pushNamed(RoutePath.reviewScreen,extra: {
+                                      "serviceId" : item1?.serviceId?.id ?? "",
+                                      "ownerId" : item1?.ownerId ?? "",
+                                      "businessId" : item1?.businessId ?? ""
+                                    }); },
                                   title: "Review",
                                   fillColor: Colors.yellow,
                                   textColor:Colors.black,
@@ -304,7 +306,6 @@ class _MyAppointmentDetailsScreenState
                                   } else {
                                   throw 'Could not launch $url';
                                   }
-
                                     },
                                   title: "Website",
                                   fillColor: AppColors.purple500,
@@ -312,31 +313,7 @@ class _MyAppointmentDetailsScreenState
 
                                 ),
                               ),
-                        /*      OutlinedButton.icon(
-                                onPressed: () {},
-                                icon: Icon(
-                                    Icons.chat, size: 16, color: Colors.green),
-                                label: Text(
-                                  "Chat",
-                                  style: TextStyle(color: Colors.green),
-                                ),
-                                style: OutlinedButton.styleFrom(
-                                  side: BorderSide(color: Colors.green),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                ),
-                              ),
-                              ElevatedButton(
-                                onPressed: () {},
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.red[300],
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                ),
-                                child: const Text("Website"),
-                              ),*/
+
                             ],
                           )
                         ],
