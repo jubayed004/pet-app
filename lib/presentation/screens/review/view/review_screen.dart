@@ -64,8 +64,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
                             ),
                             CustomText(
                               color: Colors.amber,
-                              text: "(${controller.review.value.totalReviews
-                                  .toString()} Ratings)" ?? "",
+                              text: "(${controller.review.value.totalReviews.toString()} Ratings)",
                               fontSize: 14,
                             ),
                           ],

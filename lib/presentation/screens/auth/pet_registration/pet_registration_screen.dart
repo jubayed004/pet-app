@@ -166,24 +166,7 @@ class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
                 title: AppStrings.gender,
                 items: ["MALE", "FEMALE"],
               ),
-     /*         CustomTextField(
-                textEditingController: gender,
-                fieldBorderColor: AppColors.purple500,
-                fieldBorderRadius: 10,
-                fillColor: Colors.white,
-                hintText: AppStrings.enterGender,
-                keyboardType: TextInputType.text,
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return 'Gender is required';
-                  }
-                  final lower = value.trim().toLowerCase();
-                  if (lower != 'male' && lower != 'female' && lower != 'other') {
-                    return 'Enter Male, Female, or Other';
-                  }
-                  return null;
-                },
-              ),*/
+
 
               Gap(14),
 
