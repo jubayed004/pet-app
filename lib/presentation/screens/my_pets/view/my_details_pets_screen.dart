@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -206,7 +207,7 @@ class _MyDetailsPetsScreenState extends State<MyDetailsPetsScreen> {
                         Row(
                           children: [
                             CircleAvatar(
-                              radius: 24,
+                              radius: 20,
                               backgroundColor: Color(0xFFE54D4D),
                               child: Icon(
                                 Icons.health_and_safety,
@@ -222,35 +223,9 @@ class _MyDetailsPetsScreenState extends State<MyDetailsPetsScreen> {
                             ),
                           ],
                         ),
-                        GestureDetector(
-                          onTap: () {
-                            AppRouter.route.pushNamed(
-                              RoutePath.petHealthScreen,
-                            );
-                          },
-                          child: Container(
-                            padding: EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: Color(0xFFE54D4D),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Row(
-                              children: [
-                                CustomText(
-                                  text: "Health Status",
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.white,
-                                ),
-                                Icon(
-                                  Icons.arrow_forward_ios_rounded,
-                                  size: 18,
-                                  color: Colors.white,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                        TextButton(onPressed: (){ AppRouter.route.pushNamed(
+                          RoutePath.petHealthScreen,
+                        );}, child: CustomText(text: "See All",fontWeight: FontWeight.w400,fontSize: 14,))
                       ],
                     ),
                     Gap(16),
@@ -263,36 +238,125 @@ class _MyDetailsPetsScreenState extends State<MyDetailsPetsScreen> {
                       ),
                     ),
                     Gap(8),
-                    HealthHistorySection(
-                      text: "Vaccinations:",
-                      subText: "Up to date",
+              Container(
+                margin: EdgeInsets.all(12.w),
+                padding: EdgeInsets.all(12.w),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12.r),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.05),
+                      blurRadius: 6,
+                      offset: const Offset(0, 2),
                     ),
-                    Gap(12),
-                    HealthHistorySection(
-                      text: "Pills:",
-                      subText: "Heartworm prevention monthly",
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    /// Treatment Name
+                    Text(
+                      "Treatment Name: Rabies vaccination",
+                      style: TextStyle(
+                        color: Colors.green,
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
-                    Gap(12),
-                    HealthHistorySection(
-                      text: "Appointments:",
-                      subText: "Last check-up 2 months ago",
+                    Gap(4.h),
+
+                    /// Doctor Name
+                    Text(
+                      "Doctor Name: Jane Cooper",
+                      style: TextStyle(
+                        color: Colors.black87,
+                        fontSize: 13.sp,
+                      ),
                     ),
-                    Gap(12),
-                    HealthHistorySection(
-                      text: "Surgeries:",
-                      subText: "Spayed - January 2024",
+                    Gap(4.h),
+
+                    /// Treatment Date
+                    Text(
+                      "Treatment Date: Fri 28 Sep25/ at 11:30 am -12:00pm",
+                      style: TextStyle(
+                        color: Colors.black87,
+                        fontSize: 13.sp,
+                      ),
                     ),
-                    Gap(12),
-                    HealthHistorySection(
-                      text: "Treatments:",
-                      subText: " Flea and tick treatment every 3 months",
+                    Gap(4.h),
+
+                    /// Location Row
+                    Row(
+                      children: [
+                        const Icon(Icons.location_on, color: Colors.red, size: 18),
+                        Gap(4.w),
+                        Expanded(
+                          child: Text(
+                            "Oldesloer Strasse 82",
+                            style: TextStyle(
+                              color: Colors.black87,
+                              fontSize: 13.sp,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    Gap(12),
-                    HealthHistorySection(
-                      text: "Notes:",
-                      subText: "Allergic to certain antibiotics",
+                    Gap(8.h),
+
+                    /// Treatment Description Title
+                    Text(
+                      "Treatment Description",
+                      style: TextStyle(
+                        color: Colors.orange,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 14.sp,
+                      ),
                     ),
-                    Gap(16),
+                    Gap(6.h),
+
+                    /// Description Box
+                    Container(
+                      padding: EdgeInsets.all(10.w),
+                      decoration: BoxDecoration(
+                        color: Colors.green.withOpacity(0.05),
+                        borderRadius: BorderRadius.circular(8.r),
+                        border: Border.all(color: Colors.green.withOpacity(0.4)),
+                      ),
+                      child: Text(
+                        "My Pet offers safe and reliable treatment services to keep your pet healthy. "
+                            "We provide health check-ups, vaccinations, and basic care for common issues. "
+                            "Every treatment is designed with love and care for your furry friend.",
+                        style: TextStyle(
+                          fontSize: 12.5.sp,
+                          color: Colors.black87,
+                        ),
+                      ),
+                    ),
+                    Gap(10.h),
+
+                    /// Completed Button
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                        decoration: BoxDecoration(
+                          color: Colors.green.shade700,
+                          borderRadius: BorderRadius.circular(6.r),
+                        ),
+                        child: Text(
+                          "Completed",
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
 
                     /*  CustomAlignText(text: "More Info",fontWeight: FontWeight.w600,fontSize: 14,),
                    Gap(8),*/

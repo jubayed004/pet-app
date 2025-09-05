@@ -29,7 +29,7 @@ class ErrorCard extends StatelessWidget {
               children: [
                 CustomText(text: "something went wrong", fontWeight: FontWeight.w600, fontSize: 24.sp),
                 const Gap(12),
-                CustomText(text: "the application has encountered an unknown_error",maxLines: 2,),
+                CustomText(text: "the application has encountered an unknown error",maxLines: 2,),
                 CustomText(text: "please try again later"),
               ],
             ),
