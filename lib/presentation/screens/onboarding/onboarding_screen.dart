@@ -144,9 +144,9 @@ class OnboardingPageCard extends StatelessWidget {
               title: _controller.currentIndex.value >= 2 ? "Get Started" : 'Next',
               fontSize: 20.sp,
               width: double.infinity,
-              height: 60,
+              height: 60.h,
               fillColor: AppColors.primaryColor,
-              iconSize: 8,
+              iconSize: 8.sp,
             );
           }),
         ],
@@ -159,9 +159,9 @@ class OnboardingPageCard extends StatelessWidget {
       padding: EdgeInsets.only(left: 8),
       child: Obx(() {
         return Container(
-          height: 6,
+          height: 6.h,
           width: _controller.currentIndex.value == index ? 24 : 6,
-          margin: EdgeInsets.only(right: 5),
+          margin: EdgeInsets.only(right: 5.h),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             color: _controller.currentIndex.value == index ?

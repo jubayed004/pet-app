@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -72,7 +73,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
           children: [
             /// Category Header
             SizedBox(
-              height: 130,
+              height: 130.h,
               child: ValueListenableBuilder<int>(
                 valueListenable: selectedIndex,
                 builder: (_, currentIndex, __) {
@@ -122,7 +123,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                 elevation: 3,
                                 child: CircleAvatar(
                                   backgroundColor: isSelected ? AppColors.primaryColor : Colors.white,
-                                  radius: 40,
+                                  radius: 40.r,
                                   child: category.icon,
                                 ),
                               ),
@@ -130,7 +131,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                             const Gap(4),
                             CustomText(
                               text: category.title,
-                              fontSize: 16,
+                              fontSize: 16.sp,
                               fontWeight: FontWeight.w400,
                             ),
                           ],

@@ -11,6 +11,7 @@ import 'package:pet_app/presentation/screens/auth/pet_shop_registration/view/pet
 import 'package:pet_app/presentation/screens/auth/sign_in/sign_in.dart';
 import 'package:pet_app/presentation/screens/auth/sign_up/sign_up.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_advertisement/view/business_advertisement_screen.dart';
+import 'package:pet_app/presentation/screens/business_owners/business_advertisement/view/details_advertisement_screen.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_all_pets/view/business_all_pets_screen.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_all_pets/view/business_pet_details_screen.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_booking/view/business_booking_screen.dart';
@@ -250,8 +251,15 @@ class AppRouter {
         name: RoutePath.petHealthScreen,
         path: RoutePath.petHealthScreen.addBasePath,
         pageBuilder:
-            (context, state) =>
-                _buildPageWithAnimation(child: PetHealthScreen(), state: state),
+            (context, state) {
+          final args = state.extra as String ;
+          return _buildPageWithAnimation(
+              child: PetHealthScreen(
+                id: args,
+              ),
+              state: state);
+            }
+
       ),
 
       GoRoute(
@@ -579,6 +587,7 @@ class AppRouter {
               state: state,
             ),
       ),
+
       GoRoute(
         name: RoutePath.businessEditServiceScreen,
         path: RoutePath.businessEditServiceScreen.addBasePath,
@@ -619,6 +628,15 @@ class AppRouter {
         pageBuilder:
             (context, state) => _buildPageWithAnimation(
               child: BusinessAdvertisementScreen(),
+              state: state,
+            ),
+      ),
+      GoRoute(
+        name: RoutePath.businessDetailsAdvertisementScreen,
+        path: RoutePath.businessDetailsAdvertisementScreen.addBasePath,
+        pageBuilder:
+            (context, state) => _buildPageWithAnimation(
+              child: DetailsAdvertisementScreen(),
               state: state,
             ),
       ),

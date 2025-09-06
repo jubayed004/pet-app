@@ -21,6 +21,7 @@ import 'package:pet_app/presentation/screens/my_pets/controller/my_pets_controll
 import 'package:pet_app/presentation/screens/nav/controller/navigation_controller.dart';
 import 'package:pet_app/presentation/screens/onboarding/controller/onboarding_controller.dart';
 import 'package:pet_app/presentation/screens/other/controller/other_controller.dart';
+import 'package:pet_app/presentation/screens/pet_health/controller/pet_health_controller.dart';
 import 'package:pet_app/presentation/screens/profile/controller/profile_controller.dart';
 import 'package:pet_app/presentation/screens/profile/faq/controller/faq_controller.dart';
 import 'package:pet_app/presentation/screens/review/controller/review_controller.dart';
@@ -241,6 +242,13 @@ AuthController getAuthController() {
       Get.put(ReviewController());
     }
     return Get.find<ReviewController>();
+
+  }
+  PetHealthController getPetHealthController() {
+    if (!Get.isRegistered<PetHealthController>()) {
+      Get.put(PetHealthController());
+    }
+    return Get.find<PetHealthController>();
 
   }
 

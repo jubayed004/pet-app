@@ -40,7 +40,9 @@ class ApiUrl {
 
   ///Advertisement==================
 
+
   static addAdvertisement()=> '$base/advertisement/add-advertisement';
+  static getAdvertisement()=> '$base/advertisement/get-ads';
 
   ///Update Profile=============
 
@@ -58,6 +60,7 @@ class ApiUrl {
   static deletedPet({required String id}) => '$base/pet/delete/$id';
   static getCategoryDetails({required String id}) => '$base/services/getServicesById/$id';
   static getService({required String type,required int page}) => '$base/user-home-page/getServicesByType/$type?limit=10&page=$page';
+  static getPetHealth({required String status,required int page,required String id}) => '$base/pet/get-medical-history/$id?treatmentStatus=$status&limit=1&page=$page';
 
   /// Booking MY Appointment
   static createBookingAppointment() => '$base/booking/create-booking';

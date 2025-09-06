@@ -9,10 +9,14 @@ import 'package:pet_app/core/custom_assets/assets.gen.dart';
 import 'package:pet_app/core/route/route_path.dart';
 import 'package:pet_app/core/route/routes.dart';
 import 'package:pet_app/helper/dialog/show_custom_animated_dialog.dart';
+import 'package:pet_app/helper/image/network_image.dart';
 import 'package:pet_app/helper/local_db/local_db.dart';
 import 'package:pet_app/presentation/components/custom_button/custom_button.dart';
+import 'package:pet_app/presentation/components/custom_button/custom_defualt_appbar.dart';
+import 'package:pet_app/presentation/components/custom_image/custom_image.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:pet_app/presentation/screens/profile/widgets/button_section_all.dart';
+import 'package:pet_app/service/api_url.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
 import 'package:pet_app/utils/app_strings/app_strings.dart';
 
@@ -35,7 +39,7 @@ class BusinessProfileScreen extends StatelessWidget {
         },
         child: CustomScrollView(
           slivers: [
-            SliverAppBar(
+            /*SliverAppBar(
               floating: true,
               snap: true,
               backgroundColor: AppColors.primaryColor,
@@ -70,32 +74,36 @@ class BusinessProfileScreen extends StatelessWidget {
                   ],
                 );
               }),
-            ),
-
+            ),*/
+            CustomDefaultAppbar(title: "Profile",),
             SliverAppBar(
               pinned: true,
               expandedHeight: 200,
               backgroundColor: Colors.transparent,
               flexibleSpace: FlexibleSpaceBar(
                 background: Obx(() {
-                  return businessProfileController.selectedImage.value != null
-                      ? Image.file(
-                        File(
-                          businessProfileController.selectedImage.value!.path,
-                        ),
-                        fit: BoxFit.cover,
-                        width: double.infinity,
-                        height: double.infinity,
-                      )
-                      : Image.network(
-                        'https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=800&q=80',
-                        fit: BoxFit.cover,
-                        width: double.infinity,
-                        height: double.infinity,
-                      );
+                  final images = businessProfileController.profile.value.ownerDetails?.business?.shopPic;
+                  if (images != null && images.isNotEmpty) {
+                    final imageUrl = "${ApiUrl.imageBase}${images[0].replaceAll('\\', '/')}"; // Ensure proper URL format
+                    return CustomNetworkImage(
+                      imageUrl: imageUrl,
+                      width: double.infinity,
+                      height: double.infinity,
+                      fit: BoxFit.cover,
+                    );
+                  } else {
+                    return CustomImage(
+                      imageSrc: 'https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=800&q=80',
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                      height: double.infinity,
+                    );
+                  }
                 }),
+
               ),
             ),
+
 
             SliverToBoxAdapter(
               child: Padding(

@@ -137,10 +137,7 @@ class MyPetsProfileController extends GetxController {
 
   @override
   void onReady() {
-    Future.wait([
-      getAllPet()
-
-    ]);
+      getAllPet();
     super.onReady();
   }
 }

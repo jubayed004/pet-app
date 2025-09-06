@@ -453,28 +453,16 @@ class _BusinessAddServiceScreenState extends State<BusinessAddServiceScreen> {
                     isLoading: businessAddServiceController.isLoading.value,
                     onTap: () {
                       final List<String> services =
-                          serviceController.value
-                              .map((controller) => controller.text)
-                              .toList();
+                          serviceController.value.map((controller) => controller.text).toList();
                       final body = {
-                        "serviceType":
-                            businessAddServiceController
-                                .selectedAnalystType
-                                .value,
+                        "serviceType": businessAddServiceController.selectedAnalystType.value,
                         "serviceName": serviceName.text,
                         "providings": services.join(','),
                         "location": location.text,
                         "phone": phoneNumber.text,
-                        "openingTime":
-                            businessAddServiceController.openingTime.value
-                                ?.format(context) ??
-                            "",
-                        "closingTime":
-                            businessAddServiceController.closingTime.value
-                                ?.format(context) ??
-                            "",
-                        "offDay":
-                            businessAddServiceController.selectedWeek.value,
+                        "openingTime": businessAddServiceController.openingTime.value?.format(context) ?? "",
+                        "closingTime": businessAddServiceController.closingTime.value?.format(context) ?? "",
+                        "offDay": businessAddServiceController.selectedWeek.value,
                       };
                       if (_formKey.currentState!.validate()) {
                         businessAddServiceController.addService(body: body);

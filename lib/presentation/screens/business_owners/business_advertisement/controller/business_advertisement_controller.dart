@@ -3,10 +3,13 @@ import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pet_app/core/dependency/get_it_injection.dart';
+import 'package:pet_app/core/route/route_path.dart';
 import 'package:pet_app/core/route/routes.dart';
 import 'package:pet_app/helper/toast_message/toast_message.dart';
+import 'package:pet_app/presentation/screens/business_owners/business_advertisement/model/details_advertisement_model.dart';
 import 'package:pet_app/service/api_service.dart';
 import 'package:pet_app/service/api_url.dart';
+import 'package:pet_app/utils/app_const/app_const.dart';
 
 class BusinessAdvertisementController extends GetxController {
   final ApiClient apiClient = serviceLocator();
@@ -36,6 +39,8 @@ class BusinessAdvertisementController extends GetxController {
     }
   }
 
+  ///==================== Add Advertisement ===============
+
   Future<void> addAdvertisement() async {
     if (selectedImages.isEmpty) {
       toastMessage(message: "Please add at least one image.");
@@ -62,10 +67,10 @@ class BusinessAdvertisementController extends GetxController {
         multipartBody: multipartBody,
         reqType: "POST",
       );
-
       if (response.statusCode == 201) {
-        isLoading.value = false;
-        AppRouter.route.pop();
+         await AppRouter.route.pushNamed(RoutePath.businessDetailsAdvertisementScreen);
+         isLoading.value = false;
+
       } else {
         isLoading.value = false;
         toastMessage(
@@ -80,6 +85,44 @@ class BusinessAdvertisementController extends GetxController {
       toastMessage(message: "Something went wrong.");
     }
   }
+
+
+
+  /// ============================= GET Profile Info =====================================
+  var loading = Status.completed.obs;
+  loadingMethod(Status status) => loading.value = status;
+  final Rx<DetailsAdvertisementModel> profile = DetailsAdvertisementModel().obs;
+
+
+  Future<void> getDetailsAdvertisement() async{
+    loadingMethod(Status.completed);
+    try{
+      loadingMethod(Status.loading);
+      final response = await apiClient.get(url: ApiUrl.getAdvertisement());
+      if (response.statusCode == 200) {
+        final newData = DetailsAdvertisementModel.fromJson(response.body);
+        profile.value = newData;
+        loadingMethod(Status.completed);
+      } else {
+        if (response.statusCode == 503) {
+          loadingMethod(Status.internetError);
+        } else if (response.statusCode == 404) {
+          loadingMethod(Status.noDataFound);
+        } else {
+          loadingMethod(Status.error);
+        }
+      }
+    }catch(e){
+      loadingMethod(Status.error);
+    }
+  }
+
+  @override
+  void onReady() {
+   getDetailsAdvertisement();
+    super.onReady();
+  }
+
 
   void deleteImage(int index) {
     if (index >= 0 && index < selectedImages.length) {

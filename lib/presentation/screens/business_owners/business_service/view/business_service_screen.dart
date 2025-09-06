@@ -342,23 +342,7 @@ class BusinessServiceScreen extends StatelessWidget {
               );
             }),
 
-            /*    PagedSliverList<int, Widget>(
 
-              pagingController: categoryController.pagingController,
-              builderDelegate: PagedChildBuilderDelegate<Widget>(
-
-                itemBuilder: (context, item, index) {
-
-                  return item;
-                },
-                firstPageErrorIndicatorBuilder: (context) => Center(
-                  child: ErrorCard(
-                    onTap: () => categoryController.pagingController.refresh(),
-                    text: categoryController.pagingController.error.toString(),
-                  ),
-                ),
-              ),
-            ),*/
           ],
         ),
       ),

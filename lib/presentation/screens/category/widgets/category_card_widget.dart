@@ -34,6 +34,7 @@ class CategoryCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final id = item.id ?? "";
     final serviceImage = item.servicesImages ?? "";
+    final shop = item.isOpenNow ?? false;
     final serviceLogo = item.shopLogo ?? "";
     final logo = serviceLogo.isNotEmpty ? serviceLogo : "";
     final image = serviceImage.isNotEmpty ? serviceImage : "";
@@ -88,8 +89,8 @@ class CategoryCardWidget extends StatelessWidget {
                           ),
                       Gap(6),
                       CustomText(
-                        text: "Open",
-                        color: AppColors.primaryColor,
+                        text: shop? "Open":"Closed",
+                        color:shop? AppColors.primaryColor:Colors.red,
                         fontWeight: FontWeight.w500,
                         fontSize: 14,
                       ),

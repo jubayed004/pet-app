@@ -223,9 +223,9 @@ class _MyDetailsPetsScreenState extends State<MyDetailsPetsScreen> {
                             ),
                           ],
                         ),
-                        TextButton(onPressed: (){ AppRouter.route.pushNamed(
-                          RoutePath.petHealthScreen,
-                        );}, child: CustomText(text: "See All",fontWeight: FontWeight.w400,fontSize: 14,))
+                        TextButton(onPressed: (){ AppRouter.route.pushNamed(RoutePath.petHealthScreen,extra: widget.id);
+                          },
+                            child: CustomText(text: "See All",fontWeight: FontWeight.w400,fontSize: 14,))
                       ],
                     ),
                     Gap(16),

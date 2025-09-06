@@ -2,30 +2,35 @@ import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pet_app/presentation/no_internet/error_card.dart';
 import 'package:pet_app/presentation/screens/category/controller/category_controller.dart';
-import 'package:pet_app/presentation/screens/category/model/category_model.dart';
-import 'category_card_widget.dart';
+import 'package:pet_app/presentation/screens/pet_health/controller/pet_health_controller.dart';
+import 'package:pet_app/presentation/screens/pet_health/model/pet_health_model.dart';
 
-class HotelWidget extends StatefulWidget {
-  const HotelWidget({super.key, required this.index, required this.controller});
+import 'health_history_card.dart';
 
-  final int index;
-  final CategoryController controller;
+class TreatmentCard extends StatefulWidget {
+  final String id;
+
+  final PetHealthController controller;
+   const TreatmentCard({super.key, required this.controller, required this.id});
+
   @override
-  State<HotelWidget> createState() => _HotelWidgetState();
+  State<TreatmentCard> createState() => _TreatmentCardState();
 }
 
-class _HotelWidgetState extends State<HotelWidget> {
-  final pagingController = PagingController<int, CategoryServiceItem>(
+
+class _TreatmentCardState extends State<TreatmentCard> {
+  final pagingController = PagingController<int, HealthHistoryItem>(
     firstPageKey: 1,
   );
 
   @override
   void initState() {
     pagingController.addPageRequestListener((pageKey) {
-      widget.controller.getCategoryService(
+      widget.controller.getHealth(
         page: pageKey,
         pagingController: pagingController,
-        type: "HOTEL",
+        id: widget.id,
+        status: "HOTEL",
       );
     });
     super.initState();
@@ -33,19 +38,18 @@ class _HotelWidgetState extends State<HotelWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return  Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
       child: RefreshIndicator(
         onRefresh: () async{
           pagingController.refresh();
         },
-        child: PagedListView<int, CategoryServiceItem>(
+        child: PagedListView<int, HealthHistoryItem>(
           pagingController: pagingController,
-          builderDelegate: PagedChildBuilderDelegate<CategoryServiceItem>(
+          builderDelegate: PagedChildBuilderDelegate<HealthHistoryItem>(
             itemBuilder: (context, item, itemIndex) {
-              return CategoryCardWidget(
-                item: item,
-                showWebsite: widget.index == 1 || widget.index == 3,
+              return HealthHistoryCard(controller: widget.controller, item: item,
+
               );
             },
             firstPageErrorIndicatorBuilder:
