@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pet_app/presentation/no_internet/error_card.dart';
 import 'package:pet_app/presentation/screens/category/controller/category_controller.dart';
-import 'package:pet_app/presentation/screens/pet_health/controller/pet_health_controller.dart';
-import 'package:pet_app/presentation/screens/pet_health/model/pet_health_model.dart';
+import 'package:pet_app/presentation/screens/my_pets/pet_health/controller/pet_health_controller.dart';
+import 'package:pet_app/presentation/screens/my_pets/pet_health/model/pet_health_model.dart';
 
 import 'health_history_card.dart';
 
 class TreatmentCard extends StatefulWidget {
   final String id;
+  final String status;
 
   final PetHealthController controller;
-   const TreatmentCard({super.key, required this.controller, required this.id});
+   const TreatmentCard({super.key, required this.controller, required this.id, required this.status});
 
   @override
   State<TreatmentCard> createState() => _TreatmentCardState();
@@ -30,7 +31,7 @@ class _TreatmentCardState extends State<TreatmentCard> {
         page: pageKey,
         pagingController: pagingController,
         id: widget.id,
-        status: "HOTEL",
+        status: widget.status,
       );
     });
     super.initState();

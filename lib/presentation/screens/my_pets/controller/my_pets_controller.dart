@@ -134,10 +134,10 @@ class MyPetsProfileController extends GetxController {
     }
   }
 
-
-  @override
-  void onReady() {
-      getAllPet();
-    super.onReady();
+@override
+  void onInit() {
+  getAllPet();
+    super.onInit();
   }
+
 }

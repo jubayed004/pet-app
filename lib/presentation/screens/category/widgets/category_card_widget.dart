@@ -40,8 +40,7 @@ class CategoryCardWidget extends StatelessWidget {
     final image = serviceImage.isNotEmpty ? serviceImage : "";
     final provider = item.providings ?? [];
     final stringProvider = provider.isNotEmpty ? provider.first : "";
-    final List<String> providerList =
-    stringProvider.split(',').map((e) => e.trim()).where((e) => e.isNotEmpty).toList();
+    final List<String> providerList = stringProvider.split(',').map((e) => e.trim()).where((e) => e.isNotEmpty).toList();
 
     final businessServiceController = GetControllers.instance.getBusinessServiceController();
 
@@ -175,10 +174,15 @@ class CategoryCardWidget extends StatelessWidget {
               fontSize: 14,
               fontWeight: FontWeight.w600,
             ),
-            ...List.generate(providerList.length, (subIndex) {
+            ...List.generate(providerList.length, (
+                subIndex,
+                ) {
               return CustomText(
                 fontSize: 14,
-                text: "${subIndex + 1}. ${providerList[subIndex]}",
+                textAlign: TextAlign.start,
+                maxLines: 5,
+                text:
+                "${subIndex + 1}.  ${providerList[subIndex]} ",
               );
             }),
             Gap(8),

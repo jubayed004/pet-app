@@ -67,12 +67,18 @@ class BusinessServiceController extends GetxController {
       }
     }
   }
-
   @override
-  void onReady() {
+  void onInit() {
     getBusinessService();
+    super.onInit();
+  }
+
+/*  @override
+  void onReady() {
+
     super.onReady();
   }
+  */
 
   String getOpenDaysTextComplete({
     required String openingTime,

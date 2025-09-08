@@ -223,70 +223,76 @@ class BusinessServiceScreen extends StatelessWidget {
                             ),
                             Gap(8),
                             Row(
+                              spacing: 4,
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Icon(Icons.access_time, size: 18),
-                                Gap(4),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    CustomText(
-                                      text: businessServiceController
-                                          .getOpenDaysTextComplete(
-                                        offDay: item[index].offDay ?? "",
-                                            openingTime: item[index].openingTime ?? "",
-                                            closingTime: item[index].closingTime ?? "",
-                                          ),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    CustomText(
-                                      text:
-                                          "${"Off day -"}${item[index].offDay ?? ""}",
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ],
+                                Icon(Icons.access_time, size: 24),
+
+                                Flexible(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      CustomText(
+                                        text: businessServiceController
+                                            .getOpenDaysTextComplete(
+                                          offDay: item[index].offDay ?? "",
+                                              openingTime: item[index].openingTime ?? "",
+                                              closingTime: item[index].closingTime ?? "",
+                                            ),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      CustomText(
+                                        text:
+                                            "${"Off day -"}${item[index].offDay ?? ""}",
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                                Spacer(),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () {
-                                        AppRouter.route.pushNamed(RoutePath.businessEditServiceScreen,
-                                            extra: {
-                                          'id': item[index].id ?? "",
-                                          'serviceName': item[index].serviceName ?? "",
-                                          'location':item[index].location ?? "",
-                                          'websiteLink':item[index].websiteLink ?? "",
-                                          'phoneNumber':item[index].phone ?? "",
-                                          'serviceController': providerList,
-                                            }
 
-                                        );
-                                      },
-                                      child: Assets.icons.editico.svg(width: 26,),
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        defaultDeletedYesNoDialog(
-                                          context: context,
-                                          title: 'Are you sure you want to delete this Service?',
+                                Expanded(
+                                  flex: 0,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          AppRouter.route.pushNamed(RoutePath.businessEditServiceScreen,
+                                              extra: {
+                                            'id': item[index].id ?? "",
+                                            'serviceName': item[index].serviceName ?? "",
+                                            'location':item[index].location ?? "",
+                                            'websiteLink':item[index].websiteLink ?? "",
+                                            'phoneNumber':item[index].phone ?? "",
+                                            'serviceController': providerList,
+                                              }
 
-                                          onYes: () {
-                                            businessServiceController.deletedService(id: item[index].id ?? "",);
-                                          },
+                                          );
+                                        },
+                                        child: Assets.icons.editico.svg(width: 26,),
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          defaultDeletedYesNoDialog(
+                                            context: context,
+                                            title: 'Are you sure you want to delete this Service?',
 
-                                        );
-                                      },
-                                      child: Assets.icons.deletedicon.svg(
-                                        width: 36,
-                                        colorFilter: ColorFilter.mode(
-                                          Colors.red,
-                                          BlendMode.srcIn,
+                                            onYes: () {
+                                              businessServiceController.deletedService(id: item[index].id ?? "",);
+                                            },
+
+                                          );
+                                        },
+                                        child: Assets.icons.deletedicon.svg(
+                                          width: 36,
+                                          colorFilter: ColorFilter.mode(
+                                            Colors.red,
+                                            BlendMode.srcIn,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),

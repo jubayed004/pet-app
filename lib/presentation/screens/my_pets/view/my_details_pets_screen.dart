@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:intl/intl.dart';
 import 'package:pet_app/controller/get_controllers.dart';
 import 'package:pet_app/core/route/route_path.dart';
 import 'package:pet_app/core/route/routes.dart';
@@ -50,9 +51,11 @@ class _MyDetailsPetsScreenState extends State<MyDetailsPetsScreen> {
             SliverToBoxAdapter(
               child: Obx(() {
                 final pet = controller.details.value.pet?.petPhoto;
-                final image = pet != null && pet.isNotEmpty ? pet  : "";
+                final image = pet != null && pet.isNotEmpty ? pet : "";
                 return image.isNotEmpty
-                    ? Image.network(ApiUrl.imageBase + image,fit: BoxFit.cover,width: double.infinity, height: 200,)
+                    ? Image.network(ApiUrl.imageBase + image, fit: BoxFit.cover,
+                  width: double.infinity,
+                  height: 200,)
                     : Image.network(
                   'https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=800&q=80',
                   fit: BoxFit.cover,
@@ -63,21 +66,25 @@ class _MyDetailsPetsScreenState extends State<MyDetailsPetsScreen> {
             ),
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20,),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16, vertical: 20,),
                 child: Column(
                   children: [
                     Obx(() {
-                      final profileDetails =controller.details.value.pet;
+                      final profileDetails = controller.details.value.pet;
                       return Card(
                         elevation: 4,
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8,),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 18, vertical: 8,),
                           child: Row(
                             children: [
                               Expanded(
                                   child: Row(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment: CrossAxisAlignment
+                                        .center,
+                                    mainAxisAlignment: MainAxisAlignment
+                                        .spaceBetween,
                                     children: [
                                       Column(
                                         crossAxisAlignment:
@@ -108,15 +115,19 @@ class _MyDetailsPetsScreenState extends State<MyDetailsPetsScreen> {
                                   AppRouter.route.pushNamed(
                                     RoutePath.editMyPetsScreen,
                                     extra: {
-                                      "id" : profileDetails?.id ?? "",
-                                      "name" : profileDetails?.name ?? "",
-                                      "animalType" : profileDetails?.animalType ?? "",
-                                      "breed" : profileDetails?.breed ?? "",
-                                      "age" : profileDetails?.age.toString() ?? "",
-                                      "gender" : profileDetails?.gender ?? "",
-                                      "weight" : profileDetails?.weight.toString() ?? "",
-                                      "height" : profileDetails?.height.toString() ?? "",
-                                      "color" : profileDetails?.color ?? "",
+                                      "id": profileDetails?.id ?? "",
+                                      "name": profileDetails?.name ?? "",
+                                      "animalType": profileDetails
+                                          ?.animalType ?? "",
+                                      "breed": profileDetails?.breed ?? "",
+                                      "age": profileDetails?.age.toString() ??
+                                          "",
+                                      "gender": profileDetails?.gender ?? "",
+                                      "weight": profileDetails?.weight
+                                          .toString() ?? "",
+                                      "height": profileDetails?.height
+                                          .toString() ?? "",
+                                      "color": profileDetails?.color ?? "",
 
                                     },
                                   );
@@ -223,9 +234,13 @@ class _MyDetailsPetsScreenState extends State<MyDetailsPetsScreen> {
                             ),
                           ],
                         ),
-                        TextButton(onPressed: (){ AppRouter.route.pushNamed(RoutePath.petHealthScreen,extra: widget.id);
-                          },
-                            child: CustomText(text: "See All",fontWeight: FontWeight.w400,fontSize: 14,))
+                        TextButton(onPressed: () {
+                          AppRouter.route.pushNamed(
+                              RoutePath.petHealthScreen, extra: widget.id);
+                        },
+                            child: CustomText(text: "See All",
+                              fontWeight: FontWeight.w400,
+                              fontSize: 14,))
                       ],
                     ),
                     Gap(16),
@@ -238,125 +253,149 @@ class _MyDetailsPetsScreenState extends State<MyDetailsPetsScreen> {
                       ),
                     ),
                     Gap(8),
-              Container(
-                margin: EdgeInsets.all(12.w),
-                padding: EdgeInsets.all(12.w),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12.r),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
-                      blurRadius: 6,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    /// Treatment Name
-                    Text(
-                      "Treatment Name: Rabies vaccination",
-                      style: TextStyle(
-                        color: Colors.green,
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    Gap(4.h),
+                    Obx(() {
+                      final petMedicalHistory = controller.details.value.petMedicalHistory ?? [];
 
-                    /// Doctor Name
-                    Text(
-                      "Doctor Name: Jane Cooper",
-                      style: TextStyle(
-                        color: Colors.black87,
-                        fontSize: 13.sp,
-                      ),
-                    ),
-                    Gap(4.h),
-
-                    /// Treatment Date
-                    Text(
-                      "Treatment Date: Fri 28 Sep25/ at 11:30 am -12:00pm",
-                      style: TextStyle(
-                        color: Colors.black87,
-                        fontSize: 13.sp,
-                      ),
-                    ),
-                    Gap(4.h),
-
-                    /// Location Row
-                    Row(
-                      children: [
-                        const Icon(Icons.location_on, color: Colors.red, size: 18),
-                        Gap(4.w),
-                        Expanded(
+                      if (petMedicalHistory.isEmpty) {
+                        return Center(
                           child: Text(
-                            "Oldesloer Strasse 82",
-                            style: TextStyle(
-                              color: Colors.black87,
-                              fontSize: 13.sp,
-                            ),
+                            "No medical history available.",
+                            style: TextStyle(fontSize: 16.sp, color: Colors.black87),
                           ),
-                        ),
-                      ],
-                    ),
-                    Gap(8.h),
+                        );
+                      }
 
-                    /// Treatment Description Title
-                    Text(
-                      "Treatment Description",
-                      style: TextStyle(
-                        color: Colors.orange,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 14.sp,
-                      ),
-                    ),
-                    Gap(6.h),
+                      // Use the first item for demonstration (or loop over the list for multiple items)
+                      final treatment = petMedicalHistory[0];
+                      final treatmentName = treatment.treatmentName ?? "Unknown";
+                      final doctorName = treatment.doctorName ?? "Unknown Doctor";
+                      final treatmentDate = treatment.treatmentDate != null
+                          ? DateFormat('EEE dd MMM yyyy').format(treatment.treatmentDate??DateTime.now())
+                          : "Unknown Date";
+                      final treatmentDescription = treatment.treatmentDescription ?? "No description provided";
+                      final treatmentStatus = treatment.treatmentStatus ?? "Unknown Status";
 
-                    /// Description Box
-                    Container(
-                      padding: EdgeInsets.all(10.w),
-                      decoration: BoxDecoration(
-                        color: Colors.green.withOpacity(0.05),
-                        borderRadius: BorderRadius.circular(8.r),
-                        border: Border.all(color: Colors.green.withOpacity(0.4)),
-                      ),
-                      child: Text(
-                        "My Pet offers safe and reliable treatment services to keep your pet healthy. "
-                            "We provide health check-ups, vaccinations, and basic care for common issues. "
-                            "Every treatment is designed with love and care for your furry friend.",
-                        style: TextStyle(
-                          fontSize: 12.5.sp,
-                          color: Colors.black87,
-                        ),
-                      ),
-                    ),
-                    Gap(10.h),
-
-                    /// Completed Button
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                      return Container(
+                        margin: EdgeInsets.all(12.w),
+                        padding: EdgeInsets.all(12.w),
                         decoration: BoxDecoration(
-                          color: Colors.green.shade700,
-                          borderRadius: BorderRadius.circular(6.r),
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12.r),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.05),
+                              blurRadius: 6,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
                         ),
-                        child: Text(
-                          "Completed",
-                          style: TextStyle(
-                            fontSize: 12.sp,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w500,
-                          ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            /// Treatment Name
+                            Text(
+                              "Treatment Name: $treatmentName",
+                              style: TextStyle(
+                                color: Colors.green,
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            Gap(4.h),
+
+                            /// Doctor Name
+                            Text(
+                              "Doctor Name: $doctorName",
+                              style: TextStyle(
+                                color: Colors.black87,
+                                fontSize: 13.sp,
+                              ),
+                            ),
+                            Gap(4.h),
+
+                            /// Treatment Date
+                            Text(
+                              "Treatment Date: $treatmentDate",
+                              style: TextStyle(
+                                color: Colors.black87,
+                                fontSize: 13.sp,
+                              ),
+                            ),
+                            Gap(4.h),
+
+                   /*         /// Location Row
+                            Row(
+                              children: [
+                                const Icon(Icons.location_on, color: Colors.red, size: 18),
+                                Gap(4.w),
+                                Expanded(
+                                  child: Text(
+                                    "Location Placeholder", // Replace with actual location if available
+                                    style: TextStyle(
+                                      color: Colors.black87,
+                                      fontSize: 13.sp,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Gap(8.h),*/
+
+                            /// Treatment Description Title
+                            Text(
+                              "Treatment Description",
+                              style: TextStyle(
+                                color: Colors.orange,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 14.sp,
+                              ),
+                            ),
+                            Gap(6.h),
+
+                            /// Description Box
+                            Container(
+                              padding: EdgeInsets.all(10.w),
+                              decoration: BoxDecoration(
+                                color: Colors.green.withOpacity(0.05),
+                                borderRadius: BorderRadius.circular(8.r),
+                                border: Border.all(color: Colors.green.withOpacity(0.4)),
+                              ),
+                              child: Text(
+                                treatmentDescription,
+                                style: TextStyle(
+                                  fontSize: 12.5.sp,
+                                  color: Colors.black87,
+                                ),
+                              ),
+                            ),
+                            Gap(10.h),
+
+                            /// Status Button (like Completed)
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Container(
+                                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                                decoration: BoxDecoration(
+                                  color: treatmentStatus == "COMPLETED"
+                                      ? Colors.green.shade700
+                                      : Colors.orange.shade700,
+                                  borderRadius: BorderRadius.circular(6.r),
+                                ),
+                                child: Text(
+                                  treatmentStatus,
+                                  style: TextStyle(
+                                    fontSize: 12.sp,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+                      );
+                    })
+
 
                     /*  CustomAlignText(text: "More Info",fontWeight: FontWeight.w600,fontSize: 14,),
                    Gap(8),*/

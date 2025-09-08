@@ -70,10 +70,13 @@ class _PetHealthScreenState extends State<PetHealthScreen> with TickerProviderSt
                 TreatmentCard(
                   controller: petHealthController,
                   id: widget.id,
+                  status: "PADDING",
+
                 ),
                 TreatmentCard(
                   controller: petHealthController,
                   id: widget.id,
+                  status: "COMPLETED",
                 ),
 
               ],

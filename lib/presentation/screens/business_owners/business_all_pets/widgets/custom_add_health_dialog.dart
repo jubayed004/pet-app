@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:pet_app/controller/get_controllers.dart';
@@ -12,30 +13,27 @@ import 'package:pet_app/utils/app_colors/app_colors.dart';
 
 Future<void> showAddHealthDialog(BuildContext context, String id) {
   final TextEditingController treatmentName = TextEditingController();
+  final TextEditingController treatmentDescription = TextEditingController();
   final TextEditingController drName = TextEditingController();
 
-  final businessAllPetController = GetControllers.instance
-      .getBusinessAllPetController();
+  final businessAllPetController =
+      GetControllers.instance.getBusinessAllPetController();
   final formKey = GlobalKey<FormState>();
   return showDialog(
     context: context,
-    builder: (context) =>
-        AlertDialog(
+    builder:
+        (context) => AlertDialog(
           backgroundColor: AppColors.whiteColor,
-          title: const CustomText(text: "Add Health Update",
+          title: const CustomText(
+            text: "Add Health Update",
             fontSize: 16,
-            fontWeight: FontWeight.w600,),
+            fontWeight: FontWeight.w600,
+          ),
           content: SingleChildScrollView(
             child: ConstrainedBox(
               constraints: BoxConstraints(
-                maxHeight: MediaQuery
-                    .of(context)
-                    .size
-                    .height * 0.6,
-                maxWidth: MediaQuery
-                    .of(context)
-                    .size
-                    .width * 0.9,
+                maxHeight: MediaQuery.of(context).size.height * 0.6,
+                maxWidth: MediaQuery.of(context).size.width * 0.9,
               ),
               child: Form(
                 key: formKey,
@@ -43,7 +41,6 @@ Future<void> showAddHealthDialog(BuildContext context, String id) {
                   spacing: 6.h,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-
                     ///============ Treatment Name ============
                     Align(
                       alignment: Alignment.topLeft,
@@ -59,9 +56,7 @@ Future<void> showAddHealthDialog(BuildContext context, String id) {
                       hintText: "Treatment Name",
                       fillColor: AppColors.whiteColor,
                       validator: (value) {
-                        if (value == null || value
-                            .trim()
-                            .isEmpty) {
+                        if (value == null || value.trim().isEmpty) {
                           return "Treatment Name is required";
                         }
                         return null;
@@ -96,7 +91,6 @@ Future<void> showAddHealthDialog(BuildContext context, String id) {
                       },
                     ),
 
-
                     ///========== Status ==========
                     CustomDropdown(
                       onChanged: (v) {
@@ -123,7 +117,9 @@ Future<void> showAddHealthDialog(BuildContext context, String id) {
 
                     Obx(() {
                       return CustomTextField(
-                        hintText: DateFormat("dd MMMM yyyy").format(businessAllPetController.selectedDate.value),
+                        hintText: DateFormat(
+                          "dd MMMM yyyy",
+                        ).format(businessAllPetController.selectedDate.value),
                         fillColor: AppColors.whiteColor,
                         readOnly: true,
                         // prevents typing
@@ -137,34 +133,60 @@ Future<void> showAddHealthDialog(BuildContext context, String id) {
                               lastDate: DateTime(2100),
                             );
                             if (pickedDate != null) {
-                              businessAllPetController.selectedDate.value = pickedDate;
+                              businessAllPetController.selectedDate.value =
+                                  pickedDate;
                             }
                           },
                         ),
                       );
                     }),
 
+                    ///========== Treatment Description ===========
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: CustomText(
+                        text: "Treatment Description",
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+
+                    CustomTextField(
+                      textEditingController: treatmentDescription,
+                      hintText: "Treatment Description",
+                      fillColor: AppColors.whiteColor,
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return "Treatment Description is required";
+                        }
+                        return null;
+                      },
+                    ),
+
                     CustomButton(
                       onTap: () {
                         final body = {
                           "treatmentName": treatmentName.text,
                           "doctorName": drName.text,
-                          "treatmentDate": businessAllPetController.selectedDate
-                              .value.toUtc().toIso8601String(),
-                          "treatmentStatus": businessAllPetController
-                              .statusValue.value,
+                          "treatmentDescription": treatmentDescription.text,
+                          "treatmentDate":
+                              businessAllPetController.selectedDate.value
+                                  .toUtc()
+                                  .toIso8601String(),
+                          "treatmentStatus":
+                              businessAllPetController.statusValue.value,
                         };
 
                         if (formKey.currentState!.validate()) {
-                          businessAllPetController.addHealth(body: body,
-                              id: id,
-                              status: businessAllPetController.statusValue
-                                  .value);
+                          businessAllPetController.addHealth(
+                            body: body,
+                            id: id,
+                            status: businessAllPetController.statusValue.value,
+                          );
                         }
                       },
                       title: "Submit",
-
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -174,40 +196,43 @@ Future<void> showAddHealthDialog(BuildContext context, String id) {
   );
 }
 
-Future<void> editAddHealthDialog(BuildContext context, String date,
-    String title, String name, String id) {
+Future<void> editAddHealthDialog({
+  required BuildContext context,
+  required String date,
+  required String description,
+  required String title,
+  required String name,
+  required String id,
+}) {
   final businessAllPetController = GetControllers.instance.getBusinessAllPetController();
   TextEditingController dateController = TextEditingController(text: date);
   TextEditingController treatmentName = TextEditingController(text: title);
+  final TextEditingController treatmentDescription = TextEditingController(text: description,);
   TextEditingController drName = TextEditingController(text: name);
+  print(name);
   final formKey = GlobalKey<FormState>();
   return showDialog(
     context: context,
-    builder: (context) =>
-        AlertDialog(
+    builder:
+        (context) => AlertDialog(
           backgroundColor: AppColors.whiteColor,
-          title: const CustomText(text: "Edit Health Update",
+          title: const CustomText(
+            text: "Edit Health Update",
             fontWeight: FontWeight.w600,
-            fontSize: 16,),
+            fontSize: 16,
+          ),
           content: SingleChildScrollView(
             child: ConstrainedBox(
               constraints: BoxConstraints(
-                maxHeight: MediaQuery
-                    .of(context)
-                    .size
-                    .height * 0.6,
-                maxWidth: MediaQuery
-                    .of(context)
-                    .size
-                    .width * 0.9,
+                maxHeight: MediaQuery.of(context).size.height * 0.6,
+                maxWidth: MediaQuery.of(context).size.width * 0.9,
               ),
               child: Form(
                 key: formKey,
                 child: Column(
-                  spacing: 6.h,
+                  spacing: 8.h,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-
                     ///============ Treatment Name
                     Align(
                       alignment: Alignment.topLeft,
@@ -281,36 +306,60 @@ Future<void> editAddHealthDialog(BuildContext context, String date,
                           );
 
                           if (pickedDate != null) {
-                            dateController.text = "${pickedDate
-                                .year}/${pickedDate.month}/${pickedDate.day}";
+                            dateController.text =
+                                "${pickedDate.year}/${pickedDate.month}/${pickedDate.day}";
                           }
                         },
                       ),
                     ),
+                    ///========== Treatment Description ===========
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: CustomText(
+                        text: "Treatment Description",
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
 
-                    CustomButton(
-                      onTap: () {
-                        final body = {
-                          "treatmentName": treatmentName.text,
-                          "doctorName": drName.text,
-                          "treatmentDate": dateController.text,
-                          "treatmentStatus": businessAllPetController
-                              .statusValue.value,
-                        };
-                        print(body);
-
-                        if (formKey.currentState!.validate()) {
-                          businessAllPetController.editHealth(body: body,
-                              id: id,
-                              status: businessAllPetController.statusValue
-                                  .value);
+                    CustomTextField(
+                      textEditingController: treatmentDescription,
+                      hintText: "Treatment Description",
+                      fillColor: AppColors.whiteColor,
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return "Treatment Description is required";
                         }
+                        return null;
                       },
+                    ),
 
+                    Obx(() {
+                      return CustomButton(
+                        isLoading:
+                            businessAllPetController.isUpdateLoading.value,
+                        onTap: () {
+                          final body = {
+                            "treatmentName": treatmentName.text,
+                            "doctorName": drName.text,
+                            "treatmentDescription": treatmentDescription.text,
+                            "treatmentDate": dateController.text,
+                            "treatmentStatus": businessAllPetController.statusValue.value,
+                          };
+                          print(body);
 
-                      title: "Update",
+                          if (formKey.currentState!.validate()) {
+                            businessAllPetController.editHealth(
+                              body: body,
+                              id: id,
+                              status: businessAllPetController.statusValue.value,
+                            );
+                          }
+                        },
 
-                    )
+                        title: "Update",
+                      );
+                    }),
                   ],
                 ),
               ),
@@ -327,46 +376,45 @@ Future<void> defaultYesNoDialog({
 }) {
   return showDialog<void>(
     context: context,
-    builder: (dialogCtx) =>
-        AlertDialog(
+    builder:
+        (dialogCtx) => AlertDialog(
           backgroundColor: AppColors.whiteColor,
           title: const Text("Are you sure you want to delete this record?"),
           content: SizedBox(
-            height: 100,
+            height: MediaQuery.of(context).size.height / 12,
             width: MediaQuery.of(context).size.width,
-            child: SingleChildScrollView(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxHeight: MediaQuery.of(context).size.height * 0.6,
-                  maxWidth: MediaQuery.of(context).size.width * 0.9,
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: CustomButton(
-                            borderRadius: 8.r,
-                            onTap: onYes,
-                            title: "Yes",
-                            borderColor: AppColors.kPrimaryDarkColor,
-                            textColor: AppColors.kPrimaryDarkColor,
-
-                          ),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxHeight: MediaQuery.of(context).size.height * 0.6,
+                maxWidth: MediaQuery.of(context).size.width * 0.9,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CustomButton(
+                          borderRadius: 8.r,
+                          onTap: onYes,
+                          title: "Yes",
+                          isBorder: true,
+                          textColor: AppColors.blackColor,
+                          fillColor: Colors.white,
                         ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: CustomButton(
-                            borderRadius: 8.r,
-                            onTap: () => Navigator.of(dialogCtx).pop(),
-                            title: "No",
-                          ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: CustomButton(
+                          borderRadius: 8.r,
+                          onTap: () => Navigator.of(dialogCtx).pop(),
+                          title: "No",
+                          textColor: Colors.red,
                         ),
-                      ],
-                    ),
-                  ],
-                ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
           ),

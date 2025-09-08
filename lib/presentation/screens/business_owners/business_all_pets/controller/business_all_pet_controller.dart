@@ -210,8 +210,14 @@ class BusinessAllPetController extends GetxController {
   }
 
   @override
-  void onReady() {
+  void onInit() {
     getBusinessProfile();
-    super.onReady();
+    super.onInit();
   }
+
+/*  @override
+  void onReady() {
+
+    super.onReady();
+  }*/
 }

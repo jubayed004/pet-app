@@ -25,7 +25,7 @@ class BusinessAllPetsScreen extends StatelessWidget {
                 physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
                   final item = businessPetsController.profile.value.pets?[index];
-                  final photo = item?.petPhoto != null && item!.petPhoto!.isNotEmpty? item.petPhoto?.first ?? "" : "";
+                  final photo = item?.petPhoto != null && item!.petPhoto!.isNotEmpty? item.petPhoto : "";
                   final name = item?.name ?? "";
                   return GestureDetector(
                     onTap: () {
