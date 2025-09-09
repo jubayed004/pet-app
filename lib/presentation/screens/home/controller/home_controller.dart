@@ -7,7 +7,10 @@ import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pet_app/core/custom_assets/assets.gen.dart';
 import 'package:pet_app/core/dependency/get_it_injection.dart';
+import 'package:pet_app/presentation/screens/home/model/home_model.dart';
 import 'package:pet_app/service/api_service.dart';
+import 'package:pet_app/service/api_url.dart';
+import 'package:pet_app/utils/app_const/app_const.dart';
 import 'package:pet_app/utils/app_strings/app_strings.dart';
 
 class HomeController extends GetxController{
@@ -45,9 +48,7 @@ class HomeController extends GetxController{
    'https://images.unsplash.com/photo-1519985176271-adb1088fa94c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a0c8d632e977f94e5d312d9893258f59&auto=format&fit=crop&w=1355&q=80'
  ];
 
-
   Future<void> getProject(int pageKey) async {
-
 /*    if (isLoadingMove.value) return;
     isLoadingMove.value = true;
     try {
@@ -72,7 +73,36 @@ class HomeController extends GetxController{
     }*/
   }
 
-  @override
+
+ /// ============================= GET Home Header =====================================
+ var loading = Status.completed.obs;
+ loadingMethod(Status status) => loading.value = status;
+ final Rx<HomeHeaderModel> homeHeader = HomeHeaderModel().obs;
+
+ Future<void> userHome() async{
+   loadingMethod(Status.completed);
+   try{
+     loadingMethod(Status.loading);
+     final response = await apiClient.get(url: ApiUrl.getHomeHeader());
+     if (response.statusCode == 200) {
+       final newData = HomeHeaderModel.fromJson(response.body);
+       homeHeader.value = newData;
+       loadingMethod(Status.completed);
+     } else {
+       if (response.statusCode == 503) {
+         loadingMethod(Status.internetError);
+       } else if (response.statusCode == 404) {
+         loadingMethod(Status.noDataFound);
+       } else {
+         loadingMethod(Status.error);
+       }
+     }
+   }catch(e){
+     loadingMethod(Status.error);
+   }
+ }
+
+ @override
   void onInit() {
 /*    pagingController.addPageRequestListener((pageKey) {
     getProject(pageKey);

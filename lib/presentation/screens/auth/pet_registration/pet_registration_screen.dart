@@ -21,7 +21,6 @@ import 'package:pet_app/utils/app_images/app_images.dart';
 import 'package:pet_app/utils/app_strings/app_strings.dart';
 
 class PetRegistrationScreen extends StatefulWidget {
-
   const PetRegistrationScreen({super.key});
 
   @override
@@ -29,7 +28,6 @@ class PetRegistrationScreen extends StatefulWidget {
 }
 
 class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
-
   final TextEditingController name = TextEditingController();
   final TextEditingController animalType = TextEditingController();
   final TextEditingController breed = TextEditingController();
@@ -53,8 +51,10 @@ class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
     description.dispose();
     super.dispose();
   }
+
   final _authController = GetControllers.instance.getAuthController();
-/*  final _profileController = GetControllers.instance.getProfileController();*/
+
+  /*  final _profileController = GetControllers.instance.getProfileController();*/
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -65,11 +65,7 @@ class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
       appBar: AppBar(
         surfaceTintColor: Colors.white,
         backgroundColor: Colors.white,
-        title: CustomText(
-          text: AppStrings.petRegistration,
-          fontSize: 24,
-          fontWeight: FontWeight.w700,
-        ),
+        title: CustomText(text: AppStrings.petRegistration, fontSize: 24, fontWeight: FontWeight.w700),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -99,10 +95,7 @@ class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
               ),
 
               Gap(14),
-              CustomAlignText(
-                text: AppStrings.petType,
-                fontWeight: FontWeight.w500,
-              ),
+              CustomAlignText(text: AppStrings.petType, fontWeight: FontWeight.w500),
               Gap(8.0),
               CustomTextField(
                 hintText: AppStrings.petType,
@@ -123,10 +116,7 @@ class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
               ),
 
               Gap(14),
-              CustomAlignText(
-                text: AppStrings.age,
-                fontWeight: FontWeight.w500,
-              ),
+              CustomAlignText(text: AppStrings.age, fontWeight: FontWeight.w500),
               Gap(8.0),
               CustomTextField(
                 hintText: AppStrings.enterAge,
@@ -151,29 +141,25 @@ class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
               ),
 
               Gap(14),
-          /*    CustomAlignText(
+              /*    CustomAlignText(
                 text: AppStrings.gender,
                 fontWeight: FontWeight.w500,
               ),
               Gap(8.0),*/
               CustomDropdown(
-                onChanged: (value){
-                 if( value!=null){
-                   _authController.genderSelected.value = value;
-                 }
+                onChanged: (value) {
+                  if (value != null) {
+                    _authController.genderSelected.value = value;
+                  }
                 },
                 selectedValue: _authController.genderSelected.value,
                 title: AppStrings.gender,
                 items: ["MALE", "FEMALE"],
               ),
 
-
               Gap(14),
 
-              CustomAlignText(
-                text: AppStrings.weight,
-                fontWeight: FontWeight.w500,
-              ),
+              CustomAlignText(text: AppStrings.weight, fontWeight: FontWeight.w500),
               Gap(8.0),
               CustomTextField(
                 fieldBorderColor: AppColors.purple500,
@@ -184,10 +170,7 @@ class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
                 textEditingController: weight,
               ),
               Gap(14),
-              CustomAlignText(
-                text: AppStrings.height,
-                fontWeight: FontWeight.w500,
-              ),
+              CustomAlignText(text: AppStrings.height, fontWeight: FontWeight.w500),
               Gap(8.0),
               CustomTextField(
                 fieldBorderColor: AppColors.purple500,
@@ -198,10 +181,7 @@ class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
                 textEditingController: height,
               ),
               Gap(14),
-              CustomAlignText(
-                text: AppStrings.color,
-                fontWeight: FontWeight.w500,
-              ),
+              CustomAlignText(text: AppStrings.color, fontWeight: FontWeight.w500),
               Gap(8.0),
               CustomTextField(
                 fieldBorderColor: AppColors.purple500,
@@ -212,10 +192,7 @@ class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
                 textEditingController: color,
               ),
               Gap(14),
-              CustomAlignText(
-                text: AppStrings.breed,
-                fontWeight: FontWeight.w500,
-              ),
+              CustomAlignText(text: AppStrings.breed, fontWeight: FontWeight.w500),
               Gap(8.0),
               CustomTextField(
                 fieldBorderColor: AppColors.purple500,
@@ -235,7 +212,7 @@ class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
                 },
               ),
 
-              Gap(14),
+              /*       Gap(14),
               CustomAlignText(
                 text: AppStrings.moreInfo,
                 fontWeight: FontWeight.w500,
@@ -248,12 +225,9 @@ class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
                 hintText: AppStrings.enterMoreInformation,
                 keyboardType: TextInputType.text,
                 textEditingController: description,
-              ),
+              ),*/
               Gap(14),
-              CustomAlignText(
-                text: AppStrings.petPhoto,
-                fontWeight: FontWeight.w500,
-              ),
+              CustomAlignText(text: AppStrings.petPhoto, fontWeight: FontWeight.w500),
               Gap(8.0),
               GestureDetector(
                 onTap: _authController.petPhoto,
@@ -270,21 +244,14 @@ class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
                                   ? ClipRRect(
                                     borderRadius: BorderRadius.circular(6),
                                     child: Image.file(
-                                      File(
-                                        _authController
-                                                .selectedPetPhoto
-                                                .value
-                                                ?.path ??
-                                            "",
-                                      ),
+                                      File(_authController.selectedPetPhoto.value?.path ?? ""),
                                       height: 156.h,
                                       width: MediaQuery.of(context).size.width,
                                       fit: BoxFit.cover,
                                     ),
                                   )
                                   : CustomNetworkImage(
-                                    imageUrl:
-                                        "https://www.rawpixel.com/image/12143311/png",
+                                    imageUrl: "https://www.rawpixel.com/image/12143311/png",
                                     height: 156.h,
                                     borderRadius: BorderRadius.circular(6),
                                     width: MediaQuery.of(context).size.width,
@@ -297,18 +264,11 @@ class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
                                 height: 30.h,
                                 width: 30.w,
                                 decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Color(0xffC2C2C2),
-                                    width: 1.w,
-                                  ),
+                                  border: Border.all(color: Color(0xffC2C2C2), width: 1.w),
                                   color: AppColors.whiteColor700,
                                   shape: BoxShape.circle,
                                 ),
-                                child: Icon(
-                                  Icons.image_outlined,
-                                  size: 18.sp,
-                                  color: AppColors.purple500,
-                                ),
+                                child: Icon(Icons.image_outlined, size: 18.sp, color: AppColors.purple500),
                               ),
                             ),
                       ],
@@ -325,33 +285,19 @@ class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
                     return GestureDetector(
                       onTap: () {
                         // Toggling the rememberMe value
-                        _authController.rememberMe.value =
-                            !_authController.rememberMe.value;
+                        _authController.rememberMe.value = !_authController.rememberMe.value;
                       },
                       child: Container(
                         alignment: Alignment.center,
                         height: 16.h,
                         width: 16.w,
                         decoration: BoxDecoration(
-                          color:
-                              _authController.rememberMe.value
-                                  ? AppColors.purple500
-                                  : Colors.transparent,
-                          border: Border.all(
-                            width: .5.sp,
-                            color: AppColors.secondPrimaryColor,
-                          ),
+                          color: _authController.rememberMe.value ? AppColors.purple500 : Colors.transparent,
+                          border: Border.all(width: .5.sp, color: AppColors.secondPrimaryColor),
                           borderRadius: BorderRadius.circular(4.sp),
                         ),
                         child: Center(
-                          child:
-                              _authController.rememberMe.value
-                                  ? Icon(
-                                    Icons.check,
-                                    color: AppColors.whiteColor,
-                                    size: 14.sp,
-                                  )
-                                  : const SizedBox(),
+                          child: _authController.rememberMe.value ? Icon(Icons.check, color: AppColors.whiteColor, size: 14.sp) : const SizedBox(),
                         ),
                       ),
                     );
@@ -360,25 +306,15 @@ class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
                   RichText(
                     text: TextSpan(
                       text: 'I agree to return Policies ,',
-                      style: TextStyle(
-                        color: AppColors.secondTextColor,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                      ),
+                      style: TextStyle(color: AppColors.secondTextColor, fontSize: 12, fontWeight: FontWeight.w400),
                       children: [
                         TextSpan(
-                          text: " terms and conditions.",
-                          style: TextStyle(
-                            color: AppColors.purple500,
-                            fontWeight: FontWeight.w600,
-                            decoration: TextDecoration.underline,
-                          ),
+                          text: " terms & conditions.",
+                          style: TextStyle(color: AppColors.purple500, fontWeight: FontWeight.w600, decoration: TextDecoration.underline),
                           recognizer:
                               TapGestureRecognizer()
                                 ..onTap = () {
-                                  AppRouter.route.pushNamed(
-                                    RoutePath.termsOfCondition,
-                                  );
+                                  AppRouter.route.pushNamed(RoutePath.termsOfCondition);
                                 },
                         ),
                       ],
@@ -394,15 +330,13 @@ class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
                   textColor: Colors.black,
                   showIcon: false,
                   onTap: () {
-
-                    if(_authController.rememberMe.value){
-
+                    if (_authController.rememberMe.value) {
                       if (_formKey.currentState!.validate()) {
                         final body = {
                           "name": name.text,
                           "animalType": animalType.text,
                           "breed": breed.text,
-                          "gender":  _authController.genderSelected.value,
+                          "gender": _authController.genderSelected.value,
                           "weight": weight.text,
                           "height": height.text,
                           "color": color.text,
@@ -411,10 +345,10 @@ class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
                         };
                         _authController.petRegistration(body: body);
                       }
-                    }else{
-                      toastMessage(message:"Please agree trems and conditions");
+                    } else {
+                      toastMessage(message: "Please agree trems and conditions");
                     }
-                  /*  AppRouter.route.goNamed(RoutePath.navigationPage);*/
+                    /*  AppRouter.route.goNamed(RoutePath.navigationPage);*/
                   },
                 );
               }),

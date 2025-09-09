@@ -44,30 +44,25 @@ class _MyDetailsPetsScreenState extends State<MyDetailsPetsScreen> {
         child: CustomScrollView(
           slivers: [
             Obx(() {
-              return CustomDefaultAppbar(
-                title: controller.details.value.pet?.name ?? "",
-              );
+              return CustomDefaultAppbar(title: controller.details.value.pet?.name ?? "");
             }),
             SliverToBoxAdapter(
               child: Obx(() {
                 final pet = controller.details.value.pet?.petPhoto;
                 final image = pet != null && pet.isNotEmpty ? pet : "";
                 return image.isNotEmpty
-                    ? Image.network(ApiUrl.imageBase + image, fit: BoxFit.cover,
-                  width: double.infinity,
-                  height: 200,)
+                    ? Image.network(ApiUrl.imageBase + image, fit: BoxFit.cover, width: double.infinity, height: 200)
                     : Image.network(
-                  'https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=800&q=80',
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                  height: 200,
-                );
+                      'https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=800&q=80',
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                      height: 200,
+                    );
               }),
             ),
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16, vertical: 20,),
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
                 child: Column(
                   children: [
                     Obx(() {
@@ -75,40 +70,34 @@ class _MyDetailsPetsScreenState extends State<MyDetailsPetsScreen> {
                       return Card(
                         elevation: 4,
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 18, vertical: 8,),
+                          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
                           child: Row(
                             children: [
                               Expanded(
-                                  child: Row(
-                                    crossAxisAlignment: CrossAxisAlignment
-                                        .center,
-                                    mainAxisAlignment: MainAxisAlignment
-                                        .spaceBetween,
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                        children: [
-                                          CustomText(
-                                            text:
-                                            profileDetails?.name ?? "",
-                                            textAlign: TextAlign.start,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 16,
-                                          ),
-                                          Gap(6),
-                                          CustomText(
-                                            text:
-                                            profileDetails?.gender ?? "",
-                                            textAlign: TextAlign.start,
-                                            fontWeight: FontWeight.w600,
-                                            color: AppColors.purple500,
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  )
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        CustomText(
+                                          text: profileDetails?.name ?? "",
+                                          textAlign: TextAlign.start,
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 16,
+                                        ),
+                                        Gap(6),
+                                        CustomText(
+                                          text: profileDetails?.gender ?? "",
+                                          textAlign: TextAlign.start,
+                                          fontWeight: FontWeight.w600,
+                                          color: AppColors.purple500,
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                               IconButton(
                                 onPressed: () {
@@ -117,18 +106,13 @@ class _MyDetailsPetsScreenState extends State<MyDetailsPetsScreen> {
                                     extra: {
                                       "id": profileDetails?.id ?? "",
                                       "name": profileDetails?.name ?? "",
-                                      "animalType": profileDetails
-                                          ?.animalType ?? "",
+                                      "animalType": profileDetails?.animalType ?? "",
                                       "breed": profileDetails?.breed ?? "",
-                                      "age": profileDetails?.age.toString() ??
-                                          "",
+                                      "age": profileDetails?.age.toString() ?? "",
                                       "gender": profileDetails?.gender ?? "",
-                                      "weight": profileDetails?.weight
-                                          .toString() ?? "",
-                                      "height": profileDetails?.height
-                                          .toString() ?? "",
+                                      "weight": profileDetails?.weight.toString() ?? "",
+                                      "height": profileDetails?.height.toString() ?? "",
                                       "color": profileDetails?.color ?? "",
-
                                     },
                                   );
                                 },
@@ -145,12 +129,7 @@ class _MyDetailsPetsScreenState extends State<MyDetailsPetsScreen> {
                         Icon(Icons.account_box_outlined),
                         Gap(6),
                         Obx(() {
-                          return CustomText(
-                            text:
-                            "About ${controller.details.value.pet?.name ?? ""}",
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16,
-                          );
+                          return CustomText(text: "About ${controller.details.value.pet?.name ?? ""}", fontWeight: FontWeight.w600, fontSize: 16);
                         }),
                       ],
                     ),
@@ -162,34 +141,13 @@ class _MyDetailsPetsScreenState extends State<MyDetailsPetsScreen> {
                         return ListView(
                           scrollDirection: Axis.horizontal,
                           children: [
-                            DetailsCard(
-                              title: "Age",
-                              details: pet?.age.toString() ?? "",
-                            ),
-                            DetailsCard(
-                              title: "Pet Type",
-                              details: pet?.animalType ?? "",
-                            ),
-                            DetailsCard(
-                              title: "Gender",
-                              details: pet?.gender ?? "",
-                            ),
-                            DetailsCard(
-                              title: "Height",
-                              details: pet?.height.toString() ?? "",
-                            ),
-                            DetailsCard(
-                              title: "Weight",
-                              details: pet?.weight.toString() ?? "",
-                            ),
-                            DetailsCard(
-                              title: "Color",
-                              details: pet?.color ?? "",
-                            ),
-                            DetailsCard(
-                              title: "Breed",
-                              details: pet?.breed ?? "",
-                            ),
+                            DetailsCard(title: "Age", details: pet?.age.toString() ?? ""),
+                            DetailsCard(title: "Pet Type", details: pet?.animalType ?? ""),
+                            DetailsCard(title: "Gender", details: pet?.gender ?? ""),
+                            DetailsCard(title: "Height", details: pet?.height.toString() ?? ""),
+                            DetailsCard(title: "Weight", details: pet?.weight.toString() ?? ""),
+                            DetailsCard(title: "Color", details: pet?.color ?? ""),
+                            DetailsCard(title: "Breed", details: pet?.breed ?? ""),
                           ],
                         );
                       }),
@@ -199,13 +157,7 @@ class _MyDetailsPetsScreenState extends State<MyDetailsPetsScreen> {
                       children: [
                         Icon(Icons.safety_divider_outlined),
                         Gap(6),
-                        CustomText(
-                          text:
-                          "${controller.details.value.pet?.name ??
-                              ""} ’s Status",
-                          fontWeight: FontWeight.w600,
-                          fontSize: 16,
-                        ),
+                        CustomText(text: "${controller.details.value.pet?.name ?? ""} ’s Status", fontWeight: FontWeight.w600, fontSize: 16),
                       ],
                     ),
                     Gap(16),
@@ -220,58 +172,34 @@ class _MyDetailsPetsScreenState extends State<MyDetailsPetsScreen> {
                             CircleAvatar(
                               radius: 20,
                               backgroundColor: Color(0xFFE54D4D),
-                              child: Icon(
-                                Icons.health_and_safety,
-                                size: 24,
-                                color: Colors.white,
-                              ),
+                              child: Icon(Icons.health_and_safety, size: 24, color: Colors.white),
                             ),
                             Gap(6),
-                            CustomText(
-                              text: "Health",
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                            ),
+                            CustomText(text: "Health", fontSize: 16, fontWeight: FontWeight.w600),
                           ],
                         ),
-                        TextButton(onPressed: () {
-                          AppRouter.route.pushNamed(
-                              RoutePath.petHealthScreen, extra: widget.id);
-                        },
-                            child: CustomText(text: "See All",
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14,))
+                        TextButton(
+                          onPressed: () {
+                            AppRouter.route.pushNamed(RoutePath.petHealthScreen, extra: widget.id);
+                          },
+                          child: CustomText(text: "See All", fontWeight: FontWeight.w400, fontSize: 14),
+                        ),
                       ],
                     ),
                     Gap(16),
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: CustomText(
-                        text: "Health History",
-                        fontWeight: FontWeight.w700,
-                        fontSize: 14,
-                      ),
-                    ),
+                    Align(alignment: Alignment.topLeft, child: CustomText(text: "Health History", fontWeight: FontWeight.w700, fontSize: 14)),
                     Gap(8),
                     Obx(() {
                       final petMedicalHistory = controller.details.value.petMedicalHistory ?? [];
 
                       if (petMedicalHistory.isEmpty) {
-                        return Center(
-                          child: Text(
-                            "No medical history available.",
-                            style: TextStyle(fontSize: 16.sp, color: Colors.black87),
-                          ),
-                        );
+                        return Center(child: Text("No medical history available.", style: TextStyle(fontSize: 16.sp, color: Colors.black87)));
                       }
 
-                      // Use the first item for demonstration (or loop over the list for multiple items)
                       final treatment = petMedicalHistory[0];
                       final treatmentName = treatment.treatmentName ?? "Unknown";
                       final doctorName = treatment.doctorName ?? "Unknown Doctor";
-                      final treatmentDate = treatment.treatmentDate != null
-                          ? DateFormat('EEE dd MMM yyyy').format(treatment.treatmentDate??DateTime.now())
-                          : "Unknown Date";
+                      final treatmentDate = treatment.treatmentDate != null ? DateFormat('EEE dd MMM yyyy').format(treatment.treatmentDate ?? DateTime.now()) : "Unknown Date";
                       final treatmentDescription = treatment.treatmentDescription ?? "No description provided";
                       final treatmentStatus = treatment.treatmentStatus ?? "Unknown Status";
 
@@ -281,13 +209,7 @@ class _MyDetailsPetsScreenState extends State<MyDetailsPetsScreen> {
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(12.r),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.05),
-                              blurRadius: 6,
-                              offset: const Offset(0, 2),
-                            ),
-                          ],
+                          boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 6, offset: const Offset(0, 2))],
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -295,35 +217,19 @@ class _MyDetailsPetsScreenState extends State<MyDetailsPetsScreen> {
                             /// Treatment Name
                             Text(
                               "Treatment Name: $treatmentName",
-                              style: TextStyle(
-                                color: Colors.green,
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w600,
-                              ),
+                              style: TextStyle(color: Colors.green, fontSize: 14.sp, fontWeight: FontWeight.w600),
                             ),
                             Gap(4.h),
 
                             /// Doctor Name
-                            Text(
-                              "Doctor Name: $doctorName",
-                              style: TextStyle(
-                                color: Colors.black87,
-                                fontSize: 13.sp,
-                              ),
-                            ),
+                            Text("Doctor Name: $doctorName", style: TextStyle(color: Colors.black87, fontSize: 13.sp)),
                             Gap(4.h),
 
                             /// Treatment Date
-                            Text(
-                              "Treatment Date: $treatmentDate",
-                              style: TextStyle(
-                                color: Colors.black87,
-                                fontSize: 13.sp,
-                              ),
-                            ),
+                            Text("Treatment Date: $treatmentDate", style: TextStyle(color: Colors.black87, fontSize: 13.sp)),
                             Gap(4.h),
 
-                   /*         /// Location Row
+                            /*         /// Location Row
                             Row(
                               children: [
                                 const Icon(Icons.location_on, color: Colors.red, size: 18),
@@ -342,14 +248,7 @@ class _MyDetailsPetsScreenState extends State<MyDetailsPetsScreen> {
                             Gap(8.h),*/
 
                             /// Treatment Description Title
-                            Text(
-                              "Treatment Description",
-                              style: TextStyle(
-                                color: Colors.orange,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 14.sp,
-                              ),
-                            ),
+                            Text("Treatment Description", style: TextStyle(color: Colors.orange, fontWeight: FontWeight.w600, fontSize: 14.sp)),
                             Gap(6.h),
 
                             /// Description Box
@@ -360,13 +259,7 @@ class _MyDetailsPetsScreenState extends State<MyDetailsPetsScreen> {
                                 borderRadius: BorderRadius.circular(8.r),
                                 border: Border.all(color: Colors.green.withOpacity(0.4)),
                               ),
-                              child: Text(
-                                treatmentDescription,
-                                style: TextStyle(
-                                  fontSize: 12.5.sp,
-                                  color: Colors.black87,
-                                ),
-                              ),
+                              child: Text(treatmentDescription, style: TextStyle(fontSize: 12.5.sp, color: Colors.black87)),
                             ),
                             Gap(10.h),
 
@@ -376,26 +269,16 @@ class _MyDetailsPetsScreenState extends State<MyDetailsPetsScreen> {
                               child: Container(
                                 padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
                                 decoration: BoxDecoration(
-                                  color: treatmentStatus == "COMPLETED"
-                                      ? Colors.green.shade700
-                                      : Colors.orange.shade700,
+                                  color: treatmentStatus == "COMPLETED" ? Colors.green.shade700 : Colors.orange.shade700,
                                   borderRadius: BorderRadius.circular(6.r),
                                 ),
-                                child: Text(
-                                  treatmentStatus,
-                                  style: TextStyle(
-                                    fontSize: 12.sp,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
+                                child: Text(treatmentStatus, style: TextStyle(fontSize: 12.sp, color: Colors.white, fontWeight: FontWeight.w500)),
                               ),
                             ),
                           ],
                         ),
                       );
-                    })
-
+                    }),
 
                     /*  CustomAlignText(text: "More Info",fontWeight: FontWeight.w600,fontSize: 14,),
                    Gap(8),*/

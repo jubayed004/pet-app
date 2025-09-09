@@ -28,14 +28,10 @@ class MyPetsProfileController extends GetxController {
   final Rx<MyAllPetModel> profile = MyAllPetModel().obs;
 
   Future<void> getAllPet() async {
-    loadingMethod(Status.completed);
     try {
       loadingMethod(Status.loading);
       final response = await apiClient.get(url: ApiUrl.getMyAllPet());
       if (response.statusCode == 200) {
-        if (kDebugMode) {
-          print(response.body);
-        }
         final newData = MyAllPetModel.fromJson(response.body);
         profile.value = newData;
         loadingMethod(Status.completed);
@@ -134,10 +130,10 @@ class MyPetsProfileController extends GetxController {
     }
   }
 
-@override
-  void onInit() {
-  getAllPet();
-    super.onInit();
-  }
 
+  @override
+  void onReady() {
+    super.onReady();
+    getAllPet();
+  }
 }

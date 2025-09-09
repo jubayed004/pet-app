@@ -16,15 +16,13 @@ class ReviewScreen extends StatefulWidget {
   final String ownerId;
   final String serviceId;
 
-  const ReviewScreen(
-      {super.key, required this.businessId, required this.ownerId, required this.serviceId});
+  const ReviewScreen({super.key, required this.businessId, required this.ownerId, required this.serviceId});
 
   @override
   State<ReviewScreen> createState() => _ReviewScreenState();
 }
 
 class _ReviewScreenState extends State<ReviewScreen> {
-
   final controller = GetControllers.instance.getReviewController();
 
   @override
@@ -62,31 +60,25 @@ class _ReviewScreenState extends State<ReviewScreen> {
                               fontWeight: FontWeight.w600,
                               fontSize: 16,
                             ),
-                            CustomText(
-                              color: Colors.amber,
-                              text: "(${controller.review.value.totalReviews.toString()} Ratings)",
-                              fontSize: 14,
-                            ),
+                            CustomText(color: Colors.amber, text: "(${controller.review.value.totalReviews.toString()} Ratings)", fontSize: 14),
                           ],
                         );
                       }),
                       subtitle: Obx(() {
                         return StarRating(
-                          rating: controller.review.value.avgRating?.toInt() ??
-                              0,
+                          rating: controller.review.value.avgRating?.toInt() ?? 0,
                           size: 30.sp,
                           filledColor: Colors.amber,
                           borderColor: Colors.amber,
                         );
                       }),
-                      trailing: IconButton(onPressed: () {
-                        showAddReviewDialog(context, widget.businessId,
-                            widget.ownerId, widget.serviceId);
-                      },
-                          icon: Icon(
-                            Iconsax.add5, color: Colors.green, size: 34,)),
+                      trailing: IconButton(
+                        onPressed: () {
+                          showAddReviewDialog(context, widget.businessId, widget.ownerId, widget.serviceId);
+                        },
+                        icon: Icon(Iconsax.add5, color: Colors.green, size: 34),
+                      ),
                     ),
-
                   ],
                 ),
               ),
@@ -96,8 +88,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
                 delegate: SliverChildBuilderDelegate((context, index) {
                   final item = controller.review.value.reviews?[index];
                   return ReviewCardItem(item: item);
-                },
-                    childCount: controller.review.value.reviews?.length),
+                }, childCount: controller.review.value.reviews?.length),
               );
             }),
           ],

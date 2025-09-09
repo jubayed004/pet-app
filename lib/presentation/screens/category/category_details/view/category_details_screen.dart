@@ -12,6 +12,7 @@ import 'package:pet_app/presentation/components/custom_button/custom_defualt_app
 import 'package:pet_app/presentation/components/custom_image/custom_image.dart';
 import 'package:pet_app/presentation/components/custom_netwrok_image/custom_network_image.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
+import 'package:pet_app/presentation/screens/review/widgets/review_card_item_widget.dart';
 import 'package:pet_app/service/api_url.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
 import 'package:pet_app/utils/app_strings/app_strings.dart';
@@ -32,6 +33,7 @@ class CategoryDetailsScreen extends StatefulWidget {
 
 class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
   final controller = GetControllers.instance.getCategoryDetailsController();
+
   @override
   void initState() {
     controller.getCategoryDetails(id: widget.id);
@@ -66,20 +68,19 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
                         "${ApiUrl.imageBase}$image",
                         fit: BoxFit.cover,
                         width: double.infinity,
-                        height: 250,
+                        height: MediaQuery
+                            .of(context)
+                            .size
+                            .height / 3,
                       ) : CustomNetworkImage(
                         imageUrl: 'https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=800&q=80',
                         width: double.infinity,
-                        height: 250,
+                        height: MediaQuery
+                            .of(context)
+                            .size
+                            .height / 3,
                       );
                     }),
-                    /*    Positioned(
-                       top: 30,
-                         left: 30,
-                         child: IconButton(onPressed: (){
-                          AppRouter.route.pop();
-                         }, icon: Icon(Icons.arrow_back,color: Colors.black,))),*/
-                    // Card positioned below image, no fixed height, mainAxisSize.min ensures height matches content
                     Positioned(
                       top: 180,
                       left: 30,
@@ -93,133 +94,108 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
                           padding: const EdgeInsets.only(
                               top: 40, bottom: 20, left: 16, right: 16),
                           child: Column(
+                            spacing: 8.h,
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Obx(() {
-                                final serviceName = controller.categoryDetails.value.service?.serviceType;
+                                final serviceName = controller.categoryDetails
+                                    .value.service?.serviceType;
                                 return CustomText(text: serviceName ?? "",
-                                  fontWeight: FontWeight.w600, fontSize: 14,
-
+                                  fontWeight: FontWeight.w600, fontSize: 14.sp,
                                 );
                               }),
-                              SizedBox(height: 8),
                               Obx(() {
-                                final item = controller.categoryDetails.value.service;
+                                final item = controller.categoryDetails.value.service?.isOpenNow ?? false;
+                                return CustomText(
+                                  text: item ? "Open" : "Closed" ,
+                                  color: item ? AppColors.primaryColor : Colors
+                                      .red,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 16,
+                                );
+                              }),
+                              Obx(() {
+                                final item = controller.categoryDetails.value
+                                    .service;
                                 return Row(
-                                  spacing: 8,
+                                  spacing: 8.w,
                                   children: [
-                                    Icon(Icons.access_time, size: 24),
+                                    Icon(Icons.access_time, size: 24.sp),
                                     Expanded(
                                       child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        spacing: 8.h,
+                                        crossAxisAlignment: CrossAxisAlignment
+                                            .start,
                                         children: [
                                           CustomText(
                                             textAlign: TextAlign.start,
                                             maxLines: 2,
-                                            fontSize: 14,
+                                            fontSize: 14.sp,
                                             fontWeight: FontWeight.w500,
-                                            text: "Open day - ${
-                                                controller.getOpenDaysTextComplete(
-                                              offDay: item?.offDay ?? "",
-                                              openingTime: item?.openingTime ?? "",
-                                              closingTime: item?.closingTime ?? "",
-                                            )}",
+                                            text: "Open Day : ${
+                                                controller
+                                                    .getOpenDaysTextComplete(
+                                                  offDay: item?.offDay ?? "",
+                                                  openingTime: item
+                                                      ?.openingTime ?? "",
+                                                  closingTime: item
+                                                      ?.closingTime ?? "",
+                                                )}",
                                             overflow: TextOverflow.ellipsis,
                                           ),
                                           CustomText(
-                                            fontSize: 14,fontWeight: FontWeight.w500,
-                                            text: "Off day - ${item?.offDay ?? ""}",
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w600,
+                                            text: "OFF Day : ${item?.offDay ??
+                                                ""}",
                                             overflow: TextOverflow.ellipsis,
+                                            color: Colors.red,
                                           ),
                                         ],
                                       ),
                                     ),
-                                    /*  Row(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        AppRouter.route.pushNamed(
-                          RoutePath.businessEditServiceScreen,
-                          extra: {
-                            'id': item.id ?? "",
-                            'serviceName': item.serviceName ?? "",
-                            'location': item.location ?? "",
-                            'websiteLink': item.websiteLink ?? "",
-                            'phoneNumber': item.phone ?? "",
-                            'serviceController': providerList,
-                          },
-                        );
-                      },
-                      child: Assets.icons.editico.svg(width: 26),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        defaultDeletedYesNoDialog(
-                          context: context,
-                          title: 'Are you sure you want to delete this Service?',
-                          onYes: () {
-                            businessServiceController.deletedService(id: item.id ?? "");
-                          },
-                        );
-                      },
-                      child: Assets.icons.deletedicon.svg(
-                        width: 36,
-                        colorFilter: ColorFilter.mode(Colors.red, BlendMode.srcIn),
-                      ),
-                    ),
-                  ],
-                ),*/
                                   ],
                                 );
                               }),
-                              Gap(16),
-                              widget.showWebsite ?  CustomButton(
+                              widget.showWebsite ? CustomButton(
                                 onTap: () async {
-                                  // Get the website URL
                                   String? websiteUrl = controller
                                       .categoryDetails.value.service
                                       ?.websiteLink;
-                                  // If website URL is null or empty, use a fallback URL
                                   if (websiteUrl == null ||
                                       websiteUrl.isEmpty) {
                                     websiteUrl =
-                                    "https://www.defaultwebsite.com"; // Provide a default URL
+                                    "https://www.defaultwebsite.com";
                                   }
-                                  // Ensure the URL starts with 'http://' or 'https://'
                                   if (!websiteUrl.startsWith('http://') &&
                                       !websiteUrl.startsWith('https://',)) {
                                     websiteUrl =
-                                    'https://$websiteUrl'; // Prepend 'https://' if not present
+                                    'https://$websiteUrl';
                                   }
                                   final Uri url = Uri.parse(websiteUrl,
-                                  ); // Convert the string to Uri
-                                  // Check if the URL can be launched
+                                  );
                                   if (await canLaunchUrl(url)) {
-                                    // Launch the URL if possible
                                     await launchUrl(url);
                                   } else {
-                                    // Handle error if the URL can't be launched
                                     throw 'Could not launch $url';
                                   }
                                 },
-
                                 title: "Visit Website",
                                 textColor: Colors.white,
                                 height: 30.h,
                                 width: 140.w,
                                 fontWeight: FontWeight.w500,
                                 fontSize: 14,
-                                fillColor:  AppColors.purple500,
+                                fillColor: AppColors.purple500,
                                 borderColor: Colors.transparent,
                                 borderWidth: 1,
                                 isBorder: true,
-                              ):SizedBox(),
+                              ) : SizedBox(),
                             ],
                           ),
                         ),
                       ),
                     ),
-                    // Floating avatar/logo overlapping the card
                     Positioned(
                       top: 120,
                       left: 0,
@@ -240,18 +216,28 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
                           ),
                           child: ClipOval(
                             child: Obx(() {
-                              final logo = controller.categoryDetails.value.service?.shopLogo;
+                              final logo = controller.categoryDetails.value
+                                  .service?.shopLogo;
                               return logo != null && logo.isNotEmpty ?
                               CustomNetworkImage(
                                 boxShape: BoxShape.circle,
-                                width: MediaQuery.of(context).size.width / 8,
-                                height: MediaQuery.of(context).size.height / 10,
-                                imageUrl:
-                                "${ApiUrl.imageBase}${logo.replaceAll("\\", "/")}",
+                                width: MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width / 8,
+                                height: MediaQuery
+                                    .of(context)
+                                    .size
+                                    .height / 10,
+                                imageUrl: "${ApiUrl.imageBase}${logo.replaceAll(
+                                    "\\", "/")}",
                               )
                                   : CustomImage(
                                 imageSrc: "assets/images/petshoplogo.png",
-                                sizeWidth: 50,
+                                sizeWidth: MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width / 8,
                               );
                             }),
                           ),
@@ -262,20 +248,24 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
                 ),
               ),
             ),
-
+            SliverGap(10.h),
             SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.only(left: 16.0, right: 16),
                 child: Column(
                   children: [
                     SizedBox(
-                      width: MediaQuery.of(context).size.width / 2 - 30,
+                      width: MediaQuery
+                          .of(context)
+                          .size
+                          .width / 2 - 30,
                       child: Card(
                         elevation: 4,
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Column(
                             children: [
+
                               CustomText(text: "Rating"),
                               Gap(10),
                               Row(
@@ -284,13 +274,25 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
                                 children: [
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: List.generate(5, (index) => Icon(Icons.star, color: Colors.amber, size: 18,)),
+                                    crossAxisAlignment: CrossAxisAlignment
+                                        .start,
+                                    children: List.generate(5, (index) =>
+                                        Icon(Icons.star, color: Colors.amber,
+                                          size: 18,)),
                                   ),
                                   Gap(6),
                                   CustomText(text: "5.0 ",
                                     fontWeight: FontWeight.w500,
-                                    fontSize: 12,)
+                                    fontSize: 12,),
+                          /*        Obx(() {
+                                    return SliverList(
+                                      delegate: SliverChildBuilderDelegate((context, index) {
+                                     final item = controller.categoryDetails.value.service?.reviews?[index];
+                                        return ReviewCardItem(item: item);
+                                      },
+                                          childCount:controller.categoryDetails.value.service?.reviews != null?[].length )
+                                    );
+                                  }),*/
                                 ],
                               ),
                             ],
@@ -303,6 +305,7 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+
                         CustomText(
                           text: AppStrings.businessType,
                           textAlign: TextAlign.start,
@@ -370,17 +373,22 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
                     ),
 
                     Gap(24),
-                 if(widget.isShop) CustomButton(onTap: () {
-                      final businessID = controller.categoryDetails.value.service?.businessId;
+                    if(widget.isShop) CustomButton(onTap: () {
+                      final businessID = controller.categoryDetails.value
+                          .service?.businessId;
                       final id = controller.categoryDetails.value.service?.id;
 
-                      if (id == null || id.isEmpty || businessID == null || businessID.isEmpty) {
-                        debugPrint("🚫 Navigation prevented: id or businessId is null/empty");
+                      if (id == null || id.isEmpty || businessID == null ||
+                          businessID.isEmpty) {
+                        debugPrint(
+                            "🚫 Navigation prevented: id or businessId is null/empty");
                         return;
                       }
 
-                      if(!widget.showWebsite){
-                        debugPrint("🚫 Navigation prevented: isPetHotel is ${widget.showWebsite}");
+                      if (!widget.showWebsite) {
+                        debugPrint(
+                            "🚫 Navigation prevented: isPetHotel is ${widget
+                                .showWebsite}");
                       }
 
                       final extraData = {
@@ -393,7 +401,6 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
                         RoutePath.serviceScreen,
                         extra: extraData,
                       );
-
                     },
                       title: "What service do you want?",
                       textColor: Colors.black,),

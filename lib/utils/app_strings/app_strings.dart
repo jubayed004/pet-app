@@ -93,7 +93,7 @@ static const String confirmYourNewPassword = "Confirm your new password";
 ///===================================Home Screen========================////
 
   static const String searchForServices = "Search for services, items ....";
-  static const String activePetProfiles = "Active pet profiles";
+  static const String activePetProfiles = "Active Pet Profiles";
   static const String dogBorderCollie = "Dog | Border Collie";
   static const String findWhatYouNeed = "Find What You Need for Your Pet ";
   static const String petShops = "Pet shops";

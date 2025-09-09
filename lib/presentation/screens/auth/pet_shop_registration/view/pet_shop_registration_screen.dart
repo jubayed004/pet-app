@@ -177,51 +177,57 @@ class PetShopRegistrationScreen extends StatelessWidget {
                       children: [
                         Positioned.fill(
                           child:
-                              image != null && image.isNotEmpty
-                                  ? ClipRRect(
-                                    borderRadius: BorderRadius.circular(6),
-                                    child: Image.file(
-                                      File(
-                                        _authController
-                                                .selectedLogo
-                                                .value
-                                                ?.path ??
-                                            "",
-                                      ),
-                                      height: 156.h,
-                                      width: MediaQuery.of(context).size.width,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  )
-                                  : CustomNetworkImage(
-                                    imageUrl:
-                                        "https://www.rawpixel.com/image/12143311/png",
-                                    height: 156.h,
-                                    borderRadius: BorderRadius.circular(6),
-                                    width: MediaQuery.of(context).size.width,
-                                  ),
+                          image != null && image.isNotEmpty
+                              ? ClipRRect(
+                            borderRadius: BorderRadius.circular(6),
+                            child: Image.file(
+                              File(
+                                _authController
+                                    .selectedLogo
+                                    .value
+                                    ?.path ??
+                                    "",
+                              ),
+                              height: 156.h,
+                              width: MediaQuery
+                                  .of(context)
+                                  .size
+                                  .width,
+                              fit: BoxFit.cover,
+                            ),
+                          )
+                              : CustomNetworkImage(
+                            imageUrl:
+                            "https://www.rawpixel.com/image/12143311/png",
+                            height: 156.h,
+                            borderRadius: BorderRadius.circular(6),
+                            width: MediaQuery
+                                .of(context)
+                                .size
+                                .width,
+                          ),
                         ),
                         image != null && image.isNotEmpty
                             ? SizedBox()
                             : Center(
-                              child: Container(
-                                height: 30.h,
-                                width: 30.w,
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Color(0xffC2C2C2),
-                                    width: 1.w,
-                                  ),
-                                  color: AppColors.whiteColor700,
-                                  shape: BoxShape.circle,
-                                ),
-                                child: Icon(
-                                  Icons.image_outlined,
-                                  size: 18.sp,
-                                  color: AppColors.purple500,
-                                ),
+                          child: Container(
+                            height: 30.h,
+                            width: 30.w,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Color(0xffC2C2C2),
+                                width: 1.w,
                               ),
+                              color: AppColors.whiteColor700,
+                              shape: BoxShape.circle,
                             ),
+                            child: Icon(
+                              Icons.image_outlined,
+                              size: 18.sp,
+                              color: AppColors.purple500,
+                            ),
+                          ),
+                        ),
                       ],
                     );
                   }),
@@ -240,51 +246,57 @@ class PetShopRegistrationScreen extends StatelessWidget {
                       children: [
                         Positioned.fill(
                           child:
-                              image != null && image.isNotEmpty
-                                  ? ClipRRect(
-                                    borderRadius: BorderRadius.circular(6),
-                                    child: Image.file(
-                                      File(
-                                        _authController
-                                                .selectedPic
-                                                .value
-                                                ?.path ??
-                                            "",
-                                      ),
-                                      height: 156.h,
-                                      width: MediaQuery.of(context).size.width,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  )
-                                  : CustomNetworkImage(
-                                    imageUrl:
-                                        "https://www.rawpixel.com/image/12143311/png",
-                                    height: 156.h,
-                                    borderRadius: BorderRadius.circular(6),
-                                    width: MediaQuery.of(context).size.width,
-                                  ),
+                          image != null && image.isNotEmpty
+                              ? ClipRRect(
+                            borderRadius: BorderRadius.circular(6),
+                            child: Image.file(
+                              File(
+                                _authController
+                                    .selectedPic
+                                    .value
+                                    ?.path ??
+                                    "",
+                              ),
+                              height: 156.h,
+                              width: MediaQuery
+                                  .of(context)
+                                  .size
+                                  .width,
+                              fit: BoxFit.cover,
+                            ),
+                          )
+                              : CustomNetworkImage(
+                            imageUrl:
+                            "https://www.rawpixel.com/image/12143311/png",
+                            height: 156.h,
+                            borderRadius: BorderRadius.circular(6),
+                            width: MediaQuery
+                                .of(context)
+                                .size
+                                .width,
+                          ),
                         ),
                         image != null && image.isNotEmpty
                             ? SizedBox()
                             : Center(
-                              child: Container(
-                                height: 30.h,
-                                width: 30.w,
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Color(0xffC2C2C2),
-                                    width: 1.w,
-                                  ),
-                                  color: AppColors.whiteColor700,
-                                  shape: BoxShape.circle,
-                                ),
-                                child: Icon(
-                                  Icons.image_outlined,
-                                  size: 18.sp,
-                                  color: AppColors.purple500,
-                                ),
+                          child: Container(
+                            height: 30.h,
+                            width: 30.w,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Color(0xffC2C2C2),
+                                width: 1.w,
                               ),
+                              color: AppColors.whiteColor700,
+                              shape: BoxShape.circle,
                             ),
+                            child: Icon(
+                              Icons.image_outlined,
+                              size: 18.sp,
+                              color: AppColors.purple500,
+                            ),
+                          ),
+                        ),
                       ],
                     );
                   }),
@@ -300,7 +312,7 @@ class PetShopRegistrationScreen extends StatelessWidget {
                       onTap: () {
                         // Toggling the rememberMe value
                         _authController.rememberMe.value =
-                            !_authController.rememberMe.value;
+                        !_authController.rememberMe.value;
                       },
                       child: Container(
                         alignment: Alignment.center,
@@ -308,9 +320,9 @@ class PetShopRegistrationScreen extends StatelessWidget {
                         width: 16.w,
                         decoration: BoxDecoration(
                           color:
-                              _authController.rememberMe.value
-                                  ? AppColors.purple500
-                                  : Colors.transparent,
+                          _authController.rememberMe.value
+                              ? AppColors.purple500
+                              : Colors.transparent,
                           border: Border.all(
                             width: .5.sp,
                             color: AppColors.secondPrimaryColor,
@@ -319,13 +331,13 @@ class PetShopRegistrationScreen extends StatelessWidget {
                         ),
                         child: Center(
                           child:
-                              _authController.rememberMe.value
-                                  ? Icon(
-                                    Icons.check,
-                                    color: AppColors.whiteColor,
-                                    size: 14.sp,
-                                  )
-                                  : const SizedBox(),
+                          _authController.rememberMe.value
+                              ? Icon(
+                            Icons.check,
+                            color: AppColors.whiteColor,
+                            size: 14.sp,
+                          )
+                              : const SizedBox(),
                         ),
                       ),
                     );
@@ -348,12 +360,12 @@ class PetShopRegistrationScreen extends StatelessWidget {
                             decoration: TextDecoration.underline,
                           ),
                           recognizer:
-                              TapGestureRecognizer()
-                                ..onTap = () {
-                                  AppRouter.route.pushNamed(
-                                    RoutePath.termsOfCondition,
-                                  );
-                                },
+                          TapGestureRecognizer()
+                            ..onTap = () {
+                              AppRouter.route.pushNamed(
+                                RoutePath.termsOfCondition,
+                              );
+                            },
                         ),
                       ],
                     ),

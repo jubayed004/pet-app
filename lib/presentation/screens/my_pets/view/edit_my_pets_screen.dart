@@ -27,8 +27,18 @@ class EditMyPetsScreen extends StatefulWidget {
   final String color;
   final String breed;
 
-  const EditMyPetsScreen(
-      {super.key, required this.name, required this.age, required this.gender, required this.weight, required this.height, required this.color, required this.petType, required this.breed, required this.id});
+  const EditMyPetsScreen({
+    super.key,
+    required this.name,
+    required this.age,
+    required this.gender,
+    required this.weight,
+    required this.height,
+    required this.color,
+    required this.petType,
+    required this.breed,
+    required this.id,
+  });
 
   @override
   State<EditMyPetsScreen> createState() => _EditMyPetsScreenState();
@@ -36,8 +46,7 @@ class EditMyPetsScreen extends StatefulWidget {
 
 class _EditMyPetsScreenState extends State<EditMyPetsScreen> {
   final controller = GetControllers.instance.getMyPetsProfileController();
-  final navigationController = GetControllers.instance
-      .getNavigationControllerMain();
+  final navigationController = GetControllers.instance.getNavigationControllerMain();
   TextEditingController petNameController = TextEditingController();
   TextEditingController petTypeController = TextEditingController();
   TextEditingController ageController = TextEditingController();
@@ -83,25 +92,19 @@ class _EditMyPetsScreenState extends State<EditMyPetsScreen> {
         backgroundColor: Colors.white,
         body: CustomScrollView(
           slivers: [
-            CustomDefaultAppbar(title: "Edit My Pet",),
+            CustomDefaultAppbar(title: "Edit My Pet"),
             SliverToBoxAdapter(
               child: Obx(() {
                 return Stack(
                   children: [
                     controller.selectedImage.value != null
-                        ? Image.file(
-                      File(controller.selectedImage.value!.path),
-                      fit: BoxFit.cover,
-                      width: double.infinity,
-                      height: 200.h,
-                    )
+                        ? Image.file(File(controller.selectedImage.value!.path), fit: BoxFit.cover, width: double.infinity, height: 200.h)
                         : Image.network(
-                      'https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=800&q=80',
-                      fit: BoxFit.cover,
-                      width: double.infinity,
-                      height: 200.h,
-
-                    ),
+                          'https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=800&q=80',
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          height: 200.h,
+                        ),
                     Positioned(
                       top: 0,
                       bottom: 0,
@@ -111,11 +114,7 @@ class _EditMyPetsScreenState extends State<EditMyPetsScreen> {
                         onTap: () {
                           controller.pickImage();
                         },
-                        child: Icon(
-                          Icons.camera_alt,
-                          size: 40,
-                          color: AppColors.primaryColor,
-                        ),
+                        child: Icon(Icons.camera_alt, size: 40, color: AppColors.primaryColor),
                       ),
                     ),
                   ],
@@ -124,16 +123,12 @@ class _EditMyPetsScreenState extends State<EditMyPetsScreen> {
             ),
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 16.0, vertical: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20),
                 child: Form(
                   key: _formKey,
                   child: Column(
                     children: [
-                      CustomAlignText(
-                        text: AppStrings.petName,
-                        fontWeight: FontWeight.w500,
-                      ),
+                      CustomAlignText(text: AppStrings.petName, fontWeight: FontWeight.w500),
                       Gap(8.0),
                       CustomTextField(
                         hintText: "Enter your pet name",
@@ -144,10 +139,7 @@ class _EditMyPetsScreenState extends State<EditMyPetsScreen> {
                         textEditingController: petNameController,
                       ),
                       Gap(14),
-                      CustomAlignText(
-                        text: AppStrings.petType,
-                        fontWeight: FontWeight.w500,
-                      ),
+                      CustomAlignText(text: AppStrings.petType, fontWeight: FontWeight.w500),
                       Gap(8.0),
                       CustomTextField(
                         hintText: "Enter your pet type",
@@ -158,10 +150,7 @@ class _EditMyPetsScreenState extends State<EditMyPetsScreen> {
                         textEditingController: petTypeController,
                       ),
                       Gap(14),
-                      CustomAlignText(
-                        text: AppStrings.age,
-                        fontWeight: FontWeight.w500,
-                      ),
+                      CustomAlignText(text: AppStrings.age, fontWeight: FontWeight.w500),
                       Gap(8.0),
                       CustomTextField(
                         hintText: AppStrings.enterAge,
@@ -173,8 +162,8 @@ class _EditMyPetsScreenState extends State<EditMyPetsScreen> {
                       ),
                       Gap(14),
                       CustomDropdown(
-                        onChanged: (value){
-                          if( value!=null){
+                        onChanged: (value) {
+                          if (value != null) {
                             controller.genderSelected.value = value;
                           }
                         },
@@ -186,10 +175,7 @@ class _EditMyPetsScreenState extends State<EditMyPetsScreen> {
 
                       Gap(14),
 
-                      CustomAlignText(
-                        text: AppStrings.weight,
-                        fontWeight: FontWeight.w500,
-                      ),
+                      CustomAlignText(text: AppStrings.weight, fontWeight: FontWeight.w500),
                       Gap(8.0),
                       CustomTextField(
                         fieldBorderColor: AppColors.purple500,
@@ -200,10 +186,7 @@ class _EditMyPetsScreenState extends State<EditMyPetsScreen> {
                         textEditingController: weightController,
                       ),
                       Gap(14),
-                      CustomAlignText(
-                        text: AppStrings.height,
-                        fontWeight: FontWeight.w500,
-                      ),
+                      CustomAlignText(text: AppStrings.height, fontWeight: FontWeight.w500),
                       Gap(8.0),
                       CustomTextField(
                         fieldBorderColor: AppColors.purple500,
@@ -214,10 +197,7 @@ class _EditMyPetsScreenState extends State<EditMyPetsScreen> {
                         textEditingController: heightController,
                       ),
                       Gap(14),
-                      CustomAlignText(
-                        text: AppStrings.color,
-                        fontWeight: FontWeight.w500,
-                      ),
+                      CustomAlignText(text: AppStrings.color, fontWeight: FontWeight.w500),
                       Gap(8.0),
                       CustomTextField(
                         fieldBorderColor: AppColors.purple500,
@@ -228,10 +208,7 @@ class _EditMyPetsScreenState extends State<EditMyPetsScreen> {
                         textEditingController: colorController,
                       ),
                       Gap(14),
-                      CustomAlignText(
-                        text: AppStrings.breed,
-                        fontWeight: FontWeight.w500,
-                      ),
+                      CustomAlignText(text: AppStrings.breed, fontWeight: FontWeight.w500),
                       Gap(8.0),
                       CustomTextField(
                         fieldBorderColor: AppColors.purple500,
@@ -262,30 +239,32 @@ class _EditMyPetsScreenState extends State<EditMyPetsScreen> {
                         return CustomButton(
                           isLoading: controller.isUpdateLoading.value,
                           onTap: () {
-                          final body = {
-                            "name": petNameController.text,
-                            "animalType": petTypeController.text,
-                            "breed": breedController.text,
-                            "age": ageController.text,
-                            "gender": controller.genderSelected.value,
-                            "weight": weightController.text,
-                            "height": heightController.text,
-                            "color": colorController.text,
-                          };
-                          if (_formKey.currentState!.validate()) {
-                            controller.updateMyPet(body: body, id: widget.id);
-                          }
-/*
+                            final body = {
+                              "name": petNameController.text,
+                              "animalType": petTypeController.text,
+                              "breed": breedController.text,
+                              "age": ageController.text,
+                              "gender": controller.genderSelected.value,
+                              "weight": weightController.text,
+                              "height": heightController.text,
+                              "color": colorController.text,
+                            };
+                            if (_formKey.currentState!.validate()) {
+                              controller.updateMyPet(body: body, id: widget.id);
+                            }
+                            /*
                           navigationController.selectedNavIndex.value = 3;
                         AppRouter.route.goNamed(RoutePath.navigationPage);*/
-                        }, title: "Save", textColor: Colors.black,
+                          },
+                          title: "Save",
+                          textColor: Colors.black,
                         );
-                      })
+                      }),
                     ],
                   ),
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

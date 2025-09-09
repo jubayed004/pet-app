@@ -144,8 +144,9 @@ class ProfileController extends GetxController {
 
 @override
   void onReady() {
+  super.onReady();
   userProfile();
-    super.onReady();
+
   }
 
 }

@@ -90,6 +90,9 @@ final _formKey = GlobalKey<FormState>();
                     }),
 
                     Obx(() {
+                      final provider = controller.categoryDetails.value.service?.providings ?? [];
+                      final stringProvider = provider.isNotEmpty ? provider.first : "";
+                      final List<String> providerList = stringProvider.split(',').map((e) => e.trim()).where((e) => e.isNotEmpty).toList();
                       return CustomDropdown(
                         onChanged: (v) {
                           if (v != null && v.isNotEmpty) {
@@ -97,7 +100,7 @@ final _formKey = GlobalKey<FormState>();
                           }
                         },
                         title: "Select your services",
-                        items: controller.categoryDetails.value.service?.providings ?? [],
+                        items: providerList,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please select a service';
