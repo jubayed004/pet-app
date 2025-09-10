@@ -1,21 +1,21 @@
 
-class SearchHomeModel {
+class MapCategoryDetailsModel {
   final bool? success;
   final String? message;
-  final List<ServiceItem>? services;
+  final List<Service>? services;
   final int? count;
 
-  SearchHomeModel({
+  MapCategoryDetailsModel({
     this.success,
     this.message,
     this.services,
     this.count,
   });
 
-  factory SearchHomeModel.fromJson(Map<String, dynamic> json) => SearchHomeModel(
+  factory MapCategoryDetailsModel.fromJson(Map<String, dynamic> json) => MapCategoryDetailsModel(
     success: json["success"],
     message: json["message"],
-    services: json["services"] == null ? [] : List<ServiceItem>.from(json["services"]!.map((x) => ServiceItem.fromJson(x))),
+    services: json["services"] == null ? [] : List<Service>.from(json["services"]!.map((x) => Service.fromJson(x))),
     count: json["count"],
   );
 
@@ -27,7 +27,7 @@ class SearchHomeModel {
   };
 }
 
-class ServiceItem {
+class Service {
   final String? id;
   final String? serviceType;
   final String? serviceName;
@@ -54,7 +54,7 @@ class ServiceItem {
   final double? distanceKm;
   final bool? isOpenNow;
 
-  ServiceItem({
+  Service({
     this.id,
     this.serviceType,
     this.serviceName,
@@ -82,7 +82,7 @@ class ServiceItem {
     this.isOpenNow,
   });
 
-  factory ServiceItem.fromJson(Map<String, dynamic> json) => ServiceItem(
+  factory Service.fromJson(Map<String, dynamic> json) => Service(
     id: json["_id"],
     serviceType: json["serviceType"],
     serviceName: json["serviceName"],

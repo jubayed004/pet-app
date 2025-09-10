@@ -10,8 +10,11 @@ import 'package:pet_app/core/custom_assets/assets.gen.dart';
 import 'package:pet_app/presentation/components/custom_button/custom_defualt_appbar.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:pet_app/presentation/no_internet/error_card.dart';
+import 'package:pet_app/presentation/screens/category/widgets/category_card_widget.dart';
+import 'package:pet_app/presentation/screens/search/widget/search_item_card.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
 
+import 'model/country_city_model.dart';
 import 'widget/search_drawer.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -28,6 +31,7 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
+      top: false,
       child: Scaffold(
         backgroundColor: Colors.white,
         key: _scaffoldState,
@@ -42,7 +46,6 @@ class _SearchScreenState extends State<SearchScreen> {
                 CustomDefaultAppbar(title: "What are you looking for?",),
                 /// Floating AppBar (Search + Filter)
                 SliverPersistentHeader(
-
                   floating: true,
                   pinned: false,
                   delegate: _SearchHeaderDelegate(
@@ -149,30 +152,13 @@ class _SearchScreenState extends State<SearchScreen> {
                 /// Paged List
                 SliverPadding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
-                  sliver: PagedSliverList<int, Widget>(
+                  sliver: PagedSliverList<int, ServiceItem>(
                     pagingController: controller.pagingController,
-                    builderDelegate: PagedChildBuilderDelegate<Widget>(
+                    builderDelegate: PagedChildBuilderDelegate<ServiceItem>(
                       itemBuilder: (context, item, index) {
-                        return Container(
-                          margin: const EdgeInsets.only(bottom: 16, top: 16),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(
-                                color: AppColors.greenColor.withOpacity(0.4),
-                                width: 1),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.1),
-                                blurRadius: 8,
-                                offset: const Offset(1, 2),
-                              ),
-                            ],
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(12),
-                            child: item,
-                          ),
+                        return SearchItemCardWidget(
+                          item: item,
+
                         );
                       },
                       firstPageErrorIndicatorBuilder: (context) {

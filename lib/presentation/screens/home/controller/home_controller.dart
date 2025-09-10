@@ -79,7 +79,7 @@ class HomeController extends GetxController{
  loadingMethod(Status status) => loading.value = status;
  final Rx<HomeHeaderModel> homeHeader = HomeHeaderModel().obs;
 
- Future<void> userHome() async{
+ Future<void> userHomeHeader() async{
    loadingMethod(Status.completed);
    try{
      loadingMethod(Status.loading);
@@ -104,9 +104,7 @@ class HomeController extends GetxController{
 
  @override
   void onInit() {
-/*    pagingController.addPageRequestListener((pageKey) {
-    getProject(pageKey);
-    });*/
-    super.onInit();
+   super.onInit();
+   userHomeHeader();
   }
 }

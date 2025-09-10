@@ -62,6 +62,8 @@ class ApiUrl {
   static getCategoryDetails({required String id}) => '$base/services/getServicesById/$id';
   static getService({required String type,required int page}) => '$base/user-home-page/getServicesByType/$type?limit=10&page=$page';
   static getPetHealth({required String status,required int page,required String id}) => '$base/pet/get-medical-history/$id?treatmentStatus=$status&limit=1&page=$page';
+  static getMapDetailsCategory({required String type,required String lat,required String long}) => '$base/services/nearby?type=$type&lat=$lat&long=$long';
+  static getAllSearch({required int pageKey }) => '$base/user-home-page/services/search?limit=10&page=$pageKey';
 
   /// Booking MY Appointment
   static createBookingAppointment() => '$base/booking/create-booking';
@@ -106,7 +108,6 @@ class ApiUrl {
 
   ///User All==================
 
-  static getAllSearch({required int pageKey,required String search, required String placeId, required String city, required String country}) => '$base/place/get-all-place?searchTerm=$search&city=$city&country=$country&placeType=$placeId&status=Approved&page=$pageKey&limit=10';
   static getSinglePlace({required String id}) => '$base/place/get-single-place/$id';
   static addPlace() => '$base/place/add-place';
   static getNotification({required int pageKey}) => '$base/notification/get-all-notifications?page=$pageKey&limit=20';

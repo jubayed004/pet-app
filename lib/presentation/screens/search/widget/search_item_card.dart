@@ -7,6 +7,7 @@ import 'package:pet_app/core/custom_assets/assets.gen.dart';
 import 'package:pet_app/helper/image/network_image.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_service/widgets/default_dialog.dart';
 import 'package:pet_app/presentation/screens/category/model/category_model.dart';
+import 'package:pet_app/presentation/screens/search/model/country_city_model.dart';
 import 'package:pet_app/service/api_url.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -17,21 +18,20 @@ import '../../../components/custom_button/custom_button.dart';
 import '../../../components/custom_image/custom_image.dart';
 import '../../../components/custom_text/custom_text.dart';
 
-class CategoryCardWidget extends StatelessWidget {
-  const CategoryCardWidget({
-    super.key,
-    required this.item,
-    this.showWebsite = false,
-    this.isShop = true,
+class SearchItemCardWidget extends StatelessWidget {
+  const SearchItemCardWidget({
+    super.key, required this.item,
+
+
 
   });
 
-  final CategoryServiceItem item;
-  final bool showWebsite;
-  final bool isShop;
+  final ServiceItem item;
+
 
   @override
   Widget build(BuildContext context) {
+
     final id = item.id ?? "";
     final serviceImage = item.servicesImages ?? "";
     final shop = item.isOpenNow ?? false;
@@ -49,7 +49,7 @@ class CategoryCardWidget extends StatelessWidget {
       onTap: () {
         AppRouter.route.pushNamed(
           RoutePath.categoryDetailsScreen,
-          extra: [showWebsite, id,isShop],
+          extra: [ id],
         );
       },
       child: Container(
@@ -70,15 +70,15 @@ class CategoryCardWidget extends StatelessWidget {
                     children: [
                       image.isNotEmpty
                           ? Image.network(
-                            "${ApiUrl.imageBase}$image",
-                            fit: BoxFit.cover,
+                        "${ApiUrl.imageBase}$image",
+                        fit: BoxFit.cover,
                         height: MediaQuery.of(context).size.height / 10,
                         width: MediaQuery.of(context).size.width,
-                          )
+                      )
                           : CustomImage(
-                            imageSrc: "assets/images/womandogimage.png",
-                            boxFit: BoxFit.cover,
-                          ),
+                        imageSrc: "assets/images/womandogimage.png",
+                        boxFit: BoxFit.cover,
+                      ),
                       Gap(6),
                       CustomText(
                         text: shop? "Open":"Closed",
@@ -149,16 +149,16 @@ class CategoryCardWidget extends StatelessWidget {
                 ),
                 logo.isNotEmpty
                     ? CustomNetworkImage(
-                      boxShape: BoxShape.circle,
-                      width: MediaQuery.of(context).size.width / 8,
-                      height: MediaQuery.of(context).size.height / 10,
-                      imageUrl:
-                          "${ApiUrl.imageBase}${logo.replaceAll("\\", "/")}",
-                    )
+                  boxShape: BoxShape.circle,
+                  width: MediaQuery.of(context).size.width / 8,
+                  height: MediaQuery.of(context).size.height / 10,
+                  imageUrl:
+                  "${ApiUrl.imageBase}${logo.replaceAll("\\", "/")}",
+                )
                     : CustomImage(
-                      imageSrc: "assets/images/petshoplogo.png",
-                      sizeWidth: 50,
-                    ),
+                  imageSrc: "assets/images/petshoplogo.png",
+                  sizeWidth: 50,
+                ),
               ],
             ),
             Gap(8),

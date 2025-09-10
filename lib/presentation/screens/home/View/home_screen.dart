@@ -58,31 +58,34 @@ class _HomeScreenState extends State<HomeScreen> {
       top: false,
       child: Scaffold(
         backgroundColor: AppColors.appBackgroundColor,
-        body: CustomScrollView(
-          slivers: [
-            _buildAppBar(),
-            _buildOnboardingSection(),
-            const SliverGap(8),
-            _buildFindWhatYouNeedTitle(),
-            const SliverGap(8),
-            SliverToBoxAdapter(child: CategoryList(controller: homeController)),
-            SliverToBoxAdapter(
-              child: Padding(padding: const EdgeInsets.symmetric(horizontal: 16), child: CustomImage(imageSrc: "assets/images/adshome.png")),
-            ),
-            _buildAppointmentsHeader(),
-            _buildAppointmentsSection(),
-            const SliverGap(16),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [CustomText(text: AppStrings.topBrands, fontWeight: FontWeight.w400, fontSize: 18), TopBrandsCarousel()],
+        body: RefreshIndicator(
+          onRefresh: ()async{
+            homeController.userHomeHeader();
+          },
+          child: CustomScrollView(
+            slivers: [
+              _buildAppBar(),
+              _buildOnboardingSection(),
+              const SliverGap(8),
+              _buildFindWhatYouNeedTitle(),
+              const SliverGap(8),
+              SliverToBoxAdapter(child: CategoryList(controller: homeController)),
+              _buildAdsSection(), // Ads Section
+              _buildAppointmentsHeader(),
+              _buildAppointmentsSection(),
+              const SliverGap(16),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [CustomText(text: AppStrings.topBrands, fontWeight: FontWeight.w400, fontSize: 18), TopBrandsCarousel()],
+                  ),
                 ),
               ),
-            ),
-            const SliverGap(24),
-          ],
+              const SliverGap(24),
+            ],
+          ),
         ),
       ),
     );
@@ -112,9 +115,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       width: 50,
                       decoration: const BoxDecoration(shape: BoxShape.circle),
                       child: Obx(() {
-                        final imageFile = controller.selectedImage.value;
+                        final imageFile = homeController.homeHeader.value.data?.userPic;
+
                         if (imageFile != null) {
-                          return ClipOval(child: Image.file(File(imageFile.path), width: 50, height: 50, fit: BoxFit.cover));
+                          return CustomNetworkImage(imageUrl: "${ApiUrl.imageBase}$imageFile", boxShape: BoxShape.circle);
                         } else {
                           return Shimmer.fromColors(
                             baseColor: AppColors.blackColor.withAlpha(50),
@@ -177,8 +181,7 @@ class _HomeScreenState extends State<HomeScreen> {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(AppStrings.activePetProfiles,
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              Text(AppStrings.activePetProfiles, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               const Gap(16),
               item.isNotEmpty
                   ? CarouselSlider.builder(
@@ -186,22 +189,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemBuilder: (context, index, realIndex) {
                   final petName = item[index];
                   final image = petName.petPhoto ?? "";
-                  final imageUrl = image.isEmpty
-                      ? "assets/images/default_pet_image.png"
-                      : "${ApiUrl.imageBase}$image";
-                   print(petName);
+                  final imageUrl = image.isEmpty ? "assets/images/default_pet_image.png" : "${ApiUrl.imageBase}$image";
                   return Container(
                     padding: const EdgeInsets.all(24),
-                    decoration: BoxDecoration(
-                      color: AppColors.primaryColor,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
+                    decoration: BoxDecoration(color: AppColors.primaryColor, borderRadius: BorderRadius.circular(20)),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        CustomText(text: petName.name ?? "Unknown"),
-                        CustomNetworkImage(imageUrl: imageUrl), // Using the resolved imageUrl
-                    /*    const CustomImage(imageSrc: "assets/images/petkalloimage.png", sizeWidth: 80),*/
+                        CustomText(text: petName.name ?? "Unknown", fontWeight: FontWeight.w600, fontSize: 16.sp),
+                        CustomNetworkImage(imageUrl: imageUrl, height: 50, width: 100, boxShape: BoxShape.circle),
                       ],
                     ),
                   );
@@ -214,12 +210,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   enableInfiniteScroll: true,
                   scrollPhysics: NeverScrollableScrollPhysics(),
                   onPageChanged: (index, reason) {
-                    homeController.currentIndex.value = index;
+                    homeController.currentIndex.value = index; // Update the index here
                   },
                 ),
               )
                   : SizedBox(),
               const Gap(10),
+              // Dots indicator based on currentIndex
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: List.generate(item.length, (index) => buildDot(index)),
@@ -231,13 +228,93 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  /// -------------------- Dots Indicator --------------------
+  Widget buildDot(int index) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 8),
+      child: Obx(() {
+        return Container(
+          height: 6,
+          width: homeController.currentIndex.value == index ? 24 : 6, // Use the correct controller
+          margin: const EdgeInsets.only(right: 5),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: homeController.currentIndex.value == index ? AppColors.primaryColor : AppColors.lightGray,
+          ),
+        );
+      }),
+    );
+  }
+
+  /// -------------------- Ads Section --------------------
+  SliverToBoxAdapter _buildAdsSection() {
+    final List<String> ads = [
+      "assets/images/adshome.png",
+      "assets/images/adshome.png",
+      "assets/images/adshome.png",
+    ];
+
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Obx(() {
+          final item = homeController.homeHeader.value.data?.petList ?? [];
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(AppStrings.activePetProfiles, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              const Gap(16),
+              item.isNotEmpty
+                  ? CarouselSlider.builder(
+                itemCount: item.length,
+                itemBuilder: (context, index, realIndex) {
+                  final petName = item[index];
+                  final image = petName.petPhoto ?? "";
+                  final imageUrl = image.isEmpty ? "assets/images/default_pet_image.png" : "${ApiUrl.imageBase}$image";
+                  return Container(
+                    padding: const EdgeInsets.all(24),
+                    decoration: BoxDecoration(color: AppColors.primaryColor, borderRadius: BorderRadius.circular(20)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        CustomText(text: petName.name ?? "Unknown", fontWeight: FontWeight.w600, fontSize: 16.sp),
+                        CustomNetworkImage(imageUrl: imageUrl, height: 50, width: 100, boxShape: BoxShape.circle),
+                      ],
+                    ),
+                  );
+                },
+                options: CarouselOptions(
+                  height: MediaQuery.of(context).size.height / 8,
+                  autoPlay: true,
+                  autoPlayInterval: Duration(seconds: 2),
+                  enlargeCenterPage: true,
+                  enableInfiniteScroll: true,
+                  scrollPhysics: NeverScrollableScrollPhysics(),
+                  onPageChanged: (index, reason) {
+                    homeController.currentIndex.value = index; // Update the index here
+                  },
+                ),
+              )
+                  : SizedBox(),
+              const Gap(10),
+              // Dots indicator based on currentIndex
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(item.length, (index) => buildDot(index)),
+              ),
+            ],
+          );
+        }),
+      ),
+    );
+  }
 
   /// -------------------- Find What You Need --------------------
   SliverToBoxAdapter _buildFindWhatYouNeedTitle() {
-    return const SliverToBoxAdapter(
+    return SliverToBoxAdapter(
       child: Padding(
         padding: EdgeInsets.only(left: 16),
-        child: CustomText(text: AppStrings.findWhatYouNeed, textAlign: TextAlign.start, fontWeight: FontWeight.w400, fontSize: 18),
+        child: CustomText(text: AppStrings.findWhatYouNeed, textAlign: TextAlign.start, fontWeight: FontWeight.w400, fontSize: 18.sp),
       ),
     );
   }
@@ -250,10 +327,10 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const CustomText(text: AppStrings.upcomingAppointments, fontWeight: FontWeight.w400, fontSize: 18),
+            CustomText(text: AppStrings.upcomingAppointments, fontWeight: FontWeight.w400, fontSize: 18.sp),
             TextButton(
               onPressed: () => AppRouter.route.pushNamed(RoutePath.myAppointmentScreen),
-              child: const CustomText(text: AppStrings.seeAll, fontWeight: FontWeight.w400, fontSize: 14),
+              child: CustomText(text: AppStrings.seeAll, fontWeight: FontWeight.w400, fontSize: 14.sp),
             ),
           ],
         ),
@@ -294,24 +371,6 @@ class _HomeScreenState extends State<HomeScreen> {
           );
         }),
       ),
-    );
-  }
-
-  /// -------------------- Dots Indicator --------------------
-  Widget buildDot(int index) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 8),
-      child: Obx(() {
-        return Container(
-          height: 6,
-          width: _controller.currentIndex.value == index ? 24 : 6,
-          margin: const EdgeInsets.only(right: 5),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            color: _controller.currentIndex.value == index ? AppColors.primaryColor : AppColors.lightGray,
-          ),
-        );
-      }),
     );
   }
 }

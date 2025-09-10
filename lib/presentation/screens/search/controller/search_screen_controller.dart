@@ -4,52 +4,42 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pet_app/core/dependency/get_it_injection.dart';
+import 'package:pet_app/presentation/screens/search/model/country_city_model.dart';
 import 'package:pet_app/service/api_service.dart';
 import 'package:pet_app/service/api_url.dart';
 
 class SearchScreenController extends GetxController{
   final ApiClient apiClient = serviceLocator();
-  RxString categoryId = "".obs;
-  RxString countryID = "".obs;
-  RxString cityId = "".obs;
+
   final TextEditingController searchController = TextEditingController();
 
-  final PagingController<int, Widget> pagingController = PagingController(firstPageKey: 1);
+  final PagingController<int, ServiceItem> pagingController = PagingController(firstPageKey: 1);
   final RxString search = "".obs;
   RxBool isLoadingMove = false.obs;
 
-/*  @override
+  @override
   void onInit() {
     super.onInit();
     pagingController.addPageRequestListener((pageKey) {
       getAllSearch(pageKey);
     });
-  }*/
-  List<Widget> bitwiseCard = [
+  }
 
 
-
-  ];
-
-/*
   Future<void> getAllSearch( int pageKey ) async {
-    pagingController.appendLastPage(bitwiseCard);
+
   if (isLoadingMove.value) return;
     isLoadingMove.value = true;
 
     try {
       final response = await apiClient.get(url: ApiUrl.getAllSearch(
         pageKey: pageKey,
-        search: search.value,
-        city: cityId.value,
-        country: countryID.value,
-        placeId: categoryId.value,
       ));
 
       if (response.statusCode == 200) {
-        final HomeModel homeModel = HomeModel.fromJson(response.body);
+        final SearchHomeModel searchHomeModel = SearchHomeModel.fromJson(response.body);
 
-        final newItems = homeModel.data?.result ?? [];
+        final newItems = searchHomeModel.services ?? [];
 
         final isLastPage = newItems.length < pageKey;
 
@@ -68,6 +58,7 @@ class SearchScreenController extends GetxController{
     }
 
   }
+/*
   Rx<Status> countryCity = Status.loading.obs;
   Rx<CountryCityModel> countryCityModel = CountryCityModel().obs;
 
@@ -86,8 +77,8 @@ class SearchScreenController extends GetxController{
       countryCity(Status.error);
     }
   }
-
 */
+
 
 
 

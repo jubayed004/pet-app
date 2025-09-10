@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:map_location_picker/map_location_picker.dart'; // Import the package
 import 'package:pet_app/controller/get_controllers.dart';
 import 'package:pet_app/helper/image/network_image.dart';
 import 'package:pet_app/presentation/components/custom_button/custom_button.dart';
@@ -17,36 +18,30 @@ class BusinessAddServiceScreen extends StatefulWidget {
   const BusinessAddServiceScreen({super.key});
 
   @override
-  State<BusinessAddServiceScreen> createState() =>
-      _BusinessAddServiceScreenState();
+  State<BusinessAddServiceScreen> createState() => _BusinessAddServiceScreenState();
 }
 
 class _BusinessAddServiceScreenState extends State<BusinessAddServiceScreen> {
-  final businessAddServiceController =
-      GetControllers.instance.getBusinessAddServiceController();
-  final TextEditingController serviceName = TextEditingController();
-  final TextEditingController phoneNumber = TextEditingController();
-  final TextEditingController location = TextEditingController();
-  final TextEditingController webSiteLInk = TextEditingController();
-  final ValueNotifier<List<TextEditingController>> serviceController =
-      ValueNotifier([TextEditingController()]);
+  final businessAddServiceController = GetControllers.instance.getBusinessAddServiceController();
+  final serviceName = TextEditingController();
+  final phoneNumber = TextEditingController();
+  final webSiteLInk = TextEditingController();
+  final serviceController = ValueNotifier<List<TextEditingController>>([TextEditingController()]);
+  final selectedLocation = ValueNotifier<RecordLocation>(RecordLocation(LatLng(0.0, 0.0), ""));
   final _formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
     serviceName.dispose();
     phoneNumber.dispose();
-    location.dispose();
     webSiteLInk.dispose();
     serviceController.dispose();
+    selectedLocation.dispose();
     super.dispose();
   }
 
   void _addBeltField() {
-    serviceController.value = [
-      ...serviceController.value,
-      TextEditingController(),
-    ];
+    serviceController.value = [...serviceController.value, TextEditingController()];
   }
 
   void _removeBeltField(int index) {
@@ -66,11 +61,7 @@ class _BusinessAddServiceScreenState extends State<BusinessAddServiceScreen> {
         scrolledUnderElevation: 0,
         backgroundColor: AppColors.whiteColor,
         centerTitle: true,
-        title: CustomText(
-          fontWeight: FontWeight.w600,
-          fontSize: 16,
-          text: "Ädd Service",
-        ),
+        title: CustomText(fontWeight: FontWeight.w600, fontSize: 16, text: "Add Service"),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -80,11 +71,7 @@ class _BusinessAddServiceScreenState extends State<BusinessAddServiceScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CustomText(
-                  text: "Service  Photo",
-                  fontWeight: FontWeight.w400,
-                  fontSize: 16,
-                ),
+                CustomText(text: "Service Photo", fontWeight: FontWeight.w400, fontSize: 16),
                 Gap(8),
                 GestureDetector(
                   onTap: businessAddServiceController.pickImage,
@@ -100,10 +87,7 @@ class _BusinessAddServiceScreenState extends State<BusinessAddServiceScreen> {
                                 image != null && image.isNotEmpty
                                     ? ClipRRect(
                                       borderRadius: BorderRadius.circular(6),
-                                      child: Image.file(
-                                        File(image),
-                                        height: 156.h,
-                                        width: MediaQuery.of(context).size.width, fit: BoxFit.cover,),
+                                      child: Image.file(File(image), height: 156.h, width: MediaQuery.of(context).size.width, fit: BoxFit.cover),
                                     )
                                     : CustomNetworkImage(
                                       imageUrl: "",
@@ -119,18 +103,11 @@ class _BusinessAddServiceScreenState extends State<BusinessAddServiceScreen> {
                                   height: 30.h,
                                   width: 30.w,
                                   decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: Color(0xffC2C2C2),
-                                      width: 1.w,
-                                    ),
+                                    border: Border.all(color: Color(0xffC2C2C2), width: 1.w),
                                     color: AppColors.whiteColor700,
                                     shape: BoxShape.circle,
                                   ),
-                                  child: Icon(
-                                    Icons.image_outlined,
-                                    size: 18.sp,
-                                    color: AppColors.purple500,
-                                  ),
+                                  child: Icon(Icons.image_outlined, size: 18.sp, color: AppColors.purple500),
                                 ),
                               ),
                         ],
@@ -139,11 +116,7 @@ class _BusinessAddServiceScreenState extends State<BusinessAddServiceScreen> {
                   ),
                 ),
                 Gap(14),
-                CustomText(
-                  text: "Service Type",
-                  fontWeight: FontWeight.w500,
-                  fontSize: 16,
-                ),
+                CustomText(text: "Service Type", fontWeight: FontWeight.w500, fontSize: 16),
                 Gap(8),
                 CustomDropdownField(
                   hintText: "Service Type",
@@ -153,17 +126,12 @@ class _BusinessAddServiceScreenState extends State<BusinessAddServiceScreen> {
                       }).toList(),
                   onChanged: (value) {
                     if (value != null) {
-                      businessAddServiceController.selectedAnalystType.value =
-                          value ?? "";
+                      businessAddServiceController.selectedAnalystType.value = value ?? "";
                     }
                   },
                 ),
                 Gap(16),
-                CustomText(
-                  text: "Providing Service",
-                  fontWeight: FontWeight.w500,
-                  fontSize: 16,
-                ),
+                CustomText(text: "Providing Service", fontWeight: FontWeight.w500, fontSize: 16),
                 Gap(8),
                 ValueListenableBuilder<List<TextEditingController>>(
                   valueListenable: serviceController,
@@ -194,15 +162,11 @@ class _BusinessAddServiceScreenState extends State<BusinessAddServiceScreen> {
                                     if (v.length > 50) {
                                       return 'Must be 50 characters or fewer';
                                     }
-                                    final ok = RegExp(
-                                      r"^[A-Za-z0-9&/.,\-()' ]+$",
-                                    );
+                                    final ok = RegExp(r"^[A-Za-z0-9&/.,\-()' ]+$");
                                     if (!ok.hasMatch(v)) {
                                       return "Only letters, numbers, spaces, and -/.,()'& are allowed";
                                     }
-                                    final hasAlnum = RegExp(
-                                      r'[A-Za-z0-9]',
-                                    ).hasMatch(v);
+                                    final hasAlnum = RegExp(r'[A-Za-z0-9]').hasMatch(v);
                                     if (!hasAlnum) {
                                       return 'Enter a meaningful service name';
                                     }
@@ -213,16 +177,8 @@ class _BusinessAddServiceScreenState extends State<BusinessAddServiceScreen> {
                               ),
                               const Gap(5),
                               index == 0
-                                  ? IconButton(
-                                    onPressed: _addBeltField,
-                                    icon: const Icon(Iconsax.add_circle),
-                                  )
-                                  : IconButton(
-                                    onPressed: () => _removeBeltField(index),
-                                    icon: const Icon(
-                                      Icons.remove_circle_outline,
-                                    ),
-                                  ),
+                                  ? IconButton(onPressed: _addBeltField, icon: const Icon(Iconsax.add_circle))
+                                  : IconButton(onPressed: () => _removeBeltField(index), icon: const Icon(Icons.remove_circle_outline)),
                             ],
                           ),
                         );
@@ -231,11 +187,7 @@ class _BusinessAddServiceScreenState extends State<BusinessAddServiceScreen> {
                   },
                 ),
                 Gap(14),
-                CustomText(
-                  text: "Service Name",
-                  fontWeight: FontWeight.w500,
-                  fontSize: 16,
-                ),
+                CustomText(text: "Service Name", fontWeight: FontWeight.w500, fontSize: 16),
                 Gap(8),
                 CustomTextField(
                   fieldBorderColor: AppColors.blackColor,
@@ -255,11 +207,7 @@ class _BusinessAddServiceScreenState extends State<BusinessAddServiceScreen> {
                   },
                 ),
                 Gap(14),
-                CustomText(
-                  text: "Phone Number",
-                  fontWeight: FontWeight.w500,
-                  fontSize: 16,
-                ),
+                CustomText(text: "Phone Number", fontWeight: FontWeight.w500, fontSize: 16),
                 Gap(8),
                 CustomTextField(
                   fieldBorderColor: AppColors.blackColor,
@@ -280,49 +228,39 @@ class _BusinessAddServiceScreenState extends State<BusinessAddServiceScreen> {
                   },
                 ),
                 Gap(14),
-                CustomText(
-                  text: "Location",
-                  fontWeight: FontWeight.w500,
-                  fontSize: 16,
-                ),
+                CustomText(text: "Location", fontWeight: FontWeight.w500, fontSize: 16),
                 Gap(8),
-                CustomTextField(
-                  fieldBorderColor: AppColors.blackColor,
-                  fieldBorderRadius: 10,
-                  fillColor: Colors.white,
-                  hintText: "Enter your location",
-                  keyboardType: TextInputType.streetAddress,
-                  textEditingController: location,
-                  validator: (value) {
-                    final v = value?.trim() ?? '';
-                    if (v.isEmpty) return 'Enter your location';
-                    if (v.length < 3) {
-                      return 'Location must be at least 3 characters';
-                    }
-                    return null;
+                GestureDetector(
+                  onTap: () async {
+                    _openLocationPicker(); // Trigger the location picker
                   },
+                  child: Container(
+                    padding: EdgeInsets.all(16),
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black, width: 1),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: ValueListenableBuilder<RecordLocation>(
+                      valueListenable: selectedLocation,  // Listen to changes
+                      builder: (_, item, _) {
+                        String address = item.address.isEmpty ? " selected Your Location" : item.address;
+                        return Text(address);
+                      },
+                    ),
+                  ),
                 ),
 
+
                 Gap(14),
-                CustomText(
-                  text: " Time Duration",
-                  fontWeight: FontWeight.w600,
-                  fontSize: 16,
-                ),
+                CustomText(text: " Time Duration", fontWeight: FontWeight.w600, fontSize: 16),
                 Gap(14),
 
-                CustomText(
-                  text: "Opening time",
-                  fontWeight: FontWeight.w500,
-                  fontSize: 16,
-                ),
+                CustomText(text: "Opening time", fontWeight: FontWeight.w500, fontSize: 16),
                 Gap(8),
                 Obx(() {
                   return GestureDetector(
-                    onTap:
-                        () => businessAddServiceController.pickOpeningTime(
-                          context,
-                        ),
+                    onTap: () => businessAddServiceController.pickOpeningTime(context),
                     child: Container(
                       decoration: BoxDecoration(
                         color: AppColors.whiteColor,
@@ -336,33 +274,18 @@ class _BusinessAddServiceScreenState extends State<BusinessAddServiceScreen> {
                       child: Text(
                         businessAddServiceController.openingTime.value == null
                             ? "Select opening time"
-                            : businessAddServiceController.openingTime.value!
-                                .format(context),
-                        style: TextStyle(
-                          fontSize: 16,
-                          color:
-                              businessAddServiceController.openingTime.value ==
-                                      null
-                                  ? Colors.grey
-                                  : Colors.black,
-                        ),
+                            : businessAddServiceController.openingTime.value!.format(context),
+                        style: TextStyle(fontSize: 16, color: businessAddServiceController.openingTime.value == null ? Colors.grey : Colors.black),
                       ),
                     ),
                   );
                 }),
                 Gap(14),
-                CustomText(
-                  text: "Closing time",
-                  fontWeight: FontWeight.w500,
-                  fontSize: 16,
-                ),
+                CustomText(text: "Closing time", fontWeight: FontWeight.w500, fontSize: 16),
                 Gap(8),
                 Obx(() {
                   return GestureDetector(
-                    onTap:
-                        () => businessAddServiceController.pickClosingTime(
-                          context,
-                        ),
+                    onTap: () => businessAddServiceController.pickClosingTime(context),
                     child: Container(
                       decoration: BoxDecoration(
                         color: AppColors.whiteColor,
@@ -376,27 +299,15 @@ class _BusinessAddServiceScreenState extends State<BusinessAddServiceScreen> {
                       child: Text(
                         businessAddServiceController.closingTime.value == null
                             ? "Select closing time"
-                            : businessAddServiceController.closingTime.value!
-                                .format(context),
-                        style: TextStyle(
-                          fontSize: 16,
-                          color:
-                              businessAddServiceController.closingTime.value ==
-                                      null
-                                  ? Colors.grey
-                                  : Colors.black,
-                        ),
+                            : businessAddServiceController.closingTime.value!.format(context),
+                        style: TextStyle(fontSize: 16, color: businessAddServiceController.closingTime.value == null ? Colors.grey : Colors.black),
                       ),
                     ),
                   );
                 }),
 
                 Gap(14),
-                CustomText(
-                  text: "Off day",
-                  fontWeight: FontWeight.w500,
-                  fontSize: 16,
-                ),
+                CustomText(text: "Off day", fontWeight: FontWeight.w500, fontSize: 16),
                 Gap(8),
                 CustomDropdownField(
                   hintText: "Off Day Type",
@@ -406,8 +317,7 @@ class _BusinessAddServiceScreenState extends State<BusinessAddServiceScreen> {
                       }).toList(),
                   onChanged: (value) {
                     if (value != null) {
-                      businessAddServiceController.selectedWeek.value =
-                          value ?? "";
+                      businessAddServiceController.selectedWeek.value = value ?? "";
                     }
                   },
                 ),
@@ -419,11 +329,7 @@ class _BusinessAddServiceScreenState extends State<BusinessAddServiceScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Gap(14),
-                        CustomText(
-                          text: "Website Link",
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16,
-                        ),
+                        CustomText(text: "Website Link", fontWeight: FontWeight.w500, fontSize: 16),
                         Gap(8),
                         CustomTextField(
                           fieldBorderColor: AppColors.blackColor,
@@ -452,17 +358,18 @@ class _BusinessAddServiceScreenState extends State<BusinessAddServiceScreen> {
                   return CustomButton(
                     isLoading: businessAddServiceController.isLoading.value,
                     onTap: () {
-                      final List<String> services =
-                          serviceController.value.map((controller) => controller.text).toList();
+                      final List<String> services = serviceController.value.map((controller) => controller.text).toList();
                       final body = {
                         "serviceType": businessAddServiceController.selectedAnalystType.value,
                         "serviceName": serviceName.text,
                         "providings": services.join(','),
-                        "location": location.text,
+                        "location": selectedLocation.value.address,
                         "phone": phoneNumber.text,
                         "openingTime": businessAddServiceController.openingTime.value?.format(context) ?? "",
                         "closingTime": businessAddServiceController.closingTime.value?.format(context) ?? "",
                         "offDay": businessAddServiceController.selectedWeek.value,
+                        "latitude": selectedLocation.value.latLng.latitude.toString(),
+                        "longitude": selectedLocation.value.latLng.longitude.toString(),
                       };
                       if (_formKey.currentState!.validate()) {
                         businessAddServiceController.addService(body: body);
@@ -479,4 +386,38 @@ class _BusinessAddServiceScreenState extends State<BusinessAddServiceScreen> {
       ),
     );
   }
+
+  Future<void> _openLocationPicker() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder:
+            (context) => MapLocationPicker(
+              config: MapLocationPickerConfig(
+                apiKey: "AIzaSyAszXC1be8aJ37eHuNcBm_-O1clWkPUwV4",
+                initialPosition: const LatLng(37.422, -122.084),
+                onNext: (result) {
+                  if (result != null) {
+                    selectedLocation.value = RecordLocation(
+                      LatLng(result.geometry.location.lat, result.geometry.location.lng),
+                      result.formattedAddress ?? "Address not available",
+                    );
+                  }
+                  if (context.mounted) {
+                    Navigator.pop(context, result);
+                  }
+                },
+              ),
+              searchConfig: const SearchConfig(apiKey: "AIzaSyAszXC1be8aJ37eHuNcBm_-O1clWkPUwV4", searchHintText: "Search for a location"),
+            ),
+      ),
+    );
+  }
+}
+
+class RecordLocation {
+  final LatLng latLng;
+  final String address;
+
+  RecordLocation(this.latLng, this.address);
 }
