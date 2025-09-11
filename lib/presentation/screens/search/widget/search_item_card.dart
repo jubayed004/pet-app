@@ -58,7 +58,7 @@ class SearchItemCardWidget extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),
-
+          border: Border.all(color: AppColors.greenColor,width: 1)
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

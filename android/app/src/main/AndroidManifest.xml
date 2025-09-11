@@ -1,4 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <application
         android:label="pet_app"
         android:name="${applicationName}"
@@ -36,6 +38,9 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAszXC1be8aJ37eHuNcBm_-O1clWkPUwV4"/>
     </application>
 
     <!-- Required to query activities that can process text, see:

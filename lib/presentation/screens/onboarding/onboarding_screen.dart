@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -23,11 +22,7 @@ class OnboardingScreen extends StatelessWidget {
         onPageChanged: (index) {
           _controller.currentIndex.value = index;
         },
-        children: [
-          OnboardingPageCard(),
-          OnboardingPageCard(),
-          OnboardingPageCard(),
-        ],
+        children: [OnboardingPageCard(), OnboardingPageCard(), OnboardingPageCard()],
       ),
     );
   }
@@ -42,12 +37,7 @@ class OnboardingPageCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     return Padding(
-      padding: const EdgeInsets.only(
-        left: 16.0,
-        right: 16,
-        bottom: 24,
-        top: 24,
-      ),
+      padding: const EdgeInsets.only(left: 16.0, right: 16, bottom: 24, top: 24),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -59,7 +49,7 @@ class OnboardingPageCard extends StatelessWidget {
                 children: [
                   IconButton(
                     onPressed: () {
-                      if(_controller.currentIndex.value > 0){
+                      if (_controller.currentIndex.value > 0) {
                         _controller.currentIndex.value--;
                       }
                     },
@@ -95,14 +85,12 @@ class OnboardingPageCard extends StatelessWidget {
               width: width,
               height: 235.h,
               boxFit: BoxFit.fill,
-              imageSrc: _controller.onboardingList[_controller.currentIndex
-                  .value].image,
+              imageSrc: _controller.onboardingList[_controller.currentIndex.value].image,
             );
           }),
           Obx(() {
             return CustomText(
-              text: _controller.onboardingList[_controller.currentIndex.value]
-                  .title,
+              text: _controller.onboardingList[_controller.currentIndex.value].title,
               fontSize: 32.sp,
               // Bigger text for tablets
               fontWeight: FontWeight.w600,
@@ -113,8 +101,7 @@ class OnboardingPageCard extends StatelessWidget {
           }),
           Obx(() {
             return CustomText(
-              text: _controller.onboardingList[_controller.currentIndex.value]
-                  .details,
+              text: _controller.onboardingList[_controller.currentIndex.value].details,
               fontSize: 16.sp,
               fontWeight: FontWeight.w500,
               color: AppColors.secondTextColor,
@@ -122,10 +109,7 @@ class OnboardingPageCard extends StatelessWidget {
               maxLines: 2,
             );
           }),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: List.generate(3, (index) => buildDot(index, context)),
-          ),
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: List.generate(3, (index) => buildDot(index, context))),
 
           SizedBox(height: 12.h),
 
@@ -133,8 +117,7 @@ class OnboardingPageCard extends StatelessWidget {
             return CustomButton(
               onTap: () {
                 if (_controller.currentIndex.value < 2) {
-                  _controller.currentIndex.value =
-                      _controller.currentIndex.value + 1;
+                  _controller.currentIndex.value = _controller.currentIndex.value + 1;
                 } else {
                   AppRouter.route.pushNamed(RoutePath.signInScreen);
                 }
@@ -164,8 +147,7 @@ class OnboardingPageCard extends StatelessWidget {
           margin: EdgeInsets.only(right: 5.h),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
-            color: _controller.currentIndex.value == index ?
-            AppColors.greenColor : AppColors.lightGray,
+            color: _controller.currentIndex.value == index ? AppColors.greenColor : AppColors.lightGray,
           ),
         );
       }),

@@ -70,7 +70,8 @@ class _HomeScreenState extends State<HomeScreen> {
               _buildFindWhatYouNeedTitle(),
               const SliverGap(8),
               SliverToBoxAdapter(child: CategoryList(controller: homeController)),
-              _buildAdsSection(), // Ads Section
+             /* _buildAdsSection(), */// Ads Section'
+              _buildAdvertisementSection(),
               _buildAppointmentsHeader(),
               _buildAppointmentsSection(),
               const SliverGap(16),
@@ -228,6 +229,63 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  /// -------------------- Onboarding Section --------------------
+  SliverToBoxAdapter _buildAdvertisementSection() {
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding: const EdgeInsets.only(left: 16, top: 10, right: 16),
+        child: Obx(() {
+          final item = homeController.homeHeader.value.data?.petList ?? [];
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(AppStrings.activePetProfiles, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              const Gap(16),
+              item.isNotEmpty
+                  ? CarouselSlider.builder(
+                itemCount: item.length,
+                itemBuilder: (context, index, realIndex) {
+                  final petName = item[index];
+                  final image = petName.petPhoto ?? "";
+                  final imageUrl = image.isEmpty ? "assets/images/default_pet_image.png" : "${ApiUrl.imageBase}$image";
+                  return Container(
+                    padding: const EdgeInsets.all(24),
+                    decoration: BoxDecoration(color: AppColors.primaryColor, borderRadius: BorderRadius.circular(20)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        CustomText(text: petName.name ?? "Unknown", fontWeight: FontWeight.w600, fontSize: 16.sp),
+                        CustomNetworkImage(imageUrl: imageUrl, height: 50, width: 100, boxShape: BoxShape.circle),
+                      ],
+                    ),
+                  );
+                },
+                options: CarouselOptions(
+                  height: MediaQuery.of(context).size.height / 8,
+                  autoPlay: true,
+                  autoPlayInterval: Duration(seconds: 2),
+                  enlargeCenterPage: true,
+                  enableInfiniteScroll: true,
+                  scrollPhysics: NeverScrollableScrollPhysics(),
+                  onPageChanged: (index, reason) {
+                    homeController.currentIndex.value = index; // Update the index here
+                  },
+                ),
+              )
+                  : SizedBox(),
+              const Gap(10),
+              // Dots indicator based on currentIndex
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(item.length, (index) => buildDot(index)),
+              ),
+            ],
+          );
+        }),
+      ),
+    );
+  }
+
   /// -------------------- Dots Indicator --------------------
   Widget buildDot(int index) {
     return Padding(
@@ -245,7 +303,7 @@ class _HomeScreenState extends State<HomeScreen> {
       }),
     );
   }
-
+/*
   /// -------------------- Ads Section --------------------
   SliverToBoxAdapter _buildAdsSection() {
     final List<String> ads = [
@@ -307,7 +365,7 @@ class _HomeScreenState extends State<HomeScreen> {
         }),
       ),
     );
-  }
+  }*/
 
   /// -------------------- Find What You Need --------------------
   SliverToBoxAdapter _buildFindWhatYouNeedTitle() {

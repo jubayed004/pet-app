@@ -417,7 +417,7 @@ class AppRouter {
         path: RoutePath.notifyScreen.addBasePath,
         pageBuilder:
             (context, state) => _buildPageWithAnimation(
-              child: const NotifyScreen(),
+              child:  NotifyScreen(),
               state: state,
             ),
       ),

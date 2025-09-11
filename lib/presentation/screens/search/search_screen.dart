@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -43,15 +42,15 @@ class _SearchScreenState extends State<SearchScreen> {
             },
             child: CustomScrollView(
               slivers: [
-                CustomDefaultAppbar(title: "What are you looking for?",),
+                CustomDefaultAppbar(title: "What are you looking for?"),
+
                 /// Floating AppBar (Search + Filter)
                 SliverPersistentHeader(
                   floating: true,
                   pinned: false,
                   delegate: _SearchHeaderDelegate(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 14, vertical: 8),
+                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                       child: Row(
                         children: [
                           Expanded(
@@ -65,13 +64,11 @@ class _SearchScreenState extends State<SearchScreen> {
                                 },
                                 prefixIcon: const Padding(
                                   padding: EdgeInsets.only(left: 8.0),
-                                  child: Icon(Iconsax.search_favorite,
-                                      color: AppColors.blackColor),
+                                  child: Icon(Iconsax.search_favorite, color: AppColors.blackColor),
                                 ),
                                 placeholder: "Search here",
                                 decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: Colors.black, width: 1),
+                                  border: Border.all(color: Colors.black, width: 1),
                                   color: Colors.green.shade50,
                                   borderRadius: BorderRadius.circular(5),
                                 ),
@@ -79,7 +76,7 @@ class _SearchScreenState extends State<SearchScreen> {
                             ),
                           ),
                           const Gap(8),
-           /*               GestureDetector(
+                          /*               GestureDetector(
                             onTap: () {
  controller.search.value = "";
                             controller.searchController.clear();
@@ -104,74 +101,43 @@ class _SearchScreenState extends State<SearchScreen> {
                     ),
                   ),
                 ),
-                controller.search.value.isEmpty ?
-                SliverPadding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  sliver: SliverToBoxAdapter(
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                controller.search.value.isEmpty
+                    ? SliverPadding(
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      sliver: SliverToBoxAdapter(
+                        child: Column(
                           children: [
-                            CustomText(text: "Search history",
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16,),
-                            CustomText(text: "Clear all",
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,)
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                CustomText(text: "Search history", fontWeight: FontWeight.w500, fontSize: 16),
+                                CustomText(text: "Clear all", fontSize: 12, fontWeight: FontWeight.w400),
+                              ],
+                            ),
+                            Gap(16),
+
                           ],
                         ),
-                        Gap(16),
-                        Wrap(
-                          children: List.generate(6, (index) {
-                            return Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 8.0, bottom: 8),
-                              child: GestureDetector(
-                                onTap: (){
-                                  controller.search.value = "kifrir4";
-                                },
-                                child: Container(
-                                    padding: EdgeInsets.all(10),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(4),
-                                      border: Border.all(
-                                          color: AppColors.greenColor, width: 1),
-                                      color: Color(0xffF0FDF4),
-                                    ),
-                                    child: Text("Los Angeles Lakers")),
-                              ),
+                      ),
+                    )
+                    :
+                    /// Paged List
+                    SliverPadding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      sliver: PagedSliverList<int, ServiceItem>(
+                        pagingController: controller.pagingController,
+                        builderDelegate: PagedChildBuilderDelegate<ServiceItem>(
+                          itemBuilder: (context, item, index) {
+                            return SearchItemCardWidget(item: item);
+                          },
+                          firstPageErrorIndicatorBuilder: (context) {
+                            return Center(
+                              child: ErrorCard(onTap: () => controller.pagingController.refresh(), text: controller.pagingController.error),
                             );
-                          }),
-                        )
-
-                      ],
+                          },
+                        ),
+                      ),
                     ),
-                  ),
-                ) :
-                /// Paged List
-                SliverPadding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  sliver: PagedSliverList<int, ServiceItem>(
-                    pagingController: controller.pagingController,
-                    builderDelegate: PagedChildBuilderDelegate<ServiceItem>(
-                      itemBuilder: (context, item, index) {
-                        return SearchItemCardWidget(
-                          item: item,
-
-                        );
-                      },
-                      firstPageErrorIndicatorBuilder: (context) {
-                        return Center(
-                          child: ErrorCard(
-                            onTap: () => controller.pagingController.refresh(),
-                            text: controller.pagingController.error,
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ),
               ],
             ),
           );
@@ -188,13 +154,8 @@ class _SearchHeaderDelegate extends SliverPersistentHeaderDelegate {
   _SearchHeaderDelegate({required this.child});
 
   @override
-  Widget build(BuildContext context, double shrinkOffset,
-      bool overlapsContent) {
-    return Material(
-      color: Colors.white,
-      elevation: overlapsContent ? 4 : 0,
-      child: child,
-    );
+  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return Material(color: Colors.white, elevation: overlapsContent ? 4 : 0, child: child);
   }
 
   @override
@@ -204,6 +165,5 @@ class _SearchHeaderDelegate extends SliverPersistentHeaderDelegate {
   double get minExtent => 60;
 
   @override
-  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) =>
-      true;
+  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) => true;
 }

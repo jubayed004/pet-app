@@ -53,6 +53,7 @@ class ApiUrl {
  ///======UserAll
 
   static getHomeHeader() => '$base/user-home-page/totalPetsForLoggedInUser';
+  static getNotify() => '$base/notifications/simple';
   static getProfile() => '$base/user/get-profile';
   static addPet() => '$base/pet/create';
   static getMyAllPet() => '$base/user/my-pets';

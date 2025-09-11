@@ -15,11 +15,13 @@ import 'package:pet_app/presentation/screens/category/category_details/controlle
 import 'package:pet_app/presentation/screens/category/controller/category_controller.dart';
 import 'package:pet_app/presentation/screens/category/service/controller/service_controller.dart';
 import 'package:pet_app/presentation/screens/chat/chat_controller/message_controller.dart';
+import 'package:pet_app/presentation/screens/explore/controller/explore_controller.dart';
 import 'package:pet_app/presentation/screens/home/controller/home_controller.dart';
 import 'package:pet_app/presentation/screens/my_appointment/controller/my_appointment_controller.dart';
 import 'package:pet_app/presentation/screens/my_pets/controller/my_pets_controller.dart';
 import 'package:pet_app/presentation/screens/my_pets/pet_health/controller/pet_health_controller.dart';
 import 'package:pet_app/presentation/screens/nav/controller/navigation_controller.dart';
+import 'package:pet_app/presentation/screens/notify/controller/notify_controller.dart';
 import 'package:pet_app/presentation/screens/onboarding/controller/onboarding_controller.dart';
 import 'package:pet_app/presentation/screens/other/controller/other_controller.dart';
 import 'package:pet_app/presentation/screens/profile/controller/profile_controller.dart';
@@ -94,6 +96,14 @@ AuthController getAuthController() {
     return Get.find<MyPetsProfileController>();
   }
 
+
+  NotifyController getNotifyController() {
+    if (!Get.isRegistered<NotifyController>()) {
+      Get.put(NotifyController());
+    }
+    return Get.find<NotifyController>();
+  }
+
   HomeController getHomeController() {
     if (!Get.isRegistered<HomeController>()) {
       Get.put(HomeController());
@@ -113,6 +123,13 @@ AuthController getAuthController() {
       Get.put(CategoryController());
     }
     return Get.find<CategoryController>();
+  }
+
+  ExploreController getExploreController() {
+    if (!Get.isRegistered<ExploreController>()) {
+      Get.put(ExploreController());
+    }
+    return Get.find<ExploreController>();
   }
 
   CategoryDetailsController getCategoryDetailsController() {

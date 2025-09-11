@@ -22,15 +22,12 @@ import 'package:url_launcher/url_launcher.dart';
 
 class MyAppointmentScreen extends StatefulWidget {
   const MyAppointmentScreen({super.key});
-
   @override
   State<MyAppointmentScreen> createState() => _MyAppointmentScreenState();
 }
-
 class _MyAppointmentScreenState extends State<MyAppointmentScreen> {
   final myAppointmentController = GetControllers.instance.getMyAppointmentController();
-   final navController = GetControllers.instance.getNavigationControllerMain();
-
+  final navController = GetControllers.instance.getNavigationControllerMain();
   @override
   void initState() {
     myAppointmentController.pagingController1.addPageRequestListener((pageKey) {
@@ -38,14 +35,13 @@ class _MyAppointmentScreenState extends State<MyAppointmentScreen> {
     });
     super.initState();
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.appBackgroundColor,
       body: CustomScrollView(
         slivers: [
-          CustomDefaultAppbar(title: "My Appointment",),
+          CustomDefaultAppbar(title: "My Appointment"),
           SliverFillRemaining(
             child: RefreshIndicator(
               onRefresh: () async {
@@ -53,10 +49,10 @@ class _MyAppointmentScreenState extends State<MyAppointmentScreen> {
               },
               child: PagedListView<int, BookingItem>(
                 pagingController: myAppointmentController.pagingController1,
-               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
                 builderDelegate: PagedChildBuilderDelegate<BookingItem>(
                   itemBuilder: (context, item, index) {
-                   // final time = GetTimeAgo.parse(item.updatedAt ?? DateTime.now());
+                    // final time = GetTimeAgo.parse(item.updatedAt ?? DateTime.now());
                     final appointmentId = item.id;
                     final bookingTime = item.bookingTime;
                     final serviceType = item.serviceId;
@@ -66,22 +62,20 @@ class _MyAppointmentScreenState extends State<MyAppointmentScreen> {
                     final address = serviceType?.location;
                     final bookingStatus = item.bookingStatus;
                     final selectedService = item.selectedService ?? "";
-                    final bookingDate = DateFormat(
-                      "dd MMMM yyyy",
-                    ).format(item.bookingDate ?? DateTime.now());
+                    final bookingDate = DateFormat("dd MMMM yyyy").format(item.bookingDate ?? DateTime.now());
                     return MyAppointmentContainer(
-                        id: appointmentId ?? "" ,
-                        petLogo: Assets.images.vet.image(width: 24),
-                        serviceType: serviceType?.serviceType ?? "",
-                        shopLogo: (shopLogo != null && shopLogo.isNotEmpty) ? shopLogo : "",
-                        serviceImage: (serviceImage != null && serviceImage.isNotEmpty) ? serviceImage : "",
-                        bookingDate: bookingDate,
-                        bookingTime: bookingTime ?? "",
+                      id: appointmentId ?? "",
+                      petLogo: Assets.images.vet.image(width: 24),
+                      serviceType: serviceType?.serviceType ?? "",
+                      shopLogo: (shopLogo != null && shopLogo.isNotEmpty) ? shopLogo : "",
+                      serviceImage: (serviceImage != null && serviceImage.isNotEmpty) ? serviceImage : "",
+                      bookingDate: bookingDate,
+                      bookingTime: bookingTime ?? "",
                       bookingStatus: bookingStatus ?? "",
-                        selectedService: selectedService,
-                        address: address ?? "",
-                        phone: phone ?? "",
-               /*         chatOnTab: () {
+                      selectedService: selectedService,
+                      address: address ?? "",
+                      phone: phone ?? "",
+                      /*         chatOnTab: () {
                           final navController =
                           GetControllers.instance.getNavigationControllerMain();
                           navController.selectedNavIndex.value = 2;
@@ -105,33 +99,28 @@ class _MyAppointmentScreenState extends State<MyAppointmentScreen> {
                         addReviewOnnTab: () {
                           AppRouter.route.pushNamed(RoutePath.reviewScreen);
                           },*/
-                      deletedOnTab: (){
+                      deletedOnTab: () {
                         defaultDeletedYesNoDialog(
                           context: context,
                           title: 'Are you sure you want to Cancel this Appointment?',
-
-
-                          onYes: (){
+                          onYes: () {
                             myAppointmentController.deletedBookingAppointment(id: appointmentId ?? "");
                           },
-
                         );
                       },
-
-
                     );
                   },
-                  firstPageErrorIndicatorBuilder: (context) => Center(
-                    child: ErrorCard(
-                      onTap: () => myAppointmentController.pagingController1.refresh(),
-                      text: myAppointmentController.pagingController1.error.toString(),
-                    ),
-                  ),
+                  firstPageErrorIndicatorBuilder:
+                      (context) => Center(
+                        child: ErrorCard(
+                          onTap: () => myAppointmentController.pagingController1.refresh(),
+                          text: myAppointmentController.pagingController1.error.toString(),
+                        ),
+                      ),
                 ),
               ),
             ),
           ),
-
         ],
       ),
     );

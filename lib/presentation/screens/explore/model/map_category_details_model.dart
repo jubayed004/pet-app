@@ -2,8 +2,8 @@
 class MapCategoryDetailsModel {
   final bool? success;
   final String? message;
-  final List<Service>? services;
-  final int? count;
+  final List<MapCategoryService>? services;
+  final num? count;
 
   MapCategoryDetailsModel({
     this.success,
@@ -15,7 +15,7 @@ class MapCategoryDetailsModel {
   factory MapCategoryDetailsModel.fromJson(Map<String, dynamic> json) => MapCategoryDetailsModel(
     success: json["success"],
     message: json["message"],
-    services: json["services"] == null ? [] : List<Service>.from(json["services"]!.map((x) => Service.fromJson(x))),
+    services: json["services"] == null ? [] : List<MapCategoryService>.from(json["services"]!.map((x) => MapCategoryService.fromJson(x))),
     count: json["count"],
   );
 
@@ -27,7 +27,7 @@ class MapCategoryDetailsModel {
   };
 }
 
-class Service {
+class MapCategoryService {
   final String? id;
   final String? serviceType;
   final String? serviceName;
@@ -48,13 +48,13 @@ class Service {
   final bool? isActive;
   final DateTime? createdAt;
   final DateTime? updatedAt;
-  final int? v;
-  final double? latNum;
-  final double? lngNum;
-  final double? distanceKm;
+  final num? v;
+  final num? latNum;
+  final num? lngNum;
+  final num? distanceKm;
   final bool? isOpenNow;
 
-  Service({
+  MapCategoryService({
     this.id,
     this.serviceType,
     this.serviceName,
@@ -82,7 +82,7 @@ class Service {
     this.isOpenNow,
   });
 
-  factory Service.fromJson(Map<String, dynamic> json) => Service(
+  factory MapCategoryService.fromJson(Map<String, dynamic> json) => MapCategoryService(
     id: json["_id"],
     serviceType: json["serviceType"],
     serviceName: json["serviceName"],
