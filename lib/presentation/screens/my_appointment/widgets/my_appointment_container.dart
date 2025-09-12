@@ -27,9 +27,6 @@ class MyAppointmentContainer extends StatelessWidget {
   final String address;
   final String phone;
   final String bookingStatus;
-/*  final VoidCallback chatOnTab;
-  final VoidCallback websiteOnTab;
-  final VoidCallback addReviewOnnTab;*/
   final VoidCallback  deletedOnTab;
 
 
@@ -43,9 +40,6 @@ class MyAppointmentContainer extends StatelessWidget {
     required this.selectedService,
     required this.address,
     required this.phone,
-/*  required this.chatOnTab,
-    required this.websiteOnTab,
-  required this.addReviewOnnTab,*/
      required this.deletedOnTab,
      required this.id,
      required this.bookingTime,

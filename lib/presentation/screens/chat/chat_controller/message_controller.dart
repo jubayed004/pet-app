@@ -1,12 +1,15 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:pet_app/core/dependency/get_it_injection.dart';
 import 'package:pet_app/core/route/routes.dart';
 import 'package:pet_app/helper/local_db/local_db.dart';
 import 'package:pet_app/presentation/screens/chat/chat_message_model/chat_message_model.dart';
+import 'package:pet_app/presentation/screens/chat/chat_message_model/message_model.dart';
 import 'package:pet_app/service/api_service.dart';
 import 'package:pet_app/service/api_url.dart';
 import 'package:pet_app/service/socket_service.dart';
@@ -16,8 +19,105 @@ import 'package:pet_app/utils/popup_loader/popup_loader.dart';
 class MessageController extends GetxController{
   final messages = <ChatMessage>[].obs;
   var tabContent = <Widget>[].obs;
+  final ApiClient apiClient = serviceLocator();
+
+  final PagingController<int, Conversation> pagingController = PagingController(firstPageKey: 1);
+
+  bool isRunning = false;
+
+  Future<void> getAllMessage({required int pageKey}) async {
+    if(isRunning)return;
+    isRunning = true;
+    try{
+      final response = await apiClient.get(url: ApiUrl.getMessage(pageKey: pageKey));
+      if (response.statusCode == 200) {
+        final newData = MessageModel.fromJson(response.body);
+        final newItems = newData.conversations ?? [];
+        if (newItems.isEmpty) {
+          pagingController.appendLastPage(newItems);
+        } else {
+          pagingController.appendPage(newItems, pageKey + 1);
+        }
+      } else {
+        pagingController.error = 'An error occurred';
+      }
+    }catch(_){
+      pagingController.error = 'An error occurred';
+    }finally{
+      isRunning = false;
+    }
+  }
+
+  void listenForNewConversation() {
+    try{
+      SocketApi.socket?.on('new_notification', (data) {
+        debugPrint(data.toString());
+        // final newMessage = Conversation.fromJson(data);
+        // final currentMessages = pagingController.itemList ?? [];
+        //
+        // if (!currentMessages.any((msg) => msg.roomId == newMessage.roomId)) {
+        //   final updatedList = [newMessage, ...currentMessages];
+        //   pagingController.itemList = List<Conversation>.from(updatedList);
+        // }
+      });
+    }catch(e){
+      debugPrint("Socket Error New Message Controller Try Catch Error $e");
+    }
+  }
 
 
+  @override
+  void onInit() {
+    super.onInit();
+    pagingController.addPageRequestListener((pageKey) {
+      getAllMessage(pageKey: pageKey);
+    });
+    listenApi();
+  }
+
+  Future<void> listenApi() async {
+    await SocketApi.init();
+    listenForNewConversation();
+  }
+
+/*
+  // Listen for new messages
+  void listenForNewMessages({required String senderId}) {
+    try{
+      if (kDebugMode) {
+        print("message-$senderId");
+      }
+      SocketApi.socket?.on('message-$senderId', (data) {
+        final newMessage = Message.fromJson(data);
+        final currentMessages = pagingController.itemList ?? [];
+        if (!currentMessages.any((msg) => msg.id == newMessage.id)) {
+          pagingController.itemList = [newMessage, ...currentMessages];
+        }
+      });
+    }catch(e){
+      debugPrint("Socket Error New Message Controller Try Catch Error $e");
+    }
+  }
+
+  void seenMessage({required String senderId}) {
+    try{
+      print("Is Socket Connected: ${SocketApi.socket!.connected}");
+      if (SocketApi.socket != null && SocketApi.socket!.connected) {
+        final body = {
+          "conversationId": model.value.data?.result?.conversationId,
+          "msgByUserId": senderId,
+        };
+        SocketApi.socket?.emit('seen', body);
+      } else {
+        debugPrint("Socket Null Or Socket Not Connected Seen Message");
+        SocketApi.reconnect();
+      }
+    }catch(e){
+      debugPrint("Socket Error Seen Message Controller Try Catch Error $e");
+    }
+  }
+}
+*/
 
 /*  ApiClient apiClient = ApiClient();
   DBHelper dbHelper = DBHelper();
@@ -230,32 +330,4 @@ class Data {
     "images": images == null ? [] : List<dynamic>.from(images!.map((x) => x)),
     "videos": videos == null ? [] : List<dynamic>.from(videos!.map((x) => x)),
   };*/
-  @override
-  void onInit() {
-    super.onInit();
-    // Add static message examples
-    messages.addAll([
-      ChatMessage(
-        content: "Hello! I'm available to pick you up. I'll be there in about"*5,
-        time: "02:15 PM",
-        isFromDriver: true,
-      ),
-      ChatMessage(
-        content: "Thank you Sir"*10,
-        time: "02:20 PM",
-        isFromDriver: false,
-      ),
-      ChatMessage(
-        content: "I've arrived at Location. Look for a Red Car with the license plate XXXX.",
-        time: "02:35 PM",
-        isFromDriver: true,
-      ),
-      ChatMessage(
-        content: "Great! I'll be there in a minute.",
-        time: "02:36 PM",
-        isFromDriver: false,
-      ),
-
-    ]);
-  }
 }

@@ -7,16 +7,22 @@ import 'package:pet_app/helper/image/network_image.dart';
 import 'package:pet_app/presentation/components/custom_button_tap/custom_button_tap.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:pet_app/presentation/screens/chat/view/chatting_page.dart';
+import 'package:pet_app/service/api_url.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
 import 'package:pet_app/utils/variable/variable.dart';
 
 class MessageCardItemWidget extends StatelessWidget {
   final bool? isRead;
-  const MessageCardItemWidget({super.key, this.isRead = false});
+  final String name;
+  final String message;
+  final String date;
+  final String image;
+  const MessageCardItemWidget({super.key, this.isRead = false, required this.name, required this.message, required this.date, required this.image});
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: EdgeInsets.only(bottom: 10),
       decoration: BoxDecoration(
         color: isRead == false ? AppColors.kPrimaryAccentColor : AppColors.kWhiteColor,
         borderRadius: BorderRadius.circular(16.r),
@@ -33,7 +39,7 @@ class MessageCardItemWidget extends StatelessWidget {
             spacing: 12.w,
             children: [
               CustomNetworkImage(
-                imageUrl: dummyProfileImage,
+                imageUrl: "${ApiUrl.imageBase}$image",
                 boxShape: BoxShape.circle,
                 height: 50.w,
                 width: 50.w,
@@ -43,22 +49,33 @@ class MessageCardItemWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     ///=============================dynamic user name =============================///
-                    CustomText(text: 'Alex Wheeler', ),
+                    Row(
+                      children: [
+                        Expanded(
+                            flex: 2,
+                            child: CustomText(
+                              textAlign: TextAlign.start,
+                                text: name
+                            )),
+                        Expanded(
+                          child: CustomText(
+                            text: date,
+                            color: AppColors.kExtraLightGreyTextColor,
+
+                          ),
+                        ),
+                      ],
+                    ),
 
                     ///=============================dynamic message =============================///
                     CustomText(
-                      text: 'Hello! Im available to pick you up. Ill be th..',
+                      text: message,
 
                     ),
                   ],
                 ),
               ),
-              CustomText(
-                text: '09/27/24',
 
-                color: AppColors.kExtraLightGreyTextColor,
-
-              ),
             ],
           ),
         ),

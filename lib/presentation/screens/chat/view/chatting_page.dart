@@ -12,7 +12,8 @@ import '../widgets/chat_message_card_item_widget.dart';
 
 class ChatScreen extends StatefulWidget {
   static const String routeName = '/chatting';
-   const ChatScreen({super.key});
+
+  const ChatScreen({super.key});
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
@@ -25,7 +26,7 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      body:CustomScrollView(
+      body: CustomScrollView(
         slivers: [
           CustomDefaultAppbar(title: "Chat",),
           SliverList(
@@ -34,7 +35,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 final message = messageController.messages[index];
                 final isDriverMessage = message.isFromDriver;
                 return Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12,vertical: 6),
+                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   child: ChatMessageCardItemWidget(
                     isDriverMessage: isDriverMessage,
                     message: message,

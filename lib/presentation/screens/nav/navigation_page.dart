@@ -38,7 +38,7 @@ class _NavigationPageState extends State<NavigationPage> {
       ),
       bottomNavigationBar: SafeArea(
         child: Container(
-          padding: EdgeInsets.only(bottom: 20, top: 6),
+          padding: EdgeInsets.only(bottom: 6, top: 6),
           decoration: BoxDecoration(
             color: AppColors.primaryColor,
             borderRadius: BorderRadius.vertical(top: Radius.circular(5)),

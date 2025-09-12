@@ -1,49 +1,81 @@
 
+
 class MessageModel {
-  final List<Message>? messages;
+  final List<Conversation>? conversations;
   final Pagination? pagination;
 
   MessageModel({
-    this.messages,
+    this.conversations,
     this.pagination,
   });
 
   factory MessageModel.fromJson(Map<String, dynamic> json) => MessageModel(
-    messages: json["messages"] == null ? [] : List<Message>.from(json["messages"]!.map((x) => Message.fromJson(x))),
+    conversations: json["conversations"] == null ? [] : List<Conversation>.from(json["conversations"]!.map((x) => Conversation.fromJson(x))),
     pagination: json["pagination"] == null ? null : Pagination.fromJson(json["pagination"]),
   );
 
   Map<String, dynamic> toJson() => {
-    "messages": messages == null ? [] : List<dynamic>.from(messages!.map((x) => x.toJson())),
+    "conversations": conversations == null ? [] : List<dynamic>.from(conversations!.map((x) => x.toJson())),
     "pagination": pagination?.toJson(),
   };
 }
 
-class Message {
+class Conversation {
+  final LastMessage? lastMessage;
+  final int? unreadCount;
+  final String? roomId;
+  final OtherUser? otherUser;
+
+  Conversation({
+    this.lastMessage,
+    this.unreadCount,
+    this.roomId,
+    this.otherUser,
+  });
+
+  factory Conversation.fromJson(Map<String, dynamic> json) => Conversation(
+    lastMessage: json["lastMessage"] == null ? null : LastMessage.fromJson(json["lastMessage"]),
+    unreadCount: json["unreadCount"],
+    roomId: json["roomId"],
+    otherUser: json["otherUser"] == null ? null : OtherUser.fromJson(json["otherUser"]),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "lastMessage": lastMessage?.toJson(),
+    "unreadCount": unreadCount,
+    "roomId": roomId,
+    "otherUser": otherUser?.toJson(),
+  };
+}
+
+class LastMessage {
   final String? id;
-  final Receiver? sender;
-  final Receiver? receiver;
+  final OtherUser? sender;
+  final OtherUser? receiver;
   final String? message;
   final String? roomId;
+  final bool? isRead;
   final DateTime? createdAt;
   final int? v;
 
-  Message({
+  LastMessage({
     this.id,
     this.sender,
     this.receiver,
     this.message,
     this.roomId,
+    this.isRead,
     this.createdAt,
     this.v,
   });
 
-  factory Message.fromJson(Map<String, dynamic> json) => Message(
+  factory LastMessage.fromJson(Map<String, dynamic> json) => LastMessage(
     id: json["_id"],
-    sender: json["sender"] == null ? null : Receiver.fromJson(json["sender"]),
-    receiver: json["receiver"] == null ? null : Receiver.fromJson(json["receiver"]),
+    sender: json["sender"] == null ? null : OtherUser.fromJson(json["sender"]),
+    receiver: json["receiver"] == null ? null : OtherUser.fromJson(json["receiver"]),
     message: json["message"],
     roomId: json["roomId"],
+    isRead: json["isRead"],
     createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
     v: json["__v"],
   );
@@ -54,28 +86,37 @@ class Message {
     "receiver": receiver?.toJson(),
     "message": message,
     "roomId": roomId,
+    "isRead": isRead,
     "createdAt": createdAt?.toIso8601String(),
     "__v": v,
   };
 }
 
-class Receiver {
+class OtherUser {
   final String? id;
   final String? role;
+  final String? name;
+  final String? profilePic;
 
-  Receiver({
+  OtherUser({
     this.id,
     this.role,
+    this.name,
+    this.profilePic,
   });
 
-  factory Receiver.fromJson(Map<String, dynamic> json) => Receiver(
+  factory OtherUser.fromJson(Map<String, dynamic> json) => OtherUser(
     id: json["id"],
     role: json["role"],
+    name: json["name"],
+    profilePic: json["profilePic"],
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
     "role": role,
+    "name": name,
+    "profilePic": profilePic,
   };
 }
 

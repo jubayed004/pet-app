@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:pet_app/helper/image/network_image.dart';
 import 'package:pet_app/presentation/components/custom_image/custom_image.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
@@ -18,11 +19,11 @@ class CategoryCard extends StatelessWidget {
     final serviceImage = item.servicesImages ?? "";
     final shop = item.isOpenNow ?? false;
     final image = serviceImage.isNotEmpty ? serviceImage : "";
+    final distances = item.distanceKm ?? 0;
 
     return Container(
       width: 300.w,
-      height: 120.h, // Fixed height to prevent overflow
-      padding: EdgeInsets.all(12),
+padding: EdgeInsets.all(8),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
@@ -37,9 +38,9 @@ class CategoryCard extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Image Section
+          // Image Section - Made more responsive
           SizedBox(
-            width: 70.w, // Fixed width for image column
+            width: 60.w, // Fixed width for image column
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -48,18 +49,18 @@ class CategoryCard extends StatelessWidget {
                   imageUrl: "${ApiUrl.imageBase}$image",
                   fit: BoxFit.cover,
                   boxShape: BoxShape.circle,
-                  height: 50.h,
-                  width: 50.w,
+                  height: 45.h, // Slightly reduced
+                  width: 45.w,
                 )
                     : CustomImage(
                   imageSrc: "assets/images/womandogimage.png",
                   boxFit: BoxFit.cover,
-                  height: 50.h,
-                  width: 50.w,
+                  height: 45.h, // Slightly reduced
+                  width: 45.w,
                 ),
-                Gap(4),
+                Gap(6.h), // Responsive gap
                 Container(
-                  padding: EdgeInsets.symmetric(vertical: 2, horizontal: 6),
+                  padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 6.w),
                   decoration: BoxDecoration(
                     color: shop ? Colors.green : Colors.red,
                     borderRadius: BorderRadius.circular(10),
@@ -68,71 +69,104 @@ class CategoryCard extends StatelessWidget {
                     text: shop ? "Open" : "Closed",
                     color: Colors.white,
                     fontWeight: FontWeight.w500,
-                    fontSize: 10.sp,
+                    fontSize: 9.sp, // Slightly smaller
                   ),
                 ),
               ],
             ),
           ),
-          Gap(12),
-          // Text Section
+          Gap(12.w), // Responsive gap
+          // Text Section - Made flexible and responsive
           Expanded(
             child: Column(
+
+              spacing: 6.h,
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
+              mainAxisSize: MainAxisSize.min, // Important: prevents overflow
               children: [
                 // Service Name
-                CustomText(
-                  text: item.serviceName ?? "Unknown Service",
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w600,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+                Flexible( // Use Flexible instead of direct CustomText
+                  child: CustomText(
+                    text: item.serviceName ?? "Unknown Service",
+                    fontSize: 15.sp, // Slightly reduced
+                    fontWeight: FontWeight.w600,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.start,
+                  ),
                 ),
-                Gap(2),
+
                 // Service Type
-                CustomText(
-                  text: item.serviceType ?? "",
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.grey[600],
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+                Flexible(
+                  child: CustomText(
+                    text: item.serviceType ?? "",
+                    fontSize: 11.sp, // Slightly reduced
+                    fontWeight: FontWeight.w400,
+                    color: Colors.grey[600],
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
-                Gap(6),
+
                 // Location
-                Row(
-                  children: [
-                    Icon(Icons.location_on_sharp, size: 14, color: Colors.blue),
-                    Gap(4),
-                    Expanded(
-                      child: CustomText(
-                        text: item.location ?? "No location",
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.w400,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+                Flexible(
+                  child: Row(
+                    children: [
+                      Icon(Icons.location_on_sharp, size: 12.sp, color: Colors.blue), // Responsive icon size
+                      Gap(4.w),
+                      Expanded(
+                        child: CustomText(
+                          textAlign: TextAlign.start,
+                          text: item.location ?? "No location",
+                          fontSize: 11.sp, // Slightly reduced
+                          fontWeight: FontWeight.w400,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-                Gap(4),
+
                 // Phone
-                Row(
-                  children: [
-                    Icon(Icons.phone, size: 14, color: Colors.green),
-                    Gap(4),
-                    Expanded(
-                      child: CustomText(
-                        text: item.phone ?? "No phone",
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.w400,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+                Flexible(
+                  child: Row(
+                    children: [
+                      Icon(Icons.phone, size: 12.sp, color: Colors.green), // Responsive icon size
+                      Gap(4.w),
+                      Expanded(
+                        child: CustomText(
+                          textAlign: TextAlign.start,
+                          text: item.phone ?? "No phone",
+                          fontSize: 11.sp, // Slightly reduced
+                          fontWeight: FontWeight.w400,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
+                ),
+
+                // Phone
+                Flexible(
+                  child: Row(
+                    children: [
+                      Icon(Iconsax.location, size: 12.sp, color: Colors.green), // Responsive icon size
+                      Gap(4.w),
+                      Expanded(
+                        child: CustomText(
+                          textAlign: TextAlign.start,
+                          text: "${distances.toStringAsFixed(2)} km away from you",
+                          fontSize: 11.sp, // Slightly reduced
+                          fontWeight: FontWeight.w400,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),

@@ -14,8 +14,6 @@ import 'package:pet_app/utils/app_const/app_const.dart';
 class MyAppointmentController extends GetxController {
   final navController = GetControllers.instance.getNavigationControllerMain();
 
-
-
   final ApiClient apiClient = serviceLocator();
   final PagingController<int, BookingItem> pagingController1 = PagingController(firstPageKey: 1);
 
@@ -24,6 +22,7 @@ class MyAppointmentController extends GetxController {
   Future<void> getAppointmentBooking({required int page}) async {
     if(isRunning)return;
     isRunning = true;
+
     try{
       final response = await apiClient.get(url: ApiUrl.getBookingAppointment(page: page));
       if (response.statusCode == 200) {

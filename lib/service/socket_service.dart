@@ -21,14 +21,14 @@ class SocketApi {
       return;
     }
 
-    String userId = await DBHelper().getUserId();
+    String userId = await DBHelper().getToken();
     if (userId.isEmpty || userId == "null") {
       debugPrint('Socket Connected >>>>>>>>>>>> FALSE userId.isEmpty <<<<<<<<<<<<');
       return;
     }
 
     _socket = io.io(
-      ApiUrl.socketUrl(userID: userId),
+      ApiUrl.socketUrl(token: userId),
       io.OptionBuilder()
           .setTransports(['websocket'])
           .enableAutoConnect()

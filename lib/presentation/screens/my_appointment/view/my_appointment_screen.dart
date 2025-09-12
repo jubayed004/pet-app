@@ -28,6 +28,7 @@ class MyAppointmentScreen extends StatefulWidget {
 class _MyAppointmentScreenState extends State<MyAppointmentScreen> {
   final myAppointmentController = GetControllers.instance.getMyAppointmentController();
   final navController = GetControllers.instance.getNavigationControllerMain();
+
   @override
   void initState() {
     myAppointmentController.pagingController1.addPageRequestListener((pageKey) {

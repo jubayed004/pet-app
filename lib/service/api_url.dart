@@ -3,7 +3,7 @@ class ApiUrl {
   static String base = "http://10.10.20.52:8001/api";
   static String imageBase = "http://10.10.20.52:8001/";
 
-  static socketUrl({required String userID}) => '$base?id=$userID';
+  static socketUrl({required String token}) => 'http://10.10.20.52:8001?token=$token';
 
   ///Create Account
   static register() => '$base/auth/register';
@@ -95,8 +95,8 @@ class ApiUrl {
   static getReview({required String id}) => '$base/review/get-all-reviews-by-service/$id';
 
 
-
-
+/// chat
+  static getMessage({required int pageKey}) => '$base/chat/conversations?limit=10&page=$pageKey';
 
 
 

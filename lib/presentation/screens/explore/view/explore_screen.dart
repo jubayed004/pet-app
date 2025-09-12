@@ -66,6 +66,9 @@ class _ExploreScreenState extends State<ExploreScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final bottomSheetHeight = screenHeight * 0.38; // More responsive height calculation
+
     return Scaffold(
       body: Stack(
         children: [
@@ -95,13 +98,13 @@ class _ExploreScreenState extends State<ExploreScreen> {
             right: 0,
             bottom: 0,
             child: Container(
-              height: MediaQuery.of(context).size.height / 3,
-              padding: const EdgeInsets.all(8),
+              height: bottomSheetHeight,
+              padding: EdgeInsets.all(12.r), // Responsive padding
               decoration: BoxDecoration(
                 color: Colors.green.shade50,
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20.r),
+                  topRight: Radius.circular(20.r),
                 ),
                 boxShadow: [
                   BoxShadow(
@@ -113,21 +116,21 @@ class _ExploreScreenState extends State<ExploreScreen> {
               ),
               child: Column(
                 children: [
-                  // Category selection row
+                  // Category selection row with responsive sizing
                   SizedBox(
-                    height: 130.h,
+                    height: 120.h, // Responsive height
                     child: ValueListenableBuilder<int>(
                       valueListenable: selectedIndex,
                       builder: (_, currentIndex, __) {
                         return ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemCount: categories.length,
-                          padding: const EdgeInsets.only(left: 16, right: 10),
+                          padding: EdgeInsets.only(left: 16.w, right: 10.w), // Responsive padding
                           itemBuilder: (context, index) {
                             final category = categories[index];
                             final isSelected = currentIndex == index;
                             return Padding(
-                              padding: const EdgeInsets.only(right: 10),
+                              padding: EdgeInsets.only(right: 10.w), // Responsive margin
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
@@ -137,21 +140,26 @@ class _ExploreScreenState extends State<ExploreScreen> {
                                       exploreController.startLocationSharing(type: category.type);
                                     },
                                     child: Card(
-                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50.r)),
                                       elevation: 3,
                                       child: CircleAvatar(
                                         backgroundColor: isSelected ? AppColors.primaryColor : Colors.white,
-                                        radius: 40.r,
+                                        radius: 35.r, // Responsive radius
                                         child: category.icon,
                                       ),
                                     ),
                                   ),
-                                  const Gap(4),
-                                  CustomText(
-                                    text: category.title,
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w400,
-                                    textAlign: TextAlign.center,
+                                  Gap(4.h), // Responsive gap
+                                  SizedBox(
+                                    width: 70.w, // Fixed width to prevent overflow
+                                    child: CustomText(
+                                      text: category.title,
+                                      fontSize: 14.sp, // Responsive font size
+                                      fontWeight: FontWeight.w400,
+                                      textAlign: TextAlign.center,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -162,6 +170,8 @@ class _ExploreScreenState extends State<ExploreScreen> {
                     ),
                   ),
 
+                  Gap(8.h), // Responsive gap
+
                   // Services list section
                   Expanded(
                     child: ValueListenableBuilder<int>(
@@ -170,13 +180,13 @@ class _ExploreScreenState extends State<ExploreScreen> {
                         return Obx(() {
                           switch (exploreController.loading.value) {
                             case Status.loading:
-                              return  Center(
+                              return Center(
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     CircularProgressIndicator(),
                                     SizedBox(height: 8.h),
-                                    Text('Loading locations...'),
+                                    Text('Loading locations...', style: TextStyle(fontSize: 14.sp)),
                                   ],
                                 ),
                               );
@@ -186,28 +196,29 @@ class _ExploreScreenState extends State<ExploreScreen> {
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    const Icon(Icons.wifi_off, size: 48, color: Colors.red),
-                                    const SizedBox(height: 8),
-                                    const Text('Internet connection error'),
+                                    Icon(Icons.wifi_off, size: 48.sp, color: Colors.red),
+                                    SizedBox(height: 8.h),
+                                    Text('Internet connection error', style: TextStyle(fontSize: 14.sp)),
+                                    SizedBox(height: 8.h),
                                     ElevatedButton(
                                       onPressed: () {
                                         final currentCategory = categories[selectedIndex.value];
                                         exploreController.startLocationSharing(type: currentCategory.type);
                                       },
-                                      child: const Text('Retry'),
+                                      child: Text('Retry', style: TextStyle(fontSize: 12.sp)),
                                     ),
                                   ],
                                 ),
                               );
 
                             case Status.noDataFound:
-                              return const Center(
+                              return Center(
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Icon(Icons.location_off, size: 48, color: Colors.grey),
-                                    SizedBox(height: 8),
-                                    Text('No services found in this area'),
+                                    Icon(Icons.location_off, size: 48.sp, color: Colors.grey),
+                                    SizedBox(height: 8.h),
+                                    Text('No services found in this area', style: TextStyle(fontSize: 14.sp)),
                                   ],
                                 ),
                               );
@@ -217,15 +228,16 @@ class _ExploreScreenState extends State<ExploreScreen> {
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    const Icon(Icons.error, size: 48, color: Colors.red),
-                                    const SizedBox(height: 8),
-                                    const Text('An error occurred'),
+                                    Icon(Icons.error, size: 48.sp, color: Colors.red),
+                                    SizedBox(height: 8.h),
+                                    Text('An error occurred', style: TextStyle(fontSize: 14.sp)),
+                                    SizedBox(height: 8.h),
                                     ElevatedButton(
                                       onPressed: () {
                                         final currentCategory = categories[selectedIndex.value];
                                         exploreController.startLocationSharing(type: currentCategory.type);
                                       },
-                                      child: const Text('Retry'),
+                                      child: Text('Retry', style: TextStyle(fontSize: 12.sp)),
                                     ),
                                   ],
                                 ),
@@ -245,14 +257,14 @@ class _ExploreScreenState extends State<ExploreScreen> {
                                 children: [
                                   // Header with markers count
                                   Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                                    padding: EdgeInsets.symmetric(horizontal: 16.w),
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
                                           '${services.length} services found',
                                           style: TextStyle(
-                                            fontSize: 16.sp,
+                                            fontSize: 14.sp,
                                             fontWeight: FontWeight.w500,
                                           ),
                                         ),
@@ -260,17 +272,17 @@ class _ExploreScreenState extends State<ExploreScreen> {
                                           GestureDetector(
                                             onTap: _animateToShowAllMarkers,
                                             child: Container(
-                                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
                                               decoration: BoxDecoration(
                                                 color: AppColors.primaryColor,
-                                                borderRadius: BorderRadius.circular(20),
+                                                borderRadius: BorderRadius.circular(20.r),
                                               ),
-                                              child: const Row(
+                                              child: Row(
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: [
-                                                  Icon(Icons.center_focus_strong, color: Colors.white, size: 16),
-                                                  SizedBox(width: 4),
-                                                  Text('Show All', style: TextStyle(color: Colors.white, fontSize: 12)),
+                                                  Icon(Icons.center_focus_strong, color: Colors.white, size: 14.sp),
+                                                  SizedBox(width: 4.w),
+                                                  Text('Show All', style: TextStyle(color: Colors.white, fontSize: 11.sp)),
                                                 ],
                                               ),
                                             ),
@@ -278,6 +290,8 @@ class _ExploreScreenState extends State<ExploreScreen> {
                                       ],
                                     ),
                                   ),
+
+                                  Gap(8.h),
 
                                   // Services horizontal list
                                   Expanded(
@@ -308,15 +322,15 @@ class ExploreCatCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (items.isEmpty) {
-      return const Center(
+      return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.pets, size: 48, color: Colors.grey),
-            SizedBox(height: 8),
+            Icon(Icons.pets, size: 48.sp, color: Colors.grey),
+            SizedBox(height: 8.h),
             Text(
               'No services available in this category',
-              style: TextStyle(fontSize: 16, color: Colors.grey),
+              style: TextStyle(fontSize: 14.sp, color: Colors.grey),
               textAlign: TextAlign.center,
             ),
           ],
@@ -327,10 +341,10 @@ class ExploreCatCard extends StatelessWidget {
     return ListView.builder(
       itemCount: items.length,
       scrollDirection: Axis.horizontal,
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: EdgeInsets.symmetric(horizontal: 16.w),
       itemBuilder: (context, index) {
         return Padding(
-          padding: const EdgeInsets.only(right: 12),
+          padding: EdgeInsets.only(right: 12.w), // Responsive padding
           child: CategoryCard(item: items[index]),
         );
       },
