@@ -280,8 +280,7 @@ class _BusinessPetsDetailsScreenState extends State<BusinessPetsDetailsScreen>
                           ),
                           GestureDetector(
                             onTap:
-                                () =>
-                                showAddHealthDialog(context, widget.id),
+                                () => showAddHealthDialog(context, widget.id),
                             child: Container(
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 12,

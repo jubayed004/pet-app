@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
+import 'package:pet_app/core/custom_assets/assets.gen.dart';
+import 'package:pet_app/helper/image/network_image.dart';
+import 'package:pet_app/service/api_url.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:pet_app/presentation/components/custom_button/custom_button.dart';
@@ -50,6 +55,24 @@ class CustomBookingCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SvgPicture getIconByName({required String name}) {
+      switch (name) {
+        case "VET":
+          return Assets.icons.petvets.svg(colorFilter: ColorFilter.mode(Colors.black,BlendMode.srcIn));
+        case "SHOP":
+          return Assets.icons.petshops.svg(colorFilter: ColorFilter.mode(Colors.black,BlendMode.srcIn));
+        case "GROOMING":
+          return Assets.icons.petgrooming.svg(colorFilter: ColorFilter.mode(Colors.black,BlendMode.srcIn));
+        case "HOTEL":
+          return Assets.icons.pethotel.svg(colorFilter: ColorFilter.mode(Colors.black,BlendMode.srcIn));
+        case "TRAINING":
+          return Assets.icons.pettraining.svg(colorFilter: ColorFilter.mode(Colors.black,BlendMode.srcIn));
+        case "FRIENDLY":
+          return Assets.icons.friendlyplace.svg(colorFilter: ColorFilter.mode(Colors.black,BlendMode.srcIn));
+        default:
+          return Assets.icons.friendlyplace.svg(colorFilter: ColorFilter.mode(Colors.black,BlendMode.srcIn));
+      }
+    }
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.all(16),
@@ -69,11 +92,11 @@ class CustomBookingCard extends StatelessWidget {
         children: [
           /// Logo & Top Title
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Row(
                 children: [
-                  Image.asset(logoPath, width: 30),
+                  getIconByName(name: logoPath),
                   const Gap(6),
                   CustomText(
                     text: topTitle,
@@ -82,7 +105,7 @@ class CustomBookingCard extends StatelessWidget {
                   ),
                 ],
               ),
-              Image.asset(logoPath, width: 50),
+
             ],
           ),
 
@@ -95,9 +118,11 @@ class CustomBookingCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ClipRRect(
+                    CustomNetworkImage(
+                      imageUrl: "${ApiUrl.imageBase}$imagePath",
+                      height: 70.h,
+                      width: 100.w,
                       borderRadius: BorderRadius.circular(10),
-                      child: Image.asset(imagePath, fit: BoxFit.cover),
                     ),
                     const Gap(6),
                     Row(
@@ -189,12 +214,11 @@ class CustomBookingCard extends StatelessWidget {
           const Gap(10),
 
           /// Approve / Reject Section
-          if (showApproveButton || showRejectButton)
+          if (index == 0 || index == 2)
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 0),
               child: Row(
                 children: [
-                  if (showApproveButton)
                     Expanded(
                       child: ElevatedButton(
                         onPressed: onApprove,
@@ -205,8 +229,8 @@ class CustomBookingCard extends StatelessWidget {
                         child: const CustomText(text: "Approve", color: Colors.white),
                       ),
                     ),
-                  if (showApproveButton && showRejectButton) const Gap(12),
-                  if (showRejectButton)
+                  if (index == 0) const Gap(12),
+                  if (index == 0 || index == 1)
                     Expanded(
                       child: OutlinedButton(
                         onPressed: onReject,
@@ -214,8 +238,8 @@ class CustomBookingCard extends StatelessWidget {
                           side: BorderSide(color: AppColors.blueColor),
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                         ),
-                        child: const CustomText(
-                          text: "Reject",
+                        child: CustomText(
+                          text: index == 1 ? "removed" : "rejected",
                           color: AppColors.blackColor,
                         ),
                       ),

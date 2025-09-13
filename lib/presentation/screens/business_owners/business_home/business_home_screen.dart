@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:pet_app/controller/get_controllers.dart';
 import 'package:pet_app/core/route/route_path.dart';
 import 'package:pet_app/core/route/routes.dart';
@@ -89,45 +90,7 @@ class BusinessHomeScreen extends StatelessWidget {
                             CustomText(text: 'Welcome to pet Shop',fontSize: 14,fontWeight: FontWeight.w600,),
                           ],
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: badges.Badge(
-                            onTap: (){
-                              AppRouter.route.pushNamed(RoutePath.notifyScreen);
-                            },
-                            badgeContent: const Text(
-                              '3',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                              ),
-                            ),
-                            badgeStyle: badges.BadgeStyle(
-                              badgeColor: AppColors.purple500,
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 6,
-                                vertical: 4,
-                              ),
-                              borderRadius: BorderRadius.circular(50),
-                              elevation: 2,
-                            ),
-                            position: badges.BadgePosition.topStart(
-                              start: 10,
-                              top: -20,
-                            ),
-                            child: GestureDetector(
-                              onTap: (){
-                                AppRouter.route.pushNamed(RoutePath.notifyScreen);
-                              },
-                              child: const Icon(
-                                CupertinoIcons.bell,
-                                size: 24,
-                                color: AppColors.purple500,
-                              ),
-                            ),
-                          ),
-                        ),
+                        IconButton(onPressed: (){ AppRouter.route.pushNamed(RoutePath.notifyScreen);}, icon: Icon(Iconsax.notification_bing))
                       ],
                     ),
                   ],

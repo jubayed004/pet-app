@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pet_app/core/custom_assets/assets.gen.dart';
 import 'package:pet_app/core/dependency/get_it_injection.dart';
+import 'package:pet_app/presentation/screens/home/model/advertisment_model.dart';
 import 'package:pet_app/presentation/screens/home/model/home_model.dart';
 import 'package:pet_app/service/api_service.dart';
 import 'package:pet_app/service/api_url.dart';
@@ -102,9 +103,68 @@ class HomeController extends GetxController{
    }
  }
 
+ /// ✅ adsPic array from API
+ RxList<List<String>> adsPic = <List<String>>[].obs;
+
+ final PagingController<int, Ad> pagingController =
+ PagingController(firstPageKey: 1);
+
+ bool isRunning = false;
+
+
+ Future<void> getAllAdvertisement({required int pageKey}) async {
+   if (isRunning) return;
+   isRunning = true;
+   try {
+     final response =
+     await apiClient.get(url: ApiUrl.getAllAdvertisement(pageKey: pageKey));
+
+     if (response.statusCode == 200) {
+       final newData = AdvertisementModel.fromJson(response.body);
+
+       /// ✅ store adsPic
+       if (newData.adsPic != null) {
+         adsPic.value = newData.adsPic!
+             .map((group) => group.map((e) => e.toString()).toList())
+             .toList();
+       }
+
+       final newItems = newData.ads ?? [];
+       final current = newData.pagination?.currentPage ?? pageKey;
+       final totalPages = newData.pagination?.totalPages ?? pageKey;
+
+       final isLast = newItems.isEmpty || current >= totalPages;
+       if (isLast) {
+         pagingController.appendLastPage(newItems);
+       } else {
+         pagingController.appendPage(newItems, pageKey + 1);
+       }
+     } else {
+       pagingController.error = 'An error occurred';
+     }
+   } catch (_) {
+     pagingController.error = 'An error occurred';
+   } finally {
+     isRunning = false;
+   }
+ }
+
+
  @override
-  void onInit() {
+ void onInit() {
    super.onInit();
    userHomeHeader();
-  }
+
+   pagingController.addPageRequestListener((pageKey) {
+     getAllAdvertisement(pageKey: pageKey);
+   });
+
+   pagingController.refresh();
+ }
+
+ @override
+ void onClose() {
+   pagingController.dispose();
+   super.onClose();
+ }
 }

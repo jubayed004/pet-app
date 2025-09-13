@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 import 'package:pet_app/controller/get_controllers.dart';
 import 'package:pet_app/core/custom_assets/assets.gen.dart';
@@ -17,7 +18,9 @@ import 'package:pet_app/presentation/components/custom_image/custom_image.dart';
 import 'package:pet_app/presentation/components/custom_tab_selected/custom_tab_bar.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:pet_app/presentation/components/custom_text_field/custom_text_field.dart';
+import 'package:pet_app/presentation/no_internet/error_card.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_service/widgets/default_dialog.dart';
+import 'package:pet_app/presentation/screens/home/controller/home_controller.dart';
 import 'package:pet_app/presentation/screens/home/widget/category_iist_widget.dart';
 import 'package:pet_app/presentation/screens/home/widget/top_brands_carousel_widget.dart';
 import 'package:pet_app/presentation/screens/my_appointment/widgets/my_appointment_container.dart';
@@ -39,21 +42,29 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final homeController = GetControllers.instance.getHomeController();
-  final controller = GetControllers.instance.getProfileController();
-  final _controller = GetControllers.instance.getOnboardingController();
   final navController = GetControllers.instance.getNavigationControllerMain();
   final myAppointmentController = GetControllers.instance.getMyAppointmentController();
 
   @override
   void initState() {
     super.initState();
+    homeController.userHomeHeader();
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       myAppointmentController.pagingController1.refresh();
+
+      homeController.pagingController.addPageRequestListener((pageKey) {
+        homeController.getAllAdvertisement(pageKey: pageKey);
+      });
+
+
     });
+
   }
 
   @override
   Widget build(BuildContext context) {
+
     return SafeArea(
       top: false,
       child: Scaffold(
@@ -61,6 +72,8 @@ class _HomeScreenState extends State<HomeScreen> {
         body: RefreshIndicator(
           onRefresh: ()async{
             homeController.userHomeHeader();
+
+            homeController.pagingController.refresh();
           },
           child: CustomScrollView(
             slivers: [
@@ -71,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
               const SliverGap(8),
               SliverToBoxAdapter(child: CategoryList(controller: homeController)),
              /* _buildAdsSection(), */// Ads Section'
-              _buildAdvertisementSection(),
+              _buildAdvertisementSection(homeController),
               _buildAppointmentsHeader(),
               _buildAppointmentsSection(),
               const SliverGap(16),
@@ -148,21 +161,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: badges.Badge(
-                      onTap: () => AppRouter.route.pushNamed(RoutePath.notifyScreen),
-                      badgeContent: const Text('3', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16)),
-                      badgeStyle: badges.BadgeStyle(
-                        badgeColor: AppColors.purple500,
-                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
-                        borderRadius: BorderRadius.circular(50),
-                        elevation: 2,
-                      ),
-                      position: badges.BadgePosition.topStart(start: 10, top: -20),
-                      child: const Icon(CupertinoIcons.bell, size: 24, color: AppColors.purple500),
-                    ),
-                  ),
+                  IconButton(onPressed: (){ AppRouter.route.pushNamed(RoutePath.notifyScreen);}, icon: Icon(Iconsax.notification_bing)),
                 ],
               ),
             ],
@@ -179,49 +178,116 @@ class _HomeScreenState extends State<HomeScreen> {
         padding: const EdgeInsets.only(left: 16, top: 10, right: 16),
         child: Obx(() {
           final item = homeController.homeHeader.value.data?.petList ?? [];
+
+          // If no pets, don't show the section
+          if (item.isEmpty) {
+            return const SizedBox.shrink();
+          }
+
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(AppStrings.activePetProfiles, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              Text(
+                AppStrings.activePetProfiles,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               const Gap(16),
-              item.isNotEmpty
-                  ? CarouselSlider.builder(
+
+              // Carousel
+              CarouselSlider.builder(
                 itemCount: item.length,
                 itemBuilder: (context, index, realIndex) {
                   final petName = item[index];
                   final image = petName.petPhoto ?? "";
-                  final imageUrl = image.isEmpty ? "assets/images/default_pet_image.png" : "${ApiUrl.imageBase}$image";
+                  final imageUrl = image.isEmpty
+                      ? "assets/images/default_pet_image.png"
+                      : "${ApiUrl.imageBase}$image";
+
                   return Container(
-                    padding: const EdgeInsets.all(24),
-                    decoration: BoxDecoration(color: AppColors.primaryColor, borderRadius: BorderRadius.circular(20)),
+
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: AppColors.primaryColor,
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 8,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        CustomText(text: petName.name ?? "Unknown", fontWeight: FontWeight.w600, fontSize: 16.sp),
-                        CustomNetworkImage(imageUrl: imageUrl, height: 50, width: 100, boxShape: BoxShape.circle),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              CustomText(
+                                text: petName.name ?? "Unknown",
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16.sp,
+                                color: Colors.white,
+                              ),
+                              if (petName.name != null) ...[
+                                const SizedBox(height: 4),
+                                CustomText(
+                                  text: petName.name!,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 12.sp,
+                                  color: Colors.white.withOpacity(0.8),
+                                ),
+                              ],
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        CustomNetworkImage(
+                          imageUrl: imageUrl,
+                          height: 50,
+                          width: 50, // Make it square for circular image
+                          boxShape: BoxShape.circle,
+                        ),
                       ],
                     ),
                   );
                 },
                 options: CarouselOptions(
                   height: MediaQuery.of(context).size.height / 8,
-                  autoPlay: true,
-                  autoPlayInterval: Duration(seconds: 2),
+                  autoPlay: item.length > 1, // Only auto-play if multiple items
+                  autoPlayInterval: const Duration(seconds: 3),
                   enlargeCenterPage: true,
-                  enableInfiniteScroll: true,
-                  scrollPhysics: NeverScrollableScrollPhysics(),
+                  enableInfiniteScroll: item.length > 1, // Only infinite scroll if multiple items
+                  viewportFraction: 0.85,
+                  scrollPhysics: item.length > 1
+                      ? const BouncingScrollPhysics()
+                      : const NeverScrollableScrollPhysics(),
                   onPageChanged: (index, reason) {
-                    homeController.currentIndex.value = index; // Update the index here
+                    // 🔥 FIX: Use modulo to handle infinite scroll properly
+                    homeController.currentIndex.value = index % item.length;
                   },
                 ),
-              )
-                  : SizedBox(),
-              const Gap(10),
-              // Dots indicator based on currentIndex
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(item.length, (index) => buildDot(index)),
               ),
+
+              // Dots indicator (only show if multiple items)
+              if (item.length > 1) ...[
+                const Gap(12),
+                Obx(() {
+                  final activeIdx = homeController.currentIndex.value;
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(
+                      item.length,
+                          (index) => buildDot(index, active: index == activeIdx),
+                    ),
+                  );
+                }),
+              ],
             ],
           );
         }),
@@ -229,56 +295,90 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  /// -------------------- Onboarding Section --------------------
-  SliverToBoxAdapter _buildAdvertisementSection() {
+// Updated buildDot method with active parameter
+  Widget buildDot(int index, {bool active = false}) {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      margin: const EdgeInsets.symmetric(horizontal: 4),
+      height: 8,
+      width: active ? 24 : 8,
+      decoration: BoxDecoration(
+        color: active
+            ? AppColors.primaryColor
+            : AppColors.primaryColor.withOpacity(0.3),
+        borderRadius: BorderRadius.circular(12),
+        border: active
+            ? Border.all(
+          color: AppColors.primaryColor.withOpacity(0.6),
+          width: 0.5,
+        )
+            : null,
+      ),
+    );
+  }
+
+  /// -------------------- Onboarding (Ads) Section - All Images --------------------
+  SliverToBoxAdapter _buildAdvertisementSection(HomeController homeController) {
     return SliverToBoxAdapter(
       child: Padding(
-        padding: const EdgeInsets.only(left: 16, top: 10, right: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         child: Obx(() {
-          final item = homeController.homeHeader.value.data?.petList ?? [];
+          final adsPic = homeController.adsPic;
+
+          if (adsPic.isEmpty) {
+            return const SizedBox(height: 120); // loader / empty state
+          }
+
           return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(AppStrings.activePetProfiles, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-              const Gap(16),
-              item.isNotEmpty
-                  ? CarouselSlider.builder(
-                itemCount: item.length,
-                itemBuilder: (context, index, realIndex) {
-                  final petName = item[index];
-                  final image = petName.petPhoto ?? "";
-                  final imageUrl = image.isEmpty ? "assets/images/default_pet_image.png" : "${ApiUrl.imageBase}$image";
-                  return Container(
-                    padding: const EdgeInsets.all(24),
-                    decoration: BoxDecoration(color: AppColors.primaryColor, borderRadius: BorderRadius.circular(20)),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        CustomText(text: petName.name ?? "Unknown", fontWeight: FontWeight.w600, fontSize: 16.sp),
-                        CustomNetworkImage(imageUrl: imageUrl, height: 50, width: 100, boxShape: BoxShape.circle),
-                      ],
-                    ),
+              CarouselSlider.builder(
+                itemCount: adsPic.length,
+                itemBuilder: (context, adIndex, realIndex) {
+                  final adImages = adsPic[adIndex]
+                      .map((e) => "${ApiUrl.imageBase}${e.replaceAll('\\', '/')}")
+                      .toList();
+
+                  return PageView.builder(
+                    itemCount: adImages.length,
+                    itemBuilder: (context, imgIdx) {
+                      return Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 5),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Image.network(
+                            adImages[imgIdx],
+                            fit: BoxFit.cover,
+                            width: double.infinity,
+                            height: double.infinity,
+                          ),
+                        ),
+                      );
+                    },
                   );
                 },
                 options: CarouselOptions(
                   height: MediaQuery.of(context).size.height / 8,
-                  autoPlay: true,
-                  autoPlayInterval: Duration(seconds: 2),
                   enlargeCenterPage: true,
-                  enableInfiniteScroll: true,
-                  scrollPhysics: NeverScrollableScrollPhysics(),
+                  autoPlay: adsPic.length > 1,
+                  viewportFraction: 0.8,
                   onPageChanged: (index, reason) {
-                    homeController.currentIndex.value = index; // Update the index here
+                    homeController.currentIndex.value = index;
                   },
                 ),
-              )
-                  : SizedBox(),
-              const Gap(10),
-              // Dots indicator based on currentIndex
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(item.length, (index) => buildDot(index)),
               ),
+
+              // Dots indicator
+              const SizedBox(height: 10),
+              Obx(() {
+                final activeIdx = homeController.currentIndex.value;
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(
+                    adsPic.length,
+                        (i) => buildDot1(i, active: i == activeIdx),
+                  ),
+                );
+              }),
             ],
           );
         }),
@@ -286,23 +386,25 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  /// -------------------- Dots Indicator --------------------
-  Widget buildDot(int index) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 8),
-      child: Obx(() {
-        return Container(
-          height: 6,
-          width: homeController.currentIndex.value == index ? 24 : 6, // Use the correct controller
-          margin: const EdgeInsets.only(right: 5),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            color: homeController.currentIndex.value == index ? AppColors.primaryColor : AppColors.lightGray,
-          ),
-        );
-      }),
+  Widget buildDot1(int index, {bool active = false}) {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 220),
+      margin: const EdgeInsets.symmetric(horizontal: 4),
+      height: 8,
+      width: active ? 22 : 8,
+      decoration: BoxDecoration(
+        color: active
+            ? Colors.white.withOpacity(0.95)
+            : Colors.white.withOpacity(0.45),
+        borderRadius: BorderRadius.circular(100),
+        border: Border.all(
+          color: Colors.white.withOpacity(active ? 0.6 : 0.35),
+        ),
+      ),
     );
   }
+
+
 /*
   /// -------------------- Ads Section --------------------
   SliverToBoxAdapter _buildAdsSection() {
@@ -420,10 +522,11 @@ class _HomeScreenState extends State<HomeScreen> {
             address: item.serviceId?.location ?? "",
             phone: item.serviceId?.phone ?? "",
             deletedOnTab: () {
-              defaultDeletedYesNoDialog(
+              defaultDeletedYesNoCencelDialog(
                 context: context,
-                title: "Cancel Appointment Confirmation",
-                onYes: () => myAppointmentController.deletedBookingAppointment(id: item.id ?? ""),
+                title: 'Are you sure you want to Cancel this Appointment?',
+                id: item.id ?? "",
+                controller: myAppointmentController,
               );
             },
           );

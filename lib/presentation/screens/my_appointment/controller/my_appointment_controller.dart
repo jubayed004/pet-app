@@ -74,7 +74,7 @@ class MyAppointmentController extends GetxController {
   }
 
   ///=================== Deleted Booking Appointment
-
+/*
   Future<void> deletedBookingAppointment({required String id})async {
     try {
       final response = await apiClient.delete(
@@ -82,6 +82,21 @@ class MyAppointmentController extends GetxController {
 
       if (response.statusCode == 200) {
          pagingController1.refresh();
+        toastMessage(message: response.body?['message']?.toString());
+        AppRouter.route.pop();
+      }
+    } catch (error) {
+      if (kDebugMode) {
+        print(error);
+      }
+    }
+  }  */
+  Future<void> cencelBookingAppointment({required String id,required Map<String, String> body})async {
+    try {
+      final response = await apiClient.put(
+          url: ApiUrl.cencelBookingAppointment(id: id), body: body);
+      if (response.statusCode == 200) {
+        pagingController1.refresh();
         toastMessage(message: response.body?['message']?.toString());
         AppRouter.route.pop();
       }

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:intl/intl.dart';
 import 'package:pet_app/controller/get_controllers.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
+import 'package:pet_app/presentation/screens/business_owners/business_booking/model/business_booking_model.dart';
 import 'package:pet_app/presentation/widget/card/dashboard_store_card.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
 
@@ -36,7 +38,7 @@ class BusinessBookingScreen extends StatelessWidget {
                             color: controller.selectedTabIndex.value == 0 ? AppColors.purple500 : null,
                             borderRadius: BorderRadius.circular(25)
                         ),
-                        child: CustomText(text: "Upcoming".tr, color: AppColors.blackColor, fontSize: 14, fontWeight: FontWeight.w800,),
+                        child: CustomText(text: "PENDING", color: AppColors.blackColor, fontSize: 14, fontWeight: FontWeight.w800,),
                       );
                     }),
                   ),
@@ -53,7 +55,7 @@ class BusinessBookingScreen extends StatelessWidget {
                             color: controller.selectedTabIndex.value == 1 ?AppColors.purple500 : null,
                             borderRadius: BorderRadius.circular(25)
                         ),
-                        child: CustomText(text: "Ongoing ".tr, color: AppColors.blackColor, fontSize: 14, fontWeight: FontWeight.w800,),
+                        child: CustomText(text: "Ongoing ", color: AppColors.blackColor, fontSize: 14, fontWeight: FontWeight.w800,),
                       );
                     }),
                   ),
@@ -104,13 +106,14 @@ class BusinessBookingScreen extends StatelessWidget {
                   // ✅ Pending Tab
                   RefreshIndicator(
                     onRefresh: () async {
-                      controller.upcomingController.refresh();
+                      controller.pendingController.refresh();
                     },
-                    child: PagedListView<int, Widget>(
-                      pagingController: controller.upcomingController,
+                    child: PagedListView<int, BookingItem>(
+                      pagingController: controller.pendingController,
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-                      builderDelegate: PagedChildBuilderDelegate<Widget>(
+                      builderDelegate: PagedChildBuilderDelegate<BookingItem>(
                         itemBuilder: (context, item, index) {
+
                           return CustomBookingCard(
                             index: 0,
                             showApproveButton: true,
@@ -127,8 +130,18 @@ class BusinessBookingScreen extends StatelessWidget {
                             onChat: () => print("Chat tapped"),
                             onWebsite: () => print("Website tapped"),
                             onAddReview: () => print("Review tapped"),
-                            onApprove: () => print("Approved"),
-                            onReject: () => print("Rejected"),
+                            onApprove: () {
+                              controller.updateItemStatus(
+                                id: item.id ?? '',
+                                status: 'APPROVED',
+                              );
+                            },
+                            onReject: () {
+                              controller.updateItemStatus(
+                                id: item.id ?? '',
+                                status: 'REJECTED',
+                              );
+                            },
                           )
                           ;
                         },
@@ -141,10 +154,10 @@ class BusinessBookingScreen extends StatelessWidget {
                     onRefresh: () async {
                       controller.ongoingController.refresh();
                     },
-                    child: PagedListView<int, Widget>(
+                    child: PagedListView<int, BookingItem>(
                       pagingController: controller.ongoingController,
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-                      builderDelegate: PagedChildBuilderDelegate<Widget>(
+                      builderDelegate: PagedChildBuilderDelegate<BookingItem>(
                         itemBuilder: (context, item, index) {
                           return CustomBookingCard(
                             index: 1,
@@ -175,15 +188,15 @@ class BusinessBookingScreen extends StatelessWidget {
                   // ✅ completed Tab
                   RefreshIndicator(
                     onRefresh: () async {
-                      controller.completedController.refresh();
+                      controller.approvedController.refresh();
                     },
-                    child: PagedListView<int, Widget>(
-                      pagingController: controller.completedController,
+                    child: PagedListView<int, BookingItem>(
+                      pagingController: controller.approvedController,
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-                      builderDelegate: PagedChildBuilderDelegate<Widget>(
+                      builderDelegate: PagedChildBuilderDelegate<BookingItem>(
                         itemBuilder: (context, item, index) {
                           return CustomBookingCard(
-                            index: 0,
+                            index: 2,
                             showApproveButton: false,
                             showRejectButton: true, // ✅ Only reject
                             logoPath: "assets/images/vet.png",
@@ -213,29 +226,46 @@ class BusinessBookingScreen extends StatelessWidget {
                     onRefresh: () async {
                       controller.rejectedController.refresh();
                     },
-                    child: PagedListView<int, Widget>(
+                    child: PagedListView<int, BookingItem>(
                       pagingController: controller.rejectedController,
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-                      builderDelegate: PagedChildBuilderDelegate<Widget>(
+                      builderDelegate: PagedChildBuilderDelegate<BookingItem>(
                         itemBuilder: (context, item, index) {
+                           final address = item.serviceId?.location ?? "";
+                           final phoneNumber = item.serviceId?.phone ?? "";
+                           final bookingTime = item.bookingTime;
+                           final serviceType = item.serviceId;
+                           final shopLogo = serviceType?.shopLogo;
+                           final serviceImage = serviceType?.servicesImages;
+                           final bookingDate = DateFormat("dd mm yyyy").format(item.bookingDate ?? DateTime.now());
                           return CustomBookingCard(
-                            index: 0,
+                            index: 3,
                             showApproveButton: true, // ✅ Only approve
                             showRejectButton: false,
-                            logoPath: "assets/images/vet.png",
+                            logoPath: shopLogo ?? "",
                             topTitle: "Vets",
-                            imagePath: "assets/images/womandogimage.png",
-                            visitingDate: "25/11/2022",
+                            imagePath: serviceImage ?? "",
+                            visitingDate: bookingDate,
                             mainTitle: "Pet Food & Supplies Sales",
                             subTitle: "Pet Grooming",
                             rating: 5.0,
-                            phoneNumber: "(406) 555-0120",
-                            address: "4517 Washington Ave.",
+                            phoneNumber: phoneNumber,
+                            address: address,
                             onChat: () => print("Chat tapped"),
                             onWebsite: () => print("Website tapped"),
                             onAddReview: () => print("Review tapped"),
-                            onApprove: () => print("Approved"),
-                            onReject: () => print("Rejected"),
+                            onApprove: () {
+                              controller.updateItemStatus(
+                                id: item.id ?? '',
+                                status: 'APPROVED',
+                              );
+                            },
+                            onReject: () {
+                              controller.updateItemStatus(
+                                id: item.id ?? '',
+                                status: 'REJECTED',
+                              );
+                            },
                           )
                           ;
                         },

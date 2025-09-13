@@ -106,13 +106,13 @@ class MyAppointmentContainer extends StatelessWidget {
                     ),
                   ],
                 ),
-                if(["PENDING", "COMPLETED"].contains(bookingStatus))Container(
+                if(["PENDING", "COMPLETED","CANCELLED"].contains(bookingStatus))Container(
                   padding: padding8,
                   decoration: BoxDecoration(
                     color: bookingStatus == "PENDING" ? Color(0xffE0F2FE) :  Color(0xffDCFCE7),
                    borderRadius: BorderRadius.circular(10)
                   ),
-                  child: CustomText(text: bookingStatus,fontWeight: FontWeight.w500,fontSize: 12,color:bookingStatus == "PENDING" ? Color(0xff0EA5E9):Color(0xff22C55E),),
+                  child: CustomText(text: bookingStatus,fontWeight: FontWeight.w500,fontSize: 12,color:bookingStatus == "COMPLETED" ? Color(0xff22C55E) :Color(0xff0EA5E9),),
                 )
               ],
             ),
@@ -265,7 +265,7 @@ class MyAppointmentContainer extends StatelessWidget {
                 ),
                 OutlinedButton(
                   style: ButtonStyle(
-                    side: MaterialStateProperty.all(
+                    side: WidgetStateProperty.all(
                       BorderSide(color: Colors.red, width: 1), // Set the border color here
                     ),
                   ),

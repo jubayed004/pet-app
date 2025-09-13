@@ -16,8 +16,7 @@ Future<void> showAddHealthDialog(BuildContext context, String id) {
   final TextEditingController treatmentDescription = TextEditingController();
   final TextEditingController drName = TextEditingController();
 
-  final businessAllPetController =
-      GetControllers.instance.getBusinessAllPetController();
+  final businessAllPetController = GetControllers.instance.getBusinessAllPetController();
   final formKey = GlobalKey<FormState>();
   return showDialog(
     context: context,

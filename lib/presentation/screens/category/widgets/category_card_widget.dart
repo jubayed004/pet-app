@@ -58,7 +58,7 @@ class CategoryCardWidget extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),
-
+          border: Border.all(color: AppColors.greenColor,width: 1)
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -69,11 +69,12 @@ class CategoryCardWidget extends StatelessWidget {
                   child: Column(
                     children: [
                       image.isNotEmpty
-                          ? Image.network(
-                            "${ApiUrl.imageBase}$image",
+                          ? CustomNetworkImage(
+                           imageUrl:  "${ApiUrl.imageBase}$image",
                             fit: BoxFit.cover,
                         height: MediaQuery.of(context).size.height / 10,
                         width: MediaQuery.of(context).size.width,
+                        borderRadius: BorderRadius.circular(12.r),
                           )
                           : CustomImage(
                             imageSrc: "assets/images/womandogimage.png",
@@ -84,7 +85,7 @@ class CategoryCardWidget extends StatelessWidget {
                         text: shop? "Open":"Closed",
                         color:shop? AppColors.primaryColor:Colors.red,
                         fontWeight: FontWeight.w500,
-                        fontSize: 14,
+                        fontSize: 14.sp,
                       ),
                     ],
                   ),
@@ -93,16 +94,16 @@ class CategoryCardWidget extends StatelessWidget {
                 Expanded(
                   flex: 2,
                   child: Column(
-                    spacing: 6,
+                    spacing: 6.h,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomText(
                         text: item.serviceName ?? "",
-                        fontSize: 18,
+                        fontSize: 18.sp,
                         fontWeight: FontWeight.w500,
                       ),
                       CustomText(
-                        fontSize: 14,
+                        fontSize: 14.sp,
                         fontWeight: FontWeight.w500,
                         text: item.serviceType ?? "",
                         overflow: TextOverflow.ellipsis,
@@ -112,16 +113,16 @@ class CategoryCardWidget extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: List.generate(5, (index) => Icon(Icons.star, color: Colors.amber,size: 18,)),
+                            children: List.generate(5, (index) => Icon(Icons.star, color: Colors.amber,size: 18.sp,)),
                           ),
                           Gap(6),
-                          CustomText(text: "5.0 ",fontWeight: FontWeight.w500, fontSize: 12,)
+                          CustomText(text: "5.0 ",fontWeight: FontWeight.w500, fontSize: 12.sp,)
                         ],
                       ),
                       Row(
-                        spacing: 6,
+                        spacing: 6.w,
                         children: [
-                          Icon(Icons.location_on_sharp, size: 18),
+                          Icon(Icons.location_on_sharp, size: 18.sp),
                           Expanded(
                             child: CustomText(
                               textAlign: TextAlign.start,
@@ -134,7 +135,7 @@ class CategoryCardWidget extends StatelessWidget {
                       Row(
                         spacing: 6,
                         children: [
-                          Icon(Icons.phone, size: 18, color: Colors.green),
+                          Icon(Icons.phone, size: 18.sp, color: Colors.green),
                           Expanded(
                             child: CustomText(
                               textAlign: TextAlign.start,
@@ -164,14 +165,14 @@ class CategoryCardWidget extends StatelessWidget {
             Gap(8),
             CustomText(
               text: "Service Provided:",
-              fontSize: 14,
+              fontSize: 14.sp,
               fontWeight: FontWeight.w600,
             ),
             ...List.generate(providerList.length, (
                 subIndex,
                 ) {
               return CustomText(
-                fontSize: 14,
+                fontSize: 14.sp,
                 textAlign: TextAlign.start,
                 maxLines: 5,
                 text:
@@ -180,9 +181,9 @@ class CategoryCardWidget extends StatelessWidget {
             }),
             Gap(8),
             Row(
-              spacing: 8,
+              spacing: 8.w,
               children: [
-                Icon(Icons.access_time, size: 24),
+                Icon(Icons.access_time, size: 24.sp),
 
                 Expanded(
                   child: Column(
@@ -264,8 +265,8 @@ class CategoryCardWidget extends StatelessWidget {
                         }
                       },
                       title: "Website",
-                      height: 24,
-                      fontSize: 12,
+                      height: 24.h,
+                      fontSize: 12.sp,
                       fontWeight: FontWeight.w600,
                       fillColor: AppColors.purple500,
                       textColor: Colors.white,

@@ -43,6 +43,7 @@ class ApiUrl {
 
   static addAdvertisement()=> '$base/advertisement/add-advertisement';
   static getAdvertisement()=> '$base/advertisement/get-ads';
+  static getAllAdvertisement({required int pageKey})=> '$base/user-home-page/allAdsWhichActive?limit=10&page=$pageKey';
 
   ///Update Profile=============
 
@@ -71,6 +72,7 @@ class ApiUrl {
   static getBookingAppointmentDetails({required String id}) => '$base/booking/get-bookings-by-service-id/$id';
   static getBookingAppointment({required int page}) => '$base/booking/get-bookings?limit=10&page=$page';
   static deletedBookingAppointment({required String id}) => '$base/booking/delete/$id';
+  static cencelBookingAppointment({required String id}) => '$base/booking/$id/cancel';
   ///Business All Pets
 
   static getBusinessAllPets() => '$base/owner/get-all-pets-who-booked';
@@ -113,9 +115,9 @@ class ApiUrl {
   static addPlace() => '$base/place/add-place';
   static getNotification({required int pageKey}) => '$base/notification/get-all-notifications?page=$pageKey&limit=20';
   static deleteNotification({required String id}) => '$base/notification/delete-notification/$id';
-  static getDashboard({required String status, required int page}) => '$base/place/get-all-place?status=$status&page=$page&limit=10&sortBy=updatedAt';
+  static getAllBooking({required String status, required int page}) => '$base/owner/get-bookings-by-owner-with-status?status=$status&limit=10&page=$page';
   static getCountryCity() => '$base/get-country-city';
-  static updateStatus({required String id}) => '$base/place/approve-reject/$id';
+  static updateStatus({required String id}) => '$base/owner/update-booking-status/$id';
   static getSingleRegulation({required String country}) => '$base/regulation/get-single-regulation?country=$country';
   static getAllInbox({required int pageKey, required String search}) => '$base/conversation/get-chat-list?page=$pageKey&limit=10&searchTerm=$search';
   static getAllCollaboration({required int pageKey, required String params}) => '$base/collaboration/my-collaborations?status=$params&page=$pageKey&limit=10';

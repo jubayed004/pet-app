@@ -59,6 +59,8 @@ class NotifyScreen extends StatelessWidget {
                           title: CustomText(
                             text: title,
                             textAlign: TextAlign.start,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
                           ),
                           subtitle: CustomText(
                             text: time,  // Format the date and time dynamically

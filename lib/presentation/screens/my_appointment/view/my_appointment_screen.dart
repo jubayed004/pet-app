@@ -101,12 +101,11 @@ class _MyAppointmentScreenState extends State<MyAppointmentScreen> {
                           AppRouter.route.pushNamed(RoutePath.reviewScreen);
                           },*/
                       deletedOnTab: () {
-                        defaultDeletedYesNoDialog(
+                        defaultDeletedYesNoCencelDialog(
                           context: context,
                           title: 'Are you sure you want to Cancel this Appointment?',
-                          onYes: () {
-                            myAppointmentController.deletedBookingAppointment(id: appointmentId ?? "");
-                          },
+                           id:  appointmentId ?? "",
+                          controller: myAppointmentController,
                         );
                       },
                     );
