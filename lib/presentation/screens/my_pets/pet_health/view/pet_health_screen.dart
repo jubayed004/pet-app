@@ -18,8 +18,8 @@ class PetHealthScreen extends StatefulWidget {
   State<PetHealthScreen> createState() => _PetHealthScreenState();
 }
 
-class _PetHealthScreenState extends State<PetHealthScreen> with TickerProviderStateMixin {late TabController _healthTabController;
-
+class _PetHealthScreenState extends State<PetHealthScreen> with TickerProviderStateMixin {
+  late TabController _healthTabController;
 
   final petHealthController = GetControllers.instance.getPetHealthController();
 
@@ -70,7 +70,7 @@ class _PetHealthScreenState extends State<PetHealthScreen> with TickerProviderSt
                 TreatmentCard(
                   controller: petHealthController,
                   id: widget.id,
-                  status: "PADDING",
+                  status: "PENDING",
 
                 ),
                 TreatmentCard(

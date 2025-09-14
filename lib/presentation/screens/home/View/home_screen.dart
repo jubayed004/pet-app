@@ -48,18 +48,9 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    homeController.userHomeHeader();
-
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      myAppointmentController.pagingController1.refresh();
-
-      homeController.pagingController.addPageRequestListener((pageKey) {
-        homeController.getAllAdvertisement(pageKey: pageKey);
-      });
-
-
+      myAppointmentController.getSingleAppointmentBooking();
     });
-
   }
 
   @override
@@ -72,8 +63,8 @@ class _HomeScreenState extends State<HomeScreen> {
         body: RefreshIndicator(
           onRefresh: ()async{
             homeController.userHomeHeader();
-
-            homeController.pagingController.refresh();
+            homeController.getAllAdvertisement();
+            myAppointmentController.getSingleAppointmentBooking();
           },
           child: CustomScrollView(
             slivers: [
@@ -324,36 +315,27 @@ class _HomeScreenState extends State<HomeScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         child: Obx(() {
           final adsPic = homeController.adsPic;
-
           if (adsPic.isEmpty) {
-            return const SizedBox(height: 120); // loader / empty state
+            return const SizedBox(height: 0);
           }
 
           return Column(
             children: [
               CarouselSlider.builder(
                 itemCount: adsPic.length,
-                itemBuilder: (context, adIndex, realIndex) {
-                  final adImages = adsPic[adIndex]
-                      .map((e) => "${ApiUrl.imageBase}${e.replaceAll('\\', '/')}")
-                      .toList();
-
-                  return PageView.builder(
-                    itemCount: adImages.length,
-                    itemBuilder: (context, imgIdx) {
-                      return Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 5),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(8),
-                          child: Image.network(
-                            adImages[imgIdx],
-                            fit: BoxFit.cover,
-                            width: double.infinity,
-                            height: double.infinity,
-                          ),
-                        ),
-                      );
-                    },
+                itemBuilder: (context, index, realIndex) {
+                  final imgUrl = adsPic[index];
+                  return Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 5),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.network(
+                        imgUrl,
+                        fit: BoxFit.cover,
+                        width: double.infinity,
+                        height: double.infinity,
+                      ),
+                    ),
                   );
                 },
                 options: CarouselOptions(
@@ -504,7 +486,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Obx(() {
-          final item = myAppointmentController.appointmentBookingDetails.value.booking;
+          final item = myAppointmentController.firstBooking.value;
           if (item == null) {
             return const Center(child: CustomText(text: "No Appointment Found", fontSize: 16, fontWeight: FontWeight.w400));
           }

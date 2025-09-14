@@ -34,12 +34,13 @@ class MessageListPage extends StatelessWidget {
                   itemBuilder: (context, item, index) {
                     // final time = GetTimeAgo.parse(item.updatedAt ?? DateTime.now());
                     final name = item.otherUser?.name ?? "";
+                    final isRead = item.lastMessage?.isRead ?? "";
                     final message = item.lastMessage?.message ?? "";
                     final image = item.otherUser?.profilePic;
                     final photo = image != null && image.isNotEmpty ? image ?? "" : "";
                     final date = DateFormat("dd-MM-yyyy").format(item.lastMessage?.createdAt ?? DateTime.now());
                     return MessageCardItemWidget(
-                        isRead: index == 2 ? false : true,
+                        isRead: isRead == 2 ? false : true,
                         name: name,
                         message: message,
                         date: date,

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -49,22 +50,71 @@ class MessageController extends GetxController{
   }
 
   void listenForNewConversation() {
-    try{
-      SocketApi.socket?.on('new_notification', (data) {
-        debugPrint(data.toString());
-        // final newMessage = Conversation.fromJson(data);
-        // final currentMessages = pagingController.itemList ?? [];
-        //
-        // if (!currentMessages.any((msg) => msg.roomId == newMessage.roomId)) {
-        //   final updatedList = [newMessage, ...currentMessages];
-        //   pagingController.itemList = List<Conversation>.from(updatedList);
-        // }
+    try {
+      debugPrint("========= Listening for new notifications =========");
+
+      SocketApi.socket?.on('receive_message', (data) {
+        debugPrint("Incoming socket data: $data");
+
+        final newMessage = Conversation.fromJson(
+          (data != null && data is List) ? data.first : data ?? {},
+        );
+
+        final currentMessages = pagingController.itemList ?? [];
+
+        // Find if this roomId already exists
+        final existingIndex = currentMessages.indexWhere(
+              (msg){
+                print("1 ${msg.roomId == newMessage.roomId}");
+                print("New ${newMessage.roomId}");
+                print("Old ${msg.roomId}");
+                return msg.roomId == newMessage.roomId;
+              },
+        );
+        print(existingIndex != -1? "Existing Index True": "Existing Index False");
+
+        if (existingIndex != -1) {
+          final updatedList = List<Conversation>.from(currentMessages);
+          updatedList.removeAt(existingIndex);
+          updatedList.insert(0, newMessage);
+          pagingController.itemList = updatedList;
+        } else {
+          final updatedList = [newMessage, ...currentMessages];
+          pagingController.itemList = updatedList;
+        }
+        debugPrint("Updated conversation list: ${pagingController.itemList?.length}");
       });
-    }catch(e){
-      debugPrint("Socket Error New Message Controller Try Catch Error $e");
+    } catch (e) {
+      debugPrint("Socket Error in listenForNewConversation: $e");
     }
   }
 
+  final PagingController<int, Conversation> pagingController1 = PagingController(firstPageKey: 1);
+
+  bool isLoading= false;
+
+  Future<void> getMessageForChat({required int pageKey,required String id}) async {
+    if(isLoading)return;
+    isLoading = true;
+    try{
+      final response = await apiClient.get(url: ApiUrl.getMessageForChat(pageKey: pageKey, id: id));
+      if (response.statusCode == 200) {
+        final newData = MessageModel.fromJson(response.body);
+        final newItems = newData.conversations ?? [];
+        if (newItems.isEmpty) {
+          pagingController.appendLastPage(newItems);
+        } else {
+          pagingController.appendPage(newItems, pageKey + 1);
+        }
+      } else {
+        pagingController.error = 'An error occurred';
+      }
+    }catch(_){
+      pagingController.error = 'An error occurred';
+    }finally{
+      isLoading = false;
+    }
+  }
 
   @override
   void onInit() {

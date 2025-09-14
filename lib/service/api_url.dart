@@ -43,7 +43,7 @@ class ApiUrl {
 
   static addAdvertisement()=> '$base/advertisement/add-advertisement';
   static getAdvertisement()=> '$base/advertisement/get-ads';
-  static getAllAdvertisement({required int pageKey})=> '$base/user-home-page/allAdsWhichActive?limit=10&page=$pageKey';
+  static getAllAdvertisement()=> '$base/user-home-page/allAdsWhichActive?limit=50&page=1';
 
   ///Update Profile=============
 
@@ -99,6 +99,7 @@ class ApiUrl {
 
 /// chat
   static getMessage({required int pageKey}) => '$base/chat/conversations?limit=10&page=$pageKey';
+  static getMessageForChat({required int pageKey,required String id}) => '$base/chat/messages?roomId=$id&limit=20&page=$pageKey';
 
 
 

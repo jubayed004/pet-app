@@ -11,488 +11,636 @@ import 'package:iconsax/iconsax.dart';
 import 'package:pet_app/controller/get_controllers.dart';
 import 'package:pet_app/core/route/route_path.dart';
 import 'package:pet_app/core/route/routes.dart';
+import 'package:pet_app/helper/image/network_image.dart';
 import 'package:pet_app/presentation/components/custom_button/custom_button.dart';
 import 'package:pet_app/presentation/components/custom_image/custom_image.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:pet_app/presentation/components/custom_text_field/custom_text_field.dart';
+import 'package:pet_app/service/api_url.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
 import 'package:pet_app/utils/app_const/padding_constant.dart';
 import 'package:pet_app/utils/app_strings/app_strings.dart';
 import 'package:shimmer/shimmer.dart';
 
-class BusinessHomeScreen extends StatelessWidget {
+class BusinessHomeScreen extends StatefulWidget {
    BusinessHomeScreen({super.key});
+
+  @override
+  State<BusinessHomeScreen> createState() => _BusinessHomeScreenState();
+}
+
+class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
   final homeController = GetControllers.instance.getHomeController();
+
   final controller = GetControllers.instance.getProfileController();
-  final _controller = GetControllers.instance.getOnboardingController();
+
+  final businessAllPetController = GetControllers.instance.getBusinessAllPetController();
+  final businessProfileController =
+  GetControllers.instance.getBusinessProfileController();
+
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
       backgroundColor: AppColors.appBackgroundColor,
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            floating: true,
-            snap: true,
-            backgroundColor: AppColors.appBackgroundColor,
-            elevation: 0,
-            toolbarHeight: 56,
-            flexibleSpace: FlexibleSpaceBar(
-              titlePadding: EdgeInsets.zero,
-              centerTitle: false,
-              title: Padding(
-                padding: const EdgeInsets.only(left: 16, right: 10),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(right: 10),
-                              child: Container(
-                                height: 50,
-                                width: 50,
-                                decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                ),
-                                child: Obx(() {
-                                  final imageFile = controller.selectedImage.value;
-                                  if (imageFile != null) {
-                                    return ClipOval(
-                                      child: Image.file(
-                                        File(imageFile.path),
-                                        width: 50,
-                                        height: 50,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    );
-                                  } else {
-                                    return Shimmer.fromColors(
-                                      baseColor: AppColors.blackColor.withAlpha(50),
-                                      highlightColor: AppColors.blackColor.withAlpha(100),
-                                      child: Container(
-                                        height: 50,
-                                        width: 50,
-                                        decoration: const BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: AppColors.primaryColor,
-                                        ),
-                                      ),
-                                    );
-                                  }
-                                }),
-                              ),
-                            ),
-
-                            CustomText(text: 'Welcome to pet Shop',fontSize: 14,fontWeight: FontWeight.w600,),
-                          ],
-                        ),
-                        IconButton(onPressed: (){ AppRouter.route.pushNamed(RoutePath.notifyScreen);}, icon: Icon(Iconsax.notification_bing))
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 16.0, top: 10, right: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-
-                  /*Obx(() {
-                    return ;
-                  }),*/
-                  Container(
-                    padding: EdgeInsets.all(24),
-                    decoration: BoxDecoration(
-                      color: AppColors.primaryColor,
-                      borderRadius: BorderRadius.circular(20),
-
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-                      children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            CustomText(text: "PET SHOP",fontWeight: FontWeight.w600,fontSize: 20,),
-                            CustomText(text: 'Manage Your Store and Services')
-                            /*     CustomText(
-                                text: _controller.onboardingList[_controller
-                                    .currentIndex.value]
-                                    .title,),
-                              CustomText(
-                                text: _controller.onboardingList[_controller
-                                    .currentIndex
-                                    .value]
-                                    .details,)*/
-                          ],
-                        ),
-                        CustomImage(
-                          imageSrc: "assets/images/petkalloimage.png",
-                          sizeWidth: 80,)
-                      ],
-                    ),
-                  ),
-                  Gap(10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: List.generate(
-                        3, (index) => buildDot(index, context)),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          SliverGap(8),
-          SliverToBoxAdapter(
-            child: Padding(
-                padding: EdgeInsets.only(left: 16),
-                child: CustomText(text: "Find You Business ",
-                  textAlign: TextAlign.start,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 18,)),
-          ),
-          SliverGap(8),
-          SliverToBoxAdapter(
-            child: SizedBox(
-              height: 130,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: 6,
-                padding: EdgeInsets.only(left: 16, right: 10),
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: EdgeInsets.only(right: 10),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-
-                         /*   //homeController.selectedIndex.value = index;
-                            AppRouter.route.pushNamed(RoutePath.categoryScreen);*/
-                          },
-                          child: Card(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(50),
-                            ),
-                            elevation: 3,
-                            child: CircleAvatar(
-                              backgroundColor:/* isSelected ? AppColors.primaryColor :*/ Colors.white,
-                              radius: 40,
-                              child: homeController.iconList[index],
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 4),
-                        CustomText(text: homeController.stringList[index],
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,),
-                      ],
-                    ),
-                  );
-                },
-              ),
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: Padding(
-                padding: EdgeInsets.only(left: 16,right: 16),
-                child: Column(
-                  children: [
-                    CustomImage(imageSrc: "assets/images/adshome.png"),
-                  ],
-                )),
-          ),
-     /*     SliverToBoxAdapter(
-            child: Padding(
-                padding: EdgeInsets.only(left: 16,right: 16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    CustomText(text: AppStrings.upcomingAppointments,fontWeight: FontWeight.w400,fontSize: 18,),
-                    TextButton(onPressed: (){
-                      AppRouter.route.pushNamed(RoutePath.myAppointmentScreen);
-                    }, child:   CustomText(text: AppStrings.seeAll,fontWeight: FontWeight.w400,fontSize: 14,))
-                  ],
-                )),
-          ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 16.0,right: 16),
-              child: Container(
-                padding: EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withValues(alpha: 0.5),
-                        spreadRadius: 2,
-                        blurRadius: 5,
-                        offset: Offset(0, 3), // changes position of shadow
-                      )
-                    ]
-                ),
-                child: Column(
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment:MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            CustomImage(imageSrc: "assets/images/vet.png",sizeWidth: 30.sp,),
-                            Gap(6),
-                            CustomText(text: AppStrings.vets,textAlign: TextAlign.center,fontSize: 16,fontWeight: FontWeight.w700,),
-                          ],
-                        ),
-                        CustomImage(imageSrc: "assets/images/petshoplogo.png",sizeWidth: 50,),
-                      ],
-                    ),
-                    Gap(6),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+      body: RefreshIndicator(
+        onRefresh: ()async{
+          businessAllPetController.getBusinessAllPets();
+        },
+        child: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              floating: true,
+              snap: true,
+              backgroundColor: AppColors.appBackgroundColor,
+              elevation: 0,
+              toolbarHeight: 56,
+              flexibleSpace: FlexibleSpaceBar(
+                titlePadding: EdgeInsets.zero,
+                centerTitle: false,
+                title: Padding(
+                  padding: const EdgeInsets.only(left: 16, right: 10),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
                             children: [
-                              CustomImage(imageSrc: "assets/images/womandogimage.png",boxFit: BoxFit.cover,),
-                              SizedBox(height: 6),
-                              Row(
-                                children: [
-                                  Expanded(child: CustomText(text: "Visiting Date : ", fontWeight: FontWeight.w400,textAlign: TextAlign.start,)),
-                                  Expanded(child: CustomText(text: "25/11/2022", fontWeight: FontWeight.w400,textAlign: TextAlign.start,)),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                        Gap(6),
-                        Expanded(
-                          flex: 2,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              CustomText(text: "Pet Food & Supplies Sales",fontSize: 18,fontWeight: FontWeight.w500,),
-                              Gap(4),
-                              CustomText(
-                                text: "Pet Grooming ",
-                                overflow: TextOverflow.ellipsis,
-
-                              ),
-                              Gap(4),
-                              Row(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: List.generate(5, (index) => Icon(Icons.star, color: Colors.amber,size: 18,)),
+                              Padding(
+                                padding: const EdgeInsets.only(right: 10),
+                                child: Container(
+                                  height: 50,
+                                  width: 50,
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
                                   ),
-                                  Gap(6),
-                                  CustomText(text: "5.0 ",fontWeight: FontWeight.w500, fontSize: 12,)
-                                ],
-                              ),
-                              Gap(4),
-                              Row(
-                                children: [
-                                  Icon(Icons.call,size: 18,),
-                                  Expanded(child: CustomText(text: "(406) 555-0120",fontWeight: FontWeight.w400,textAlign: TextAlign.start,)),
-                                  Icon(Icons.location_on_sharp,size: 18,),
-                                  Expanded(child: CustomText(text: "4517 Washington Ave. ",overflow: TextOverflow.ellipsis,textAlign: TextAlign.start,))
-                                ],
+                                  child: Obx(() {
+                                    final images = businessProfileController.profile.value.ownerDetails?.business?.shopPic;
+                                    if (images != null && images.isNotEmpty) {
+                                      final imageUrl = "${ApiUrl.imageBase}${images[0].replaceAll('\\', '/')}"; // Ensure proper URL format
+                                      return CustomNetworkImage(
+                                        imageUrl: imageUrl,
+                                        width: 50.w,
+                                        height: 50.h,
+                                        fit: BoxFit.cover,
+                                        boxShape: BoxShape.circle,
+                                      );
+                                    } else {
+                                      return Shimmer.fromColors(
+                                        baseColor: AppColors.blackColor.withAlpha(50),
+                                        highlightColor: AppColors.blackColor.withAlpha(100),
+                                        child: Container(
+                                          height: 50,
+                                          width: 50,
+                                          decoration: const BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: AppColors.primaryColor,
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                  }),
+                                ),
                               ),
 
-
+                              CustomText(text: 'Welcome to pet Shop',fontSize: 14,fontWeight: FontWeight.w600,),
                             ],
                           ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment:MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child: CustomButton(onTap: (){},
-                            title: "Chat Now",
-                            height: 24,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                            fillColor: AppColors.whiteColor,
-                            textColor: Colors.black,
-                            //borderColor: Colors.black,
-                            borderWidth: 1,
-                            //isBorder: true,
-                            // icon: Icon(Icons.chat,color: Colors.black,size: 16,),
-                            showIcon: true,
-                          ),
-                        ),
-                        Expanded(
-
-                            child: CustomButton(onTap: (){},title: " Website",height: 24,fontSize: 12,fontWeight: FontWeight.w400,fillColor: AppColors.purple500,textColor: Colors.black,)),
-                        Expanded(
-
-                            child: TextButton(onPressed: (){}, child: CustomText(text: "Add Review",fontSize: 12,fontWeight: FontWeight.w600,))),
-                      ],
-                    )
-                  ],
-                ),
-              ),
-            ),
-          ),*/
-          SliverGap(16),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 16.0,right: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CustomText(text: AppStrings.topBrands,fontWeight: FontWeight.w400,fontSize: 18,),
-
-                  // Image Carousel with finite size
-                  CarouselSlider(
-                    options: CarouselOptions(
-                    height: 150,
-                      autoPlay: true,
-                      enlargeCenterPage: true,
-                      aspectRatio: 16 / 8,
-                      viewportFraction: 2.0,
-                    ),
-                    items: [
-                      // Replace with your actual image assets
-                      ClipRRect(
-                          borderRadius:  BorderRadius.all(Radius.circular(20)),
-                          child: CustomImage(
-                              imageSrc: "assets/images/topbrandsimage.png", fit: BoxFit.cover)),
-                      ClipRRect(
-                          borderRadius:  BorderRadius.all(Radius.circular(20)),
-                          child: CustomImage(
-                              imageSrc: "assets/images/topbrandsimage.png", fit: BoxFit.cover)),
-                      ClipRRect(
-                          borderRadius:  BorderRadius.all(Radius.circular(20)),
-                          child: CustomImage(
-                              imageSrc: "assets/images/topbrandsimage.png", fit: BoxFit.cover)),
-                      ClipRRect(
-                          borderRadius:  BorderRadius.all(Radius.circular(20)),
-                          child: CustomImage(
-                              imageSrc: "assets/images/topbrandsimage.png", fit: BoxFit.cover)),
-                      ClipRRect(
-                          borderRadius:  BorderRadius.all(Radius.circular(20)),
-                          child: CustomImage(
-                              imageSrc: "assets/images/topbrandsimage.png", fit: BoxFit.cover)),
-
+                          IconButton(onPressed: (){ AppRouter.route.pushNamed(RoutePath.notifyScreen);}, icon: Icon(Iconsax.notification_bing))
+                        ],
+                      ),
                     ],
                   ),
-                ],
+                ),
               ),
             ),
-          ),
-          SliverToBoxAdapter(
-            child: Padding(
-                padding: EdgeInsets.only(left: 16,right: 16),
+          /*  SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 16.0, top: 10, right: 16),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        CustomText(text: AppStrings.activePromotions,fontWeight: FontWeight.w400,fontSize: 18,),
-                        TextButton(onPressed: (){
-                          //AppRouter.route.pushNamed(RoutePath.myAppointmentScreen);
-                        }, child:   CustomText(text: AppStrings.seeAll,fontWeight: FontWeight.w400,fontSize: 14,))
-                      ],
-                    ),
-                    CustomImage(imageSrc: "assets/images/adshome.png"),
-                    Gap(16),
-                    GestureDetector(
-                      onTap: (){
-                        AppRouter.route.pushNamed(RoutePath.reviewScreen);
-                      },
-                      child: Card(
-                        color: Colors.white,
-                        child: Container(
-                          padding: padding12,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(4)
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      CustomText(text: "Rating & Reviews",fontWeight: FontWeight.w800,fontSize: 18,),
-                                     Row(
-                                       crossAxisAlignment: CrossAxisAlignment.start,
-                                       mainAxisAlignment: MainAxisAlignment.start,
-                                       children: [
-                                         ...List.generate(5, (index){
-                                           return Icon(Icons.star,color: AppColors.purple500,);
-                                         })
-                                       ],
-                                     )
-                                    ],
-                                  ),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      CustomText(text: "4.5",fontSize: 24,fontWeight: FontWeight.w700,),
-                                      CustomText(text: "234 Ratings",fontSize: 10,fontWeight: FontWeight.w500,),
 
-                                    ],
-                                  )
-                                ],
-                              ),
-                               Gap(12),
-                               Divider(height: 2,color: Color(0xffCFCFCF),),
-                              Gap(12),
-                              CustomText(text: "View Customer Reviews",fontWeight: FontWeight.w600,fontSize: 14,color: AppColors.purple500,decoration: TextDecoration.underline,decorationColor: AppColors.purple500,)
+                    *//*Obx(() {
+                      return ;
+                    }),*//*
+                    Container(
+                      padding: EdgeInsets.all(24),
+                      decoration: BoxDecoration(
+                        color: AppColors.primaryColor,
+                        borderRadius: BorderRadius.circular(20),
+
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CustomText(text: "PET SHOP",fontWeight: FontWeight.w600,fontSize: 20,),
+                              CustomText(text: 'Manage Your Store and Services')
+                              *//*     CustomText(
+                                  text: _controller.onboardingList[_controller
+                                      .currentIndex.value]
+                                      .title,),
+                                CustomText(
+                                  text: _controller.onboardingList[_controller
+                                      .currentIndex
+                                      .value]
+                                      .details,)*//*
                             ],
                           ),
-                        ),
+                          CustomImage(
+                            imageSrc: "assets/images/petkalloimage.png",
+                            sizeWidth: 80,)
+                        ],
                       ),
-                    )
+                    ),
+                    Gap(10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: List.generate(
+                          3, (index) => buildDot(index, context)),
+                    ),
                   ],
-                )
+                ),
+              ),
+            ),*/
+            _buildOnboardingSection(),
+            SliverGap(8),
+            SliverToBoxAdapter(
+              child: Padding(
+                  padding: EdgeInsets.only(left: 16),
+                  child: CustomText(text: "Find You Business ",
+                    textAlign: TextAlign.start,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 18,)),
             ),
-          ),
+            SliverGap(8),
+            SliverToBoxAdapter(
+              child: SizedBox(
+                height: 130,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 6,
+                  padding: EdgeInsets.only(left: 16, right: 10),
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: EdgeInsets.only(right: 10),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
 
-          SliverGap(24),
+                           /*   //homeController.selectedIndex.value = index;
+                              AppRouter.route.pushNamed(RoutePath.categoryScreen);*/
+                            },
+                            child: Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              elevation: 3,
+                              child: CircleAvatar(
+                                backgroundColor:/* isSelected ? AppColors.primaryColor :*/ Colors.white,
+                                radius: 40,
+                                child: homeController.iconList[index],
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 4),
+                          CustomText(text: homeController.stringList[index],
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+            SliverToBoxAdapter(
+              child: Padding(
+                  padding: EdgeInsets.only(left: 16,right: 16),
+                  child: Column(
+                    children: [
+                      CustomImage(imageSrc: "assets/images/adshome.png"),
+                    ],
+                  )),
+            ),
+             /*     SliverToBoxAdapter(
+              child: Padding(
+                  padding: EdgeInsets.only(left: 16,right: 16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CustomText(text: AppStrings.upcomingAppointments,fontWeight: FontWeight.w400,fontSize: 18,),
+                      TextButton(onPressed: (){
+                        AppRouter.route.pushNamed(RoutePath.myAppointmentScreen);
+                      }, child:   CustomText(text: AppStrings.seeAll,fontWeight: FontWeight.w400,fontSize: 14,))
+                    ],
+                  )),
+            ),
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 16.0,right: 16),
+                child: Container(
+                  padding: EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withValues(alpha: 0.5),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: Offset(0, 3), // changes position of shadow
+                        )
+                      ]
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              CustomImage(imageSrc: "assets/images/vet.png",sizeWidth: 30.sp,),
+                              Gap(6),
+                              CustomText(text: AppStrings.vets,textAlign: TextAlign.center,fontSize: 16,fontWeight: FontWeight.w700,),
+                            ],
+                          ),
+                          CustomImage(imageSrc: "assets/images/petshoplogo.png",sizeWidth: 50,),
+                        ],
+                      ),
+                      Gap(6),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                CustomImage(imageSrc: "assets/images/womandogimage.png",boxFit: BoxFit.cover,),
+                                SizedBox(height: 6),
+                                Row(
+                                  children: [
+                                    Expanded(child: CustomText(text: "Visiting Date : ", fontWeight: FontWeight.w400,textAlign: TextAlign.start,)),
+                                    Expanded(child: CustomText(text: "25/11/2022", fontWeight: FontWeight.w400,textAlign: TextAlign.start,)),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                          Gap(6),
+                          Expanded(
+                            flex: 2,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                CustomText(text: "Pet Food & Supplies Sales",fontSize: 18,fontWeight: FontWeight.w500,),
+                                Gap(4),
+                                CustomText(
+                                  text: "Pet Grooming ",
+                                  overflow: TextOverflow.ellipsis,
+
+                                ),
+                                Gap(4),
+                                Row(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: List.generate(5, (index) => Icon(Icons.star, color: Colors.amber,size: 18,)),
+                                    ),
+                                    Gap(6),
+                                    CustomText(text: "5.0 ",fontWeight: FontWeight.w500, fontSize: 12,)
+                                  ],
+                                ),
+                                Gap(4),
+                                Row(
+                                  children: [
+                                    Icon(Icons.call,size: 18,),
+                                    Expanded(child: CustomText(text: "(406) 555-0120",fontWeight: FontWeight.w400,textAlign: TextAlign.start,)),
+                                    Icon(Icons.location_on_sharp,size: 18,),
+                                    Expanded(child: CustomText(text: "4517 Washington Ave. ",overflow: TextOverflow.ellipsis,textAlign: TextAlign.start,))
+                                  ],
+                                ),
 
 
-        ],
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: CustomButton(onTap: (){},
+                              title: "Chat Now",
+                              height: 24,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                              fillColor: AppColors.whiteColor,
+                              textColor: Colors.black,
+                              //borderColor: Colors.black,
+                              borderWidth: 1,
+                              //isBorder: true,
+                              // icon: Icon(Icons.chat,color: Colors.black,size: 16,),
+                              showIcon: true,
+                            ),
+                          ),
+                          Expanded(
+
+                              child: CustomButton(onTap: (){},title: " Website",height: 24,fontSize: 12,fontWeight: FontWeight.w400,fillColor: AppColors.purple500,textColor: Colors.black,)),
+                          Expanded(
+
+                              child: TextButton(onPressed: (){}, child: CustomText(text: "Add Review",fontSize: 12,fontWeight: FontWeight.w600,))),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),*/
+            SliverGap(16),
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 16.0,right: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomText(text: AppStrings.topBrands,fontWeight: FontWeight.w400,fontSize: 18,),
+
+                    // Image Carousel with finite size
+                    CarouselSlider(
+                      options: CarouselOptions(
+                      height: 150,
+                        autoPlay: true,
+                        enlargeCenterPage: true,
+                        aspectRatio: 16 / 8,
+                        viewportFraction: 2.0,
+                      ),
+                      items: [
+                        // Replace with your actual image assets
+                        ClipRRect(
+                            borderRadius:  BorderRadius.all(Radius.circular(20)),
+                            child: CustomImage(
+                                imageSrc: "assets/images/topbrandsimage.png", fit: BoxFit.cover)),
+                        ClipRRect(
+                            borderRadius:  BorderRadius.all(Radius.circular(20)),
+                            child: CustomImage(
+                                imageSrc: "assets/images/topbrandsimage.png", fit: BoxFit.cover)),
+                        ClipRRect(
+                            borderRadius:  BorderRadius.all(Radius.circular(20)),
+                            child: CustomImage(
+                                imageSrc: "assets/images/topbrandsimage.png", fit: BoxFit.cover)),
+                        ClipRRect(
+                            borderRadius:  BorderRadius.all(Radius.circular(20)),
+                            child: CustomImage(
+                                imageSrc: "assets/images/topbrandsimage.png", fit: BoxFit.cover)),
+                        ClipRRect(
+                            borderRadius:  BorderRadius.all(Radius.circular(20)),
+                            child: CustomImage(
+                                imageSrc: "assets/images/topbrandsimage.png", fit: BoxFit.cover)),
+
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SliverToBoxAdapter(
+              child: Padding(
+                  padding: EdgeInsets.only(left: 16,right: 16),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          CustomText(text: AppStrings.activePromotions,fontWeight: FontWeight.w400,fontSize: 18,),
+                          TextButton(onPressed: (){
+                            //AppRouter.route.pushNamed(RoutePath.myAppointmentScreen);
+                          }, child:   CustomText(text: AppStrings.seeAll,fontWeight: FontWeight.w400,fontSize: 14,))
+                        ],
+                      ),
+                      CustomImage(imageSrc: "assets/images/adshome.png"),
+                      Gap(16),
+                      GestureDetector(
+                        onTap: (){
+                          AppRouter.route.pushNamed(RoutePath.reviewScreen);
+                        },
+                        child: Card(
+                          color: Colors.white,
+                          child: Container(
+                            padding: padding12,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(4)
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        CustomText(text: "Rating & Reviews",fontWeight: FontWeight.w800,fontSize: 18,),
+                                       Row(
+                                         crossAxisAlignment: CrossAxisAlignment.start,
+                                         mainAxisAlignment: MainAxisAlignment.start,
+                                         children: [
+                                           ...List.generate(5, (index){
+                                             return Icon(Icons.star,color: AppColors.purple500,);
+                                           })
+                                         ],
+                                       )
+                                      ],
+                                    ),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        CustomText(text: "4.5",fontSize: 24,fontWeight: FontWeight.w700,),
+                                        CustomText(text: "234 Ratings",fontSize: 10,fontWeight: FontWeight.w500,),
+
+                                      ],
+                                    )
+                                  ],
+                                ),
+                                 Gap(12),
+                                 Divider(height: 2,color: Color(0xffCFCFCF),),
+                                Gap(12),
+                                CustomText(text: "View Customer Reviews",fontWeight: FontWeight.w600,fontSize: 14,color: AppColors.purple500,decoration: TextDecoration.underline,decorationColor: AppColors.purple500,)
+                              ],
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  )
+              ),
+            ),
+
+            SliverGap(24),
+
+
+          ],
+        ),
       ),
     );
   }
-   buildDot(int index, BuildContext context) {
-     return Padding(
-       padding: EdgeInsets.only(left: 8),
-       child: Obx(() {
-         return Container(
-           height: 6,
-           width: _controller.currentIndex.value == index ? 24 : 6,
-           margin: EdgeInsets.only(right: 5),
-           decoration: BoxDecoration(
-             borderRadius: BorderRadius.circular(20),
-             color: _controller.currentIndex.value == index ?
-             AppColors.primaryColor : AppColors.lightGray,
-           ),
-         );
-       }),
+
+   /// -------------------- Onboarding Section --------------------
+   SliverToBoxAdapter _buildOnboardingSection() {
+     return SliverToBoxAdapter(
+       child: Padding(
+         padding: const EdgeInsets.only(left: 16, top: 10, right: 16),
+         child: Obx(() {
+           final item = businessAllPetController.profile.value.pets?? [];
+
+           // If no pets, don't show the section
+           if (item.isEmpty) {
+             return const SizedBox.shrink();
+           }
+
+           return Column(
+             crossAxisAlignment: CrossAxisAlignment.start,
+             children: [
+               Text(
+                 "All Booking Pets",
+                 style: const TextStyle(
+                   fontSize: 18,
+                   fontWeight: FontWeight.bold,
+                 ),
+               ),
+               const Gap(16),
+
+               // Carousel
+               CarouselSlider.builder(
+                 itemCount: item.length,
+                 itemBuilder: (context, index, realIndex) {
+                   final petName = item[index];
+                   final image = petName.petPhoto ?? "";
+                   final imageUrl = image.isEmpty
+                       ? "assets/images/default_pet_image.png"
+                       : "${ApiUrl.imageBase}$image";
+
+                   return Container(
+
+                     padding: const EdgeInsets.all(20),
+                     decoration: BoxDecoration(
+                       color: AppColors.primaryColor,
+                       borderRadius: BorderRadius.circular(20),
+                       boxShadow: [
+                         BoxShadow(
+                           color: Colors.black.withOpacity(0.1),
+                           blurRadius: 8,
+                           offset: const Offset(0, 4),
+                         ),
+                       ],
+                     ),
+                     child: Row(
+                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                       children: [
+                         Expanded(
+                           child: Column(
+                             crossAxisAlignment: CrossAxisAlignment.start,
+                             mainAxisAlignment: MainAxisAlignment.center,
+                             children: [
+                               CustomText(
+                                 text: petName.name ?? "Unknown",
+                                 fontWeight: FontWeight.w600,
+                                 fontSize: 16.sp,
+                                 color: Colors.white,
+                               ),
+                               if (petName.name != null) ...[
+                                 const SizedBox(height: 4),
+                                 CustomText(
+                                   text: petName.name!,
+                                   fontWeight: FontWeight.w400,
+                                   fontSize: 12.sp,
+                                   color: Colors.white.withOpacity(0.8),
+                                 ),
+                               ],
+                             ],
+                           ),
+                         ),
+                         const SizedBox(width: 16),
+                         CustomNetworkImage(
+                           imageUrl: imageUrl,
+                           height: 50,
+                           width: 50, // Make it square for circular image
+                           boxShape: BoxShape.circle,
+                         ),
+                       ],
+                     ),
+                   );
+                 },
+                 options: CarouselOptions(
+                   height: MediaQuery.of(context).size.height / 8,
+                   autoPlay: item.length > 1, // Only auto-play if multiple items
+                   autoPlayInterval: const Duration(seconds: 3),
+                   enlargeCenterPage: true,
+                   enableInfiniteScroll: item.length > 1, // Only infinite scroll if multiple items
+                   viewportFraction: 0.85,
+                   scrollPhysics: item.length > 1
+                       ? const BouncingScrollPhysics()
+                       : const NeverScrollableScrollPhysics(),
+                   onPageChanged: (index, reason) {
+                     // 🔥 FIX: Use modulo to handle infinite scroll properly
+                     businessAllPetController.currentIndex.value = index % item.length;
+                   },
+                 ),
+               ),
+
+               // Dots indicator (only show if multiple items)
+               if (item.length > 1) ...[
+                 const Gap(12),
+                 Obx(() {
+                   final activeIdx = businessAllPetController.currentIndex.value;
+                   return Row(
+                     mainAxisAlignment: MainAxisAlignment.center,
+                     children: List.generate(
+                       item.length,
+                           (index) => buildDot(index, active: index == activeIdx),
+                     ),
+                   );
+                 }),
+               ],
+             ],
+           );
+         }),
+       ),
      );
    }
+
+// Updated buildDot method with active parameter
+  Widget buildDot(int index, {bool active = false}) {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      margin: const EdgeInsets.symmetric(horizontal: 4),
+      height: 8,
+      width: active ? 24 : 8,
+      decoration: BoxDecoration(
+        color: active
+            ? AppColors.primaryColor
+            : AppColors.primaryColor.withOpacity(0.3),
+        borderRadius: BorderRadius.circular(12),
+        border: active
+            ? Border.all(
+          color: AppColors.primaryColor.withOpacity(0.6),
+          width: 0.5,
+        )
+            : null,
+      ),
+    );
+  }
 }

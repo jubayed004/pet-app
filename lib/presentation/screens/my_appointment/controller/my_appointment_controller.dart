@@ -16,7 +16,7 @@ class MyAppointmentController extends GetxController {
 
   final ApiClient apiClient = serviceLocator();
   final PagingController<int, BookingItem> pagingController1 = PagingController(firstPageKey: 1);
-
+  final Rx<BookingItem?> firstBooking = Rx(null);
   bool isRunning = false;
 
   Future<void> getAppointmentBooking({required int page}) async {
@@ -28,6 +28,11 @@ class MyAppointmentController extends GetxController {
       if (response.statusCode == 200) {
         final newData = AppointmentBookingModel.fromJson(response.body);
         final newItems = newData.bookings ?? [];
+
+        if(page == 1 && newItems.isNotEmpty){
+          firstBooking.value = newItems.first;
+        }
+
         if (newItems.isEmpty) {
           pagingController1.appendLastPage(newItems);
         } else {
@@ -40,6 +45,22 @@ class MyAppointmentController extends GetxController {
       pagingController1.error = 'An error occurred';
     }finally{
       isRunning = false;
+    }
+  }
+
+  Future<void> getSingleAppointmentBooking() async {
+    try{
+      final response = await apiClient.get(url: ApiUrl.getBookingAppointment(page: 1));
+      if (response.statusCode == 200) {
+        final newData = AppointmentBookingModel.fromJson(response.body);
+        final newItems = newData.bookings ?? [];
+
+        if(newItems.isNotEmpty){
+          firstBooking.value = newItems.first;
+        }
+      }
+    }catch(_){
+      firstBooking.value = null;
     }
   }
 

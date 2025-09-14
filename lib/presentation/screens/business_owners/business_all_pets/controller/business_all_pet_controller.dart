@@ -1,3 +1,4 @@
+
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pet_app/core/dependency/get_it_injection.dart';
@@ -13,12 +14,13 @@ import 'package:pet_app/utils/app_const/app_const.dart';
 class BusinessAllPetController extends GetxController {
   final ApiClient apiClient = serviceLocator();
   var loading = Status.completed.obs;
+  RxInt currentIndex = 0.obs;
 
   loadingMethod(Status status) => loading.value = status;
   final Rx<BusinessAllPetsModel> profile = BusinessAllPetsModel().obs;
 
   ///=====================
-  Future<void> getBusinessProfile() async {
+  Future<void> getBusinessAllPets() async {
     loadingMethod(Status.completed);
     try {
       loadingMethod(Status.loading);
@@ -77,7 +79,8 @@ class BusinessAllPetController extends GetxController {
   final PagingController<int, PetMedicalHistoryByTreatmentStatus>
   pagingController = PagingController(firstPageKey: 1);
 
-  /*  final Rx<BusinessMedicalHistoryModel> healthHistory = BusinessMedicalHistoryModel().obs;*/
+  final Rx<BusinessMedicalHistoryModel> healthHistory = BusinessMedicalHistoryModel().obs;
+
   Future<void> getHealthHistoryUpdate({
     required String id,
     required String status,
@@ -211,13 +214,14 @@ class BusinessAllPetController extends GetxController {
 
   @override
   void onInit() {
-    getBusinessProfile();
+    getBusinessAllPets();
     super.onInit();
   }
 
-/*  @override
+  @override
   void onReady() {
 
     super.onReady();
-  }*/
+  }
+
 }

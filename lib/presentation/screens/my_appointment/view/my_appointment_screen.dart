@@ -36,6 +36,7 @@ class _MyAppointmentScreenState extends State<MyAppointmentScreen> {
     });
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
