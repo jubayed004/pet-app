@@ -27,7 +27,7 @@ class ChatMessageCardItemWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Driver avatar (only for driver messages)
-          if (isDriverMe   ssage)
+          if (isDriverMessage)
            CustomNetworkImage(imageUrl: dummyProfileImage,height: 50.w,
              boxShape: BoxShape.circle,
              width: 50.w,),
