@@ -9,7 +9,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pet_app/core/dependency/get_it_injection.dart';
 import 'package:pet_app/core/route/routes.dart';
 import 'package:pet_app/helper/local_db/local_db.dart';
-import 'package:pet_app/presentation/screens/chat/chat_message_model/chat_message_model.dart';
+import 'package:pet_app/presentation/screens/chat/chat_message_model/chat_message_model.dart' hide MessageItem;
 import 'package:pet_app/presentation/screens/chat/chat_message_model/message_model.dart';
 import 'package:pet_app/service/api_service.dart';
 import 'package:pet_app/service/api_url.dart';
@@ -18,11 +18,11 @@ import 'package:pet_app/utils/popup_loader/popup_loader.dart';
 
 
 class MessageController extends GetxController{
-  final messages = <ChatMessage>[].obs;
+/*  final messages = <ChatMessage>[].obs;*/
   var tabContent = <Widget>[].obs;
   final ApiClient apiClient = serviceLocator();
 
-  final PagingController<int, Conversation> pagingController = PagingController(firstPageKey: 1);
+  final PagingController<int, MessageItem> pagingController = PagingController(firstPageKey: 1);
 
   bool isRunning = false;
 
@@ -33,7 +33,7 @@ class MessageController extends GetxController{
       final response = await apiClient.get(url: ApiUrl.getMessage(pageKey: pageKey));
       if (response.statusCode == 200) {
         final newData = MessageModel.fromJson(response.body);
-        final newItems = newData.conversations ?? [];
+        final newItems = newData.data ?? [];
         if (newItems.isEmpty) {
           pagingController.appendLastPage(newItems);
         } else {
@@ -56,25 +56,24 @@ class MessageController extends GetxController{
       SocketApi.socket?.on('receive_message', (data) {
         debugPrint("Incoming socket data: $data");
 
-        final newMessage = Conversation.fromJson(
+        final newMessage = MessageItem.fromJson(
           (data != null && data is List) ? data.first : data ?? {},
         );
-
         final currentMessages = pagingController.itemList ?? [];
 
         // Find if this roomId already exists
         final existingIndex = currentMessages.indexWhere(
               (msg){
-                print("1 ${msg.roomId == newMessage.roomId}");
-                print("New ${newMessage.roomId}");
-                print("Old ${msg.roomId}");
-                return msg.roomId == newMessage.roomId;
+                print("1 ${msg.conversationId == newMessage.conversationId}");
+                print("New ${newMessage.conversationId}");
+                print("Old ${msg.conversationId}");
+                return msg.conversationId == newMessage.conversationId;
               },
         );
         print(existingIndex != -1? "Existing Index True": "Existing Index False");
 
         if (existingIndex != -1) {
-          final updatedList = List<Conversation>.from(currentMessages);
+          final updatedList = List<MessageItem>.from(currentMessages);
           updatedList.removeAt(existingIndex);
           updatedList.insert(0, newMessage);
           pagingController.itemList = updatedList;
@@ -89,32 +88,7 @@ class MessageController extends GetxController{
     }
   }
 
-  final PagingController<int, Conversation> pagingController1 = PagingController(firstPageKey: 1);
 
-  bool isLoading= false;
-
-  Future<void> getMessageForChat({required int pageKey,required String id}) async {
-    if(isLoading)return;
-    isLoading = true;
-    try{
-      final response = await apiClient.get(url: ApiUrl.getMessageForChat(pageKey: pageKey, id: id));
-      if (response.statusCode == 200) {
-        final newData = MessageModel.fromJson(response.body);
-        final newItems = newData.conversations ?? [];
-        if (newItems.isEmpty) {
-          pagingController.appendLastPage(newItems);
-        } else {
-          pagingController.appendPage(newItems, pageKey + 1);
-        }
-      } else {
-        pagingController.error = 'An error occurred';
-      }
-    }catch(_){
-      pagingController.error = 'An error occurred';
-    }finally{
-      isLoading = false;
-    }
-  }
 
   @override
   void onInit() {

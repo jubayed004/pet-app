@@ -178,6 +178,7 @@ class AppRouter {
       ),
 
       ///======================= Massage Route =======================
+/*
       GoRoute(
         name: RoutePath.chatScreen,
         path: RoutePath.chatScreen.addBasePath,
@@ -185,6 +186,7 @@ class AppRouter {
             (context, state) =>
                 _buildPageWithAnimation(child: ChatScreen(), state: state),
       ),
+*/
 
       ///======================= MY Pets Route =======================
       GoRoute(

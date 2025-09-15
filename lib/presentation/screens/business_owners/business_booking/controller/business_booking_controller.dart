@@ -49,7 +49,7 @@ class BusinessBookingController extends GetxController {
     if (isLoadingOngoing.value) return;
     isLoadingOngoing.value = true;
     try {
-      final response = await apiClient.get(url: ApiUrl.getAllBooking(status: "ONGOING", page: pageKey));
+      final response = await apiClient.get(url: ApiUrl.getAllBooking(status: "APPROVED", page: pageKey));
 
       if (response.statusCode == 200) {
         final data = BusinessBookingModel.fromJson(response.body);

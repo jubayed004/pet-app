@@ -103,7 +103,7 @@ class BusinessBookingScreen extends StatelessWidget {
               return IndexedStack(
                 index: controller.selectedTabIndex.value,
                 children: [
-                  // ✅ Pending Tab
+
                   RefreshIndicator(
                     onRefresh: () async {
                       controller.pendingController.refresh();
@@ -117,7 +117,7 @@ class BusinessBookingScreen extends StatelessWidget {
                           return CustomBookingCard(
                             index: 0,
                             showApproveButton: true,
-                            showRejectButton: true, // ✅ Show both
+                            showRejectButton: true,
                             logoPath: "assets/images/vet.png",
                             topTitle: "Vets",
                             imagePath: "assets/images/womandogimage.png",
@@ -148,8 +148,6 @@ class BusinessBookingScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-
-                  // ✅ Approved Tab
                   RefreshIndicator(
                     onRefresh: () async {
                       controller.ongoingController.refresh();
@@ -162,7 +160,7 @@ class BusinessBookingScreen extends StatelessWidget {
                           return CustomBookingCard(
                             index: 1,
                             showApproveButton: true,
-                            showRejectButton: true, // ✅ Show both
+                            showRejectButton: false, // ✅ Show both
                             logoPath: "assets/images/vet.png",
                             topTitle: "Vets",
                             imagePath: "assets/images/womandogimage.png",
@@ -175,7 +173,12 @@ class BusinessBookingScreen extends StatelessWidget {
                             onChat: () => print("Chat tapped"),
                             onWebsite: () => print("Website tapped"),
                             onAddReview: () => print("Review tapped"),
-                            onApprove: () => print("Approved"),
+                            onApprove: () {
+                              controller.updateItemStatus(
+                                id: item.id ?? '',
+                                status: 'APPROVED',
+                              );
+                            },
                             onReject: () => print("Rejected"),
                           )
                           ;
@@ -198,7 +201,7 @@ class BusinessBookingScreen extends StatelessWidget {
                           return CustomBookingCard(
                             index: 2,
                             showApproveButton: false,
-                            showRejectButton: true, // ✅ Only reject
+                            showRejectButton: false, // ✅ Only reject
                             logoPath: "assets/images/vet.png",
                             topTitle: "Vets",
                             imagePath: "assets/images/womandogimage.png",
@@ -240,7 +243,7 @@ class BusinessBookingScreen extends StatelessWidget {
                            final bookingDate = DateFormat("dd mm yyyy").format(item.bookingDate ?? DateTime.now());
                           return CustomBookingCard(
                             index: 3,
-                            showApproveButton: true, // ✅ Only approve
+                            showApproveButton: false, // ✅ Only approve
                             showRejectButton: false,
                             logoPath: shopLogo ?? "",
                             topTitle: "Vets",

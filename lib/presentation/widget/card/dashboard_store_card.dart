@@ -214,7 +214,7 @@ class CustomBookingCard extends StatelessWidget {
           const Gap(10),
 
           /// Approve / Reject Section
-          if (index == 0 || index == 2)
+          if (index == 0)
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 0),
               child: Row(
@@ -239,7 +239,7 @@ class CustomBookingCard extends StatelessWidget {
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                         ),
                         child: CustomText(
-                          text: index == 1 ? "removed" : "rejected",
+                          text: index == 1 ? "Approve" : "rejected",
                           color: AppColors.blackColor,
                         ),
                       ),

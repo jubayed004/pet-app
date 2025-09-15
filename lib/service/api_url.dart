@@ -98,7 +98,7 @@ class ApiUrl {
 
 
 /// chat
-  static getMessage({required int pageKey}) => '$base/chat/conversations?limit=10&page=$pageKey';
+  static getMessage({required int pageKey}) => '$base/chat/get-conversation-list?page=$pageKey&limit=10';
   static getMessageForChat({required int pageKey,required String id}) => '$base/chat/messages?roomId=$id&limit=20&page=$pageKey';
 
 

@@ -27,20 +27,20 @@ class MessageListPage extends StatelessWidget {
               onRefresh: () async {
                 messageController.pagingController.refresh();
               },
-              child: PagedListView<int, Conversation>(
+              child: PagedListView<int, MessageItem>(
                 pagingController: messageController.pagingController,
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-                builderDelegate: PagedChildBuilderDelegate<Conversation>(
+                builderDelegate: PagedChildBuilderDelegate<MessageItem>(
                   itemBuilder: (context, item, index) {
                     // final time = GetTimeAgo.parse(item.updatedAt ?? DateTime.now());
-                    final name = item.otherUser?.name ?? "";
-                    final isRead = item.lastMessage?.isRead ?? "";
-                    final message = item.lastMessage?.message ?? "";
-                    final image = item.otherUser?.profilePic;
+                    final name = item.participant?.name ?? "";
+                    final isRead = item.lastMessage?.seen ?? false;
+                    final message = item.lastMessage?.text ?? "";
+                    final image = item.participant?.profileImage;
                     final photo = image != null && image.isNotEmpty ? image ?? "" : "";
                     final date = DateFormat("dd-MM-yyyy").format(item.lastMessage?.createdAt ?? DateTime.now());
                     return MessageCardItemWidget(
-                        isRead: isRead == 2 ? false : true,
+                        isRead: isRead,
                         name: name,
                         message: message,
                         date: date,
