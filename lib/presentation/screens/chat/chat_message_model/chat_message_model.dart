@@ -53,7 +53,7 @@ class BlockStatus {
 class Conversation {
   final String? id;
   final List<String>? participants;
-  final List<Message>? messages;
+  final List<MessageItems>? messages;
   final List<dynamic>? blockedBy;
   final DateTime? createdAt;
   final DateTime? updatedAt;
@@ -72,7 +72,7 @@ class Conversation {
   factory Conversation.fromJson(Map<String, dynamic> json) => Conversation(
     id: json["_id"],
     participants: json["participants"] == null ? [] : List<String>.from(json["participants"]!.map((x) => x)),
-    messages: json["messages"] == null ? [] : List<Message>.from(json["messages"]!.map((x) => Message.fromJson(x))),
+    messages: json["messages"] == null ? [] : List<MessageItems>.from(json["messages"]!.map((x) => MessageItems.fromJson(x))),
     blockedBy: json["blockedBy"] == null ? [] : List<dynamic>.from(json["blockedBy"]!.map((x) => x)),
     createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
     updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
@@ -90,7 +90,7 @@ class Conversation {
   };
 }
 
-class Message {
+class MessageItems {
   final String? id;
   final String? conversationId;
   final String? sender;
@@ -104,7 +104,7 @@ class Message {
   final DateTime? updatedAt;
   final int? v;
 
-  Message({
+  MessageItems({
     this.id,
     this.conversationId,
     this.sender,
@@ -119,7 +119,7 @@ class Message {
     this.v,
   });
 
-  factory Message.fromJson(Map<String, dynamic> json) => Message(
+  factory MessageItems.fromJson(Map<String, dynamic> json) => MessageItems(
     id: json["_id"],
     conversationId: json["conversationId"],
     sender: json["sender"],

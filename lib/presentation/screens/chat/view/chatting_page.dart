@@ -6,11 +6,30 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:iconsax/iconsax.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pet_app/controller/get_controllers.dart';
+import 'package:pet_app/helper/image/network_image.dart';
+import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
+import 'package:pet_app/presentation/screens/chat/chat_controller/chat_controller.dart';
+import 'package:pet_app/presentation/screens/chat/chat_message_model/chat_message_model.dart';
 import 'package:pet_app/service/socket_service.dart';
+import 'package:pet_app/utils/app_colors/app_colors.dart';
 import '../widgets/chat_message_card_item_widget.dart';
 
-/*class ChatScreen extends StatefulWidget {
+
+
+
+
+
+
+
+
+
+
+/*
+
+class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key, required this.id, required this.type});
 
   final String id;
@@ -22,8 +41,10 @@ import '../widgets/chat_message_card_item_widget.dart';
 
 class _ChatScreenState extends State<ChatScreen> {
   final ScrollController scrollController = ScrollController();
- *//* final controller = Get.put(SocketChatController());*//*
-  final messageController = GetControllers.instance.getChatController();
+*/
+/*  final controller = Get.put(SocketChatController());*//*
+
+  final controller = GetControllers.instance.getChatController();
   @override
   void initState() {
     super.initState();
@@ -32,14 +53,14 @@ class _ChatScreenState extends State<ChatScreen> {
 
   Future<void> _initializeSocketAndController() async {
     try {
-      messageController.pagingController.addPageRequestListener((pageKey) {
-        messageController.getMessageForChat(pageKey: pageKey, id: widget.id,);
+      controller.pagingController.addPageRequestListener((pageKey) {
+        controller.getMessageForChat(pageKey: pageKey, id: widget.id,);
       });
       await SocketApi.init();
-      messageController.listenForNewMessages(projectId: widget.id, groupName: widget.type);
-*//*      if (controller.model.value.data?.result?.conversationId != null && controller.model.value.data!.result!.conversationId!.isNotEmpty) {
+      controller.listenForNewMessages(projectId: widget.id, groupName: widget.type);
+      if (controller.model.value.data?.result?.conversationId != null && controller.model.value.data!.result!.conversationId!.isNotEmpty) {
         controller.seenMessage(senderId: widget.id);
-      }*//*
+      }
     } catch (e) {
       debugPrint("Socket Error Chat Screen Try Catch $e");
     }
@@ -86,7 +107,7 @@ class ChatInputBox extends StatelessWidget {
     required this.widget,
   }) : _formKey = formKey;
 
-  final SocketChatController controller;
+  final ChatController controller;
   final GlobalKey<FormState> _formKey;
   final ChatScreen widget;
 
@@ -152,18 +173,18 @@ class ChatInputBox extends StatelessWidget {
             ),
             child: Row(
               children: [
-                *//*IconButton(
+                IconButton(
                     onPressed: () {
                       controller.pickCameraImage();
                     },
                     icon: const Icon(Iconsax.camera),
-                ),*//*
-                *//*IconButton(
+                ),
+                IconButton(
                     onPressed: () {
                       controller.pickImage();
                     },
                     icon: const Icon(Iconsax.gallery),
-                ),*//*
+                ),
                 Expanded(
                   child: TextFormField(
                     controller: controller.messageController,
@@ -241,11 +262,11 @@ class MessageListCard extends StatelessWidget {
     return Expanded(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        child: PagedListView<int, Message>(
+        child: PagedListView<int, MessageItems>(
           pagingController: controller.pagingController,
           scrollController: scrollController,
           reverse: true,
-          builderDelegate: PagedChildBuilderDelegate<Message>(
+          builderDelegate: PagedChildBuilderDelegate<MessageItems>(
             itemBuilder: (context, message, index) {
               print("MY USER ID: ${controller.userId.value} / ${message.msgByUserId?.id}");
 
@@ -300,7 +321,39 @@ class MessageListCard extends StatelessWidget {
       ),
     );
   }
-}*/
+}
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*class ChatScreen extends StatefulWidget {
   final String id;

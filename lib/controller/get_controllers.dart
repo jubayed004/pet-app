@@ -163,12 +163,12 @@ AuthController getAuthController() {
     return Get.find<MessageController>();
   }
 
-/*  ChatController getChatController() {
+  ChatController getChatController() {
     if (!Get.isRegistered<ChatController>()) {
       Get.put(ChatController());
     }
     return Get.find<ChatController>();
-  }*/
+  }
 
   SearchScreenController getSearchScreenController() {
     if (!Get.isRegistered<SearchScreenController>()) {
