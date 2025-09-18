@@ -108,8 +108,8 @@ class _ExploreScreenState extends State<ExploreScreen> {
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 10,
+                    color: Colors.black.withValues(alpha: 0.1),
+                    blurRadius: 10.r,
                     offset: const Offset(0, -5),
                   ),
                 ],
@@ -255,7 +255,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
 
                               return Column(
                                 children: [
-                                  // Header with markers count
+
                                   Padding(
                                     padding: EdgeInsets.symmetric(horizontal: 16.w),
                                     child: Row(
@@ -290,12 +290,10 @@ class _ExploreScreenState extends State<ExploreScreen> {
                                       ],
                                     ),
                                   ),
-
                                   Gap(8.h),
 
-                                  // Services horizontal list
                                   Expanded(
-                                    child: ExploreCatCard(items: services),
+                                    child: ExploreCatCard(items: services, itemIndex: index,),
                                   ),
                                 ],
                               );
@@ -315,8 +313,8 @@ class _ExploreScreenState extends State<ExploreScreen> {
 }
 
 class ExploreCatCard extends StatelessWidget {
-  const ExploreCatCard({super.key, required this.items});
-
+  const ExploreCatCard({super.key, required this.items, required this.itemIndex});
+  final int itemIndex;
   final List<MapCategoryService> items;
 
   @override
@@ -345,7 +343,12 @@ class ExploreCatCard extends StatelessWidget {
       itemBuilder: (context, index) {
         return Padding(
           padding: EdgeInsets.only(right: 12.w), // Responsive padding
-          child: CategoryCard(item: items[index]),
+          child: CategoryCard(
+            item: items[index],
+            index: index,
+            showWebsite: itemIndex == 1 || itemIndex ==3,
+            isShop: itemIndex ==1? false: true,
+          ),
         );
       },
     );

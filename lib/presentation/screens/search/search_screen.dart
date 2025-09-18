@@ -128,7 +128,11 @@ class _SearchScreenState extends State<SearchScreen> {
                         pagingController: controller.pagingController,
                         builderDelegate: PagedChildBuilderDelegate<ServiceItem>(
                           itemBuilder: (context, item, index) {
-                            return SearchItemCardWidget(item: item);
+                            return SearchItemCardWidget(
+                                item: item,
+                              showWebsite: index == 1 || index == 3,
+                              isShop: index ==1? false: true,
+                            );
                           },
                           firstPageErrorIndicatorBuilder: (context) {
                             return Center(

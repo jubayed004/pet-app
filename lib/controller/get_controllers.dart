@@ -10,12 +10,11 @@ import 'package:pet_app/presentation/screens/business_owners/business_service/co
 import 'package:pet_app/presentation/screens/business_owners/business_service/controller/business_service_controller.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_shop_profile/controller/category_details_controller.dart';
 import 'package:pet_app/presentation/screens/business_owners/subscription/subscription_screen.dart';
-import 'package:pet_app/presentation/screens/category/book_an_appointment/controller/book_an_appointment_controller.dart';
 import 'package:pet_app/presentation/screens/category/category_details/controller/category_details_controller.dart';
 import 'package:pet_app/presentation/screens/category/controller/category_controller.dart';
 import 'package:pet_app/presentation/screens/category/service/controller/service_controller.dart';
-import 'package:pet_app/presentation/screens/chat/chat_controller/chat_controller.dart';
-import 'package:pet_app/presentation/screens/chat/chat_controller/message_controller.dart';
+import 'package:pet_app/presentation/screens/chat/controller/chat_controller.dart';
+import 'package:pet_app/presentation/screens/inbox/controller/message_controller.dart';
 import 'package:pet_app/presentation/screens/explore/controller/explore_controller.dart';
 import 'package:pet_app/presentation/screens/home/controller/home_controller.dart';
 import 'package:pet_app/presentation/screens/my_appointment/controller/my_appointment_controller.dart';
@@ -31,12 +30,9 @@ import 'package:pet_app/presentation/screens/review/controller/review_controller
 import 'package:pet_app/presentation/screens/search/controller/search_screen_controller.dart';
 import 'package:pet_app/presentation/screens/text_screen/controller/test_controller.dart';
 
-
 class GetControllers {
   static final GetControllers _singleton = GetControllers._internal();
-
   GetControllers._internal();
-
   static GetControllers get instance => _singleton;
 
 /*

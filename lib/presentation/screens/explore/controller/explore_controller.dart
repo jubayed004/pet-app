@@ -167,36 +167,48 @@ class ExploreController extends GetxController {
       double maxLng = markers.first.position.longitude;
 
       for (var marker in markers) {
-        minLat = minLat < marker.position.latitude ? minLat : marker.position.latitude;
-        maxLat = maxLat > marker.position.latitude ? maxLat : marker.position.latitude;
-        minLng = minLng < marker.position.longitude ? minLng : marker.position.longitude;
-        maxLng = maxLng > marker.position.longitude ? maxLng : marker.position.longitude;
+        if (marker.position.latitude < minLat) minLat = marker.position.latitude;
+        if (marker.position.latitude > maxLat) maxLat = marker.position.latitude;
+        if (marker.position.longitude < minLng) minLng = marker.position.longitude;
+        if (marker.position.longitude > maxLng) maxLng = marker.position.longitude;
       }
 
-      // Return center position
+      // Calculate exact center of markers
+      double centerLat = (minLat + maxLat) / 2;
+      double centerLng = (minLng + maxLng) / 2;
+
+      // Shift center slightly downward from current position (markers appear up)
+      centerLat -= 0.015; // 👈 small offset, adjust 0.01–0.03 as needed
+
       return CameraPosition(
-        target: LatLng((minLat + maxLat) / 2, (minLng + maxLng) / 2),
+        target: LatLng(centerLat, centerLng),
         zoom: _calculateZoomLevel(minLat, maxLat, minLng, maxLng),
       );
     }
 
     // Default to current location or fallback
     return CameraPosition(
-      target: currentLocation.value ?? const LatLng(23.804693584341365, 90.41590889596907),
-      zoom: 14,
+      target: currentLocation.value ??
+          const LatLng(23.804693584341365, 90.41590889596907),
+      zoom: 8,
     );
   }
 
   /// Calculate appropriate zoom level based on marker spread
-  double _calculateZoomLevel(double minLat, double maxLat, double minLng, double maxLng) {
+  double _calculateZoomLevel(
+      double minLat, double maxLat, double minLng, double maxLng) {
     double latDiff = maxLat - minLat;
     double lngDiff = maxLng - minLng;
     double maxDiff = latDiff > lngDiff ? latDiff : lngDiff;
 
-    if (maxDiff < 0.01) return 15;
-    if (maxDiff < 0.05) return 13;
-    if (maxDiff < 0.1) return 11;
-    if (maxDiff < 0.5) return 9;
-    return 7;
+    if (maxDiff < 0.01) return 14;
+    if (maxDiff < 0.05) return 12;
+    if (maxDiff < 0.1) return 10;
+    if (maxDiff < 0.5) return 8;
+    return 6;
   }
+
+
+
+
 }

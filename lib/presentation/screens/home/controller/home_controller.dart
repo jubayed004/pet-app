@@ -98,18 +98,21 @@ class HomeController extends GetxController {
   }
 
   RxList<String> adsPic = RxList([]);
-  bool isRunning = false;
+  RxBool isRunning = false.obs; // <-- now reactive
 
   Future<void> getAllAdvertisement() async {
-    if (isRunning) return;
-    isRunning = true;
+    if (isRunning.value) return; // check reactive value
+    isRunning.value = true; // set reactive value
+
     try {
       final response = await apiClient.get(url: ApiUrl.getAllAdvertisement());
 
       if (response.statusCode == 200) {
         final newData = AdvertisementModel.fromJson(response.body);
         final newItems = newData.ads ?? [];
+
         adsPic.clear();
+
         for (final ad in newItems) {
           if (ad.advertisementImg != null && ad.advertisementImg!.isNotEmpty) {
             for (final e in ad.advertisementImg!) {
@@ -124,9 +127,10 @@ class HomeController extends GetxController {
     } catch (e) {
       debugPrint("Error fetching ads: $e");
     } finally {
-      isRunning = false;
+      isRunning.value = false; // reset reactive value
     }
   }
+
 
   @override
   void onReady() {

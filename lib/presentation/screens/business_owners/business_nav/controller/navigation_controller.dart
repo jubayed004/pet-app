@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pet_app/presentation/screens/business_owners/business_chat/business_chat_screen.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_home/business_home_screen.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_profile/view/business_profile_screen.dart';
 import 'package:pet_app/presentation/screens/business_owners/dashboard/dashboard_screen.dart';
-import 'package:pet_app/presentation/screens/chat/view/chatting_page.dart';
-import 'package:pet_app/presentation/screens/chat/view/message_page.dart';
+import 'package:pet_app/presentation/screens/inbox/inbox_page.dart';
 
 
 class BusinessNavigationControllerMain extends GetxController {
@@ -17,7 +15,7 @@ class BusinessNavigationControllerMain extends GetxController {
     return [
       BusinessHomeScreen(),
       DashboardScreen(),
-      MessageListPage(),
+      InboxPage(),
       BusinessProfileScreen(),
 
     ];

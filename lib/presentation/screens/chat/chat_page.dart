@@ -1,83 +1,64 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pet_app/controller/get_controllers.dart';
-import 'package:pet_app/helper/image/network_image.dart';
-import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
-import 'package:pet_app/presentation/screens/chat/chat_controller/chat_controller.dart';
-import 'package:pet_app/presentation/screens/chat/chat_message_model/chat_message_model.dart';
 import 'package:pet_app/service/socket_service.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
-import '../widgets/chat_message_card_item_widget.dart';
 
-
-
-
-
-
-
-
-
-
-
-/*
+import 'controller/chat_controller.dart';
+import 'model/chat_model.dart';
+import 'widgets/chat_message_card_item_widget.dart';
 
 class ChatScreen extends StatefulWidget {
-  const ChatScreen({super.key, required this.id, required this.type});
-
-  final String id;
-  final String type;
+  const ChatScreen({super.key, required this.senderId});
+  final String senderId;
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  final ScrollController scrollController = ScrollController();
-*/
-/*  final controller = Get.put(SocketChatController());*//*
-
+  final pagingController = PagingController<int, MessageItem>(firstPageKey: 1);
+  final scrollController = ScrollController();
+  final messageController = TextEditingController();
   final controller = GetControllers.instance.getChatController();
+  final _formKey = GlobalKey<FormState>();
+
   @override
   void initState() {
     super.initState();
+    pagingController.addPageRequestListener((pageKey) {
+      controller.getChatList(pageKey: pageKey, id: widget.senderId,pagingController: pagingController);
+    });
     _initializeSocketAndController();
   }
 
   Future<void> _initializeSocketAndController() async {
     try {
-      controller.pagingController.addPageRequestListener((pageKey) {
-        controller.getMessageForChat(pageKey: pageKey, id: widget.id,);
-      });
+      debugPrint("Socket 1");
       await SocketApi.init();
-      controller.listenForNewMessages(projectId: widget.id, groupName: widget.type);
-      if (controller.model.value.data?.result?.conversationId != null && controller.model.value.data!.result!.conversationId!.isNotEmpty) {
-        controller.seenMessage(senderId: widget.id);
-      }
+      debugPrint("Socket 2");
+      controller.listenForNewMessages(senderId: widget.senderId, pagingController: pagingController);
+      debugPrint("Socket 3");
     } catch (e) {
       debugPrint("Socket Error Chat Screen Try Catch $e");
     }
   }
 
-  final _formKey = GlobalKey<FormState>();
-
   @override
   void dispose() {
-    Get.delete<SocketChatController>();
+    Get.delete<ChatController>();
+    pagingController.dispose();
+    scrollController.dispose();
+    messageController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-
-    print("1111111 Build Context ${widget.type}");
     return Scaffold(
       appBar: AppBar(
         title: Text("inbox".tr),
@@ -89,8 +70,8 @@ class _ChatScreenState extends State<ChatScreen> {
           key: _formKey,
           child: Column(
             children: [
-              MessageListCard(controller: controller, scrollController: scrollController),
-              ChatInputBox(controller: controller, formKey: _formKey, widget: widget),
+              MessageListCard(controller: controller, scrollController: scrollController, pagingController: pagingController,),
+              ChatInputBox(controller: controller, formKey: _formKey, widget: widget, messageController: messageController, senderId: '',),
             ],
           ),
         ),
@@ -105,11 +86,14 @@ class ChatInputBox extends StatelessWidget {
     required this.controller,
     required GlobalKey<FormState> formKey,
     required this.widget,
+    required this.messageController, required this.senderId,
   }) : _formKey = formKey;
 
   final ChatController controller;
+  final TextEditingController messageController;
   final GlobalKey<FormState> _formKey;
   final ChatScreen widget;
+  final String senderId;
 
   @override
   Widget build(BuildContext context) {
@@ -187,7 +171,7 @@ class ChatInputBox extends StatelessWidget {
                 ),
                 Expanded(
                   child: TextFormField(
-                    controller: controller.messageController,
+                    controller: messageController,
                     maxLines: 5,
                     minLines: 1,
                     maxLength: 500,
@@ -229,10 +213,10 @@ class ChatInputBox extends StatelessWidget {
                 IconButton(
                   onPressed: () {
                     if(controller.selectedImages.isNotEmpty){
-                      controller.sendMessage(projectId: widget.id, context: context, type: widget.type);
+                      controller.sendMessage(senderId:widget.senderId, context: context, messageController: messageController);
                     }else{
                       if (_formKey.currentState!.validate()) {
-                        controller.sendMessage(projectId: widget.id, context: context, type: widget.type);
+                        controller.sendMessage(senderId: widget.senderId, context: context, messageController: messageController);
                       }
                     }
                   },
@@ -251,10 +235,12 @@ class MessageListCard extends StatelessWidget {
   const MessageListCard({
     super.key,
     required this.controller,
+    required this.pagingController,
     required this.scrollController,
   });
 
-  final SocketChatController controller;
+  final ChatController controller;
+  final PagingController<int, MessageItem> pagingController;
   final ScrollController scrollController;
 
   @override
@@ -262,23 +248,22 @@ class MessageListCard extends StatelessWidget {
     return Expanded(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        child: PagedListView<int, MessageItems>(
-          pagingController: controller.pagingController,
+        child: PagedListView<int, MessageItem>(
+          pagingController: pagingController,
           scrollController: scrollController,
           reverse: true,
-          builderDelegate: PagedChildBuilderDelegate<MessageItems>(
+          builderDelegate: PagedChildBuilderDelegate<MessageItem>(
             itemBuilder: (context, message, index) {
-              print("MY USER ID: ${controller.userId.value} / ${message.msgByUserId?.id}");
+              print("MY USER ID: $index ${controller.userId.value} / ${message.sender}");
 
-              final String? image = controller.model.value.data?.result?.info?.projectImage;
-              final senderImage = message.msgByUserId?.profileImage;
-              final isSenderImage = senderImage != null && senderImage.isNotEmpty;
+              final String? image = controller.chatModel.value.participant?.profilePic;
+              final String? name = controller.chatModel.value.participant?.name;
 
               return ChatBubble(
                 message: message,
-                name: message.msgByUserId?.name,
-                image:  isSenderImage? senderImage : image,
-                isSentByMe: (controller.userId.value == message.msgByUserId?.id),
+                name: name,
+                image: image,
+                isSentByMe: (controller.userId.value == message.sender),
               );
             },
             firstPageProgressIndicatorBuilder: (_) => const Center(
@@ -291,38 +276,13 @@ class MessageListCard extends StatelessWidget {
                   color: Colors.white,
                   size: 60.0,
                 )),
-            noItemsFoundIndicatorBuilder: (_) => Obx(() {
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      height: 100,
-                      width: 100,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(50),
-                        child: CustomNetworkImage(imageUrl: controller.model.value.data?.result?.info?.projectImage ?? ""),
-                      ),
-                    ),
-                    const Gap(8),
-                    CustomText(
-                      text: controller.model.value.data?.result?.info?.name ?? "",
-                      fontWeight: FontWeight.w800,
-                      fontSize: 16,
-                    ),
-                    CustomText(text: "Messenger", fontWeight: FontWeight.w800, color: const Color(0xFF818386)),
-                  ],
-                ),
-              );
-            }),
+            noItemsFoundIndicatorBuilder: (_) => Center(child: Text("No conversation found!"),),
           ),
         ),
       ),
     );
   }
 }
-*/
 
 
 

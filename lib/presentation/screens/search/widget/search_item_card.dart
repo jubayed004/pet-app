@@ -20,14 +20,15 @@ import '../../../components/custom_text/custom_text.dart';
 
 class SearchItemCardWidget extends StatelessWidget {
   const SearchItemCardWidget({
-    super.key, required this.item,
-
-
-
+    super.key,
+    required this.item,
+    this.showWebsite = false,
+    this.isShop = true,
   });
 
   final ServiceItem item;
-
+  final bool showWebsite;
+  final bool isShop;
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +50,7 @@ class SearchItemCardWidget extends StatelessWidget {
       onTap: () {
         AppRouter.route.pushNamed(
           RoutePath.categoryDetailsScreen,
-          extra: [ id],
+          extra: [showWebsite, id,isShop],
         );
       },
       child: Container(

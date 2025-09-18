@@ -433,7 +433,8 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
                       ),
                       CustomImage(imageSrc: "assets/images/adshome.png"),
                       Gap(16),
-                      GestureDetector(
+                      ///===============reviewScreen===========
+                     /* GestureDetector(
                         onTap: (){
                           AppRouter.route.pushNamed(RoutePath.reviewScreen);
                         },
@@ -483,7 +484,7 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
                             ),
                           ),
                         ),
-                      )
+                      )*/
                     ],
                   )
               ),

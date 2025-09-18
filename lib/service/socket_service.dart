@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pet_app/core/dependency/get_it_injection.dart';
 import 'package:pet_app/helper/local_db/local_db.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
 import 'api_url.dart';
@@ -21,14 +22,15 @@ class SocketApi {
       return;
     }
 
-    String userId = await DBHelper().getToken();
-    if (userId.isEmpty || userId == "null") {
+    final DBHelper dbHelper = serviceLocator<DBHelper>();
+    String id = await dbHelper.getUserId();
+    if (id.isEmpty || id == "null") {
       debugPrint('Socket Connected >>>>>>>>>>>> FALSE userId.isEmpty <<<<<<<<<<<<');
       return;
     }
 
     _socket = io.io(
-      ApiUrl.socketUrl(token: userId),
+      ApiUrl.socketUrl(id: id),
       io.OptionBuilder()
           .setTransports(['websocket'])
           .enableAutoConnect()
@@ -38,7 +40,7 @@ class SocketApi {
           .build(),
     );
 
-    debugPrint('$userId=============> Socket initialization, connected: ${_socket?.connected}');
+    debugPrint('$id=============> Socket initialization, connected: ${_socket?.connected}');
 
     // Listen for socket connection
     _socket?.onConnect((_) {

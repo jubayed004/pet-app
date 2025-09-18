@@ -28,7 +28,7 @@ import 'package:pet_app/presentation/screens/category/book_an_appointment/view/c
 import 'package:pet_app/presentation/screens/category/category_details/view/category_details_screen.dart';
 import 'package:pet_app/presentation/screens/category/service/view/service_screen.dart';
 import 'package:pet_app/presentation/screens/category/view/category_screen.dart';
-import 'package:pet_app/presentation/screens/chat/view/chatting_page.dart';
+import 'package:pet_app/presentation/screens/chat/chat_page.dart';
 import 'package:pet_app/presentation/screens/my_appointment/view/my_appointment_details_screen.dart';
 import 'package:pet_app/presentation/screens/my_appointment/view/my_appointment_screen.dart';
 import 'package:pet_app/presentation/screens/my_pets/pet_health/view/pet_health_screen.dart';
@@ -136,7 +136,7 @@ class AppRouter {
         path: RoutePath.accountActiveOtpScreen.addBasePath,
         pageBuilder: (context, state) {
           final extra = state.extra as Map<String, dynamic>? ?? {};
-          final email = extra['email'] as String ?? "";
+          final email = extra['email'] as String;
           return _buildPageWithAnimation(
             child: AccountActiveOtpScreen(
               email: email,
@@ -178,13 +178,13 @@ class AppRouter {
       ),
 
       ///======================= Massage Route =======================
- /*     GoRoute(
+      GoRoute(
         name: RoutePath.chatScreen,
         path: RoutePath.chatScreen.addBasePath,
         pageBuilder:
             (context, state) =>
-                _buildPageWithAnimation(child: ChatScreen(id: '', type: '',), state: state),
-      ),*/
+                _buildPageWithAnimation(child: ChatScreen(senderId: state.extra as String,), state: state),
+      ),
 
       ///======================= MY Pets Route =======================
       GoRoute(
@@ -192,15 +192,15 @@ class AppRouter {
         path: RoutePath.editMyPetsScreen.addBasePath,
         pageBuilder: (context, state) {
           final extra = state.extra as Map<String, dynamic>? ?? {};
-          final id = extra['id'] as String ?? "";
-          final name = extra['name'] as String ?? "";
-          final petType = extra['animalType'] as String ?? "";
-          final age = extra['age'] as String ?? "";
-          final gender = extra['gender'] as String ?? "";
-          final weight = extra['weight'] as String ?? "";
-          final height = extra['height'] as String ?? "";
-          final color = extra['color'] as String ?? "";
-          final breed = extra['breed'] as String ?? "";
+          final id = extra['id'] as String;
+          final name = extra['name'] as String;
+          final petType = extra['animalType'] as String;
+          final age = extra['age'] as String;
+          final gender = extra['gender'] as String;
+          final weight = extra['weight'] as String;
+          final height = extra['height'] as String;
+          final color = extra['color'] as String;
+          final breed = extra['breed'] as String;
           return _buildPageWithAnimation(
             child: EditMyPetsScreen(
               id: id,
@@ -227,7 +227,7 @@ class AppRouter {
           final extra = state.extra as Map<String , dynamic>;
           final name = extra['name'] as String;
           final phoneNumber = extra['phoneNumber'] as String ;
-          final address = extra['address'] as String ?? "";
+          final address = extra['address'] as String;
           return _buildPageWithAnimation(
             child: EditProfileScreen(
               name: name,
@@ -594,11 +594,11 @@ class AppRouter {
         pageBuilder:
             (context, state) {
               final extra = state.extra as Map<String, dynamic>? ?? {};
-              final serviceName = extra['serviceName'] as String ?? "";
-              final id = extra['id'] as String ?? "";
-              final phoneNumber = extra['phoneNumber'] as String ?? "";
-              final location = extra['location'] as String ?? "";
-              final webSiteLInk = extra['websiteLink'] as String ?? "";
+              final serviceName = extra['serviceName'] != null && extra['serviceName'] is String ? extra['serviceName'] as String: "";
+              final id = extra['id'] as String;
+              final phoneNumber = extra['phoneNumber'] as String;
+              final location = extra['location'] as String;
+              final webSiteLInk = extra['websiteLink'] as String;
               final serviceController = extra['serviceController'] is List<String> ? extra['serviceController'] as List<String> : <String>[];
           return  _buildPageWithAnimation(
             child: BusinessEditServiceScreen(

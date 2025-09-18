@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:pet_app/service/socket_service.dart';
 import 'core/dependency/get_it_injection.dart';
 import 'core/route/routes.dart';
 import 'helper/device_utils/device_utils.dart';
@@ -12,6 +13,7 @@ Future<void> main() async {
   DeviceUtils.lockDevicePortrait();
 
   initDependencies();
+  await SocketApi.init();
 
   runApp(
     DevicePreview(

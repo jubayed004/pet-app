@@ -28,7 +28,7 @@ class ProfileController extends GetxController {
   var loading = Status.completed.obs;
   loadingMethod(Status status) => loading.value = status;
   final Rx<ProfileModel> profile = ProfileModel().obs;
-  final RxBool isAdmin = false.obs;
+  /*final RxBool isAdmin = false.obs;*/
 
   Future<void> userProfile() async{
     loadingMethod(Status.completed);

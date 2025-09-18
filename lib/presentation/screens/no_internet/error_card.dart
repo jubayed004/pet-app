@@ -1,12 +1,10 @@
-/*
-import 'package:betwise_app/presentation/components/custom_button/custom_button.dart';
-import 'package:betwise_app/presentation/components/custom_text/custom_text.dart';
-import 'package:betwise_app/presentation/widget/custom_text/custom_text.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:pet_app/presentation/components/custom_button/custom_button.dart';
+import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 
 class ErrorCard extends StatelessWidget {
   const ErrorCard({super.key, required this.onTap, this.text});
@@ -30,16 +28,15 @@ class ErrorCard extends StatelessWidget {
               children: [
                 CustomText(text: "something_went_wrong", fontWeight: FontWeight.w600, fontSize: 24.sp),
                 const Gap(12),
-                CustomText(text: "the_application_has_encountered_an_unknown_error",maxLines: 2,),
-                CustomText(text: "please_try_again_later"),
+                CustomText(text: "the application has encountered an unknown error",maxLines: 2,),
+                CustomText(text: "please try again later"),
               ],
             ),
             const Gap(24),
-            CustomButton(title: "try_again",onTap: onTap),
+            CustomButton(title: "try again",onTap: onTap),
           ],
         ),
       ),
     );
   }
 }
-*/

@@ -1,12 +1,9 @@
-/*
-import 'package:betwise_app/presentation/components/custom_button/custom_button.dart';
-import 'package:betwise_app/presentation/components/custom_text/custom_text.dart';
-import 'package:betwise_app/presentation/widget/custom_text/custom_text.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:pet_app/presentation/components/custom_button/custom_button.dart';
+import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 
 class NoDataCard extends StatelessWidget {
   const NoDataCard({super.key, required this.onTap});
@@ -19,14 +16,13 @@ class NoDataCard extends StatelessWidget {
       child: Column(
         children: [
           const Gap(24),
-          CustomText(text: "no_items_found", fontWeight: FontWeight.w600, fontSize: 22.sp),
+          CustomText(text: "no items found", fontWeight: FontWeight.w600, fontSize: 22.sp),
           const Gap(12),
-          CustomText(text: "the_list_is_currently_empty",maxLines: 2,),
+          CustomText(text: "the list is currently empty",maxLines: 2,),
           const Gap(24),
-          CustomButton(title: "try_again",onTap: onTap),
+          CustomButton(title: "try again",onTap: onTap),
         ],
       ),
     );
   }
 }
-*/

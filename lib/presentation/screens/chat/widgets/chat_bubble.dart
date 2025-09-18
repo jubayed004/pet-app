@@ -1,16 +1,19 @@
+/*
+
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
+import 'package:pet_app/core/route/routes.dart';
 import 'package:pet_app/helper/image/network_image.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
-import 'package:pet_app/presentation/screens/chat/model/chat_model.dart';
+import 'package:pet_app/presentation/screens/chat/model/model.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
-import 'package:gap/gap.dart';
-import 'package:timeago_flutter/timeago_flutter.dart' as timeago;
+import 'package:pet_app/utils/variable/variable.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class ChatBubble extends StatelessWidget {
-  final MessageItem message;
+  final MessageItems message;
   final bool isSentByMe;
-  final String? name;
-  final String? image;
+  final String? name, image;
 
   const ChatBubble({
     super.key,
@@ -24,10 +27,12 @@ class ChatBubble extends StatelessWidget {
   Widget build(BuildContext context) {
     return Align(
       alignment: isSentByMe ? Alignment.centerRight : Alignment.centerLeft,
-      child: isSentByMe ? MyBubble(
+      child: isSentByMe
+          ? MyBubble(
         isSentByMe: isSentByMe,
         message: message,
-      ) : PartnerBubble(
+      )
+          : PartnerBubble(
         isSentByMe: isSentByMe,
         message: message,
         name: name,
@@ -45,7 +50,7 @@ class MyBubble extends StatelessWidget {
   });
 
   final bool isSentByMe;
-  final MessageItem message;
+  final MessageItems message;
 
   @override
   Widget build(BuildContext context) {
@@ -65,19 +70,21 @@ class MyBubble extends StatelessWidget {
               bottomRight: isSentByMe ? const Radius.circular(0) : const Radius.circular(15),
             ),
           ),
-          child: message.images != null && ((message.images?.length??0) > 0)?Column(
+          child: message.imageUrl != null && ((message.imageUrl?.length??0) > 0)?Column(
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Wrap(
                 alignment: WrapAlignment.start,
                 spacing: 8,
-                children: List.generate(message.images?.length??0, (imageIndex){
+                children: List.generate(message.imageUrl?.length??0, (imageIndex){
                   return GestureDetector(
-                    // onTap: ()=>AppRouter.route.pushNamed(RoutePath.imagesViewScreen, extra: [message.imageUrl?[imageIndex]??""]),
+                    onTap: (){},*/
+/*AppRouter.route.pushNamed(RoutePath.imagesViewScreen, extra: [message.imageUrl?[imageIndex]??""]),*//*
+
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(3),
-                      child: CustomNetworkImage(imageUrl: message.images?[imageIndex]??"",width: 100,
+                      child: CustomNetworkImage(imageUrl: message.imageUrl?[imageIndex]??"",width: 100,
                         height: 100,
                         fit: BoxFit.cover,),
                     ),
@@ -113,7 +120,7 @@ class PartnerBubble extends StatelessWidget {
 
   final bool isSentByMe;
   final String? name, image;
-  final MessageItem message;
+  final MessageItems message;
 
   @override
   Widget build(BuildContext context) {
@@ -151,19 +158,21 @@ class PartnerBubble extends StatelessWidget {
                       bottomRight: isSentByMe ? const Radius.circular(0) : const Radius.circular(15),
                     ),
                   ),
-                  child: message.images != null && ((message.images?.length??0) > 0)?Column(
+                  child: message.imageUrl != null && ((message.imageUrl?.length??0) > 0)?Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Wrap(
                         alignment: WrapAlignment.start,
                         spacing: 8,
-                        children: List.generate(message.images?.length??0, (imageIndex){
+                        children: List.generate(message.imageUrl?.length??0, (imageIndex){
                           return GestureDetector(
-                            // onTap: ()=>AppRouter.route.pushNamed(RoutePath.imagesViewScreen, extra: [message.imageUrl?[imageIndex]??""]),
+                            onTap: (){},*/
+/*AppRouter.route.pushNamed(RoutePath.imagesViewScreen, extra: [message.imageUrl?[imageIndex]??""]),*//*
+
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(3),
-                              child: CustomNetworkImage(imageUrl: message.images?[imageIndex]??"",width: 100,
+                              child: CustomNetworkImage(imageUrl: message.imageUrl?[imageIndex]??"",width: 100,
                                 height: 100,
                                 fit: BoxFit.cover,),
                             ),
@@ -191,3 +200,4 @@ class PartnerBubble extends StatelessWidget {
     );
   }
 }
+*/

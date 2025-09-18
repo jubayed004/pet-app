@@ -3,7 +3,7 @@ class ApiUrl {
   static String base = "http://10.10.20.52:8001/api";
   static String imageBase = "http://10.10.20.52:8001/";
 
-  static socketUrl({required String token}) => 'http://10.10.20.52:8001?token=$token';
+  static socketUrl({required String id}) => 'http://10.10.20.52:8001?id=$id';
 
   ///Create Account
   static register() => '$base/auth/register';
@@ -98,9 +98,9 @@ class ApiUrl {
 
 
 /// chat
-  static getMessage({required int pageKey}) => '$base/chat/get-conversation-list?page=$pageKey&limit=10';
-  static getMessageForChat({required int pageKey,required String id}) => '$base/chat/get-conversation/$id?page=$pageKey&limit=40';
-
+  static getConversation({required int pageKey}) => '$base/chat/get-conversation-list?page=$pageKey&limit=10';
+  static getMessageForChat({required int pageKey,required String id}) => '$base/chat/get-conversation?page=$pageKey&limit=30&partnerId=$id';
+  static updateFile() => '$base/chat/chat-images-video';
 
 
 

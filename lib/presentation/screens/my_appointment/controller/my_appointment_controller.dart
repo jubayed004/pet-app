@@ -48,19 +48,32 @@ class MyAppointmentController extends GetxController {
     }
   }
 
+// In your MyAppointmentController
+  var singleAppointmentBookingLoading = Status.completed.obs; // <-- dedicated loading
+
   Future<void> getSingleAppointmentBooking() async {
-    try{
+    singleAppointmentBookingLoading.value = Status.loading; // Start loading
+    try {
       final response = await apiClient.get(url: ApiUrl.getBookingAppointment(page: 1));
       if (response.statusCode == 200) {
         final newData = AppointmentBookingModel.fromJson(response.body);
         final newItems = newData.bookings ?? [];
 
-        if(newItems.isNotEmpty){
+        if (newItems.isNotEmpty) {
           firstBooking.value = newItems.first;
+          singleAppointmentBookingLoading.value = Status.completed;
+        } else {
+          firstBooking.value = null;
+          singleAppointmentBookingLoading.value = Status.noDataFound;
         }
+      } else if (response.statusCode == 503) {
+        singleAppointmentBookingLoading.value = Status.internetError;
+      } else {
+        singleAppointmentBookingLoading.value = Status.error;
       }
-    }catch(_){
+    } catch (e) {
       firstBooking.value = null;
+      singleAppointmentBookingLoading.value = Status.error;
     }
   }
 

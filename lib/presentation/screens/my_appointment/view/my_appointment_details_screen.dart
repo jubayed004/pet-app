@@ -225,7 +225,7 @@ class _MyAppointmentDetailsScreenState extends State<MyAppointmentDetailsScreen>
                                     AppRouter.route.pushNamed(
                                       RoutePath.reviewScreen,
                                       extra: {
-                                        "serviceId": item1?.serviceId?.id ?? "",
+                                        "serviceId": item1?.id ?? "",
                                         "ownerId": item1?.ownerId ?? "",
                                         "businessId": item1?.businessId ?? "",
                                       },
@@ -238,8 +238,8 @@ class _MyAppointmentDetailsScreenState extends State<MyAppointmentDetailsScreen>
                               ),
                               Flexible(
                                 child: CustomButton(
-                                  onTap: () {
-                                    AppRouter.route.pushNamed(RoutePath.chatScreen);
+                                  onTap: (){
+                                    AppRouter.route.pushNamed(RoutePath.chatScreen, extra: item1?.ownerId);
                                   },
                                   title: "Chat",
                                   textColor: Colors.black,

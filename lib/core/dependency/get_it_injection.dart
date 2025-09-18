@@ -1,3 +1,5 @@
+import 'package:pet_app/service/socket_service.dart';
+
 import '../../helper/local_db/local_db.dart';
 import '../../service/api_service.dart';
 import '../network/connection_checker.dart';
@@ -18,4 +20,7 @@ Future<void> initDependencies() async {
 
   /// ================= Api client ================
   serviceLocator.registerFactory<ApiClient>(() => ApiClient());
+
+  /// ================= Socket API ================
+  serviceLocator.registerFactory<SocketApi>(() => SocketApi());
 }
