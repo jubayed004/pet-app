@@ -51,7 +51,7 @@ class _MyDetailsPetsScreenState extends State<MyDetailsPetsScreen> {
                 final pet = controller.details.value.pet?.petPhoto;
                 final image = pet != null && pet.isNotEmpty ? pet : "";
                 return image.isNotEmpty
-                    ? Image.network(ApiUrl.imageBase + image, fit: BoxFit.cover, width: double.infinity, height: 200)
+                    ? Image.network(image, fit: BoxFit.cover, width: double.infinity, height: 200)
                     : Image.network(
                       'https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=800&q=80',
                       fit: BoxFit.cover,

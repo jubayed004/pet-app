@@ -126,7 +126,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         final imageFile = homeController.homeHeader.value.data?.userPic;
 
                         if (imageFile != null) {
-                          return CustomNetworkImage(imageUrl: "${ApiUrl.imageBase}$imageFile", boxShape: BoxShape.circle);
+                          return CustomNetworkImage(imageUrl: imageFile, boxShape: BoxShape.circle);
                         } else {
                           return Shimmer.fromColors(
                             baseColor: AppColors.blackColor.withAlpha(50),
@@ -233,7 +233,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       final image = pet.petPhoto ?? "";
                       final imageUrl = image.isEmpty
                           ? "assets/images/default_pet_image.png"
-                          : "${ApiUrl.imageBase}$image";
+                          : image;
 
                       return Container(
                         padding: const EdgeInsets.all(16),

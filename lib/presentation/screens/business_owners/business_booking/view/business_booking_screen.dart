@@ -113,23 +113,28 @@ class BusinessBookingScreen extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                       builderDelegate: PagedChildBuilderDelegate<BookingItem>(
                         itemBuilder: (context, item, index) {
-
+                          final address = item.serviceId?.location ?? "";
+                          final service = item.serviceType;
+                          final selectedService = item.selectedService;
+                          final phoneNumber = item.serviceId?.phone ?? "";
+                          final bookingTime = item.bookingTime;
+                          final serviceType = item.serviceId;
+                          final shopLogo = serviceType?.shopLogo;
+                          final serviceImage = serviceType?.servicesImages;
+                          final bookingDate = DateFormat("dd mm yyyy").format(item.bookingDate ?? DateTime.now());
                           return CustomBookingCard(
                             index: 0,
                             showApproveButton: true,
-                            showRejectButton: true,
-                            logoPath: "assets/images/vet.png",
-                            topTitle: "Vets",
-                            imagePath: "assets/images/womandogimage.png",
-                            visitingDate: "25/11/2022",
-                            mainTitle: "Pet Food & Supplies Sales",
+                            showRejectButton: true, // ✅ Only reject
+                            logoPath: shopLogo?? "",
+                            topTitle: service?? "",
+                            imagePath: (serviceImage != null && serviceImage.isNotEmpty) ?serviceImage : "",
+                            visitingDate: bookingDate,
+                            mainTitle: selectedService?? "",
                             subTitle: "Pet Grooming",
                             rating: 5.0,
-                            phoneNumber: "(406) 555-0120",
-                            address: "4517 Washington Ave.",
-                            onChat: () => print("Chat tapped"),
-                            onWebsite: () => print("Website tapped"),
-                            onAddReview: () => print("Review tapped"),
+                            phoneNumber: phoneNumber,
+                            address: address,
                             onApprove: () {
                               controller.updateItemStatus(
                                 id: item.id ?? '',
@@ -157,29 +162,39 @@ class BusinessBookingScreen extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                       builderDelegate: PagedChildBuilderDelegate<BookingItem>(
                         itemBuilder: (context, item, index) {
+                          final address = item.serviceId?.location ?? "";
+                          final service = item.serviceType;
+                          final phoneNumber = item.serviceId?.phone ?? "";
+                          final bookingTime = item.bookingTime;
+                          final serviceType = item.serviceId;
+                          final shopLogo = serviceType?.shopLogo;
+                          final serviceImage = serviceType?.servicesImages;
+                          final bookingDate = DateFormat("dd mm yyyy").format(item.bookingDate ?? DateTime.now());
                           return CustomBookingCard(
                             index: 1,
                             showApproveButton: true,
-                            showRejectButton: false, // ✅ Show both
-                            logoPath: "assets/images/vet.png",
-                            topTitle: "Vets",
-                            imagePath: "assets/images/womandogimage.png",
-                            visitingDate: "25/11/2022",
+                            showRejectButton: false, // ✅ Only reject
+                            logoPath: shopLogo?? "",
+                            topTitle: service?? "",
+                            imagePath: (serviceImage != null && serviceImage.isNotEmpty) ?serviceImage : "",
+                            visitingDate: bookingDate,
                             mainTitle: "Pet Food & Supplies Sales",
                             subTitle: "Pet Grooming",
-                            rating: 4.5,
-                            phoneNumber: "(406) 555-0120",
-                            address: "4517 Washington Ave.",
-                            onChat: () => print("Chat tapped"),
-                            onWebsite: () => print("Website tapped"),
-                            onAddReview: () => print("Review tapped"),
+                            rating: 5.0,
+                            phoneNumber: phoneNumber,
+                            address: address,
                             onApprove: () {
                               controller.updateItemStatus(
                                 id: item.id ?? '',
-                                status: 'APPROVED',
+                                status: 'COMPLETED',
                               );
                             },
-                            onReject: () => print("Rejected"),
+                            onReject: () {
+                              controller.updateItemStatus(
+                                id: item.id ?? '',
+                                status: 'REJECTED',
+                              );
+                            },
                           )
                           ;
 
@@ -198,22 +213,29 @@ class BusinessBookingScreen extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                       builderDelegate: PagedChildBuilderDelegate<BookingItem>(
                         itemBuilder: (context, item, index) {
+                          final address = item.serviceId?.location ?? "";
+                          final service = item.serviceType;
+                          final selectedService = item.selectedService;
+                          final phoneNumber = item.serviceId?.phone ?? "";
+                          final bookingTime = item.bookingTime;
+                          final serviceType = item.serviceId;
+                          final shopLogo = serviceType?.shopLogo;
+                          final serviceImage = serviceType?.servicesImages;
+                          final bookingDate = DateFormat("dd mm yyyy").format(item.bookingDate ?? DateTime.now());
+
                           return CustomBookingCard(
                             index: 2,
                             showApproveButton: false,
                             showRejectButton: false, // ✅ Only reject
-                            logoPath: "assets/images/vet.png",
-                            topTitle: "Vets",
-                            imagePath: "assets/images/womandogimage.png",
-                            visitingDate: "25/11/2022",
-                            mainTitle: "Pet Food & Supplies Sales",
+                            logoPath: shopLogo?? "",
+                            topTitle: service?? "",
+                            imagePath: (serviceImage != null && serviceImage.isNotEmpty) ?serviceImage : "",
+                            visitingDate: bookingDate,
+                            mainTitle: selectedService?? "",
                             subTitle: "Pet Grooming",
                             rating: 5.0,
-                            phoneNumber: "(406) 555-0120",
-                            address: "4517 Washington Ave.",
-                            onChat: () => print("Chat tapped"),
-                            onWebsite: () => print("Website tapped"),
-                            onAddReview: () => print("Review tapped"),
+                            phoneNumber: phoneNumber,
+                            address: address,
                             onApprove: () => print("Approved"),
                             onReject: () => print("Rejected"),
                           )
@@ -234,13 +256,15 @@ class BusinessBookingScreen extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                       builderDelegate: PagedChildBuilderDelegate<BookingItem>(
                         itemBuilder: (context, item, index) {
-                           final address = item.serviceId?.location ?? "";
-                           final phoneNumber = item.serviceId?.phone ?? "";
+                           final address = item.serviceId?.location?? "address";
+                           final phoneNumber = item.serviceId?.phone ?? "phone";
                            final bookingTime = item.bookingTime;
                            final serviceType = item.serviceId;
                            final shopLogo = serviceType?.shopLogo;
                            final serviceImage = serviceType?.servicesImages;
                            final bookingDate = DateFormat("dd mm yyyy").format(item.bookingDate ?? DateTime.now());
+                           print(phoneNumber);
+                           print(address);
                           return CustomBookingCard(
                             index: 3,
                             showApproveButton: false, // ✅ Only approve
@@ -254,21 +278,7 @@ class BusinessBookingScreen extends StatelessWidget {
                             rating: 5.0,
                             phoneNumber: phoneNumber,
                             address: address,
-                            onChat: () => print("Chat tapped"),
-                            onWebsite: () => print("Website tapped"),
-                            onAddReview: () => print("Review tapped"),
-                            onApprove: () {
-                              controller.updateItemStatus(
-                                id: item.id ?? '',
-                                status: 'APPROVED',
-                              );
-                            },
-                            onReject: () {
-                              controller.updateItemStatus(
-                                id: item.id ?? '',
-                                status: 'REJECTED',
-                              );
-                            },
+
                           )
                           ;
                         },

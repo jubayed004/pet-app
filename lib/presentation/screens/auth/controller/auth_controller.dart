@@ -222,9 +222,6 @@ class AuthController extends GetxController {
   RxBool activeLoading = false.obs;
   activeMethod(bool status) => activeLoading.value = status;
 
-  ///Active Account
-
-
   Future<void> activeAccount({required String email, required String code}) async {
     try {
       activeMethod(true);
@@ -252,12 +249,9 @@ class AuthController extends GetxController {
           if(role == "USER"){
             AppRouter.route.goNamed(RoutePath.petRegistrationScreen);
 
-
           }else{
             AppRouter.route.goNamed(RoutePath.petShopRegistrationScreen);
-
           }
-
          /* accountVerifyOtp.dispose();*/
         }).onError((error,stack){
           activeMethod(false);
@@ -393,7 +387,7 @@ class AuthController extends GetxController {
         petRegistrationUpLoadingMethod(false);
         toastMessage(message: response.body?['message'].toString());
 
-        AppRouter.route.pushNamed(RoutePath.subscriptionScreen,);
+        AppRouter.route.pushNamed(RoutePath.navigationPage,);
       } else {
         petRegistrationUpLoadingMethod(false);
         toastMessage(message: response.body?['message'].toString());

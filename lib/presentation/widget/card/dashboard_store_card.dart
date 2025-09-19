@@ -22,9 +22,6 @@ class CustomBookingCard extends StatelessWidget {
     required this.rating,
     required this.phoneNumber,
     required this.address,
-    required this.onChat,
-    required this.onWebsite,
-    this.onAddReview,
     this.onApprove,
     this.onReject,
     this.onComplete = false,
@@ -43,9 +40,6 @@ class CustomBookingCard extends StatelessWidget {
   final double rating;
   final String phoneNumber;
   final String address;
-  final VoidCallback onChat;
-  final VoidCallback onWebsite;
-  final VoidCallback? onAddReview;
   final VoidCallback? onApprove;
   final VoidCallback? onReject;
   final bool onComplete;
@@ -143,14 +137,14 @@ class CustomBookingCard extends StatelessWidget {
                     CustomText(text: mainTitle, fontSize: 18, fontWeight: FontWeight.w500),
                     const Gap(4),
                     CustomText(text: subTitle, overflow: TextOverflow.ellipsis),
-                    const Gap(4),
+             /*       const Gap(4),
                     Row(
                       children: [
                         ...List.generate(5, (i) => Icon(Icons.star, color: i < rating.round() ? Colors.amber : Colors.grey[300], size: 18)),
                         const Gap(6),
                         CustomText(text: "$rating", fontWeight: FontWeight.w500, fontSize: 12),
                       ],
-                    ),
+                    ),*/
                     const Gap(4),
                     Row(
                       children: [
@@ -168,56 +162,12 @@ class CustomBookingCard extends StatelessWidget {
 
           const Gap(10),
 
-          /// Action Buttons
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: CustomButton(
-                  onTap: onChat ,
-                  title: "Chat Now",
-                  height: 24,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  fillColor: AppColors.whiteColor,
-                  textColor: Colors.black,
-                  borderWidth: 1,
-                  showIcon: true,
-                ),
-              ),
-              const Gap(6),
-              Expanded(
-                child: CustomButton(
-                  onTap: onWebsite,
-                  title: "Website",
-                  height: 24,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
-                  fillColor: AppColors.purple500,
-                  textColor: Colors.black,
-                ),
-              ),
-              const Gap(6),
-              Expanded(
-                child: TextButton(
-                  onPressed: onAddReview,
-                  child: const CustomText(
-                    text: "Add Review",
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-            ],
-          ),
-
-          const Gap(10),
-
           /// Approve / Reject Section
-          if (index == 0)
+          if (index == 0 || index == 1)
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 0),
               child: Row(
+                spacing: 12,
                 children: [
                     Expanded(
                       child: ElevatedButton(
@@ -229,8 +179,6 @@ class CustomBookingCard extends StatelessWidget {
                         child: const CustomText(text: "Approve", color: Colors.white),
                       ),
                     ),
-                  if (index == 0) const Gap(12),
-                  if (index == 0 || index == 1)
                     Expanded(
                       child: OutlinedButton(
                         onPressed: onReject,
@@ -239,7 +187,7 @@ class CustomBookingCard extends StatelessWidget {
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                         ),
                         child: CustomText(
-                          text: index == 1 ? "Approve" : "rejected",
+                          text: "rejected",
                           color: AppColors.blackColor,
                         ),
                       ),

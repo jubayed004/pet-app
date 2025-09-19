@@ -16,8 +16,13 @@ import 'package:pet_app/presentation/components/custom_button/custom_button.dart
 import 'package:pet_app/presentation/components/custom_image/custom_image.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:pet_app/presentation/components/custom_text_field/custom_text_field.dart';
+import 'package:pet_app/presentation/no_internet/error_card.dart';
+import 'package:pet_app/presentation/no_internet/more_data_error_card.dart';
+import 'package:pet_app/presentation/no_internet/no_data_card.dart';
+import 'package:pet_app/presentation/no_internet/no_internet_card.dart';
 import 'package:pet_app/service/api_url.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
+import 'package:pet_app/utils/app_const/app_const.dart';
 import 'package:pet_app/utils/app_const/padding_constant.dart';
 import 'package:pet_app/utils/app_strings/app_strings.dart';
 import 'package:shimmer/shimmer.dart';
@@ -104,7 +109,7 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
                                 ),
                               ),
 
-                              CustomText(text: 'Welcome to pet Shop',fontSize: 14,fontWeight: FontWeight.w600,),
+                              CustomText(text: 'Welcome To Pet Shops',fontSize: 14,fontWeight: FontWeight.w600,),
                             ],
                           ),
                           IconButton(onPressed: (){ AppRouter.route.pushNamed(RoutePath.notifyScreen);}, icon: Icon(Iconsax.notification_bing))
@@ -115,60 +120,6 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
                 ),
               ),
             ),
-          /*  SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 16.0, top: 10, right: 16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-
-                    *//*Obx(() {
-                      return ;
-                    }),*//*
-                    Container(
-                      padding: EdgeInsets.all(24),
-                      decoration: BoxDecoration(
-                        color: AppColors.primaryColor,
-                        borderRadius: BorderRadius.circular(20),
-
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-                        children: [
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              CustomText(text: "PET SHOP",fontWeight: FontWeight.w600,fontSize: 20,),
-                              CustomText(text: 'Manage Your Store and Services')
-                              *//*     CustomText(
-                                  text: _controller.onboardingList[_controller
-                                      .currentIndex.value]
-                                      .title,),
-                                CustomText(
-                                  text: _controller.onboardingList[_controller
-                                      .currentIndex
-                                      .value]
-                                      .details,)*//*
-                            ],
-                          ),
-                          CustomImage(
-                            imageSrc: "assets/images/petkalloimage.png",
-                            sizeWidth: 80,)
-                        ],
-                      ),
-                    ),
-                    Gap(10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: List.generate(
-                          3, (index) => buildDot(index, context)),
-                    ),
-                  ],
-                ),
-              ),
-            ),*/
             _buildOnboardingSection(),
             SliverGap(8),
             SliverToBoxAdapter(
@@ -506,118 +457,157 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
          padding: const EdgeInsets.only(left: 16, top: 10, right: 16),
          child: Obx(() {
            final item = businessAllPetController.profile.value.pets?? [];
+           final status = businessAllPetController.loading.value; // Rx<Status>
+           switch (status) {
+             case Status.loading:
+               return Center(child: CircularProgressIndicator());
 
-           // If no pets, don't show the section
-           if (item.isEmpty) {
-             return const SizedBox.shrink();
-           }
-
-           return Column(
-             crossAxisAlignment: CrossAxisAlignment.start,
-             children: [
-               Text(
-                 "All Booking Pets",
-                 style: const TextStyle(
-                   fontSize: 18,
-                   fontWeight: FontWeight.bold,
-                 ),
-               ),
-               const Gap(16),
-
-               // Carousel
-               CarouselSlider.builder(
-                 itemCount: item.length,
-                 itemBuilder: (context, index, realIndex) {
-                   final petName = item[index];
-                   final image = petName.petPhoto ?? "";
-                   final imageUrl = image.isEmpty
-                       ? "assets/images/default_pet_image.png"
-                       : "${ApiUrl.imageBase}$image";
-
-                   return Container(
-
-                     padding: const EdgeInsets.all(20),
-                     decoration: BoxDecoration(
-                       color: AppColors.primaryColor,
-                       borderRadius: BorderRadius.circular(20),
-                       boxShadow: [
-                         BoxShadow(
-                           color: Colors.black.withOpacity(0.1),
-                           blurRadius: 8,
-                           offset: const Offset(0, 4),
-                         ),
-                       ],
-                     ),
-                     child: Row(
-                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                       children: [
-                         Expanded(
-                           child: Column(
-                             crossAxisAlignment: CrossAxisAlignment.start,
-                             mainAxisAlignment: MainAxisAlignment.center,
-                             children: [
-                               CustomText(
-                                 text: petName.name ?? "Unknown",
-                                 fontWeight: FontWeight.w600,
-                                 fontSize: 16.sp,
-                                 color: Colors.white,
-                               ),
-                               if (petName.name != null) ...[
-                                 const SizedBox(height: 4),
-                                 CustomText(
-                                   text: petName.name!,
-                                   fontWeight: FontWeight.w400,
-                                   fontSize: 12.sp,
-                                   color: Colors.white.withOpacity(0.8),
-                                 ),
-                               ],
-                             ],
-                           ),
-                         ),
-                         const SizedBox(width: 16),
-                         CustomNetworkImage(
-                           imageUrl: imageUrl,
-                           height: 50,
-                           width: 50, // Make it square for circular image
-                           boxShape: BoxShape.circle,
-                         ),
-                       ],
-                     ),
-                   );
-                 },
-                 options: CarouselOptions(
-                   height: MediaQuery.of(context).size.height / 8,
-                   autoPlay: item.length > 1, // Only auto-play if multiple items
-                   autoPlayInterval: const Duration(seconds: 3),
-                   enlargeCenterPage: true,
-                   enableInfiniteScroll: item.length > 1, // Only infinite scroll if multiple items
-                   viewportFraction: 0.85,
-                   scrollPhysics: item.length > 1
-                       ? const BouncingScrollPhysics()
-                       : const NeverScrollableScrollPhysics(),
-                   onPageChanged: (index, reason) {
-                     // 🔥 FIX: Use modulo to handle infinite scroll properly
-                     businessAllPetController.currentIndex.value = index % item.length;
+             case Status.error:
+               return Center(
+                 child: ErrorCard(
+                   onTap: () {
+                     businessAllPetController.getBusinessAllPets(); // Reload
                    },
                  ),
-               ),
+               );
 
-               // Dots indicator (only show if multiple items)
-               if (item.length > 1) ...[
-                 const Gap(12),
-                 Obx(() {
-                   final activeIdx = businessAllPetController.currentIndex.value;
-                   return Row(
-                     mainAxisAlignment: MainAxisAlignment.center,
-                     children: List.generate(
-                       item.length,
-                           (index) => buildDot(index, active: index == activeIdx),
+             case Status.internetError:
+               return Center(
+                 child: NoInternetCard(
+                   onTap: () {
+                     businessAllPetController.getBusinessAllPets();
+                   },
+                 ),
+               );
+
+             case Status.noDataFound:
+               return Center(
+                 child: MoreDataErrorCard(
+                   onTap: () {
+                     businessAllPetController.getBusinessAllPets();
+                   },
+                 ),
+               );
+
+             case Status.completed:
+               if (item.isEmpty) {
+                 return Center(
+                   child: NoDataCard(
+                     onTap: () {
+                       businessAllPetController.getBusinessAllPets();
+                     },
+                   ),
+                 );
+               }
+
+               return Column(
+                 crossAxisAlignment: CrossAxisAlignment.start,
+                 children: [
+                   Text(
+                     "All Booking Pets",
+                     style: const TextStyle(
+                       fontSize: 18,
+                       fontWeight: FontWeight.bold,
                      ),
-                   );
-                 }),
-               ],
-             ],
-           );
+                   ),
+                   const Gap(16),
+
+                   // Carousel
+                   CarouselSlider.builder(
+                     itemCount: item.length,
+                     itemBuilder: (context, index, realIndex) {
+                       final petName = item[index];
+                       final image = petName.petPhoto ?? "";
+                       final imageUrl = image.isEmpty
+                           ? "assets/images/default_pet_image.png"
+                           : "${ApiUrl.imageBase}$image";
+
+                       return Container(
+
+                         padding: const EdgeInsets.all(20),
+                         decoration: BoxDecoration(
+                           color: AppColors.primaryColor,
+                           borderRadius: BorderRadius.circular(20),
+                           boxShadow: [
+                             BoxShadow(
+                               color: Colors.black.withOpacity(0.1),
+                               blurRadius: 8,
+                               offset: const Offset(0, 4),
+                             ),
+                           ],
+                         ),
+                         child: Row(
+                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                           children: [
+                             Expanded(
+                               child: Column(
+                                 crossAxisAlignment: CrossAxisAlignment.start,
+                                 mainAxisAlignment: MainAxisAlignment.center,
+                                 children: [
+                                   CustomText(
+                                     text: petName.name ?? "Unknown",
+                                     fontWeight: FontWeight.w600,
+                                     fontSize: 16.sp,
+                                     color: Colors.white,
+                                   ),
+                                   if (petName.name != null) ...[
+                                     const SizedBox(height: 4),
+                                     CustomText(
+                                       text: petName.name!,
+                                       fontWeight: FontWeight.w400,
+                                       fontSize: 12.sp,
+                                       color: Colors.white.withOpacity(0.8),
+                                     ),
+                                   ],
+                                 ],
+                               ),
+                             ),
+                             const SizedBox(width: 16),
+                             CustomNetworkImage(
+                               imageUrl: imageUrl,
+                               height: 50,
+                               width: 50, // Make it square for circular image
+                               boxShape: BoxShape.circle,
+                             ),
+                           ],
+                         ),
+                       );
+                     },
+                     options: CarouselOptions(
+                       height: MediaQuery.of(context).size.height / 8,
+                       autoPlay: item.length > 1, // Only auto-play if multiple items
+                       autoPlayInterval: const Duration(seconds: 3),
+                       enlargeCenterPage: true,
+                       enableInfiniteScroll: item.length > 1, // Only infinite scroll if multiple items
+                       viewportFraction: 0.85,
+                       scrollPhysics: item.length > 1
+                           ? const BouncingScrollPhysics()
+                           : const NeverScrollableScrollPhysics(),
+                       onPageChanged: (index, reason) {
+                         // 🔥 FIX: Use modulo to handle infinite scroll properly
+                         businessAllPetController.currentIndex.value = index % item.length;
+                       },
+                     ),
+                   ),
+
+                   // Dots indicator (only show if multiple items)
+                   if (item.length > 1) ...[
+                     const Gap(12),
+                     Obx(() {
+                       final activeIdx = businessAllPetController.currentIndex.value;
+                       return Row(
+                         mainAxisAlignment: MainAxisAlignment.center,
+                         children: List.generate(
+                           item.length,
+                               (index) => buildDot(index, active: index == activeIdx),
+                         ),
+                       );
+                     }),
+                   ],
+                 ],
+               );
+           }
+
          }),
        ),
      );

@@ -98,7 +98,7 @@ class BusinessServiceScreen extends StatelessWidget {
                           boxShadow: [
                             BoxShadow(
                               color: Colors.grey.withOpacity(0.5),
-                              spreadRadius: 2,
+                              spreadRadius: 2.r,
                               blurRadius: 5,
                               offset: Offset(
                                 0,
@@ -124,7 +124,7 @@ class BusinessServiceScreen extends StatelessWidget {
                                       image.isNotEmpty
                                           ? CustomNetworkImage(borderRadius: BorderRadius.circular(6,),
                                             height: MediaQuery.of(context,).size.height / 10, width:
-                                            MediaQuery.of(context,).size.width, imageUrl: "${ApiUrl.imageBase}${image.replaceAll("\\", "/")}",
+                                            MediaQuery.of(context,).size.width, imageUrl: image.replaceAll("\\", "/"),
                                           )
                                           : CustomImage(imageSrc: "assets/images/womandogimage.png", boxFit: BoxFit.cover,),
                                       Gap(6),
@@ -132,7 +132,7 @@ class BusinessServiceScreen extends StatelessWidget {
                                         text: "Open",
                                         color: AppColors.primaryColor,
                                         fontWeight: FontWeight.w500,
-                                        fontSize: 14,
+                                        fontSize: 14.sp,
                                       ),
                                     ],
                                   ),
@@ -147,7 +147,7 @@ class BusinessServiceScreen extends StatelessWidget {
                                     children: [
                                       CustomText(
                                         text: item[index].serviceName ?? "",
-                                        fontSize: 18,
+                                        fontSize: 18.sp,
                                         fontWeight: FontWeight.w500,
                                       ),
 
@@ -159,7 +159,7 @@ class BusinessServiceScreen extends StatelessWidget {
                                         children: [
                                           Icon(
                                             Icons.location_on_sharp,
-                                            size: 18,
+                                            size: 18.sp,
                                           ),
                                           Expanded(
                                             child: CustomText(
@@ -172,7 +172,7 @@ class BusinessServiceScreen extends StatelessWidget {
                                       ),
                                       Row(
                                         children: [
-                                          Icon(Icons.phone, size: 18),
+                                          Icon(Icons.phone, size: 18.sp),
                                           Expanded(
                                             child: CustomText(
                                               text: item[index].phone ?? "",
@@ -190,11 +190,11 @@ class BusinessServiceScreen extends StatelessWidget {
                                       boxShape: BoxShape.circle,
                                       width: MediaQuery.of(context).size.width / 8,
                                       height: MediaQuery.of(context).size.height / 10,
-                                      imageUrl: "${ApiUrl.imageBase}${logo.replaceAll("\\", "/")}",
+                                      imageUrl: "${logo.replaceAll("\\", "/")}",
                                     )
                                     : CustomImage(
                                       imageSrc: "assets/images/petshoplogo.png",
-                                      sizeWidth: 50,
+                                      sizeWidth: 50.w,
                                     ),
                               ],
                             ),
@@ -205,14 +205,14 @@ class BusinessServiceScreen extends StatelessWidget {
                               children: [
                                 CustomText(
                                   text: "Service Provided :",
-                                  fontSize: 14,
+                                  fontSize: 14.sp,
                                   fontWeight: FontWeight.w600,
                                 ),
                                 ...List.generate(providerList.length, (
                                   subIndex,
                                 ) {
                                   return CustomText(
-                                    fontSize: 14,
+                                    fontSize: 14.sp,
                                     textAlign: TextAlign.start,
                                     maxLines: 5,
                                     text:
@@ -226,7 +226,7 @@ class BusinessServiceScreen extends StatelessWidget {
                               spacing: 4,
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Icon(Icons.access_time, size: 24),
+                                Icon(Icons.access_time, size: 24.sp),
 
                                 Flexible(
                                   child: Column(
@@ -284,7 +284,7 @@ class BusinessServiceScreen extends StatelessWidget {
                                           );
                                         },
                                         child: Assets.icons.deletedicon.svg(
-                                          width: 36,
+                                          width: 36.w,
                                           colorFilter: ColorFilter.mode(
                                             Colors.red,
                                             BlendMode.srcIn,
@@ -306,24 +306,18 @@ class BusinessServiceScreen extends StatelessWidget {
                                   Expanded(
                                     child: CustomButton(
                                       onTap: () async {
-                                        // Get the website URL
                                         String? websiteUrl = item[index].websiteLink;
-                                        // If website URL is null or empty, use a fallback URL
                                         if (websiteUrl == null ||
                                             websiteUrl.isEmpty) {websiteUrl = "https://www.defaultwebsite.com"; // Provide a default URL
                                         }
-                                        // Ensure the URL starts with 'http://' or 'https://'
                                         if (!websiteUrl.startsWith('http://') &&
                                             !websiteUrl.startsWith('https://',)) {websiteUrl = 'https://' + websiteUrl; // Prepend 'https://' if not present
                                         }
                                         final Uri url = Uri.parse(websiteUrl,
-                                        ); // Convert the string to Uri
-                                        // Check if the URL can be launched
+                                        );
                                         if (await canLaunchUrl(url)) {
-                                          // Launch the URL if possible
                                           await launchUrl(url);
                                         } else {
-                                          // Handle error if the URL can't be launched
                                           throw 'Could not launch $url';
                                         }
                                       },

@@ -70,7 +70,7 @@ class CategoryCardWidget extends StatelessWidget {
                     children: [
                       image.isNotEmpty
                           ? CustomNetworkImage(
-                           imageUrl:  "${ApiUrl.imageBase}$image",
+                           imageUrl:  image,
                             fit: BoxFit.cover,
                         height: MediaQuery.of(context).size.height / 10,
                         width: MediaQuery.of(context).size.width,
@@ -154,7 +154,7 @@ class CategoryCardWidget extends StatelessWidget {
                       width: MediaQuery.of(context).size.width / 8,
                       height: MediaQuery.of(context).size.height / 10,
                       imageUrl:
-                          "${ApiUrl.imageBase}${logo.replaceAll("\\", "/")}",
+                          logo.replaceAll("\\", "/"),
                     )
                     : CustomImage(
                       imageSrc: "assets/images/petshoplogo.png",

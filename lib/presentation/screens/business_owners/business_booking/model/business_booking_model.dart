@@ -17,6 +17,25 @@ class BusinessBookingModel {
     this.limit,
   });
 
+  BusinessBookingModel copyWith({
+    bool? success,
+    String? message,
+    List<BookingItem>? bookings,
+    int? totalPages,
+    int? totalBookings,
+    int? currentPage,
+    int? limit,
+  }) =>
+      BusinessBookingModel(
+        success: success ?? this.success,
+        message: message ?? this.message,
+        bookings: bookings ?? this.bookings,
+        totalPages: totalPages ?? this.totalPages,
+        totalBookings: totalBookings ?? this.totalBookings,
+        currentPage: currentPage ?? this.currentPage,
+        limit: limit ?? this.limit,
+      );
+
   factory BusinessBookingModel.fromJson(Map<String, dynamic> json) => BusinessBookingModel(
     success: json["success"],
     message: json["message"],
@@ -40,7 +59,7 @@ class BusinessBookingModel {
 
 class BookingItem {
   final String? id;
-  final ServiceIdItem? serviceId;
+  final ServiceId? serviceId;
   final String? userId;
   final DateTime? bookingDate;
   final String? bookingTime;
@@ -81,9 +100,52 @@ class BookingItem {
     this.cancellationReason,
   });
 
+  BookingItem copyWith({
+    String? id,
+    ServiceId? serviceId,
+    String? userId,
+    DateTime? bookingDate,
+    String? bookingTime,
+    String? checkInTime,
+    String? checkOutTime,
+    DateTime? checkInDate,
+    DateTime? checkOutDate,
+    String? bookingStatus,
+    String? notes,
+    String? selectedService,
+    String? serviceType,
+    String? businessId,
+    String? ownerId,
+    String? petId,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    String? cancellationReason,
+  }) =>
+      BookingItem(
+        id: id ?? this.id,
+        serviceId: serviceId ?? this.serviceId,
+        userId: userId ?? this.userId,
+        bookingDate: bookingDate ?? this.bookingDate,
+        bookingTime: bookingTime ?? this.bookingTime,
+        checkInTime: checkInTime ?? this.checkInTime,
+        checkOutTime: checkOutTime ?? this.checkOutTime,
+        checkInDate: checkInDate ?? this.checkInDate,
+        checkOutDate: checkOutDate ?? this.checkOutDate,
+        bookingStatus: bookingStatus ?? this.bookingStatus,
+        notes: notes ?? this.notes,
+        selectedService: selectedService ?? this.selectedService,
+        serviceType: serviceType ?? this.serviceType,
+        businessId: businessId ?? this.businessId,
+        ownerId: ownerId ?? this.ownerId,
+        petId: petId ?? this.petId,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+        cancellationReason: cancellationReason ?? this.cancellationReason,
+      );
+
   factory BookingItem.fromJson(Map<String, dynamic> json) => BookingItem(
     id: json["_id"],
-    serviceId: json["serviceId"] == null ? null : ServiceIdItem.fromJson(json["serviceId"]),
+    serviceId: json["serviceId"] == null ? null : ServiceId.fromJson(json["serviceId"]),
     userId: json["userId"],
     bookingDate: json["bookingDate"] == null ? null : DateTime.parse(json["bookingDate"]),
     bookingTime: json["bookingTime"],
@@ -126,7 +188,7 @@ class BookingItem {
   };
 }
 
-class ServiceIdItem {
+class ServiceId {
   final String? id;
   final String? serviceType;
   final String? location;
@@ -138,7 +200,7 @@ class ServiceIdItem {
   final String? serviceIdId;
   final String? websiteLink;
 
-  ServiceIdItem({
+  ServiceId({
     this.id,
     this.serviceType,
     this.location,
@@ -151,7 +213,32 @@ class ServiceIdItem {
     this.websiteLink,
   });
 
-  factory ServiceIdItem.fromJson(Map<String, dynamic> json) => ServiceIdItem(
+  ServiceId copyWith({
+    String? id,
+    String? serviceType,
+    String? location,
+    String? shopLogo,
+    String? phone,
+    String? servicesImages,
+    String? businessId,
+    bool? isOpenNow,
+    String? serviceIdId,
+    String? websiteLink,
+  }) =>
+      ServiceId(
+        id: id ?? this.id,
+        serviceType: serviceType ?? this.serviceType,
+        location: location ?? this.location,
+        shopLogo: shopLogo ?? this.shopLogo,
+        phone: phone ?? this.phone,
+        servicesImages: servicesImages ?? this.servicesImages,
+        businessId: businessId ?? this.businessId,
+        isOpenNow: isOpenNow ?? this.isOpenNow,
+        serviceIdId: serviceIdId ?? this.serviceIdId,
+        websiteLink: websiteLink ?? this.websiteLink,
+      );
+
+  factory ServiceId.fromJson(Map<String, dynamic> json) => ServiceId(
     id: json["_id"],
     serviceType: json["serviceType"],
     location: json["location"],

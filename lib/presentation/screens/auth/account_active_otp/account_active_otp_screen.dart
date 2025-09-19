@@ -53,7 +53,7 @@ class _AccountActiveOtpScreenState extends State<AccountActiveOtpScreen> {
                 Gap(8),
                 CustomText(
                   text:
-                      "${"Please enter the code we've sent to michelle.rivera@example.com"} ${widget.email}",
+                      "${"Please enter the code we've sent to "} ${widget.email}",
                   color: AppColors.secondTextColor,
                   maxLines: 2,
                   textAlign: TextAlign.center,

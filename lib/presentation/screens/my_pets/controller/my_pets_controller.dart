@@ -88,16 +88,21 @@ class MyPetsProfileController extends GetxController {
   }
 
   Future<void> updateMyPet({required Map<String, String> body, required id}) async{
+    print("index 1");
     try{
+      print("index 2");
       isUpdateLoading.value = true;
       final List<MultipartBody> multipartBody = [];
       if(selectedImage.value != null){
+        print("index 3");
         multipartBody.add(MultipartBody("petPhoto", File(selectedImage.value?.path?? "")));
       }
+      print("index 4");
       print(body);
       final response = await apiClient.multipartRequest(url: ApiUrl.updateMyPet(id: id), body: body, multipartBody: multipartBody, reqType: "PUT");
-
+      print("index 5");
       if(response.statusCode == 200){
+        print("index 6");
         await myAllPetDetails(id: id);
         isUpdateLoading.value = false;
         AppRouter.route.pop();

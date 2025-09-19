@@ -16,12 +16,12 @@ class BusinessAddServiceController extends GetxController{
   ///===============Service Type ==============
   final selectedAnalystType = ''.obs;
   final List<String> analystType = [
-    " Vet",
-    " Grooming",
-    " Shop",
-    " Hotel",
-    " Training",
-    " Friendly ",
+    "Vet",
+    "Grooming",
+    "Shop",
+    "Hotel",
+    "Training",
+    "Friendly ",
   ];
 
   
@@ -109,23 +109,29 @@ class BusinessAddServiceController extends GetxController{
       selecteImage.value = image;
     }
   }
+
   Future<void> editService({required Map<String, String> body, required String id,}) async {
     try {
+  print("index 5");
       isEditLoading.value = true;
       final List<MultipartBody> multipartBody = [];
       if(selecteImage.value != null){
         multipartBody.add(MultipartBody("servicesImages", File(selecteImage.value?.path?? "")));
       }
+  print("index 6");
       print("weiurterit ertioyertoguiopdrtdrthporthndrtpgrtphnrth");
       print(body);
-      print(multipartBody.first.file);
-      print(multipartBody.first.key);
+    /*  print(multipartBody.first.file);
+      print(multipartBody.first.key);*/
       final response = await apiClient.multipartRequest(url: ApiUrl.updateService(id: id), body: body, multipartBody: multipartBody, reqType: "PUT");
+  print("index 7");
       if (response.statusCode == 200) {
+  print("index 8");
         await businessServiceController.getBusinessService();
         isEditLoading.value = false;
         AppRouter.route.pop();
       } else {
+  print("index 9");
         isEditLoading.value = false;
         toastMessage(message: response.body?['message']?.toString());
       }

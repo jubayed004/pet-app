@@ -74,10 +74,10 @@ class _MyAppointmentDetailsScreenState extends State<MyAppointmentDetailsScreen>
                       Stack(
                         alignment: Alignment.bottomRight,
                         children: [
-                          CustomNetworkImage(imageUrl: "${ApiUrl.imageBase}$image", width: 200, height: 200, boxShape: BoxShape.circle),
+                          CustomNetworkImage(imageUrl:image, width: 200, height: 200, boxShape: BoxShape.circle),
                           Positioned(
                             bottom: 0,
-                            child: CustomNetworkImage(imageUrl: "${ApiUrl.imageBase}$logo", width: 70, height: 100, boxShape: BoxShape.circle),
+                            child: CustomNetworkImage(imageUrl: logo, width: 70, height: 100, boxShape: BoxShape.circle),
                           ),
                         ],
                       ),

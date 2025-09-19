@@ -97,7 +97,7 @@ class _AllPetsScreenState extends State<AllPetsScreen> {
 
                       Widget avatar;
                       if (photo.isNotEmpty) {
-                        final imageUrl = '${ApiUrl.imageBase}$photo';
+                        final imageUrl = photo;
                         avatar = CircleAvatar(
                           radius: 24.r,
                           backgroundColor: Colors.transparent,

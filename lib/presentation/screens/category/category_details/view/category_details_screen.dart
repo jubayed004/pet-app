@@ -61,7 +61,7 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
                       final image = controller.categoryDetails.value.service?.servicesImages;
                       return image != null && image.isNotEmpty
                           ? Image.network(
-                            "${ApiUrl.imageBase}$image",
+                            image,
                             fit: BoxFit.cover,
                             width: double.infinity,
                             height: MediaQuery.of(context).size.height / 3,
@@ -185,7 +185,7 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
                                     boxShape: BoxShape.circle,
                                     width: MediaQuery.of(context).size.width / 8,
                                     height: MediaQuery.of(context).size.height / 10,
-                                    imageUrl: "${ApiUrl.imageBase}${logo.replaceAll("\\", "/")}",
+                                    imageUrl: logo.replaceAll("\\", "/"),
                                   )
                                   : CustomImage(imageSrc: "assets/images/petshoplogo.png", sizeWidth: MediaQuery.of(context).size.width / 8);
                             }),

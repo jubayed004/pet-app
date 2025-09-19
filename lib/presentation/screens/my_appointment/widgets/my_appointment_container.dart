@@ -127,7 +127,7 @@ class MyAppointmentContainer extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CustomNetworkImage(
-                      imageUrl: "${ApiUrl.imageBase}$serviceImage",
+                      imageUrl: serviceImage,
                       height: 70.h,
                       width: 100.w,
                       borderRadius: BorderRadius.circular(10),

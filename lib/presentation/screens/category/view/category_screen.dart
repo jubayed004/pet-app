@@ -92,7 +92,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                             GestureDetector(
                               onTap: () {
                                 selectedIndex.value = index;
-                                if (index == 5) {
+                        /*        if (index == 5) {
                                   showModalBottomSheet(
                                     context: context,
                                     builder: (_) {
@@ -114,7 +114,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                       );
                                     },
                                   );
-                                }
+                                }*/
                               },
                               child: Card(
                                 shape: RoundedRectangleBorder(

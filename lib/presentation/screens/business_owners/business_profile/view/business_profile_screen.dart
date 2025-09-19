@@ -26,8 +26,7 @@ class BusinessProfileScreen extends StatelessWidget {
   // final profileController = GetControllers.instance.getProfileController();
   final _controller = GetControllers.instance.getMyPetsProfileController();
   final controller = GetControllers.instance.getNavigationControllerMain();
-  final businessProfileController =
-      GetControllers.instance.getBusinessProfileController();
+  final businessProfileController = GetControllers.instance.getBusinessProfileController();
 
   @override
   Widget build(BuildContext context) {
@@ -75,42 +74,32 @@ class BusinessProfileScreen extends StatelessWidget {
                 );
               }),
             ),*/
-            CustomDefaultAppbar(title: "Profile",),
+            CustomDefaultAppbar(title: "Profile"),
             SliverAppBar(
               pinned: true,
               expandedHeight: 200,
               backgroundColor: Colors.transparent,
               flexibleSpace: FlexibleSpaceBar(
                 background: Obx(() {
-                  final images = businessProfileController.profile.value.ownerDetails?.business?.shopPic;
+                  final images = businessProfileController.profile.value.ownerDetails?.profilePic;
                   if (images != null && images.isNotEmpty) {
-                    final imageUrl = "${ApiUrl.imageBase}${images[0].replaceAll('\\', '/')}"; // Ensure proper URL format
-                    return CustomNetworkImage(
-                      imageUrl: imageUrl,
-                      width: double.infinity,
-                      height: double.infinity,
-                      fit: BoxFit.cover,
-                    );
+                    final imageUrl = images.replaceAll('\\', '/'); // Ensure proper URL format
+                    return CustomNetworkImage(imageUrl: imageUrl, width: double.infinity, height: double.infinity, fit: BoxFit.cover);
                   } else {
-                    return CustomImage(
-                      imageSrc: 'https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=800&q=80',
+                    return CustomNetworkImage(
+                      imageUrl: 'https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=800&q=80',
                       fit: BoxFit.cover,
                       width: double.infinity,
                       height: double.infinity,
                     );
                   }
                 }),
-
               ),
             ),
 
-
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16.0,
-                  vertical: 20,
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20),
                 child: Column(
                   children: [
                     Card(
@@ -125,7 +114,7 @@ class BusinessProfileScreen extends StatelessWidget {
                                 Obx(() {
                                   return Expanded(
                                     child: CustomText(
-                                      text: businessProfileController.profile.value.ownerDetails?.name ??"",
+                                      text: businessProfileController.profile.value.ownerDetails?.name ?? "",
                                       fontSize: 22,
                                       fontWeight: FontWeight.w700,
                                       maxLines: 1,
@@ -134,34 +123,21 @@ class BusinessProfileScreen extends StatelessWidget {
                                 }),
                                 GestureDetector(
                                   onTap: () {
-                                    AppRouter.route.pushNamed(
-                                      RoutePath.businessEditProfileScreen,
-                                    );
+                                    AppRouter.route.pushNamed(RoutePath.businessEditProfileScreen);
                                   },
                                   child: Card(
                                     shape: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
-                                      borderSide: BorderSide(
-                                        color: AppColors.purple500,
-                                        width: 1,
-                                      ),
+                                      borderSide: BorderSide(color: AppColors.purple500, width: 1),
                                     ),
                                     color: Colors.white,
                                     child: Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Row(
                                         children: [
-                                          CustomText(
-                                            text: "Edit Profile",
-                                            fontWeight: FontWeight.w400,
-                                            fontSize: 12,
-                                          ),
+                                          CustomText(text: "Edit Profile", fontWeight: FontWeight.w400, fontSize: 12),
                                           Gap(6),
-                                          Icon(
-                                            Icons.edit_outlined,
-                                            size: 20,
-                                            color: AppColors.purple500,
-                                          ),
+                                          Icon(Icons.edit_outlined, size: 20, color: AppColors.purple500),
                                         ],
                                       ),
                                     ),
@@ -175,13 +151,7 @@ class BusinessProfileScreen extends StatelessWidget {
                                 Gap(6),
                                 Obx(() {
                                   return CustomText(
-                                    text:
-                                        businessProfileController
-                                            .profile
-                                            .value
-                                            .ownerDetails
-                                            ?.email ??
-                                        "",
+                                    text: businessProfileController.profile.value.ownerDetails?.email ?? "",
                                     fontWeight: FontWeight.w400,
                                     fontSize: 14,
                                   );
@@ -195,13 +165,7 @@ class BusinessProfileScreen extends StatelessWidget {
                                 Gap(6),
                                 Obx(() {
                                   return CustomText(
-                                    text:
-                                        businessProfileController
-                                            .profile
-                                            .value
-                                            .ownerDetails
-                                            ?.phone ??
-                                        "",
+                                    text: businessProfileController.profile.value.ownerDetails?.phone ?? "",
                                     fontWeight: FontWeight.w400,
                                     fontSize: 14,
                                   );
@@ -211,21 +175,10 @@ class BusinessProfileScreen extends StatelessWidget {
                             Gap(16),
                             Row(
                               children: [
-                                Icon(
-                                  Icons.location_on_outlined,
-                                  size: 20,
-                                  color: AppColors.purple500,
-                                ),
+                                Icon(Icons.location_on_outlined, size: 20, color: AppColors.purple500),
                                 Gap(6),
                                 CustomText(
-                                  text:
-                                      businessProfileController
-                                          .profile
-                                          .value
-                                          .ownerDetails
-                                          ?.business
-                                          ?.address ??
-                                      "",
+                                  text: businessProfileController.profile.value.ownerDetails?.business?.address ?? "",
                                   fontWeight: FontWeight.w400,
                                   fontSize: 14,
                                 ),
@@ -244,32 +197,21 @@ class BusinessProfileScreen extends StatelessWidget {
                             icon: Assets.icons.myappointmenticon.svg(),
                             text: "Subscription",
                             onTap: () {
-                              AppRouter.route.pushNamed(
-                                RoutePath.subscriptionStatusScreen,
-                              );
+                              AppRouter.route.pushNamed(RoutePath.subscriptionStatusScreen);
                             },
                           ),
                           ButtonSectionAll(
-                            icon: Assets.icons.mypeticon.svg(
-                              colorFilter: ColorFilter.mode(
-                                AppColors.purple500,
-                                BlendMode.srcIn,
-                              ),
-                            ),
+                            icon: Assets.icons.mypeticon.svg(colorFilter: ColorFilter.mode(AppColors.purple500, BlendMode.srcIn)),
                             text: "All Pets",
                             onTap: () {
-                              AppRouter.route.pushNamed(
-                                RoutePath.businessAllPetsScreen,
-                              );
+                              AppRouter.route.pushNamed(RoutePath.businessAllPetsScreen);
                             },
                           ),
                           ButtonSectionAll(
                             icon: Assets.icons.addpeticon.svg(),
                             text: "Business Profile",
                             onTap: () {
-                              AppRouter.route.pushNamed(
-                                RoutePath.businessShopProfileScreen,
-                              );
+                              AppRouter.route.pushNamed(RoutePath.businessShopProfileScreen);
                             },
                           ),
                           ButtonSectionAll(
@@ -289,8 +231,7 @@ class BusinessProfileScreen extends StatelessWidget {
                                 animationSrc: "assets/images/warning.png",
                                 context: context,
                                 title: "Warning",
-                                subtitle:
-                                    "Are you sure you want to change your subscription plan?",
+                                subtitle: "Are you sure you want to change your subscription plan?",
                                 actionButton: [
                                   CustomButton(
                                     width: double.infinity,
@@ -307,24 +248,19 @@ class BusinessProfileScreen extends StatelessWidget {
                                     textColor: AppColors.greenColor,
                                     title: "Cancel",
                                     isBorder: true,
-                                    fontSize:
-                                        14, // Ensure the border is visible
+                                    fontSize: 14, // Ensure the border is visible
                                   ),
                                   CustomButton(
                                     width: double.infinity,
                                     height: 36,
                                     onTap: () async {
                                       AppRouter.route.pop();
-                                      await Future.delayed(
-                                        Duration(milliseconds: 100),
-                                      );
+                                      await Future.delayed(Duration(milliseconds: 100));
                                       showCustomAnimatedDialog(
                                         context: context,
                                         title: "Success",
-                                        subtitle:
-                                            "You have been logged out successfully.",
-                                        animationSrc:
-                                            "assets/animation/success.json",
+                                        subtitle: "You have been logged out successfully.",
+                                        animationSrc: "assets/animation/success.json",
                                         // Path to your Lottie animation
                                         isDismissible: true,
                                         actionButton: [

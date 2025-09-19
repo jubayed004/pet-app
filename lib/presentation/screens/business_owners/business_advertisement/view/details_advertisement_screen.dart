@@ -59,14 +59,20 @@ class ActiveTab extends StatelessWidget {
         final activeAdvertisements = advertisements
             .where((ad) => ad.status == "ACTIVE")
             .toList();
-
+        if (activeAdvertisements.isEmpty) {
+          return const CustomText(
+            text: "No active advertisements available",
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+          );
+        }
         return ListView.builder(
           itemCount: activeAdvertisements.length,
           itemBuilder: (context, imageIndex) {
             final image = activeAdvertisements[imageIndex].advertisementImg;
             if (image != null && image.isNotEmpty) {
               // Format the image URL
-              final imageUrl = _getImageUrl(image.first);
+              final imageUrl = image.first;
               return Padding(
                 padding: const EdgeInsets.only(bottom: 12),
                 child: CustomNetworkImage(
@@ -119,8 +125,7 @@ class InactiveTab extends StatelessWidget {
           itemBuilder: (context, imageIndex) {
             final image = inactiveAdvertisements[imageIndex].advertisementImg;
             if (image != null && image.isNotEmpty) {
-              // Format the image URL
-              final imageUrl = _getImageUrl(image.first);
+              final imageUrl = image.first;
               return Padding(
                 padding: const EdgeInsets.only(bottom: 12),
                 child: CustomNetworkImage(
@@ -130,7 +135,7 @@ class InactiveTab extends StatelessWidget {
                 ),
               );
             } else {
-              return const SizedBox(); // Return an empty widget if no image
+              return const SizedBox();
             }
           },
         );
@@ -138,10 +143,4 @@ class InactiveTab extends StatelessWidget {
     );
   }
 
-  // Helper function to correctly format the image URL
-  String _getImageUrl(String image) {
-    // Ensure the base URL ends with a slash, and image path doesn't start with one
-    final baseUrl = ApiUrl.imageBase.endsWith('/') ? ApiUrl.imageBase : '${ApiUrl.imageBase}/';
-    return '$baseUrl${image.replaceAll('\\', '/')}';
-  }
 }

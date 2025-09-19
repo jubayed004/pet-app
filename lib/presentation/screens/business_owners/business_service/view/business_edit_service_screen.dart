@@ -191,8 +191,8 @@ class _BusinessEditServiceScreenState extends State<BusinessEditServiceScreen> {
                                       if (v.length < 3) {
                                         return 'At least 3 characters';
                                       }
-                                      if (v.length > 50) {
-                                        return 'Must be 50 characters or fewer';
+                                      if (v.length > 100) {
+                                        return 'Must be 100 characters or fewer';
                                       }
                                       final ok = RegExp(r"^[A-Za-z0-9&/.,\-()' ]+$");
                                       if (!ok.hasMatch(v)) {
@@ -388,7 +388,9 @@ class _BusinessEditServiceScreenState extends State<BusinessEditServiceScreen> {
                   return CustomButton(
                     isLoading: businessAddServiceController.isEditLoading.value,
                     onTap: () {
+                      print("index 1");
                       final List<String> services = serviceController.value.map((controller) => controller.text).toList();
+
                       final body = {
                         "serviceType": businessAddServiceController.selectedAnalystType.value,
                         "serviceName": serviceName.text,
@@ -401,8 +403,11 @@ class _BusinessEditServiceScreenState extends State<BusinessEditServiceScreen> {
                         "latitude": selectedLocation.value.latLng.latitude.toString(),
                         "longitude": selectedLocation.value.latLng.longitude.toString(),
                       };
+                      print("index 2");
                       if (_formKey.currentState!.validate()) {
+                        print("index 3");
                         businessAddServiceController.editService(body: body, id: widget.id);
+                        print("index 4");
                       }
                     },
                     title: "Update service",

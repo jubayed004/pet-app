@@ -126,67 +126,78 @@ class _BusinessAddServiceScreenState extends State<BusinessAddServiceScreen> {
                       }).toList(),
                   onChanged: (value) {
                     if (value != null) {
-                      businessAddServiceController.selectedAnalystType.value = value ?? "";
+                      businessAddServiceController.selectedAnalystType.value = value;
                     }
                   },
                 ),
                 Gap(16),
-                CustomText(text: "Providing Service", fontWeight: FontWeight.w500, fontSize: 16),
-                Gap(8),
-                ValueListenableBuilder<List<TextEditingController>>(
-                  valueListenable: serviceController,
-                  builder: (context, list, _) {
-                    return Column(
-                      children: List.generate(list.length, (index) {
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: 8.0),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Expanded(
-                                child: CustomTextField(
-                                  textEditingController: list[index],
-                                  fieldBorderColor: AppColors.blackColor,
-                                  fieldBorderRadius: 10,
-                                  fillColor: Colors.white,
-                                  hintText: "Enter Providing Service",
-                                  keyboardType: TextInputType.text,
-                                  validator: (value) {
-                                    final v = (value ?? '').trim();
-                                    if (v.isEmpty) {
-                                      return 'Service name is required';
-                                    }
-                                    if (v.length < 3) {
-                                      return 'At least 3 characters';
-                                    }
-                                    if (v.length > 50) {
-                                      return 'Must be 50 characters or fewer';
-                                    }
-                                    final ok = RegExp(r"^[A-Za-z0-9&/.,\-()' ]+$");
-                                    if (!ok.hasMatch(v)) {
-                                      return "Only letters, numbers, spaces, and -/.,()'& are allowed";
-                                    }
-                                    final hasAlnum = RegExp(r'[A-Za-z0-9]').hasMatch(v);
-                                    if (!hasAlnum) {
-                                      return 'Enter a meaningful service name';
-                                    }
+                Obx((){
+                  if(businessAddServiceController.selectedAnalystType.value == "Shop"){
+                    return SizedBox();
+                  }
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomText(text: "Providing Service", fontWeight: FontWeight.w500, fontSize: 16),
+                      Gap(8),
+                      ValueListenableBuilder<List<TextEditingController>>(
+                        valueListenable: serviceController,
+                        builder: (context, list, _) {
+                          return Column(
+                            children: List.generate(list.length, (index) {
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom: 8.0),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Expanded(
+                                      child: CustomTextField(
+                                        textEditingController: list[index],
+                                        fieldBorderColor: AppColors.blackColor,
+                                        fieldBorderRadius: 10,
+                                        fillColor: Colors.white,
+                                        hintText: "Enter Providing Service",
+                                        keyboardType: TextInputType.text,
+                                        validator: (value) {
+                                          final v = (value ?? '').trim();
+                                          if (v.isEmpty) {
+                                            return 'Service name is required';
+                                          }
+                                          if (v.length < 3) {
+                                            return 'At least 3 characters';
+                                          }
+                                          if (v.length > 100) {
+                                            return 'Must be 50 characters or fewer';
+                                          }
+                                          final ok = RegExp(r"^[A-Za-z0-9&/.,\-()' ]+$");
+                                          if (!ok.hasMatch(v)) {
+                                            return "Only letters, numbers, spaces, and -/.,()'& are allowed";
+                                          }
+                                          final hasAlnum = RegExp(r'[A-Za-z0-9]').hasMatch(v);
+                                          if (!hasAlnum) {
+                                            return 'Enter a meaningful service name';
+                                          }
 
-                                    return null;
-                                  },
+                                          return null;
+                                        },
+                                      ),
+                                    ),
+                                    const Gap(5),
+                                    index == 0
+                                        ? IconButton(onPressed: _addBeltField, icon: const Icon(Iconsax.add_circle))
+                                        : IconButton(onPressed: () => _removeBeltField(index), icon: const Icon(Icons.remove_circle_outline)),
+                                  ],
                                 ),
-                              ),
-                              const Gap(5),
-                              index == 0
-                                  ? IconButton(onPressed: _addBeltField, icon: const Icon(Iconsax.add_circle))
-                                  : IconButton(onPressed: () => _removeBeltField(index), icon: const Icon(Icons.remove_circle_outline)),
-                            ],
-                          ),
-                        );
-                      }),
-                    );
-                  },
-                ),
-                Gap(14),
+                              );
+                            }),
+                          );
+                        },
+                      ),
+                    ],
+                  );
+                }),
+                Gap(8),
                 CustomText(text: "Service Name", fontWeight: FontWeight.w500, fontSize: 16),
                 Gap(8),
                 CustomTextField(
@@ -237,12 +248,9 @@ class _BusinessAddServiceScreenState extends State<BusinessAddServiceScreen> {
                   child: Container(
                     padding: EdgeInsets.all(16),
                     width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black, width: 1),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
+                    decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1), borderRadius: BorderRadius.circular(12)),
                     child: ValueListenableBuilder<RecordLocation>(
-                      valueListenable: selectedLocation,  // Listen to changes
+                      valueListenable: selectedLocation, // Listen to changes
                       builder: (_, item, _) {
                         String address = item.address.isEmpty ? " selected Your Location" : item.address;
                         return Text(address);
@@ -250,7 +258,6 @@ class _BusinessAddServiceScreenState extends State<BusinessAddServiceScreen> {
                     ),
                   ),
                 ),
-
 
                 Gap(14),
                 CustomText(text: " Time Duration", fontWeight: FontWeight.w600, fontSize: 16),
