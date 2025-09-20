@@ -45,7 +45,7 @@ class MessageCardItemWidget extends StatelessWidget {
           child: Row(
             spacing: 12.w,
             children: [
-              CustomNetworkImage(imageUrl: "${ApiUrl.imageBase}$image", boxShape: BoxShape.circle, height: 50.w, width: 50.w),
+              CustomNetworkImage(imageUrl: image, boxShape: BoxShape.circle, height: 50.w, width: 50.w),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

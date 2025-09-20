@@ -60,7 +60,7 @@ class CategoryCard extends StatelessWidget {
                 children: [
                   image.isNotEmpty
                       ? CustomNetworkImage(
-                    imageUrl: "${ApiUrl.imageBase}$image",
+                    imageUrl: image,
                     fit: BoxFit.cover,
                     boxShape: BoxShape.circle,
                     height: 45.h, // Slightly reduced

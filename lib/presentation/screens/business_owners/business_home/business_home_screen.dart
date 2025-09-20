@@ -83,7 +83,7 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
                                   child: Obx(() {
                                     final images = businessProfileController.profile.value.ownerDetails?.business?.shopPic;
                                     if (images != null && images.isNotEmpty) {
-                                      final imageUrl = "${ApiUrl.imageBase}${images[0].replaceAll('\\', '/')}"; // Ensure proper URL format
+                                      final imageUrl = images[0].replaceAll('\\', '/'); // Ensure proper URL format
                                       return CustomNetworkImage(
                                         imageUrl: imageUrl,
                                         width: 50.w,
@@ -173,7 +173,7 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
                 ),
               ),
             ),
-            SliverToBoxAdapter(
+       /*     SliverToBoxAdapter(
               child: Padding(
                   padding: EdgeInsets.only(left: 16,right: 16),
                   child: Column(
@@ -181,7 +181,7 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
                       CustomImage(imageSrc: "assets/images/adshome.png"),
                     ],
                   )),
-            ),
+            ),*/
              /*     SliverToBoxAdapter(
               child: Padding(
                   padding: EdgeInsets.only(left: 16,right: 16),
@@ -520,7 +520,7 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
                        final image = petName.petPhoto ?? "";
                        final imageUrl = image.isEmpty
                            ? "assets/images/default_pet_image.png"
-                           : "${ApiUrl.imageBase}$image";
+                           : image;
 
                        return Container(
 

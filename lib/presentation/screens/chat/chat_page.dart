@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -14,6 +15,7 @@ import 'widgets/chat_message_card_item_widget.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key, required this.senderId});
+
   final String senderId;
 
   @override
@@ -31,7 +33,7 @@ class _ChatScreenState extends State<ChatScreen> {
   void initState() {
     super.initState();
     pagingController.addPageRequestListener((pageKey) {
-      controller.getChatList(pageKey: pageKey, id: widget.senderId,pagingController: pagingController);
+      controller.getChatList(pageKey: pageKey, id: widget.senderId, pagingController: pagingController);
     });
     _initializeSocketAndController();
   }
@@ -61,7 +63,7 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("inbox".tr),
+        title: Text("Chat"),
         centerTitle: true,
       ),
       body: SafeArea(
@@ -71,7 +73,11 @@ class _ChatScreenState extends State<ChatScreen> {
           child: Column(
             children: [
               MessageListCard(controller: controller, scrollController: scrollController, pagingController: pagingController,),
-              ChatInputBox(controller: controller, formKey: _formKey, widget: widget, messageController: messageController, senderId: '',),
+              ChatInputBox(controller: controller,
+                formKey: _formKey,
+                widget: widget,
+                messageController: messageController,
+                senderId: '',),
             ],
           ),
         ),
@@ -103,9 +109,9 @@ class ChatInputBox extends StatelessWidget {
       width: double.infinity,
       child: Column(
         children: [
-          Obx((){
+          Obx(() {
             print("1111111 -> Input- Obx");
-            return controller.selectedImages.isNotEmpty?Padding(
+            return controller.selectedImages.isNotEmpty ? Padding(
               padding: const EdgeInsets.only(bottom: 8.0),
               child: Wrap(
                 spacing: 10,
@@ -116,8 +122,8 @@ class ChatInputBox extends StatelessWidget {
                         borderRadius: BorderRadius.circular(5),
                         child: Image.file(
                           File(controller.selectedImages[index].path),
-                          width: 100,
-                          height: 100,
+                          width: 100.w,
+                          height: 100.h,
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -140,7 +146,7 @@ class ChatInputBox extends StatelessWidget {
                   );
                 }),
               ),
-            ):SizedBox();
+            ) : SizedBox();
           }),
           Container(
             decoration: BoxDecoration(
@@ -158,19 +164,20 @@ class ChatInputBox extends StatelessWidget {
             child: Row(
               children: [
                 IconButton(
-                    onPressed: () {
-                      controller.pickCameraImage();
-                    },
-                    icon: const Icon(Iconsax.camera),
+                  onPressed: () {
+                    controller.pickCameraImage();
+                  },
+                  icon: const Icon(Iconsax.camera),
                 ),
                 IconButton(
-                    onPressed: () {
-                      controller.pickImage();
-                    },
-                    icon: const Icon(Iconsax.gallery),
+                  onPressed: () {
+                    controller.pickImage();
+                  },
+                  icon: const Icon(Iconsax.gallery),
                 ),
                 Expanded(
                   child: TextFormField(
+
                     controller: messageController,
                     maxLines: 5,
                     minLines: 1,
@@ -210,18 +217,39 @@ class ChatInputBox extends StatelessWidget {
                     ),
                   ),
                 ),
-                IconButton(
-                  onPressed: () {
-                    if(controller.selectedImages.isNotEmpty){
-                      controller.sendMessage(senderId:widget.senderId, context: context, messageController: messageController);
-                    }else{
-                      if (_formKey.currentState!.validate()) {
-                        controller.sendMessage(senderId: widget.senderId, context: context, messageController: messageController);
+                Obx(() {
+                  return IconButton(
+                    onPressed: controller.callMessageSend.value
+                        ? null
+                        : () {
+                      if (controller.selectedImages.isNotEmpty) {
+                        controller.sendMessage(
+                          senderId: widget.senderId,
+                          context: context,
+                          messageController: messageController,
+                        );
+                      } else {
+                        if (_formKey.currentState!.validate()) {
+                          controller.sendMessage(
+                            senderId: widget.senderId,
+                            context: context,
+                            messageController: messageController,
+                          );
+                        }
                       }
-                    }
-                  },
-                  icon: const Icon(Iconsax.send1, size: 24,),
-                ),
+                    },
+                    icon: controller.callMessageSend.value
+                        ? const SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                      ),
+                    )
+                        : const Icon(Iconsax.send1, size: 24),
+                  );
+                })
+
               ],
             ),
           ),
@@ -266,12 +294,14 @@ class MessageListCard extends StatelessWidget {
                 isSentByMe: (controller.userId.value == message.sender),
               );
             },
-            firstPageProgressIndicatorBuilder: (_) => const Center(
+            firstPageProgressIndicatorBuilder: (_) =>
+            const Center(
                 child: SpinKitCircle(
                   color: Colors.white,
                   size: 60.0,
                 )),
-            newPageProgressIndicatorBuilder: (_) => const Center(
+            newPageProgressIndicatorBuilder: (_) =>
+            const Center(
                 child: SpinKitCircle(
                   color: Colors.white,
                   size: 60.0,
@@ -283,36 +313,6 @@ class MessageListCard extends StatelessWidget {
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 /*class ChatScreen extends StatefulWidget {

@@ -286,7 +286,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       );
                     },
                     options: CarouselOptions(
-                      height: 120, // Adjust based on content
+                      height: MediaQuery.of(context).size.height / 8,
                       autoPlay: item.length > 1,
                       autoPlayInterval: const Duration(seconds: 3),
                       enlargeCenterPage: true,
@@ -329,7 +329,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
       margin: const EdgeInsets.symmetric(horizontal: 4),
-      height: 8,
+      height: 8.h,
       width: active ? 24 : 8,
       decoration: BoxDecoration(
         color: active
@@ -339,7 +339,7 @@ class _HomeScreenState extends State<HomeScreen> {
         border: active
             ? Border.all(
           color: AppColors.primaryColor.withOpacity(0.6),
-          width: 0.5,
+          width: 0.5.w,
         )
             : null,
       ),
@@ -395,7 +395,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   );
                 },
                 options: CarouselOptions(
-                  height: MediaQuery.of(context).size.height / 8,
+                  height: MediaQuery.of(context).size.height / 6,
                   enlargeCenterPage: true,
                   autoPlay: adsPic.length > 1,
                   viewportFraction: 0.8,
@@ -404,7 +404,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                 ),
               ),
-              const SizedBox(height: 10),
+               SizedBox(height: 10.h),
               Obx(() {
                 final activeIdx = homeController.currentIndex.value;
                 return Row(
@@ -429,15 +429,15 @@ class _HomeScreenState extends State<HomeScreen> {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 220),
       margin: const EdgeInsets.symmetric(horizontal: 4),
-      height: 8,
+      height: 6.h,
       width: active ? 22 : 8,
       decoration: BoxDecoration(
         color: active
-            ? Colors.white.withOpacity(0.95)
-            : Colors.white.withOpacity(0.45),
+            ? Colors.white.withValues(alpha: 0.95)
+            : Colors.white.withValues(alpha: 0.45),
         borderRadius: BorderRadius.circular(100),
         border: Border.all(
-          color: Colors.white.withOpacity(active ? 0.6 : 0.35),
+          color: Colors.white.withValues(alpha:  active ? 0.6 : 0.35),
         ),
       ),
     );
@@ -508,10 +508,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
             case Status.completed:
               if (item == null) {
-                return const Center(
+                return  Center(
                   child: CustomText(
                     text: "No Appointment Found",
-                    fontSize: 16,
+                    fontSize: 16.sp,
                     fontWeight: FontWeight.w400,
                   ),
                 );
@@ -523,7 +523,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
               return MyAppointmentContainer(
                 id: item.id ?? "",
-                petLogo: Assets.images.vet.image(width: 24),
+                petLogo: Assets.images.vet.image(width: 24.w),
                 serviceType: item.serviceId?.serviceType ?? "",
                 shopLogo: item.serviceId?.shopLogo ?? "",
                 serviceImage: item.serviceId?.servicesImages ?? "",

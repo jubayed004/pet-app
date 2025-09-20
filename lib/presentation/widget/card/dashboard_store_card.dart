@@ -113,7 +113,7 @@ class CustomBookingCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CustomNetworkImage(
-                      imageUrl: "${ApiUrl.imageBase}$imagePath",
+                      imageUrl: imagePath,
                       height: 70.h,
                       width: 100.w,
                       borderRadius: BorderRadius.circular(10),

@@ -68,7 +68,7 @@ class _InboxPageState extends State<InboxPage> {
           }
           return CustomScrollView(
             slivers: [
-              CustomDefaultAppbar(title: "Messages"),
+              CustomDefaultAppbar(title: "Inbox"),
               SliverFillRemaining(
                 child: RefreshIndicator(
                   onRefresh: () async {

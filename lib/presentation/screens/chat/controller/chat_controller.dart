@@ -45,34 +45,40 @@ class ChatController extends GetxController{
     }
   }
 
+  var callMessageSend = false.obs;
 
-  bool callMessageSend = false;
-
-  Future<void> sendMessage({required String senderId, required BuildContext context, required TextEditingController messageController}) async {
-    try{
-      if (callMessageSend) return;
-      callMessageSend = true;
+  Future<void> sendMessage({
+    required String senderId,
+    required BuildContext context,
+    required TextEditingController messageController,
+  }) async {
+    try {
+      if (callMessageSend.value) return;
+      callMessageSend.value = true;
 
       print("Is Socket Connected: ${SocketApi.socket!.connected}");
       showPopUpLoader(context: context);
 
-      // final ImageUploadResponse imageUploadResponse = await uploadImages();
+      final UploadImage imageUploadResponse = await uploadImages();
+
+      print("index ${imageUploadResponse.images?.length} / ${imageUploadResponse.images.toString()}");
       if (SocketApi.socket != null && SocketApi.socket!.connected) {
         final body = {
           "senderId": userId.value,
           "receiverId": senderId,
           "text": messageController.text,
-          "images": [],
+          "images": imageUploadResponse.images ?? [],
           "video": "",
           "videoCover": ""
         };
 
         SocketApi.socket?.emit('new-message', body);
         print(body.toString());
+
         messageController.clear();
         AppRouter.route.pop();
         selectedImages.clear();
-        callMessageSend = false;
+        callMessageSend.value = false;
 
         SocketApi.socket?.onAny((event, data) {
           debugPrint("📡 Event: $event -> $data");
@@ -80,11 +86,11 @@ class ChatController extends GetxController{
       } else {
         debugPrint("Socket Null Or Socket Not Connected Send Message");
         AppRouter.route.pop();
-        callMessageSend = false;
+        callMessageSend.value = false;
         SocketApi.reconnect();
       }
-    }catch(e){
-      callMessageSend = false;
+    } catch (e) {
+      callMessageSend.value = false;
       AppRouter.route.pop();
       debugPrint("Socket Error Send Message Controller Try Catch Error $e");
     }
@@ -139,13 +145,16 @@ class ChatController extends GetxController{
     }
   }
 
-/*  Future<ChatItem> uploadImages() async {
+  Future<UploadImage> uploadImages() async {
+    print("index 1");
     try {
       if(selectedImages.isNotEmpty){
+        print("index 2");
         List<MultipartBody> multipartBody = selectedImages.map((item) {
-          return MultipartBody("images", File(item.path));
+          print("index 3");
+          return MultipartBody("chatImage", File(item.path));
         }).toList();
-
+        print("index 4");
         final response = await apiClient.multipartRequest(
           url: ApiUrl.updateFile(),
           reqType: "POST",
@@ -153,19 +162,25 @@ class ChatController extends GetxController{
           multipartBody: multipartBody,
         );
 
-        if(response.statusCode == 201){
-          final responseData = ChatItem.fromJson(response.body);
+        if(response.statusCode == 200){
+          print("index 5");
+
+          final responseData = UploadImage.fromJson(response.body);
+
+
           return responseData;
+
+
         }else{
-          return ChatItem();
+          return UploadImage();
         }
       }else{
-        return ChatItem();
+        return UploadImage();
       }
     } catch (e) {
-      return ChatItem();
+      return UploadImage();
     }
-  }*/
+  }
 
   RxString userId = "".obs;
   void getUserId() async{
@@ -180,3 +195,32 @@ class ChatController extends GetxController{
     super.onReady();
   }
 }
+
+class UploadImage {
+  final bool? success;
+  final List<String>? images;
+  final dynamic video;
+  final dynamic cover;
+
+  UploadImage({
+    this.success,
+    this.images,
+    this.video,
+    this.cover,
+  });
+
+  factory UploadImage.fromJson(Map<String, dynamic> json) => UploadImage(
+    success: json["success"],
+    images: json["images"] == null ? [] : List<String>.from(json["images"]!.map((x) => x)),
+    video: json["video"],
+    cover: json["cover"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "success": success,
+    "images": images == null ? [] : List<dynamic>.from(images!.map((x) => x)),
+    "video": video,
+    "cover": cover,
+  };
+}
+
