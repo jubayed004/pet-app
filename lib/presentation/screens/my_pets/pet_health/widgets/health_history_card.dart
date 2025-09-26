@@ -9,19 +9,21 @@ import 'package:pet_app/presentation/screens/my_pets/pet_health/model/pet_health
 class HealthHistoryCard extends StatelessWidget {
   final HealthHistoryItem item;
   final PetHealthController controller;
+
   const HealthHistoryCard({
-    super.key, required this.controller, required this.item,
+    super.key,
+    required this.controller,
+    required this.item,
   });
 
   @override
   Widget build(BuildContext context) {
-    final treatmentName = item.treatmentName ?? "";
-    final doctorName = item.doctorName ?? "";
-    final treatmentType = item.treatmentType ?? "";
-    final treatmentStatus = item.treatmentStatus ?? "";
-    final treatmentDescription = item.treatmentDescription ?? "";
-
-    final treatmentDate = DateFormat("dd MMMM yyyy",).format(item.treatmentDate ?? DateTime.now());
+    final treatmentName = item.treatmentName ?? "Unknown Treatment";
+    final doctorName = item.doctorName ?? "Unknown Doctor";
+    final treatmentType = item.treatmentType ?? "N/A";
+    final treatmentStatus = item.treatmentStatus ?? "Pending";
+    final treatmentDescription = item.treatmentDescription ?? "No description available.";
+    final treatmentDate = DateFormat("dd MMMM yyyy").format(item.treatmentDate ?? DateTime.now());
 
     return Container(
       margin: EdgeInsets.only(bottom: 10),
@@ -29,7 +31,7 @@ class HealthHistoryCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(color: Colors.black,width: 1)
+        border: Border.all(color: Colors.black, width: 1),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -98,7 +100,7 @@ class HealthHistoryCard extends StatelessWidget {
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
               decoration: BoxDecoration(
-                color: Colors.green.shade700,
+                color: treatmentStatus == "Completed" ? Colors.green.shade700 : Colors.orange,
                 borderRadius: BorderRadius.circular(6.r),
               ),
               child: Text(

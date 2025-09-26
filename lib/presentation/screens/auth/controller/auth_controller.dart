@@ -387,7 +387,7 @@ class AuthController extends GetxController {
         petRegistrationUpLoadingMethod(false);
         toastMessage(message: response.body?['message'].toString());
 
-        AppRouter.route.pushNamed(RoutePath.navigationPage,);
+        AppRouter.route.goNamed(RoutePath.navigationPage,);
       } else {
         petRegistrationUpLoadingMethod(false);
         toastMessage(message: response.body?['message'].toString());

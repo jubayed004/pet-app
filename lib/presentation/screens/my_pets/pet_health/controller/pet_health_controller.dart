@@ -6,10 +6,8 @@ import 'package:pet_app/service/api_url.dart';
 import 'package:pet_app/utils/app_const/app_const.dart';
 
 import '../model/pet_health_model.dart';
-
 class PetHealthController extends GetxController {
   final ApiClient apiClient = serviceLocator();
-  final PagingController<int, HealthHistoryItem> pagingController1 = PagingController(firstPageKey: 1);
 
   Future<void> getHealth({
     required String id,
@@ -17,19 +15,34 @@ class PetHealthController extends GetxController {
     required int page,
     required PagingController<int, HealthHistoryItem> pagingController,
   }) async {
-    final response = await apiClient.get(
-      url: ApiUrl.getPetHealth(id: id, status: status, page: page),
-    );
-    if (response.statusCode == 200) {
-      final newData = PetHealthModel.fromJson(response.body);
-      final newItems = newData.data ?? [];
-      if (newItems.isEmpty) {
-        pagingController.appendLastPage(newItems);
+    try {
+      final response = await apiClient.get(
+        url: ApiUrl.getPetHealth(id: id, status: status, page: page),
+      );
+
+      final statusCode = response.statusCode ?? 0;
+
+      if (statusCode == 200) {
+        final newData = PetHealthModel.fromJson(response.body);
+        final newItems = newData.data ?? [];
+
+        if (newItems.isEmpty) {
+          pagingController.appendLastPage([]);
+        } else {
+          pagingController.appendPage(newItems, page + 1);
+        }
+      } else if (statusCode == 404) {
+        // Backend বলছে ডেটা নাই
+        pagingController.appendLastPage([]);
+        pagingController.error = response.body?['message'] ?? "No medical history found";
+      } else if (statusCode == 503) {
+        pagingController.error = "No internet connection. Please try again.";
       } else {
-        pagingController.appendPage(newItems, page + 1);
+        pagingController.error = response.body?['message'] ?? "Something went wrong!";
       }
-    } else {
-      pagingController.error = 'An error occurred';
+    } catch (e) {
+      pagingController.error = "Unexpected error. Please try again.";
     }
   }
 }
+

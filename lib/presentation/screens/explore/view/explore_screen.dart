@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:pet_app/controller/get_controllers.dart';
 import 'package:pet_app/core/custom_assets/assets.gen.dart';
-import 'package:pet_app/presentation/components/custom_button/custom_defualt_appbar.dart';
 import 'package:pet_app/presentation/components/custom_image/custom_image.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:pet_app/presentation/screens/category/model/category_item_model.dart';
@@ -13,7 +12,6 @@ import 'package:pet_app/presentation/screens/explore/model/map_category_details_
 import 'package:pet_app/presentation/screens/explore/widgets/category_card_map.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
 import 'package:pet_app/utils/app_const/app_const.dart';
-import 'package:pet_app/utils/app_const/padding_constant.dart';
 import 'package:pet_app/utils/app_strings/app_strings.dart';
 
 class ExploreScreen extends StatefulWidget {
@@ -25,7 +23,7 @@ class ExploreScreen extends StatefulWidget {
 
 class _ExploreScreenState extends State<ExploreScreen> {
   late GoogleMapController mapController;
-  late final ValueNotifier<int> selectedIndex = ValueNotifier<int>(0);
+  final ValueNotifier<int> selectedIndex = ValueNotifier<int>(0);
   final categoryController = GetControllers.instance.getCategoryController();
   final exploreController = GetControllers.instance.getExploreController();
 
@@ -56,7 +54,6 @@ class _ExploreScreenState extends State<ExploreScreen> {
     super.dispose();
   }
 
-  // Method to animate camera to show all markers
   void _animateToShowAllMarkers() {
     if (exploreController.markers.isNotEmpty) {
       final cameraPosition = exploreController.getCameraPosition();
@@ -67,39 +64,33 @@ class _ExploreScreenState extends State<ExploreScreen> {
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
-    final bottomSheetHeight = screenHeight * 0.38; // More responsive height calculation
+    final bottomSheetHeight = screenHeight * 0.38;
 
     return Scaffold(
       body: Stack(
         children: [
-          Column(
-            children: [
-              Expanded(
-                child: Obx(() {
-                  return GoogleMap(
-                    onMapCreated: _onMapCreated,
-                    initialCameraPosition: CameraPosition(target: _center, zoom: 14),
-                    markers: exploreController.getMarkers, // Use controller markers
-                    myLocationEnabled: true,
-                    myLocationButtonEnabled: true,
-                    compassEnabled: true,
-                    mapToolbarEnabled: true,
-                    zoomControlsEnabled: true,
-                    onCameraMove: (CameraPosition position) {
-                      // Optional: Handle camera movements
-                    },
-                  );
-                }),
-              ),
-            ],
-          ),
+          // Full screen Google Map
+          Obx(() {
+            return GoogleMap(
+              onMapCreated: _onMapCreated,
+              initialCameraPosition: CameraPosition(target: _center, zoom: 14),
+              markers: exploreController.getMarkers,
+              myLocationEnabled: true,
+              myLocationButtonEnabled: true,
+              compassEnabled: true,
+              mapToolbarEnabled: true,
+              zoomControlsEnabled: true,
+            );
+          }),
+
+          // Bottom Sheet Overlay
           Positioned(
             left: 0,
             right: 0,
             bottom: 0,
             child: Container(
               height: bottomSheetHeight,
-              padding: EdgeInsets.all(12.r), // Responsive padding
+              padding: EdgeInsets.all(12.r),
               decoration: BoxDecoration(
                 color: Colors.green.shade50,
                 borderRadius: BorderRadius.only(
@@ -108,7 +99,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.1),
+                    color: Colors.black.withOpacity(0.1),
                     blurRadius: 10.r,
                     offset: const Offset(0, -5),
                   ),
@@ -116,21 +107,21 @@ class _ExploreScreenState extends State<ExploreScreen> {
               ),
               child: Column(
                 children: [
-                  // Category selection row with responsive sizing
+                  // Category selection
                   SizedBox(
-                    height: 120.h, // Responsive height
+                    height: 120.h,
                     child: ValueListenableBuilder<int>(
                       valueListenable: selectedIndex,
                       builder: (_, currentIndex, __) {
                         return ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemCount: categories.length,
-                          padding: EdgeInsets.only(left: 16.w, right: 10.w), // Responsive padding
+                          padding: EdgeInsets.symmetric(horizontal: 16.w),
                           itemBuilder: (context, index) {
                             final category = categories[index];
                             final isSelected = currentIndex == index;
                             return Padding(
-                              padding: EdgeInsets.only(right: 10.w), // Responsive margin
+                              padding: EdgeInsets.only(right: 10.w),
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
@@ -144,17 +135,17 @@ class _ExploreScreenState extends State<ExploreScreen> {
                                       elevation: 3,
                                       child: CircleAvatar(
                                         backgroundColor: isSelected ? AppColors.primaryColor : Colors.white,
-                                        radius: 35.r, // Responsive radius
+                                        radius: 35.r,
                                         child: category.icon,
                                       ),
                                     ),
                                   ),
-                                  Gap(4.h), // Responsive gap
+                                  Gap(4.h),
                                   SizedBox(
-                                    width: 70.w, // Fixed width to prevent overflow
+                                    width: 70.w,
                                     child: CustomText(
                                       text: category.title,
-                                      fontSize: 14.sp, // Responsive font size
+                                      fontSize: 14.sp,
                                       fontWeight: FontWeight.w400,
                                       textAlign: TextAlign.center,
                                       maxLines: 2,
@@ -170,9 +161,9 @@ class _ExploreScreenState extends State<ExploreScreen> {
                     ),
                   ),
 
-                  Gap(8.h), // Responsive gap
+                  Gap(8.h),
 
-                  // Services list section
+                  // Services List Section
                   Expanded(
                     child: ValueListenableBuilder<int>(
                       valueListenable: selectedIndex,
@@ -192,61 +183,17 @@ class _ExploreScreenState extends State<ExploreScreen> {
                               );
 
                             case Status.internetError:
-                              return Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(Icons.wifi_off, size: 48.sp, color: Colors.red),
-                                    SizedBox(height: 8.h),
-                                    Text('Internet connection error', style: TextStyle(fontSize: 14.sp)),
-                                    SizedBox(height: 8.h),
-                                    ElevatedButton(
-                                      onPressed: () {
-                                        final currentCategory = categories[selectedIndex.value];
-                                        exploreController.startLocationSharing(type: currentCategory.type);
-                                      },
-                                      child: Text('Retry', style: TextStyle(fontSize: 12.sp)),
-                                    ),
-                                  ],
-                                ),
-                              );
+                              return _errorWidget('Internet connection error', Icons.wifi_off, index);
 
                             case Status.noDataFound:
-                              return Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(Icons.location_off, size: 48.sp, color: Colors.grey),
-                                    SizedBox(height: 8.h),
-                                    Text('No services found in this area', style: TextStyle(fontSize: 14.sp)),
-                                  ],
-                                ),
-                              );
+                              return _errorWidget('No services found in this area', Icons.location_off, index);
 
                             case Status.error:
-                              return Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(Icons.error, size: 48.sp, color: Colors.red),
-                                    SizedBox(height: 8.h),
-                                    Text('An error occurred', style: TextStyle(fontSize: 14.sp)),
-                                    SizedBox(height: 8.h),
-                                    ElevatedButton(
-                                      onPressed: () {
-                                        final currentCategory = categories[selectedIndex.value];
-                                        exploreController.startLocationSharing(type: currentCategory.type);
-                                      },
-                                      child: Text('Retry', style: TextStyle(fontSize: 12.sp)),
-                                    ),
-                                  ],
-                                ),
-                              );
+                              return _errorWidget('An error occurred', Icons.error, index);
 
                             case Status.completed:
                               final services = exploreController.mapDetailsCategory.value.services ?? [];
 
-                              // Auto-animate to show all markers when data is loaded
                               if (services.isNotEmpty && exploreController.markers.isNotEmpty) {
                                 WidgetsBinding.instance.addPostFrameCallback((_) {
                                   _animateToShowAllMarkers();
@@ -255,7 +202,6 @@ class _ExploreScreenState extends State<ExploreScreen> {
 
                               return Column(
                                 children: [
-
                                   Padding(
                                     padding: EdgeInsets.symmetric(horizontal: 16.w),
                                     child: Row(
@@ -263,10 +209,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                                       children: [
                                         Text(
                                           '${services.length} services found',
-                                          style: TextStyle(
-                                            fontSize: 14.sp,
-                                            fontWeight: FontWeight.w500,
-                                          ),
+                                          style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),
                                         ),
                                         if (services.isNotEmpty)
                                           GestureDetector(
@@ -291,9 +234,8 @@ class _ExploreScreenState extends State<ExploreScreen> {
                                     ),
                                   ),
                                   Gap(8.h),
-
                                   Expanded(
-                                    child: ExploreCatCard(items: services, itemIndex: index,),
+                                    child: ExploreCatCard(items: services, itemIndex: index),
                                   ),
                                 ],
                               );
@@ -310,10 +252,32 @@ class _ExploreScreenState extends State<ExploreScreen> {
       ),
     );
   }
-}
 
+
+  Widget _errorWidget(String message, IconData icon, int index) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(icon, size: 48.sp, color: Colors.red),
+          SizedBox(height: 8.h),
+          Text(message, style: TextStyle(fontSize: 14.sp)),
+          SizedBox(height: 8.h),
+          ElevatedButton(
+            onPressed: () {
+              final currentCategory = categories[selectedIndex.value];
+              exploreController.startLocationSharing(type: currentCategory.type);
+            },
+            child: Text('Retry', style: TextStyle(fontSize: 12.sp)),
+          ),
+        ],
+      ),
+    );
+  }
+}
 class ExploreCatCard extends StatelessWidget {
   const ExploreCatCard({super.key, required this.items, required this.itemIndex});
+
   final int itemIndex;
   final List<MapCategoryService> items;
 
@@ -342,12 +306,12 @@ class ExploreCatCard extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 16.w),
       itemBuilder: (context, index) {
         return Padding(
-          padding: EdgeInsets.only(right: 12.w), // Responsive padding
+          padding: EdgeInsets.only(right: 12.w),
           child: CategoryCard(
             item: items[index],
             index: index,
-            showWebsite: itemIndex == 1 || itemIndex ==3,
-            isShop: itemIndex ==1? false: true,
+            showWebsite: itemIndex == 1 || itemIndex == 3,
+            isShop: itemIndex == 1 ? false : true,
           ),
         );
       },

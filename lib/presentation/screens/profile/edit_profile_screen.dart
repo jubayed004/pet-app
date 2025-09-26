@@ -197,17 +197,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       fillColor: Colors.white,
                       keyboardType: TextInputType.streetAddress,
                       textEditingController: address,
-                      validator: (value) {
-                        if (value == null || value
-                            .trim()
-                            .isEmpty) {
-                          return 'Address is required';
-                        }
-                        if (value.length < 5) {
-                          return 'Please enter a valid address';
-                        }
-                        return null; // Valid
-                      },
+
                     ),
                     Gap(24),
                     Obx(() {

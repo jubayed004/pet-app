@@ -10,14 +10,18 @@ import 'health_history_card.dart';
 class TreatmentCard extends StatefulWidget {
   final String id;
   final String status;
-
   final PetHealthController controller;
-   const TreatmentCard({super.key, required this.controller, required this.id, required this.status});
+
+  const TreatmentCard({
+    super.key,
+    required this.controller,
+    required this.id,
+    required this.status,
+  });
 
   @override
   State<TreatmentCard> createState() => _TreatmentCardState();
 }
-
 
 class _TreatmentCardState extends State<TreatmentCard> {
   final pagingController = PagingController<int, HealthHistoryItem>(
@@ -38,26 +42,54 @@ class _TreatmentCardState extends State<TreatmentCard> {
   }
 
   @override
+  void dispose() {
+    pagingController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return  Padding(
+    return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
       child: RefreshIndicator(
-        onRefresh: () async{
+        onRefresh: () async {
           pagingController.refresh();
         },
         child: PagedListView<int, HealthHistoryItem>(
           pagingController: pagingController,
           builderDelegate: PagedChildBuilderDelegate<HealthHistoryItem>(
-            itemBuilder: (context, item, itemIndex) {
-              return HealthHistoryCard(controller: widget.controller, item: item,
-
+            itemBuilder: (context, item, index) {
+              return HealthHistoryCard(
+                controller: widget.controller,
+                item: item,
               );
             },
-            firstPageErrorIndicatorBuilder:
-                (context) => Center(
+
+            /// First page error
+            firstPageErrorIndicatorBuilder: (context) => Center(
               child: ErrorCard(
                 onTap: () => pagingController.refresh(),
-                text: pagingController.error.toString(),
+                text: pagingController.error?.toString() ?? "Error loading data",
+              ),
+            ),
+
+            /// First page no items (empty)
+            noItemsFoundIndicatorBuilder: (context) => Center(
+              child: Text(
+                "No medical history found",
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+              ),
+            ),
+
+            /// Loading indicator
+            firstPageProgressIndicatorBuilder: (context) => Center(
+              child: CircularProgressIndicator(),
+            ),
+
+            newPageProgressIndicatorBuilder: (context) => Center(
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 12),
+                child: CircularProgressIndicator(),
               ),
             ),
           ),
@@ -66,3 +98,5 @@ class _TreatmentCardState extends State<TreatmentCard> {
     );
   }
 }
+
+

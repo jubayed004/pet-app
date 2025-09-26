@@ -19,18 +19,20 @@ class ExploreController extends GetxController {
 
   // Current user location
   final Rx<LatLng?> currentLocation = Rx<LatLng?>(null);
-
   Future<void> startLocationSharing({required String type}) async {
     try {
       loadingMethod(Status.loading);
+
+      // Check service enabled
       bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
       if (!serviceEnabled) {
         debugPrint("Location service is disabled.");
+        await Geolocator.openLocationSettings(); // 👈 auto settings খোলে দিবে
         return;
       }
 
+      // Check permission
       LocationPermission permission = await Geolocator.checkPermission();
-
       if (permission == LocationPermission.denied) {
         permission = await Geolocator.requestPermission();
         if (permission == LocationPermission.denied) {
@@ -41,29 +43,28 @@ class ExploreController extends GetxController {
 
       if (permission == LocationPermission.deniedForever) {
         debugPrint("Location permission permanently denied.");
-        openAppSettings();
+        await openAppSettings();
         return;
       }
 
+      // Get position
       final position = await Geolocator.getCurrentPosition(
-          locationSettings: LocationSettings(
-            accuracy: LocationAccuracy.high,
-          )
+        locationSettings: const LocationSettings(accuracy: LocationAccuracy.high),
       );
 
-      final latLng = LatLng(
-        position.latitude,
-        position.longitude,
-      );
-
-      // Store current location
+      final latLng = LatLng(position.latitude, position.longitude);
       currentLocation.value = latLng;
 
-      getMapDetailsCategory(type: type, lat: latLng.latitude.toString(), long: latLng.longitude.toString());
+      getMapDetailsCategory(
+        type: type,
+        lat: latLng.latitude.toString(),
+        long: latLng.longitude.toString(),
+      );
     } catch (e) {
       debugPrint("Location fetch error: $e");
     }
   }
+
 
   /// ============================= GET Home Header =====================================
 

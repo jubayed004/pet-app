@@ -9,6 +9,7 @@ import 'package:pet_app/presentation/screens/business_owners/business_profile/co
 import 'package:pet_app/presentation/screens/business_owners/business_service/controller/business_add_service_controller.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_service/controller/business_service_controller.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_shop_profile/controller/category_details_controller.dart';
+import 'package:pet_app/presentation/screens/business_owners/dashboard/controller/dashboard_controller.dart';
 import 'package:pet_app/presentation/screens/business_owners/subscription/subscription_screen.dart';
 import 'package:pet_app/presentation/screens/category/category_details/controller/category_details_controller.dart';
 import 'package:pet_app/presentation/screens/category/controller/category_controller.dart';
@@ -249,6 +250,13 @@ AuthController getAuthController() {
       Get.put(BusinessShopProfileController());
     }
     return Get.find<BusinessShopProfileController>();
+
+  }
+  DashBoardController getDashBoardController() {
+    if (!Get.isRegistered<DashBoardController>()) {
+      Get.put(DashBoardController());
+    }
+    return Get.find<DashBoardController>();
 
   }
   TestController getTestController() {

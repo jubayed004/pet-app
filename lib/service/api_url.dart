@@ -77,6 +77,7 @@ class ApiUrl {
 
   static getBusinessAllPets() => '$base/owner/get-all-pets-who-booked';
   static businessPetDetails({required String id}) => '$base/owner/get-pet-details-by-pet-id/$id';
+  static getBusinessDashboard({required String month, required String week }) => '$base/booking/get-booking-overview?month=$month&week=$week';
   ///Health update
 
   static getPetBusiness() => '$base/owner/get-all-pets-who-booked';
