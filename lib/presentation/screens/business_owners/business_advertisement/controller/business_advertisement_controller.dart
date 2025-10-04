@@ -88,16 +88,14 @@ class BusinessAdvertisementController extends GetxController {
 
 
 
-  /// ============================= GET Profile Info =====================================
+  /// ============================= GET Advertisement Details  =====================================
   var loading = Status.completed.obs;
   loadingMethod(Status status) => loading.value = status;
   final Rx<DetailsAdvertisementModel> profile = DetailsAdvertisementModel().obs;
 
-
-  Future<void> getDetailsAdvertisement() async{
-    loadingMethod(Status.completed);
-    try{
-      loadingMethod(Status.loading);
+  Future<void> getDetailsAdvertisement() async {
+    loadingMethod(Status.loading);
+    try {
       final response = await apiClient.get(url: ApiUrl.getAdvertisement());
       if (response.statusCode == 200) {
         final newData = DetailsAdvertisementModel.fromJson(response.body);
@@ -112,16 +110,16 @@ class BusinessAdvertisementController extends GetxController {
           loadingMethod(Status.error);
         }
       }
-    }catch(e){
+    } catch (e) {
       loadingMethod(Status.error);
     }
   }
 
-  @override
+/*  @override
   void onReady() {
-   getDetailsAdvertisement();
+    getDetailsAdvertisement();
     super.onReady();
-  }
+  }*/
 
 
   void deleteImage(int index) {

@@ -1,4 +1,3 @@
-
 class CategoryModel {
   final bool? success;
   final String? message;
@@ -15,6 +14,23 @@ class CategoryModel {
     this.pageSize,
     this.total,
   });
+
+  CategoryModel copyWith({
+    bool? success,
+    String? message,
+    List<CategoryServiceItem>? services,
+    int? currentPage,
+    int? pageSize,
+    int? total,
+  }) =>
+      CategoryModel(
+        success: success ?? this.success,
+        message: message ?? this.message,
+        services: services ?? this.services,
+        currentPage: currentPage ?? this.currentPage,
+        pageSize: pageSize ?? this.pageSize,
+        total: total ?? this.total,
+      );
 
   factory CategoryModel.fromJson(Map<String, dynamic> json) => CategoryModel(
     success: json["success"],
@@ -40,67 +56,127 @@ class CategoryServiceItem {
   final String? serviceType;
   final String? serviceName;
   final String? location;
+  final String? latitude;
+  final String? longitude;
   final String? openingTime;
   final String? closingTime;
   final String? offDay;
-  final String? websiteLink;
   final String? shopLogo;
   final String? phone;
   final List<String>? providings;
   final String? servicesImages;
-  final List<String>? bookings;
+  final List<dynamic>? bookings;
   final String? businessId;
+  final List<dynamic>? reviews;
+  final bool? isActive;
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final int? v;
-  final bool? isActive;
-  final List<Review>? reviews;
+  final String? websiteLink;
   final bool? isOpenNow;
+  final int? avgRating;
 
   CategoryServiceItem({
     this.id,
     this.serviceType,
     this.serviceName,
     this.location,
+    this.latitude,
+    this.longitude,
     this.openingTime,
     this.closingTime,
     this.offDay,
-    this.websiteLink,
     this.shopLogo,
     this.phone,
     this.providings,
     this.servicesImages,
     this.bookings,
     this.businessId,
+    this.reviews,
+    this.isActive,
     this.createdAt,
     this.updatedAt,
     this.v,
-    this.isActive,
-    this.reviews,
+    this.websiteLink,
     this.isOpenNow,
+    this.avgRating,
   });
+
+  CategoryServiceItem copyWith({
+    String? id,
+    String? serviceType,
+    String? serviceName,
+    String? location,
+    String? latitude,
+    String? longitude,
+    String? openingTime,
+    String? closingTime,
+    String? offDay,
+    String? shopLogo,
+    String? phone,
+    List<String>? providings,
+    String? servicesImages,
+    List<dynamic>? bookings,
+    String? businessId,
+    List<dynamic>? reviews,
+    bool? isActive,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    int? v,
+    String? websiteLink,
+    bool? isOpenNow,
+    int? avgRating,
+  }) =>
+      CategoryServiceItem(
+        id: id ?? this.id,
+        serviceType: serviceType ?? this.serviceType,
+        serviceName: serviceName ?? this.serviceName,
+        location: location ?? this.location,
+        latitude: latitude ?? this.latitude,
+        longitude: longitude ?? this.longitude,
+        openingTime: openingTime ?? this.openingTime,
+        closingTime: closingTime ?? this.closingTime,
+        offDay: offDay ?? this.offDay,
+        shopLogo: shopLogo ?? this.shopLogo,
+        phone: phone ?? this.phone,
+        providings: providings ?? this.providings,
+        servicesImages: servicesImages ?? this.servicesImages,
+        bookings: bookings ?? this.bookings,
+        businessId: businessId ?? this.businessId,
+        reviews: reviews ?? this.reviews,
+        isActive: isActive ?? this.isActive,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+        v: v ?? this.v,
+        websiteLink: websiteLink ?? this.websiteLink,
+        isOpenNow: isOpenNow ?? this.isOpenNow,
+        avgRating: avgRating ?? this.avgRating,
+      );
 
   factory CategoryServiceItem.fromJson(Map<String, dynamic> json) => CategoryServiceItem(
     id: json["_id"],
     serviceType: json["serviceType"],
     serviceName: json["serviceName"],
     location: json["location"],
+    latitude: json["latitude"],
+    longitude: json["longitude"],
     openingTime: json["openingTime"],
     closingTime: json["closingTime"],
     offDay: json["offDay"],
-    websiteLink: json["websiteLink"],
     shopLogo: json["shopLogo"],
     phone: json["phone"],
     providings: json["providings"] == null ? [] : List<String>.from(json["providings"]!.map((x) => x)),
     servicesImages: json["servicesImages"],
-    bookings: json["bookings"] == null ? [] : List<String>.from(json["bookings"]!.map((x) => x)),
+    bookings: json["bookings"] == null ? [] : List<dynamic>.from(json["bookings"]!.map((x) => x)),
     businessId: json["businessId"],
+    reviews: json["reviews"] == null ? [] : List<dynamic>.from(json["reviews"]!.map((x) => x)),
+    isActive: json["isActive"],
     createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
     updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
     v: json["__v"],
-    isActive: json["isActive"],
-    reviews: json["reviews"] == null ? [] : List<Review>.from(json["reviews"]!.map((x) => Review.fromJson(x))),
+    websiteLink: json["websiteLink"],
     isOpenNow: json["isOpenNow"],
+    avgRating: json["avgRating"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -108,45 +184,24 @@ class CategoryServiceItem {
     "serviceType": serviceType,
     "serviceName": serviceName,
     "location": location,
+    "latitude": latitude,
+    "longitude": longitude,
     "openingTime": openingTime,
     "closingTime": closingTime,
     "offDay": offDay,
-    "websiteLink": websiteLink,
     "shopLogo": shopLogo,
     "phone": phone,
     "providings": providings == null ? [] : List<dynamic>.from(providings!.map((x) => x)),
     "servicesImages": servicesImages,
     "bookings": bookings == null ? [] : List<dynamic>.from(bookings!.map((x) => x)),
     "businessId": businessId,
+    "reviews": reviews == null ? [] : List<dynamic>.from(reviews!.map((x) => x)),
+    "isActive": isActive,
     "createdAt": createdAt?.toIso8601String(),
     "updatedAt": updatedAt?.toIso8601String(),
     "__v": v,
-    "isActive": isActive,
-    "reviews": reviews == null ? [] : List<dynamic>.from(reviews!.map((x) => x.toJson())),
+    "websiteLink": websiteLink,
     "isOpenNow": isOpenNow,
-  };
-}
-
-class Review {
-  final String? id;
-  final String? comment;
-  final double? rating;
-
-  Review({
-    this.id,
-    this.comment,
-    this.rating,
-  });
-
-  factory Review.fromJson(Map<String, dynamic> json) => Review(
-    id: json["_id"],
-    comment: json["comment"],
-    rating: json["rating"]?.toDouble(),
-  );
-
-  Map<String, dynamic> toJson() => {
-    "_id": id,
-    "comment": comment,
-    "rating": rating,
+    "avgRating": avgRating,
   };
 }

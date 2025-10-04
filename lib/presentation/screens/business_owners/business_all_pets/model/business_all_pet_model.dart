@@ -1,14 +1,9 @@
-
 class BusinessAllPetsModel {
   final bool? success;
   final int? totalPets;
   final List<Pet>? pets;
 
-  BusinessAllPetsModel({
-    this.success,
-    this.totalPets,
-    this.pets,
-  });
+  BusinessAllPetsModel({this.success, this.totalPets, this.pets});
 
   factory BusinessAllPetsModel.fromJson(Map<String, dynamic> json) => BusinessAllPetsModel(
     success: json["success"],
@@ -28,10 +23,10 @@ class Pet {
   final String? name;
   final String? animalType;
   final String? breed;
-  final int? age;
+  final num? age;
   final String? gender;
-  final int? weight;
-  final int? height;
+  final num? weight;
+  final num? height;
   final String? color;
   final String? description;
   final String? userId;

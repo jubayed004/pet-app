@@ -97,6 +97,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                       textEditingController: phoneNumberController,
                       fieldBorderColor: AppColors.secondTextColor,
                       fillColor: Colors.white,
+                      keyboardType: TextInputType.phone,
                     ),
                     Gap(16),
                     PrimaryContainer(

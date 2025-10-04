@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:pet_app/controller/get_controllers.dart';
 import 'package:pet_app/core/custom_assets/assets.gen.dart';
 import 'package:pet_app/helper/image/network_image.dart';
+import 'package:pet_app/presentation/components/custom_tab_selected/star_rating_widget.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_service/widgets/default_dialog.dart';
 import 'package:pet_app/presentation/screens/category/model/category_model.dart';
 import 'package:pet_app/service/api_url.dart';
@@ -41,7 +42,8 @@ class CategoryCardWidget extends StatelessWidget {
     final provider = item.providings ?? [];
     final stringProvider = provider.isNotEmpty ? provider.first : "";
     final List<String> providerList = stringProvider.split(',').map((e) => e.trim()).where((e) => e.isNotEmpty).toList();
-
+    final rating = item.avgRating?.toStringAsFixed(2) ?? "";
+    final ratingStar = item.avgRating?.toInt() ?? 0;
     final businessServiceController = GetControllers.instance.getBusinessServiceController();
 
     print("${ApiUrl.imageBase}${image.replaceAll("\\", "/")}");
@@ -110,13 +112,14 @@ class CategoryCardWidget extends StatelessWidget {
                       ),
                       Row(
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: List.generate(5, (index) => Icon(Icons.star, color: Colors.amber,size: 18.sp,)),
+                          StarRating(
+                            rating: ratingStar,
+                            size: 20.sp,
+                            filledColor: Colors.amber,
+                            borderColor: Colors.amber,
                           ),
                           Gap(6),
-                          CustomText(text: "5.0 ",fontWeight: FontWeight.w500, fontSize: 12.sp,)
+                          CustomText(text: rating, fontWeight: FontWeight.w500, fontSize: 12.sp),
                         ],
                       ),
                       Row(

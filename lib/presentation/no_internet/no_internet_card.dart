@@ -15,14 +15,17 @@ class NoInternetCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Gap(20),
-          CustomText(text: "oops You are offline check your connection and give it another shot", color: AppColors.whiteColor, maxLines: 3,),
-          const Gap(20),
-          CustomButton(title: "Try again",onTap: onTap),
-        ],
+      child: Padding(
+        padding: const EdgeInsets.all(18.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Gap(20),
+            CustomText(text: "oops You are offline check your connection and give it another shot", color: AppColors.blackColor, maxLines: 3,),
+            const Gap(20),
+            CustomButton(title: "Try again",onTap: onTap),
+          ],
+        ),
       ),
     );
   }

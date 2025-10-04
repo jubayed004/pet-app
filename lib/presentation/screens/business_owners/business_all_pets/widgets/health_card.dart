@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:pet_app/controller/get_controllers.dart';
+import 'package:pet_app/presentation/components/custom_tab_selected/see_more_text.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_all_pets/widgets/custom_add_health_dialog.dart';
 
 class HealthCard extends StatelessWidget {
+  final String? petId;
   final String id;
   final String title;
   final String dateOfMonth;
@@ -19,7 +21,7 @@ class HealthCard extends StatelessWidget {
     required this.drName,
     required this.treatmentDescription,
     required this.status,
-    this.statusColor,
+    this.statusColor,  this.petId,
   });
 
   final _businessAllPetController =
@@ -139,7 +141,7 @@ class HealthCard extends StatelessWidget {
                           message: "Are you sure you want to delete this record?",
                           onYes: () {
                             _businessAllPetController.deletedHealthHistory(
-                              id: id,
+                              id: petId ?? "",
                               status: status,
                             );
                           },
@@ -179,12 +181,8 @@ class _MetaLine extends StatelessWidget {
         Icon(icon, size: 18, color: textColor),
         const SizedBox(width: 8),
         Expanded(
-          child: Text(
-            text,
-            style: TextStyle(color: textColor,fontWeight: FontWeight.w400,fontSize: 14),
-            maxLines: maxLines,
-            overflow: TextOverflow.ellipsis,
-            softWrap: true,
+          child: ExpandableText(
+            text: text,
           ),
         ),
       ],

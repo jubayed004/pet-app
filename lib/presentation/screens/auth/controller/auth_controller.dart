@@ -28,7 +28,45 @@ class AuthController extends GetxController {
   ///Login
   ///yodihe8254@oziere.com
   ///siwonej364@framitag.com
+/*  Future<void> login({required Map<String, String> body}) async {
+    try {
+      loginMethod(true);
 
+      var response = await apiClient.post(body: body, url: ApiUrl.login(), isBasic: true);
+
+      if (response.statusCode == 200) {
+        final loginModel = LoginModel.fromJson(response.body);
+        Map<String, dynamic> decodedToken = JwtDecoder.decode(loginModel.accessToken ?? '');
+        final role = decodedToken['role'] ?? "";
+
+        // Only save if Remember Me is checked
+        if (rememberMe.value) {
+          await dbHelper.saveUserdata(
+            token: loginModel.accessToken ?? '',
+            id: decodedToken['id'] ?? "",
+            email: loginModel.user?.email ?? "",
+            role: role,
+          );
+        }
+
+        loginMethod(false);
+
+        // Navigate based on role
+        if (role == "USER") {
+          AppRouter.route.goNamed(RoutePath.navigationPage);
+        } else {
+          AppRouter.route.goNamed(RoutePath.businessNavigationPage);
+        }
+
+      } else {
+        loginMethod(false);
+        toastMessage(message: response.body?['message'].toString());
+      }
+    } catch (err) {
+      loginMethod(false);
+      toastMessage(message: err.toString());
+    }
+  }*/
 
   Future<void> login({required Map<String, String> body}) async {
     try {

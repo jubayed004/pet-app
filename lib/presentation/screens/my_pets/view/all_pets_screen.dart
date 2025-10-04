@@ -6,14 +6,12 @@ import 'package:pet_app/core/route/route_path.dart';
 import 'package:pet_app/core/route/routes.dart';
 import 'package:pet_app/presentation/components/custom_button/custom_defualt_appbar.dart';
 import 'package:pet_app/presentation/no_internet/error_card.dart';
-import 'package:pet_app/presentation/no_internet/more_data_error_card.dart';
 import 'package:pet_app/presentation/no_internet/no_data_card.dart';
 import 'package:pet_app/presentation/no_internet/no_internet_card.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_service/widgets/default_dialog.dart';
-import 'package:pet_app/service/api_url.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:pet_app/utils/app_const/app_const.dart';
+import 'package:pet_app/utils/app_const/app_const.dart'; // for Status enum
 
 class AllPetsScreen extends StatefulWidget {
   const AllPetsScreen({super.key});
@@ -36,57 +34,39 @@ class _AllPetsScreenState extends State<AllPetsScreen> {
       child: Scaffold(
         body: RefreshIndicator(
           onRefresh: _refresh,
-          child: CustomScrollView(
-            physics: const AlwaysScrollableScrollPhysics(),
-            slivers: [
-              CustomDefaultAppbar(title: "All Pets"),
-          Obx(() {
-            switch (myPetsController.loading.value) {
-              case Status.loading:
-                return SliverFillRemaining(
-                  child: Center(child: CircularProgressIndicator()),
-                );
+          child: Obx(() {
+            final status = myPetsController.loading.value;
+            final pets = myPetsController.profile.value.pet ?? [];
 
-              case Status.internetError:
-                return SliverToBoxAdapter(
-                  child: Center(
-                    child: NoInternetCard(
-                      onTap: () => myPetsController.getAllPet(),
-                    ),
-                  ),
-                );
+            /// Handle states
+            if (status == Status.loading) {
+              return const Center(child: CircularProgressIndicator());
+            }
 
-              case Status.noDataFound:
-                return SliverToBoxAdapter(
-                  child: Center(
-                    child: MoreDataErrorCard(
-                      onTap: () => myPetsController.getAllPet(),
-                    ),
-                  ),
-                );
+            if (status == Status.internetError) {
+              return NoInternetCard(
+                onTap: () => myPetsController.getAllPet(),
+              );
+            }
 
-              case Status.error:
-                return SliverToBoxAdapter(
-                  child: Center(
-                    child: ErrorCard(
-                      onTap: () => myPetsController.getAllPet(),
-                    ),
-                  ),
-                );
+            if (status == Status.error) {
+              return ErrorCard(
+                onTap: () => myPetsController.getAllPet(),
+              );
+            }
 
-              case Status.completed:
-                final pets = myPetsController.profile.value.pet ?? [];
-                if (pets.isEmpty) {
-                  return SliverToBoxAdapter(
-                    child: Center(
-                      child: NoDataCard(
-                        onTap: () => myPetsController.getAllPet(),
-                      ),
-                    ),
-                  );
-                }
+            if (status == Status.noDataFound || pets.isEmpty) {
+              return NoDataCard(
+                onTap: () => myPetsController.getAllPet(),
+              );
+            }
 
-                return SliverList(
+            /// Show Pets List when completed
+            return CustomScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              slivers: [
+                CustomDefaultAppbar(title: "All Pets"),
+                SliverList(
                   delegate: SliverChildBuilderDelegate(
                         (context, index) {
                       final item = pets[index];
@@ -97,11 +77,10 @@ class _AllPetsScreenState extends State<AllPetsScreen> {
 
                       Widget avatar;
                       if (photo.isNotEmpty) {
-                        final imageUrl = photo;
                         avatar = CircleAvatar(
                           radius: 24.r,
                           backgroundColor: Colors.transparent,
-                          backgroundImage: NetworkImage(imageUrl),
+                          backgroundImage: NetworkImage(photo),
                         );
                       } else {
                         avatar = const CircleAvatar(
@@ -111,30 +90,47 @@ class _AllPetsScreenState extends State<AllPetsScreen> {
                       }
 
                       return GestureDetector(
-                        onTap: () => AppRouter.route.pushNamed(RoutePath.myPetsScreen, extra: id),
+                        onTap: () => AppRouter.route.pushNamed(
+                          RoutePath.myPetsScreen,
+                          extra: id,
+                        ),
                         child: Card(
                           color: AppColors.purple200,
                           elevation: 1,
-                          margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                          margin: EdgeInsets.symmetric(
+                            horizontal: 16.w,
+                            vertical: 8.h,
+                          ),
                           child: ListTile(
                             leading: avatar,
                             title: Text(
                               name,
-                              style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500),
+                              style: TextStyle(
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
                             subtitle: Text(
                               petType,
-                              style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w400),
+                              style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w400,
+                              ),
                             ),
                             trailing: IconButton(
                               onPressed: () {
                                 defaultDeletedYesNoDialog(
                                   context: context,
-                                  title: 'Are you sure you want to delete this Pet?',
-                                  onYes: () => myPetsController.deletedPet(id: id),
+                                  title:
+                                  'Are you sure you want to delete this Pet?',
+                                  onYes: () =>
+                                      myPetsController.deletedPet(id: id),
                                 );
                               },
-                              icon: const Icon(Iconsax.trash, color: Colors.red),
+                              icon: const Icon(
+                                Iconsax.trash,
+                                color: Colors.red,
+                              ),
                             ),
                           ),
                         ),
@@ -142,14 +138,10 @@ class _AllPetsScreenState extends State<AllPetsScreen> {
                     },
                     childCount: pets.length,
                   ),
-                );
-            }
-
-            return const SliverToBoxAdapter(child: SizedBox.shrink());
-          })
-
-          ],
-          ),
+                ),
+              ],
+            );
+          }),
         ),
       ),
     );

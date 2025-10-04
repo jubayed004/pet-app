@@ -119,8 +119,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   Padding(
                     padding: const EdgeInsets.only(right: 10),
                     child: Container(
-                      height: 50,
-                      width: 50,
+                      height: 50.h,
+                      width: 50.w,
                       decoration: const BoxDecoration(shape: BoxShape.circle),
                       child: Obx(() {
                         final imageFile = homeController.homeHeader.value.data?.userPic;
@@ -128,15 +128,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         if (imageFile != null) {
                           return CustomNetworkImage(imageUrl: imageFile, boxShape: BoxShape.circle);
                         } else {
-                          return Shimmer.fromColors(
-                            baseColor: AppColors.blackColor.withAlpha(50),
-                            highlightColor: AppColors.blackColor.withAlpha(100),
-                            child: Container(
-                              height: 50,
-                              width: 50,
-                              decoration: const BoxDecoration(shape: BoxShape.circle, color: AppColors.primaryColor),
-                            ),
+                          return CustomNetworkImage(
+                              imageUrl: "https://images.unsplash.com/photo-1548767797-d8c844163c4c?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                            height: 50.h,
+                            width: 50.w,
+                            boxShape: BoxShape.circle,
                           );
+
                         }
                       }),
                     ),

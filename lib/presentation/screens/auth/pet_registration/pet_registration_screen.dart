@@ -123,22 +123,23 @@ class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
                 fieldBorderColor: AppColors.purple500,
                 fieldBorderRadius: 10,
                 fillColor: Colors.white,
-                keyboardType: TextInputType.phone,
+                keyboardType: TextInputType.numberWithOptions(decimal: true),
                 textEditingController: age,
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
                     return 'Age is required';
                   }
-                  final age = int.tryParse(value.trim());
-                  if (age == null) {
+                  final ageValue = double.tryParse(value.trim());
+                  if (ageValue == null) {
                     return 'Please enter a valid number';
                   }
-                  if (age <= 0) {
+                  if (ageValue <= 0) {
                     return 'Age must be greater than 0';
                   }
                   return null;
                 },
               ),
+
 
               Gap(14),
               /*    CustomAlignText(

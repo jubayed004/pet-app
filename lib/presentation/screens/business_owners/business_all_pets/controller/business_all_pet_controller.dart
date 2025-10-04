@@ -21,26 +21,32 @@ class BusinessAllPetController extends GetxController {
 
   ///=====================
   Future<void> getBusinessAllPets() async {
-    loadingMethod(Status.completed);
-    try {
-      loadingMethod(Status.loading);
-      final response = await apiClient.get(url: ApiUrl.getBusinessAllPets());
-      if (response.statusCode == 200) {
-        final newData = BusinessAllPetsModel.fromJson(response.body);
-        profile.value = newData;
-        loadingMethod(Status.completed);
+    loadingMethod(Status.loading);
+    print('======================1=============');
+    final response = await apiClient.get(url: ApiUrl.getBusinessAllPets());
+    if (response.statusCode == 200) {
+      print('======================3=============');
+      final newData = BusinessAllPetsModel.fromJson(response.body);
+      print("👉 API Status Code: ${response.statusCode}");
+      print("👉 API Response: ${response.body}");
+      profile.value = newData;
+      profile.refresh(); // 🔥 Force UI rebuild
+      loadingMethod(Status.completed);
+    } else {
+      if (response.statusCode == 503) {
+        loadingMethod(Status.internetError);
+      } else if (response.statusCode == 404) {
+        loadingMethod(Status.noDataFound);
       } else {
-        if (response.statusCode == 503) {
-          loadingMethod(Status.internetError);
-        } else if (response.statusCode == 404) {
-          loadingMethod(Status.noDataFound);
-        } else {
-          loadingMethod(Status.error);
-        }
+        loadingMethod(Status.error);
       }
+    }
+ /*   print('======================2=============');
+    try {
+
     } catch (e) {
       loadingMethod(Status.error);
-    }
+    }*/
   }
 
   ///======================== BusinessAllPetsDetail
@@ -212,15 +218,10 @@ class BusinessAllPetController extends GetxController {
  }
   }
 
-  @override
-  void onInit() {
-    getBusinessAllPets();
-    super.onInit();
-  }
 
   @override
   void onReady() {
-
+    getBusinessAllPets();
     super.onReady();
   }
 

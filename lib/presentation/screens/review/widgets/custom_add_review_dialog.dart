@@ -11,8 +11,7 @@ import 'package:pet_app/presentation/components/custom_text_field/custom_text_fi
 import 'package:pet_app/presentation/components/custom_text_field/description_text_field.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
 
-Future<void> showAddReviewDialog(BuildContext context, String businessId,
-    String ownerId, String serviceId) {
+Future<void> showAddReviewDialog(BuildContext context, String businessId, String ownerId, String serviceId) {
   final TextEditingController comments = TextEditingController();
   final reviewController = GetControllers.instance.getReviewController();
   final formKey = GlobalKey<FormState>();
@@ -20,26 +19,13 @@ Future<void> showAddReviewDialog(BuildContext context, String businessId,
 
   return showDialog(
     context: context,
-    builder: (context) =>
-        AlertDialog(
+    builder:
+        (context) => AlertDialog(
           backgroundColor: AppColors.whiteColor,
-          title: const CustomText(
-            text: "Add Review",
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-          ),
+          title: const CustomText(text: "Add Review", fontSize: 16, fontWeight: FontWeight.w600),
           content: SingleChildScrollView(
             child: ConstrainedBox(
-              constraints: BoxConstraints(
-                maxHeight: MediaQuery
-                    .of(context)
-                    .size
-                    .height * 0.6,
-                maxWidth: MediaQuery
-                    .of(context)
-                    .size
-                    .width * 0.9,
-              ),
+              constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.6, maxWidth: MediaQuery.of(context).size.width * 0.9),
               child: Form(
                 key: formKey,
                 child: Column(
@@ -55,11 +41,7 @@ Future<void> showAddReviewDialog(BuildContext context, String businessId,
                       itemCount: 5,
                       itemSize: 40.0,
                       itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                      itemBuilder: (context, _) =>
-                          Icon(
-                            Icons.star,
-                            color: Colors.amber,
-                          ),
+                      itemBuilder: (context, _) => Icon(Icons.star, color: Colors.amber),
                       onRatingUpdate: (newRating) {
                         rating = newRating;
                       },
@@ -68,17 +50,13 @@ Future<void> showAddReviewDialog(BuildContext context, String businessId,
                     // Comment Section
                     Align(
                       alignment: Alignment.topLeft,
-                      child: CustomText(
-                        text: "Share more about your experience",
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                      ),
+                      child: CustomText(text: "Share more about your experience", fontSize: 14, fontWeight: FontWeight.w600),
                     ),
                     DescriptionTextField(
                       hintText: "Share details of your own experience at this place",
                       hintStyle: TextStyle(color: Colors.grey.withAlpha(958)),
                       backgroundColor: Colors.white,
-                      radius: 20,
+                      radius: 10,
                       contentPadding: EdgeInsets.only(left: 20, right: 20, bottom: 10, top: 10),
                       controller: comments,
                       maxLines: 10,
@@ -96,10 +74,7 @@ Future<void> showAddReviewDialog(BuildContext context, String businessId,
                             "serviceId": serviceId,
                           };
                           if (formKey.currentState!.validate()) {
-                            reviewController.addReview(
-                              body: body,
-                              id: serviceId,
-                            );
+                            reviewController.addReview(body: body, id: serviceId);
                           }
                         },
                         title: "Submit",
@@ -114,72 +89,35 @@ Future<void> showAddReviewDialog(BuildContext context, String businessId,
   );
 }
 
-
-Future<void> editAddReviewDialog(BuildContext context, String date,
-    String title, String name, String id) {
-  final businessAllPetController = GetControllers.instance
-      .getBusinessAllPetController();
+Future<void> editAddReviewDialog(BuildContext context, String date, String title, String name, String id) {
+  final businessAllPetController = GetControllers.instance.getBusinessAllPetController();
   TextEditingController dateController = TextEditingController(text: date);
   TextEditingController treatmentName = TextEditingController(text: title);
   TextEditingController drName = TextEditingController(text: name);
   final formKey = GlobalKey<FormState>();
   return showDialog(
     context: context,
-    builder: (context) =>
-        AlertDialog(
+    builder:
+        (context) => AlertDialog(
           backgroundColor: AppColors.whiteColor,
-          title: const CustomText(text: "Edit Health Update",
-            fontWeight: FontWeight.w600,
-            fontSize: 16,),
+          title: const CustomText(text: "Edit Health Update", fontWeight: FontWeight.w600, fontSize: 16),
           content: SingleChildScrollView(
             child: ConstrainedBox(
-              constraints: BoxConstraints(
-                maxHeight: MediaQuery
-                    .of(context)
-                    .size
-                    .height * 0.6,
-                maxWidth: MediaQuery
-                    .of(context)
-                    .size
-                    .width * 0.9,
-              ),
+              constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.6, maxWidth: MediaQuery.of(context).size.width * 0.9),
               child: Form(
                 key: formKey,
                 child: Column(
                   spacing: 6.h,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-
                     ///============ Treatment Name
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: CustomText(
-                        text: "Treatment Name",
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
+                    Align(alignment: Alignment.topLeft, child: CustomText(text: "Treatment Name", fontSize: 14, fontWeight: FontWeight.w600)),
 
-                    CustomTextField(
-                      textEditingController: treatmentName,
-                      hintText: "Treatment Name",
-                      fillColor: AppColors.whiteColor,
-                    ),
+                    CustomTextField(textEditingController: treatmentName, hintText: "Treatment Name", fillColor: AppColors.whiteColor),
 
                     ///============ Name
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: CustomText(
-                        text: "Dr Name",
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    CustomTextField(
-                      textEditingController: drName,
-                      hintText: " Dr name",
-                      fillColor: AppColors.whiteColor,
-                    ),
+                    Align(alignment: Alignment.topLeft, child: CustomText(text: "Dr Name", fontSize: 14, fontWeight: FontWeight.w600)),
+                    CustomTextField(textEditingController: drName, hintText: " Dr name", fillColor: AppColors.whiteColor),
 
                     ///====== Status
                     CustomDropdown(
@@ -196,14 +134,7 @@ Future<void> editAddReviewDialog(BuildContext context, String date,
                     ),
 
                     ///======= Date
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: CustomText(
-                        text: "Date",
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
+                    Align(alignment: Alignment.topLeft, child: CustomText(text: "Date", fontSize: 14, fontWeight: FontWeight.w600)),
 
                     CustomTextField(
                       hintText: "Select date",
@@ -222,8 +153,7 @@ Future<void> editAddReviewDialog(BuildContext context, String date,
                           );
 
                           if (pickedDate != null) {
-                            dateController.text = "${pickedDate
-                                .year}/${pickedDate.month}/${pickedDate.day}";
+                            dateController.text = "${pickedDate.year}/${pickedDate.month}/${pickedDate.day}";
                           }
                         },
                       ),
@@ -235,24 +165,18 @@ Future<void> editAddReviewDialog(BuildContext context, String date,
                           "treatmentName": treatmentName.text,
                           "doctorName": drName.text,
                           "treatmentDate": dateController.text,
-                          "treatmentStatus": businessAllPetController
-                              .statusValue.value,
+                          "treatmentStatus": businessAllPetController.statusValue.value,
                         };
                         if (kDebugMode) {
                           print(body);
                         }
                         if (formKey.currentState!.validate()) {
-                          businessAllPetController.editHealth(body: body,
-                              id: id,
-                              status: businessAllPetController.statusValue
-                                  .value);
+                          businessAllPetController.editHealth(body: body, id: id, status: businessAllPetController.statusValue.value);
                         }
                       },
 
-
                       title: "Update",
-
-                    )
+                    ),
                   ],
                 ),
               ),

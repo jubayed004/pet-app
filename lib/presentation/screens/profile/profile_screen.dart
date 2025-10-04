@@ -63,7 +63,7 @@ class ProfileScreen extends StatelessWidget {
                   print("Profile Image: ${ApiUrl.imageBase}$image");
 
                   return image != null && image.isNotEmpty
-                      ? CustomNetworkImage(imageUrl: "${ApiUrl.imageBase}$image", width: double.infinity, height: double.infinity)
+                      ? CustomNetworkImage(imageUrl: image, width: double.infinity, height: double.infinity)
                       : CustomNetworkImage(
                         imageUrl: 'https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=800&q=80',
 
@@ -127,7 +127,7 @@ class ProfileScreen extends StatelessWidget {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      CustomText(text: item.name ?? "", fontSize: 22, fontWeight: FontWeight.w700),
+                                      Expanded(child: CustomText(text: item.name ?? "", fontSize: 22, fontWeight: FontWeight.w700,textAlign: TextAlign.start,)),
                                       GestureDetector(
                                         onTap: () {
                                           AppRouter.route.pushNamed(

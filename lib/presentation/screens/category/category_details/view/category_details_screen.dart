@@ -51,7 +51,10 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
             CustomDefaultAppbar(title: "Category Details "),
             SliverToBoxAdapter(
               child: SizedBox(
-                height: 380,
+                height: MediaQuery
+                    .of(context)
+                    .size
+                    .height * 0.5 - 24,
                 // increased from 320 to allow for taller card content
                 child: Stack(
                   clipBehavior: Clip.none,
@@ -60,17 +63,18 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
                     Obx(() {
                       final image = controller.categoryDetails.value.service?.servicesImages;
                       return image != null && image.isNotEmpty
-                          ? Image.network(
-                            image,
-                            fit: BoxFit.cover,
-                            width: double.infinity,
-                            height: MediaQuery.of(context).size.height / 3,
-                          )
+                          ? Image.network(image, fit: BoxFit.cover, width: double.infinity, height: MediaQuery
+                          .of(context)
+                          .size
+                          .height / 3)
                           : CustomNetworkImage(
-                            imageUrl: 'https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=800&q=80',
-                            width: double.infinity,
-                            height: MediaQuery.of(context).size.height / 3,
-                          );
+                        imageUrl: 'https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=800&q=80',
+                        width: double.infinity,
+                        height: MediaQuery
+                            .of(context)
+                            .size
+                            .height / 3,
+                      );
                     }),
                     Positioned(
                       top: 180,
@@ -95,7 +99,7 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
                                   text: item ? "Open" : "Closed",
                                   color: item ? AppColors.primaryColor : Colors.red,
                                   fontWeight: FontWeight.w600,
-                                  fontSize: 16,
+                                  fontSize: 16.sp,
                                 );
                               }),
                               Obx(() {
@@ -115,11 +119,13 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
                                             fontSize: 14.sp,
                                             fontWeight: FontWeight.w500,
                                             text:
-                                                "Open Day : ${controller.getOpenDaysTextComplete(offDay: item?.offDay ?? "", openingTime: item?.openingTime ?? "", closingTime: item?.closingTime ?? "")}",
+                                            "Open Day : ${controller.getOpenDaysTextComplete(offDay: item?.offDay ?? "",
+                                                openingTime: item?.openingTime ?? "",
+                                                closingTime: item?.closingTime ?? "")}",
                                             overflow: TextOverflow.ellipsis,
                                           ),
                                           CustomText(
-                                            fontSize: 14,
+                                            fontSize: 14.sp,
                                             fontWeight: FontWeight.w600,
                                             text: "OFF Day : ${item?.offDay ?? ""}",
                                             overflow: TextOverflow.ellipsis,
@@ -133,32 +139,32 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
                               }),
                               widget.showWebsite
                                   ? CustomButton(
-                                    onTap: () async {
-                                      String? websiteUrl = controller.categoryDetails.value.service?.websiteLink;
-                                      if (websiteUrl == null || websiteUrl.isEmpty) {
-                                        websiteUrl = "https://www.defaultwebsite.com";
-                                      }
-                                      if (!websiteUrl.startsWith('http://') && !websiteUrl.startsWith('https://')) {
-                                        websiteUrl = 'https://$websiteUrl';
-                                      }
-                                      final Uri url = Uri.parse(websiteUrl);
-                                      if (await canLaunchUrl(url)) {
-                                        await launchUrl(url);
-                                      } else {
-                                        throw 'Could not launch $url';
-                                      }
-                                    },
-                                    title: "Visit Website",
-                                    textColor: Colors.white,
-                                    height: 30.h,
-                                    width: 140.w,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 14,
-                                    fillColor: AppColors.purple500,
-                                    borderColor: Colors.transparent,
-                                    borderWidth: 1,
-                                    isBorder: true,
-                                  )
+                                onTap: () async {
+                                  String? websiteUrl = controller.categoryDetails.value.service?.websiteLink;
+                                  if (websiteUrl == null || websiteUrl.isEmpty) {
+                                    websiteUrl = "https://www.defaultwebsite.com";
+                                  }
+                                  if (!websiteUrl.startsWith('http://') && !websiteUrl.startsWith('https://')) {
+                                    websiteUrl = 'https://$websiteUrl';
+                                  }
+                                  final Uri url = Uri.parse(websiteUrl);
+                                  if (await canLaunchUrl(url)) {
+                                    await launchUrl(url);
+                                  } else {
+                                    throw 'Could not launch $url';
+                                  }
+                                },
+                                title: "Visit Website",
+                                textColor: Colors.white,
+                                height: 30.h,
+                                width: 140.w,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.sp,
+                                fillColor: AppColors.purple500,
+                                borderColor: Colors.transparent,
+                                borderWidth: 1,
+                                isBorder: true,
+                              )
                                   : SizedBox(),
                             ],
                           ),
@@ -171,8 +177,8 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
                       right: 0,
                       child: Center(
                         child: Container(
-                          width: 90,
-                          height: 90,
+                          width: 90.w,
+                          height: 90.h,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 8, offset: Offset(0, 4))],
@@ -182,12 +188,21 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
                               final logo = controller.categoryDetails.value.service?.shopLogo;
                               return logo != null && logo.isNotEmpty
                                   ? CustomNetworkImage(
-                                    boxShape: BoxShape.circle,
-                                    width: MediaQuery.of(context).size.width / 8,
-                                    height: MediaQuery.of(context).size.height / 10,
-                                    imageUrl: logo.replaceAll("\\", "/"),
-                                  )
-                                  : CustomImage(imageSrc: "assets/images/petshoplogo.png", sizeWidth: MediaQuery.of(context).size.width / 8);
+                                boxShape: BoxShape.circle,
+                                width: MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width / 8,
+                                height: MediaQuery
+                                    .of(context)
+                                    .size
+                                    .height / 10,
+                                imageUrl: logo.replaceAll("\\", "/"),
+                              )
+                                  : CustomImage(imageSrc: "assets/images/petshoplogo.png", sizeWidth: MediaQuery
+                                  .of(context)
+                                  .size
+                                  .width / 8);
                             }),
                           ),
                         ),
@@ -204,7 +219,10 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
                 child: Column(
                   children: [
                     SizedBox(
-                      width: MediaQuery.of(context).size.width / 2 - 30,
+                      width: MediaQuery
+                          .of(context)
+                          .size
+                          .width / 2 - 30,
                       child: Card(
                         elevation: 4,
                         child: Padding(
@@ -213,18 +231,20 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
                             children: [
                               CustomText(text: "Rating"),
                               Gap(10),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: List.generate(5, (index) => Icon(Icons.star, color: Colors.amber, size: 18)),
-                                  ),
-                                  Gap(6),
-                                  CustomText(text: "5.0 ", fontWeight: FontWeight.w500, fontSize: 12),
-                                  /*        Obx(() {
+                              Obx(() {
+                                final review = controller.categoryDetails.value.service?.reviews;
+                                return Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: List.generate(5, (index) => Icon(Icons.star, color: Colors.amber, size: 18)),
+                                    ),
+                                    Gap(6),
+                                    CustomText(text: "5.0 ", fontWeight: FontWeight.w500, fontSize: 12),
+                                    /*        Obx(() {
                                     return SliverList(
                                       delegate: SliverChildBuilderDelegate((context, index) {
                                      final item = controller.categoryDetails.value.service?.reviews?[index];
@@ -233,8 +253,9 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
                                           childCount:controller.categoryDetails.value.service?.reviews != null?[].length )
                                     );
                                   }),*/
-                                ],
-                              ),
+                                  ],
+                                );
+                              }),
                             ],
                           ),
                         ),

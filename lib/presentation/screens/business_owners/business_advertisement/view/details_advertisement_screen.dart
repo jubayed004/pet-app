@@ -6,10 +6,22 @@ import 'package:pet_app/presentation/components/custom_netwrok_image/custom_netw
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:pet_app/service/api_url.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
+import 'package:pet_app/utils/app_const/app_const.dart';
 
-class DetailsAdvertisementScreen extends StatelessWidget {
-   DetailsAdvertisementScreen({super.key});
+class DetailsAdvertisementScreen extends StatefulWidget {
+  const DetailsAdvertisementScreen({super.key});
 
+  @override
+  State<DetailsAdvertisementScreen> createState() => _DetailsAdvertisementScreenState();
+}
+
+class _DetailsAdvertisementScreenState extends State<DetailsAdvertisementScreen> {
+
+  @override
+  void initState() {
+    controller.getDetailsAdvertisement();
+    super.initState();
+  }
   final controller = GetControllers.instance.getBusinessAdvertisementController();
 
   @override
@@ -30,22 +42,56 @@ class DetailsAdvertisementScreen extends StatelessWidget {
             unselectedLabelColor: Colors.pink,
             indicatorColor: Colors.red,
             tabs: [
-              Tab(child: CustomText(text: "Active",fontSize: 14,fontWeight: FontWeight.w500,)),
-              Tab(child: CustomText(text: "Inactive",fontSize: 14,fontWeight: FontWeight.w500)),
+              Tab(child: CustomText(text: "Inactive", fontSize: 14, fontWeight: FontWeight.w500)),
+              Tab(child: CustomText(text: "Active", fontSize: 14, fontWeight: FontWeight.w500)),
+
             ],
           ),
         ),
-        body: TabBarView(
+        body: Obx(() {
+          /// 🔥 Loader Handling Here
+          if (controller.loading.value == Status.loading) {
+            return const Center(child: CircularProgressIndicator());
+          }
 
-          children: [
-            ActiveTab(),
-            const InactiveTab(),
-          ],
-        ),
+          if (controller.loading.value == Status.error) {
+            return const Center(child: CustomText(
+              text: "Something went wrong!",
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+            ));
+          }
+
+          if (controller.loading.value == Status.internetError) {
+            return const Center(child: CustomText(
+              text: "Internet Error!",
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+            ));
+          }
+
+          if (controller.loading.value == Status.noDataFound) {
+            return const Center(child: CustomText(
+              text: "No data found",
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+            ));
+          }
+
+          /// ✅ If data loaded successfully
+          return TabBarView(
+            children: [
+               InactiveTab(),
+              ActiveTab(),
+
+            ],
+          );
+        }),
       ),
     );
   }
 }
+
 
 class ActiveTab extends StatelessWidget {
   ActiveTab({super.key});

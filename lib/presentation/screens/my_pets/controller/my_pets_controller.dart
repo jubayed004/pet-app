@@ -1,21 +1,3 @@
-import 'dart:convert';
-import 'dart:io';
-
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
-import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:pet_app/core/dependency/get_it_injection.dart';
-import 'package:pet_app/core/route/routes.dart';
-import 'package:pet_app/helper/local_db/local_db.dart';
-import 'package:pet_app/helper/toast_message/toast_message.dart';
-import 'package:pet_app/presentation/screens/my_pets/model/my_all_pet_model.dart';
-import 'package:pet_app/service/api_service.dart';
-import 'package:pet_app/service/api_url.dart';
-import 'package:pet_app/utils/app_const/app_const.dart';
-
-import '../../business_owners/business_all_pets/model/business_all_pets_details_model.dart';
-
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
@@ -27,21 +9,21 @@ import 'package:pet_app/presentation/screens/my_pets/model/my_all_pet_model.dart
 import 'package:pet_app/service/api_service.dart';
 import 'package:pet_app/service/api_url.dart';
 import 'package:pet_app/utils/app_const/app_const.dart';
-
 import '../../business_owners/business_all_pets/model/business_all_pets_details_model.dart';
 
 class MyPetsProfileController extends GetxController {
   final ApiClient apiClient = serviceLocator();
   final ImagePicker _imagePicker = ImagePicker();
 
-  /// Loading State
+  /// Loading States
   var loading = Status.completed.obs;
   var detailsLoading = Status.completed.obs;
   var isUpdateLoading = false.obs;
 
   /// Data Holders
   final Rx<MyAllPetModel> profile = MyAllPetModel().obs;
-  final Rx<BusinessAllPetsDetailsModel> details = BusinessAllPetsDetailsModel().obs;
+  final Rx<BusinessAllPetsDetailsModel> details =
+      BusinessAllPetsDetailsModel().obs;
 
   /// Image + Gender
   var genderSelected = "MALE".obs;
@@ -53,7 +35,7 @@ class MyPetsProfileController extends GetxController {
       loading.value = Status.loading;
 
       final response = await apiClient.get(url: ApiUrl.getMyAllPet());
-      final statusCode = response.statusCode ?? 0; // null safe
+      final statusCode = response.statusCode ?? 0;
 
       if (statusCode == 200) {
         profile.value = MyAllPetModel.fromJson(response.body);
@@ -61,8 +43,11 @@ class MyPetsProfileController extends GetxController {
       } else {
         handleError(statusCode, isDetails: false);
       }
+    } on SocketException {
+      loading.value = Status.internetError;
     } catch (e) {
       loading.value = Status.error;
+      if (kDebugMode) print("getAllPet error: $e");
     }
   }
 
@@ -72,7 +57,7 @@ class MyPetsProfileController extends GetxController {
       detailsLoading.value = Status.loading;
 
       final response = await apiClient.get(url: ApiUrl.myAllPetDetails(id: id));
-      final statusCode = response.statusCode ?? 0; // null safe
+      final statusCode = response.statusCode ?? 0;
 
       if (statusCode == 200) {
         details.value = BusinessAllPetsDetailsModel.fromJson(response.body);
@@ -80,13 +65,19 @@ class MyPetsProfileController extends GetxController {
       } else {
         handleError(statusCode, isDetails: true);
       }
+    } on SocketException {
+      detailsLoading.value = Status.internetError;
     } catch (e) {
       detailsLoading.value = Status.error;
+      if (kDebugMode) print("myAllPetDetails error: $e");
     }
   }
 
   /// ================= Update Pet =================
-  Future<void> updateMyPet({required Map<String, String> body, required String id}) async {
+  Future<void> updateMyPet({
+    required Map<String, String> body,
+    required String id,
+  }) async {
     try {
       isUpdateLoading.value = true;
       final List<MultipartBody> multipartBody = [];
@@ -102,11 +93,11 @@ class MyPetsProfileController extends GetxController {
         reqType: "PUT",
       );
 
-      final statusCode = response.statusCode ?? 0; // null safe
+      final statusCode = response.statusCode ?? 0;
 
       if (statusCode == 200) {
-        await myAllPetDetails(id: id); // refresh details
-        await getAllPet(); // refresh list
+        await myAllPetDetails(id: id);
+        await getAllPet();
         toastMessage(message: response.body?['message']?.toString() ?? "Pet updated!");
         AppRouter.route.pop();
       } else {
@@ -114,7 +105,7 @@ class MyPetsProfileController extends GetxController {
       }
     } catch (error) {
       toastMessage(message: "Something went wrong!");
-      if (kDebugMode) print(error);
+      if (kDebugMode) print("updateMyPet error: $error");
     } finally {
       isUpdateLoading.value = false;
     }
@@ -124,18 +115,20 @@ class MyPetsProfileController extends GetxController {
   Future<void> deletedPet({required String id}) async {
     try {
       final response = await apiClient.delete(url: ApiUrl.deletedPet(id: id));
-      final statusCode = response.statusCode ?? 0; // null safe
+      final statusCode = response.statusCode ?? 0;
 
       if (statusCode == 200) {
-        await getAllPet(); // refresh list
+        await getAllPet();
         toastMessage(message: response.body?['message']?.toString() ?? "Pet deleted!");
         AppRouter.route.pop();
       } else {
         toastMessage(message: "Delete failed!");
       }
+    } on SocketException {
+      toastMessage(message: "No Internet connection!");
     } catch (error) {
       toastMessage(message: "Something went wrong!");
-      if (kDebugMode) print(error);
+      if (kDebugMode) print("deletedPet error: $error");
     }
   }
 
@@ -157,11 +150,17 @@ class MyPetsProfileController extends GetxController {
   /// ================= Error Handler =================
   void handleError(int statusCode, {bool isDetails = false}) {
     if (statusCode == 503) {
-      isDetails ? detailsLoading.value = Status.internetError : loading.value = Status.internetError;
+      isDetails
+          ? detailsLoading.value = Status.internetError
+          : loading.value = Status.internetError;
     } else if (statusCode == 404) {
-      isDetails ? detailsLoading.value = Status.noDataFound : loading.value = Status.noDataFound;
+      isDetails
+          ? detailsLoading.value = Status.noDataFound
+          : loading.value = Status.noDataFound;
     } else {
-      isDetails ? detailsLoading.value = Status.error : loading.value = Status.error;
+      isDetails
+          ? detailsLoading.value = Status.error
+          : loading.value = Status.error;
     }
   }
 
@@ -171,4 +170,3 @@ class MyPetsProfileController extends GetxController {
     super.onReady();
   }
 }
-

@@ -4,66 +4,84 @@ import 'package:pet_app/controller/get_controllers.dart';
 import 'package:pet_app/core/route/route_path.dart';
 import 'package:pet_app/core/route/routes.dart';
 import 'package:pet_app/presentation/components/custom_button/custom_defualt_appbar.dart';
-import 'package:pet_app/service/api_url.dart';
+import 'package:pet_app/utils/app_const/app_const.dart';
 
 class BusinessAllPetsScreen extends StatelessWidget {
-   BusinessAllPetsScreen({super.key});
-   final businessPetsController = GetControllers.instance.getBusinessAllPetController();
+  BusinessAllPetsScreen({super.key});
+
+  final businessPetsController =
+  GetControllers.instance.getBusinessAllPetController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: RefreshIndicator(
-        onRefresh: ()async{
+        onRefresh: () async {
           businessPetsController.getBusinessAllPets();
         },
         child: CustomScrollView(
           slivers: [
-            CustomDefaultAppbar(title: "All Pets",),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
-                child: Obx(() => ListView.builder(
-                  itemCount: businessPetsController.profile.value.pets?.length ?? 0,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    final item = businessPetsController.profile.value.pets?[index];
-                    final photo = item?.petPhoto != null && item!.petPhoto!.isNotEmpty? item.petPhoto : "";
-                    final name = item?.name ?? "";
-                    return GestureDetector(
-                      onTap: () {
-                    AppRouter.route.pushNamed(RoutePath.businessPetsDetailsScreen, extra: item?.id ?? "");
+            /// ✅ Appbar
+            CustomDefaultAppbar(title: "All Pets"),
 
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: Row(
-                          children: [
-                            CircleAvatar(
-                              radius: 24,
-                              backgroundImage: NetworkImage(photo?? ""),
-                            ),
-                            const SizedBox(width: 12),
-                            Text(
-                              name,
-                              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                            ),
-                          ],
-                        ),
+            /// ✅ Pet List (SliverList + Obx)
+            Obx(() {
+              final state = businessPetsController.loading.value;
+              final pets = businessPetsController.profile.value.pets ?? [];
+
+              if (state == Status.loading) {
+                return const SliverToBoxAdapter(
+                  child: Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(24.0),
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
+                );
+              }
+
+              if (pets.isEmpty) {
+                return const SliverToBoxAdapter(
+                  child: Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(24.0),
+                      child: Text("No pets found"),
+                    ),
+                  ),
+                );
+              }
+
+              return SliverList(
+                delegate: SliverChildBuilderDelegate(
+                      (context, index) {
+                    final item = pets[index];
+
+                    return ListTile(
+                      leading: CircleAvatar(
+                        radius: 24,
+                        backgroundImage: (item.petPhoto != null && item.petPhoto!.isNotEmpty)
+                            ? NetworkImage(item.petPhoto!)
+                            : null,
+                        child: (item.petPhoto == null || item.petPhoto!.isEmpty)
+                            ? const Icon(Icons.pets, color: Colors.white)
+                            : null,
                       ),
+                      title: Text(item.name ?? "Unknown"),
+                      subtitle: Text(item.breed ?? ""),
+                      onTap: () {
+                        AppRouter.route.pushNamed(
+                          RoutePath.businessPetsDetailsScreen,
+                          extra: item.id ?? "",
+                        );
+                      },
                     );
                   },
-                )),
-              ),
-            ),
-          /*  SliverList(
-              delegate: SliverChildListDelegate([
-                ListTile(
-                  leading: Assets.icons.champ.svg(width: 30), // Correct way to use SVGs
-                  title: Text("Bella"),
+                  childCount: pets.length,
                 ),
-              ]),
-            ),*/
+              );
+            }),
+
+
           ],
         ),
       ),

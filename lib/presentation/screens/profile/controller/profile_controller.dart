@@ -120,25 +120,36 @@ class ProfileController extends GetxController {
     }
   }
 
-
-  ///=================================give feedback=======================///
+  ///================================= Give Feedback =======================///
 
   RxBool feedbackLoading = false.obs;
-  Future<void> giveFeedback({required Map<String, String> body}) async{
-    try{
+
+  Future<void> giveFeedback({required Map<String, String> body}) async {
+    try {
       feedbackLoading.value = true;
-      final response = await apiClient.post(url: ApiUrl.giveFeedbacks(), body: body,);
-      if(response.statusCode == 201){
-        feedbackLoading.value = false;
-        AppRouter.route.pop();
-      }else{
-        toastMessage(message: response.body?['message']?.toString());
-        feedbackLoading.value = false;
-      }
-    }catch(error){
+
+      final response = await apiClient.post(
+        url: ApiUrl.giveFeedbacks(),
+        body: body,
+      );
+
       feedbackLoading.value = false;
+
+      if (response.statusCode == 201) {
+        // Show success message
+        toastMessage(message: response.body?['message']?.toString() ?? "Feedback submitted successfully");
+        // Pop the screen after showing toast
+        AppRouter.route.pop();
+      } else {
+        // Show error message from API
+        toastMessage(message: response.body?['message']?.toString() ?? "Something went wrong");
+      }
+    } catch (error) {
+      feedbackLoading.value = false;
+      toastMessage(message: "An error occurred. Please try again."); // Show error on exception
     }
   }
+
 
 
 

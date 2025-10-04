@@ -12,9 +12,8 @@ import 'package:pet_app/utils/app_colors/app_colors.dart';
 import 'package:pet_app/utils/app_const/padding_constant.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
-  static const String routeName = '/change-pass';
 
-  ChangePasswordScreen({super.key});
+  const ChangePasswordScreen({super.key});
 
   @override
   State<ChangePasswordScreen> createState() => _ChangePasswordScreenState();
@@ -50,6 +49,12 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 spacing: 12.h,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  CustomText(
+                    text: 'Current Password',
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16,
+                  ),
+
                   CustomTextField(
                     fillColor: AppColors.whiteColor,
                     hintText: "Enter current password",
@@ -62,6 +67,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       return null;
                     },
                     textEditingController: currentPasswordController,
+                    keyboardType: TextInputType.phone,
                   ),
 
                   CustomText(
@@ -76,18 +82,16 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     isPassword: true,
                     fieldBorderColor: AppColors.blackColor,
                     validator: (value) {
-                      if (value == null || value.trim().isEmpty) {
-                        return 'Please enter a new password';
+                      if (value == null || value.isEmpty) {
+                        return 'Password is required';
                       }
-                      if (value.length < 8) {
-                        return 'Password must be at least 8 characters long';
-                      }
-                      if (!RegExp(r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)').hasMatch(value)) {
-                        return 'Password must include uppercase, lowercase, and a number';
+                      if (value.length < 6) {
+                        return 'Password must be at least 6 characters';
                       }
                       return null;
                     },
                     textEditingController: newPasswordController,
+                    keyboardType: TextInputType.phone,
                   ),
 
                   CustomText(
@@ -111,6 +115,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       return null;
                     },
                     textEditingController: confirmPasswordController,
+                    keyboardType: TextInputType.phone,
                   ),
                   Gap(8),
                   Obx(() {

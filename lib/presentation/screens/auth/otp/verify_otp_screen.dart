@@ -53,16 +53,10 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                CustomText(
-                  text: AppStrings.checkYourEmail,
-                  fontWeight: FontWeight.w500,
-
-                  fontSize: 22,
-                ),
+                CustomText(text: AppStrings.checkYourEmail, fontWeight: FontWeight.w500, fontSize: 22),
                 Gap(8),
                 CustomText(
-                  text:
-                      "${"Please enter the code we've sent to michelle.rivera@example.com"} ${widget.email}",
+                  text: "${"Please enter the code we've sent to"} ${widget.email}",
                   color: AppColors.secondTextColor,
                   maxLines: 2,
                   textAlign: TextAlign.center,
@@ -72,10 +66,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                 const Gap(24),
 
                 ///==================== PIN Put input Field =======================
-                Align(
-                  alignment: Alignment.center,
-                  child: OtpTextField(controller: verifyOtp),
-                ),
+                Align(alignment: Alignment.center, child: OtpTextField(controller: verifyOtp)),
                 Gap(8),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -84,31 +75,16 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                     RichText(
                       text: TextSpan(
                         text: "Didn’t get a code?  ",
-                        style: TextStyle(
-                          color: AppColors.secondTextColor,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                        ),
+                        style: TextStyle(color: AppColors.secondTextColor, fontSize: 12, fontWeight: FontWeight.w400),
                         children: [
                           TextSpan(
-                            text:
-                                (_authController.resendOTPLoading.value
-                                    ? "loading"
-                                    : "Resend Otp"),
-                            style: TextStyle(
-                              color: AppColors.purple500,
-                              fontWeight: FontWeight.w600,
-                              decoration: TextDecoration.underline,
-                            ),
+                            text: (_authController.resendOTPLoading.value ? "loading" : "Resend Otp"),
+                            style: TextStyle(color: AppColors.purple500, fontWeight: FontWeight.w600, decoration: TextDecoration.underline),
                             recognizer:
                                 TapGestureRecognizer()
                                   ..onTap = () {
-                                    if (!_authController
-                                        .resendOTPLoading
-                                        .value) {
-                                      _authController.resendOTP(
-                                        email: widget.email,
-                                      );
+                                    if (!_authController.resendOTPLoading.value) {
+                                      _authController.resendOTP(email: widget.email);
                                     }
                                   },
                           ),

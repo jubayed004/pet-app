@@ -70,22 +70,24 @@ class SearchItemCardWidget extends StatelessWidget {
                   child: Column(
                     children: [
                       image.isNotEmpty
-                          ? Image.network(
-                        "${ApiUrl.imageBase}$image",
+                          ? CustomNetworkImage(
+                        imageUrl:  image,
                         fit: BoxFit.cover,
                         height: MediaQuery.of(context).size.height / 10,
                         width: MediaQuery.of(context).size.width,
+                        borderRadius: BorderRadius.circular(10),
                       )
                           : CustomImage(
                         imageSrc: "assets/images/womandogimage.png",
                         boxFit: BoxFit.cover,
+
                       ),
                       Gap(6),
                       CustomText(
                         text: shop? "Open":"Closed",
                         color:shop? AppColors.primaryColor:Colors.red,
                         fontWeight: FontWeight.w500,
-                        fontSize: 14,
+                        fontSize: 14.sp,
                       ),
                     ],
                   ),
@@ -99,30 +101,30 @@ class SearchItemCardWidget extends StatelessWidget {
                     children: [
                       CustomText(
                         text: item.serviceName ?? "",
-                        fontSize: 18,
+                        fontSize: 18.sp,
                         fontWeight: FontWeight.w500,
                       ),
                       CustomText(
-                        fontSize: 14,
+                        fontSize: 14.sp,
                         fontWeight: FontWeight.w500,
                         text: item.serviceType ?? "",
                         overflow: TextOverflow.ellipsis,
                       ),
-                      Row(
+                    /*  Row(
                         children: [
-                          Row(
+                        *//*  Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: List.generate(5, (index) => Icon(Icons.star, color: Colors.amber,size: 18,)),
-                          ),
+                            children: List.generate(5, (index) => Icon(Icons.star, color: Colors.amber,size: 18.sp,)),
+                          ),*//*
                           Gap(6),
-                          CustomText(text: "5.0 ",fontWeight: FontWeight.w500, fontSize: 12,)
+                          CustomText(text: "5.0 ",fontWeight: FontWeight.w500, fontSize: 12.sp,)
                         ],
-                      ),
+                      ),*/
                       Row(
                         spacing: 6,
                         children: [
-                          Icon(Icons.location_on_sharp, size: 18),
+                          Icon(Icons.location_on_sharp, size: 18.sp),
                           Expanded(
                             child: CustomText(
                               textAlign: TextAlign.start,
@@ -135,7 +137,7 @@ class SearchItemCardWidget extends StatelessWidget {
                       Row(
                         spacing: 6,
                         children: [
-                          Icon(Icons.phone, size: 18, color: Colors.green),
+                          Icon(Icons.phone, size: 18.sp, color: Colors.green),
                           Expanded(
                             child: CustomText(
                               textAlign: TextAlign.start,
@@ -154,25 +156,25 @@ class SearchItemCardWidget extends StatelessWidget {
                   width: MediaQuery.of(context).size.width / 8,
                   height: MediaQuery.of(context).size.height / 10,
                   imageUrl:
-                  "${ApiUrl.imageBase}${logo.replaceAll("\\", "/")}",
+                  logo.replaceAll("\\", "/"),
                 )
                     : CustomImage(
                   imageSrc: "assets/images/petshoplogo.png",
-                  sizeWidth: 50,
+                  sizeWidth: 50.w,
                 ),
               ],
             ),
             Gap(8),
             CustomText(
               text: "Service Provided:",
-              fontSize: 14,
+              fontSize: 14.sp,
               fontWeight: FontWeight.w600,
             ),
             ...List.generate(providerList.length, (
                 subIndex,
                 ) {
               return CustomText(
-                fontSize: 14,
+                fontSize: 14.sp,
                 textAlign: TextAlign.start,
                 maxLines: 5,
                 text:
@@ -204,41 +206,6 @@ class SearchItemCardWidget extends StatelessWidget {
                     ],
                   ),
                 ),
-                /*  Row(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        AppRouter.route.pushNamed(
-                          RoutePath.businessEditServiceScreen,
-                          extra: {
-                            'id': item.id ?? "",
-                            'serviceName': item.serviceName ?? "",
-                            'location': item.location ?? "",
-                            'websiteLink': item.websiteLink ?? "",
-                            'phoneNumber': item.phone ?? "",
-                            'serviceController': providerList,
-                          },
-                        );
-                      },
-                      child: Assets.icons.editico.svg(width: 26),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        defaultDeletedYesNoDialog(
-                          context: context,
-                          title: 'Are you sure you want to delete this Service?',
-                          onYes: () {
-                            businessServiceController.deletedService(id: item.id ?? "");
-                          },
-                        );
-                      },
-                      child: Assets.icons.deletedicon.svg(
-                        width: 36,
-                        colorFilter: ColorFilter.mode(Colors.red, BlendMode.srcIn),
-                      ),
-                    ),
-                  ],
-                ),*/
               ],
             ),
             Gap(8),

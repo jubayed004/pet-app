@@ -37,44 +37,44 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
-    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return SafeArea(
       top: false,
       child: Scaffold(
         backgroundColor: AppColors.whiteColor,
         body: Center(
           child: SingleChildScrollView(
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
             child: Form(
               key: _formKey,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  CustomText(text: '"Welcome Back!"', fontWeight: FontWeight.w800, fontSize: 24),
-                  Assets.icons.loginimage.svg(),
-                  /* CustomText(
-                    text: "Access your account and stay ahead with expert picks.",
-                    color: AppColors.secondTextColor,
-                    maxLines: 3,
-
-                  ),*/
+                  SizedBox(height: 40.h),
+                  CustomText(
+                    text: "Welcome Back!",
+                    fontWeight: FontWeight.w800,
+                    fontSize: 24.sp,
+                  ),
+                  Gap(16),
+                  Assets.icons.loginimage.svg(), // Your login image
                   Gap(24),
+
+                  // Email Field
                   CustomAlignText(text: "Email"),
-                  Gap(8.0),
+                  Gap(8),
                   CustomTextField(
-                    hintText: AppStrings.enterYourEmail,
-                    fieldBorderColor: AppColors.secondPrimaryColor,
-                    fieldBorderRadius: 10,
                     fillColor: Colors.white,
-                    keyboardType: TextInputType.emailAddress,
+                    hintText: AppStrings.enterYourEmail,
                     textEditingController: email,
+                    keyboardType: TextInputType.emailAddress,
+                    fieldBorderRadius: 10.r,
+                    fieldBorderColor: AppColors.secondPrimaryColor,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Email is required';
                       }
-                      final emailRegex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+                      final emailRegex = RegExp(
+                          r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
                       if (!emailRegex.hasMatch(value)) {
                         return 'Enter a valid email';
                       }
@@ -82,16 +82,17 @@ class _SignInScreenState extends State<SignInScreen> {
                     },
                   ),
                   Gap(24),
-                  CustomAlignText(text: "PassWord"),
-                  Gap(8.0),
+
+                  // Password Field
+                  CustomAlignText(text: "Password"),
+                  Gap(8),
                   CustomTextField(
-                    fieldBorderColor: AppColors.secondPrimaryColor,
-                    fieldBorderRadius: 10,
                     fillColor: Colors.white,
                     hintText: AppStrings.enterYourPassword,
-                    isPassword: true,
-                    keyboardType: TextInputType.text,
                     textEditingController: password,
+                    isPassword: true,
+                    fieldBorderRadius: 10.r,
+                    fieldBorderColor: AppColors.secondPrimaryColor,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Password is required';
@@ -104,37 +105,38 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                   Gap(16),
 
+                  // Remember Me + Forgot Password
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Obx(() {
                         return GestureDetector(
                           onTap: () {
-                            // Toggling the rememberMe value
-                            _authController.rememberMe.value = !_authController.rememberMe.value;
+                            _authController.rememberMe.value =
+                            !_authController.rememberMe.value;
                           },
                           child: Row(
                             children: [
                               Container(
-                                alignment: Alignment.center,
-                                height: 16.h,
-                                width: 16.w,
+                                height: 18.h,
+                                width: 18.w,
                                 decoration: BoxDecoration(
-                                  color: _authController.rememberMe.value ? AppColors.purple500 : Colors.transparent,
-                                  border: Border.all(width: .5.sp, color: AppColors.secondPrimaryColor),
+                                  color: _authController.rememberMe.value
+                                      ? AppColors.purple500
+                                      : Colors.transparent,
+                                  border: Border.all(
+                                      width: 1.sp,
+                                      color: AppColors.secondPrimaryColor),
                                   borderRadius: BorderRadius.circular(4.sp),
                                 ),
-                                child: Center(
-                                  child:
-                                      _authController.rememberMe.value
-                                          ? Icon(Icons.check, color: AppColors.whiteColor, size: 14.sp)
-                                          : const SizedBox(),
-                                ),
+                                child: _authController.rememberMe.value
+                                    ? Icon(Icons.check,
+                                    color: AppColors.whiteColor, size: 14.sp)
+                                    : SizedBox.shrink(),
                               ),
+                              Gap(8),
                               CustomText(
-                                left: 8.w,
                                 text: "Remember Me",
-                                // Replace this with appropriate text
                                 fontSize: 14.sp,
                                 fontWeight: FontWeight.w400,
                               ),
@@ -142,76 +144,89 @@ class _SignInScreenState extends State<SignInScreen> {
                           ),
                         );
                       }),
-
                       GestureDetector(
                         onTap: () {
-                          AppRouter.route.pushNamed(RoutePath.forgotPassScreen);
+                          AppRouter.route
+                              .pushNamed(RoutePath.forgotPassScreen);
                         },
                         child: CustomText(
-                          text: "Forget Password ?",
+                          text: "Forgot Password?",
                           color: AppColors.whiteColor700,
                           fontSize: 12.sp,
                           fontWeight: FontWeight.w500,
-                          textAlign: TextAlign.center,
                         ),
                       ),
                     ],
                   ),
-
                   Gap(24),
-                  CustomButton(
-                    isLoading: _authController.loginLoading.value,
-                    textColor: Colors.black,
-                    title: AppStrings.signIn,
-                    onTap: () {
-                      if (_authController.rememberMe.value) {
+
+                  // Login Button
+                  Obx(() {
+                    return CustomButton(
+                      title: AppStrings.signIn,
+                      isLoading: _authController.loginLoading.value,
+                      textColor: Colors.black,
+                      onTap: () {
                         if (_formKey.currentState!.validate()) {
-                          final body = {"email": email.text.trim(), "password": password.text};
+                          final body = {
+                            "email": email.text.trim(),
+                            "password": password.text
+                          };
                           _authController.login(body: body);
                         }
-                      } else {
-                        toastMessage(message: "Selected Remember Me");
-                      }
-                      /*        if(_authController.isUser.value){
-                      AppRouter.route.goNamed(RoutePath.navigationPage);
-                    }else{
-                      AppRouter.route.goNamed(RoutePath.navigationPage);
-                    }*/
-                    },
-                  ),
-                  /*  Obx(() {
-                    return
-                  }),*/
+                      },
+                    );
+                  }),
                   Gap(24),
+
+                  // OR Divider
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Container(height: 1.h, color: AppColors.purple500, width: MediaQuery.of(context).size.width * .38),
-                      CustomText(text: "OR", left: 8.w, right: 8.w),
-                      Container(height: 1.h, color: AppColors.purple500, width: MediaQuery.of(context).size.width * .38),
+                      Expanded(
+                          child: Divider(
+                            color: AppColors.purple500,
+                            thickness: 1,
+                          )),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 8.w),
+                        child: CustomText(text: "OR"),
+                      ),
+                      Expanded(
+                          child: Divider(
+                            color: AppColors.purple500,
+                            thickness: 1,
+                          )),
                     ],
                   ),
                   Gap(24),
+
+                  // Sign Up Link
                   Align(
-                    alignment: Alignment.topCenter,
+                    alignment: Alignment.center,
                     child: RichText(
                       text: TextSpan(
-                        text: 'Don’t have an account?',
-                        style: TextStyle(color: AppColors.secondTextColor, fontSize: 16, fontWeight: FontWeight.w400),
+                        text: 'Don’t have an account? ',
+                        style: TextStyle(
+                            color: AppColors.secondTextColor,
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w400),
                         children: [
                           TextSpan(
-                            text: " Sign Up",
-                            style: TextStyle(color: AppColors.purple500, fontWeight: FontWeight.w600),
-                            recognizer:
-                                TapGestureRecognizer()
-                                  ..onTap = () {
-                                    AppRouter.route.pushNamed(RoutePath.vendorSelectionScreen);
-                                  },
+                            text: "Sign Up",
+                            style: TextStyle(
+                                color: AppColors.purple500,
+                                fontWeight: FontWeight.w600),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                AppRouter.route.pushNamed(
+                                    RoutePath.vendorSelectionScreen);
+                              },
                           ),
                         ],
                       ),
                     ),
                   ),
+                  SizedBox(height: 40.h),
                 ],
               ),
             ),
