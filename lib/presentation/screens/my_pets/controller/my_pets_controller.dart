@@ -22,8 +22,7 @@ class MyPetsProfileController extends GetxController {
 
   /// Data Holders
   final Rx<MyAllPetModel> profile = MyAllPetModel().obs;
-  final Rx<BusinessAllPetsDetailsModel> details =
-      BusinessAllPetsDetailsModel().obs;
+  final Rx<BusinessAllPetsDetailsModel> details = BusinessAllPetsDetailsModel().obs;
 
   /// Image + Gender
   var genderSelected = "MALE".obs;

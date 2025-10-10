@@ -1,4 +1,3 @@
-
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pet_app/core/dependency/get_it_injection.dart';
@@ -19,7 +18,7 @@ class BusinessAllPetController extends GetxController {
   loadingMethod(Status status) => loading.value = status;
   final Rx<BusinessAllPetsModel> profile = BusinessAllPetsModel().obs;
 
-  ///=====================
+  ///=====================getBusinessAllPets=================
   Future<void> getBusinessAllPets() async {
     loadingMethod(Status.loading);
     print('======================1=============');
@@ -41,7 +40,7 @@ class BusinessAllPetController extends GetxController {
         loadingMethod(Status.error);
       }
     }
- /*   print('======================2=============');
+    /*   print('======================2=============');
     try {
 
     } catch (e) {
@@ -49,20 +48,17 @@ class BusinessAllPetController extends GetxController {
     }*/
   }
 
-  ///======================== BusinessAllPetsDetail
+  ///======================== BusinessAllPetsDetail ===================================
   var detailsLoading = Status.completed.obs;
 
   detailsLoadingMethod(Status status) => loading.value = status;
-  final Rx<BusinessAllPetsDetailsModel> details =
-      BusinessAllPetsDetailsModel().obs;
+  final Rx<BusinessAllPetsDetailsModel> details = BusinessAllPetsDetailsModel().obs;
 
   Future<void> businessPetDetails({required String id}) async {
     detailsLoadingMethod(Status.completed);
     try {
       detailsLoadingMethod(Status.loading);
-      final response = await apiClient.get(
-        url: ApiUrl.businessPetDetails(id: id),
-      );
+      final response = await apiClient.get(url: ApiUrl.businessPetDetails(id: id));
       if (response.statusCode == 200) {
         final newData = BusinessAllPetsDetailsModel.fromJson(response.body);
         details.value = newData;
@@ -81,9 +77,7 @@ class BusinessAllPetController extends GetxController {
     }
   }
 
-  ///========================BusinessMedicalHistory
-  final PagingController<int, PetMedicalHistoryByTreatmentStatus>
-  pagingController = PagingController(firstPageKey: 1);
+  ///======================== BusinessMedical History ======================
 
   final Rx<BusinessMedicalHistoryModel> healthHistory = BusinessMedicalHistoryModel().obs;
 
@@ -91,11 +85,10 @@ class BusinessAllPetController extends GetxController {
     required String id,
     required String status,
     required int page,
+    required PagingController<int, PetMedicalHistoryByTreatmentStatus> pagingController,
   }) async {
     try {
-      final response = await apiClient.get(
-        url: ApiUrl.getHealthHistory(id: id, status: status, page: page),
-      );
+      final response = await apiClient.get(url: ApiUrl.getHealthHistory(id: id, status: status, page: page));
       if (response.statusCode == 200) {
         final newData = BusinessMedicalHistoryModel.fromJson(response.body);
         final newItems = newData.petMedicalHistoryByTreatmentStatus ?? [];
@@ -112,19 +105,16 @@ class BusinessAllPetController extends GetxController {
     }
   }
 
-  ///========================BusinessMedicalHistory
-
-  final PagingController<int, PetMedicalHistoryByTreatmentStatus> pagingController1 = PagingController(firstPageKey: 1);
+  ///======================== BusinessMedical History ========================
 
   Future<void> getHealthHistoryUpdate1({
     required String id,
     required String status,
     required int page,
+    required PagingController<int, PetMedicalHistoryByTreatmentStatus> pagingController1,
   }) async {
     try {
-      final response = await apiClient.get(
-        url: ApiUrl.getHealthHistory(id: id, status: status, page: page),
-      );
+      final response = await apiClient.get(url: ApiUrl.getHealthHistory(id: id, status: status, page: page));
       if (response.statusCode == 200) {
         final newData = BusinessMedicalHistoryModel.fromJson(response.body);
         final newItems = newData.petMedicalHistoryByTreatmentStatus ?? [];
@@ -140,25 +130,29 @@ class BusinessAllPetController extends GetxController {
       pagingController1.error = 'An error occurred';
     }
   }
-  ///================================= AddHealth Update
+
+  ///================================= AddHealth Update ================================
 
   RxBool isUpdateLoading = false.obs;
   RxString statusValue = "COMPLETED".obs;
   Rx<DateTime> selectedDate = DateTime.now().obs;
 
-  Future<void> addHealth({required Map<String, String> body, required String id, required String status,}) async {
+  Future<void> addHealth({
+    required Map<String, String> body,
+    required String id,
+    required String status,
+    required PagingController<int, PetMedicalHistoryByTreatmentStatus> pagingController1,
+    required PagingController<int, PetMedicalHistoryByTreatmentStatus> pagingController,
+  }) async {
     try {
       isUpdateLoading.value = true;
 
-      final response = await apiClient.post(
-        url: ApiUrl.healthHistoryCreate(id: id),
-        body: body,
-      );
+      final response = await apiClient.post(url: ApiUrl.healthHistoryCreate(id: id), body: body);
 
       if (response.statusCode == 201) {
-        if (status == "PENDING"){
+        if (status == "PENDING") {
           pagingController1.refresh();
-        }else{
+        } else {
           pagingController.refresh();
         }
         isUpdateLoading.value = false;
@@ -171,19 +165,22 @@ class BusinessAllPetController extends GetxController {
       isUpdateLoading.value = false;
     }
   }
+
   ///================================= Edit Health Update==============
 
   RxBool isEditLoading = false.obs;
 
-
-  Future<void> editHealth({required Map<String, String> body, required String id, required String status,}) async {
+  Future<void> editHealth({
+    required Map<String, String> body,
+    required String id,
+    required String status,
+    required PagingController<int, PetMedicalHistoryByTreatmentStatus> pagingController1,
+    required PagingController<int, PetMedicalHistoryByTreatmentStatus> pagingController,
+  }) async {
     try {
       isEditLoading.value = true;
 
-      final response = await apiClient.put(
-        url: ApiUrl.healthHistoryUpdate(id: id),
-        body: body,
-      );
+      final response = await apiClient.put(url: ApiUrl.healthHistoryUpdate(id: id), body: body);
 
       if (response.statusCode == 200) {
         pagingController1.refresh();
@@ -198,31 +195,37 @@ class BusinessAllPetController extends GetxController {
       isEditLoading.value = false;
     }
   }
+
   ///================================= DeletedHealthHistory
 
-  Future<void> deletedHealthHistory ({ required String id, required String status})async {
- try{
-   final response = await apiClient.delete(url: ApiUrl.deleteHealthHistory(id: id), body: {}, );
-
-   if(response.statusCode == 200){
-     if (status == "PENDING"){
-       pagingController1.refresh();
-     }else{
-       pagingController.refresh();
-     }
-     toastMessage(message: response.body?['message']?.toString());
-     AppRouter.route.pop();
-   }
- }catch(error){
-   print(error);
- }
+  Future<void> deletedHealthHistory({
+    required String id,
+    required String status,
+    required PagingController<int, PetMedicalHistoryByTreatmentStatus> pagingController1,
+    required PagingController<int, PetMedicalHistoryByTreatmentStatus> pagingController,
+  }) async {
+    print("======33=======");
+    try {
+      final response = await apiClient.delete(url: ApiUrl.deleteHealthHistory(id: id), body: {});
+      print("======222=======");
+      if (response.statusCode == 200) {
+        print("======111=======");
+        if (status == "PENDING") {
+          pagingController1.refresh();
+        } else {
+          pagingController.refresh();
+        }
+        toastMessage(message: response.body?['message']?.toString());
+        AppRouter.route.pop();
+      }
+    } catch (error) {
+      print(error);
+    }
   }
-
 
   @override
   void onReady() {
     getBusinessAllPets();
     super.onReady();
   }
-
 }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:intl/intl.dart';
 import 'package:pet_app/controller/get_controllers.dart';
 import 'package:pet_app/core/route/routes.dart';
@@ -10,9 +11,15 @@ import 'package:pet_app/presentation/components/custom_button/custom_button.dart
 import 'package:pet_app/presentation/components/custom_dropdown/custom_drop_down_button.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:pet_app/presentation/components/custom_text_field/custom_text_field.dart';
+import 'package:pet_app/presentation/screens/business_owners/business_all_pets/model/business_medical_history_model.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
 
-Future<void> showAddHealthDialog(BuildContext context, String id) {
+Future<void> showAddHealthDialog(
+  BuildContext context,
+  String id,
+  PagingController<int, PetMedicalHistoryByTreatmentStatus> pagingController1,
+  PagingController<int, PetMedicalHistoryByTreatmentStatus> pagingController,
+) {
   final TextEditingController treatmentName = TextEditingController();
   final TextEditingController treatmentDescription = TextEditingController();
   final TextEditingController drName = TextEditingController();
@@ -22,51 +29,27 @@ Future<void> showAddHealthDialog(BuildContext context, String id) {
   return showDialog(
     context: context,
     builder:
-        (context) =>
-        AlertDialog(
+        (context) => AlertDialog(
           backgroundColor: AppColors.whiteColor,
-          title: CustomText(
-            text: "Add Health Update",
-            fontSize: 16.sp,
-            fontWeight: FontWeight.w600,
-          ),
+          title: CustomText(text: "Add Health Update", fontSize: 16.sp, fontWeight: FontWeight.w600),
           content: SingleChildScrollView(
             child: ConstrainedBox(
-              constraints: BoxConstraints(
-                maxHeight: MediaQuery
-                    .of(context)
-                    .size
-                    .height * 0.7,
-                maxWidth: MediaQuery
-                    .of(context)
-                    .size
-                    .width * 0.11,
-              ),
+              constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.7, maxWidth: MediaQuery.of(context).size.width * 0.11),
               child: Form(
                 key: formKey,
                 child: Column(
                   spacing: 6.h,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-
                     ///============ Treatment Name ============
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: CustomText(
-                        text: "Treatment Name",
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
+                    Align(alignment: Alignment.topLeft, child: CustomText(text: "Treatment Name", fontSize: 14, fontWeight: FontWeight.w600)),
 
                     CustomTextField(
                       textEditingController: treatmentName,
                       hintText: "Treatment Name",
                       fillColor: AppColors.whiteColor,
                       validator: (value) {
-                        if (value == null || value
-                            .trim()
-                            .isEmpty) {
+                        if (value == null || value.trim().isEmpty) {
                           return "Treatment Name is required";
                         }
                         return null;
@@ -74,14 +57,7 @@ Future<void> showAddHealthDialog(BuildContext context, String id) {
                     ),
 
                     ///============ Name ==============
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: CustomText(
-                        text: "Dr Name",
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
+                    Align(alignment: Alignment.topLeft, child: CustomText(text: "Dr Name", fontSize: 14, fontWeight: FontWeight.w600)),
 
                     CustomTextField(
                       textEditingController: drName,
@@ -116,20 +92,11 @@ Future<void> showAddHealthDialog(BuildContext context, String id) {
                     ),
 
                     ///========== Date ===========
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: CustomText(
-                        text: "Date",
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
+                    Align(alignment: Alignment.topLeft, child: CustomText(text: "Date", fontSize: 14, fontWeight: FontWeight.w600)),
 
                     Obx(() {
                       return CustomTextField(
-                        hintText: DateFormat(
-                          "dd MMMM yyyy",
-                        ).format(businessAllPetController.selectedDate.value),
+                        hintText: DateFormat("dd MMMM yyyy").format(businessAllPetController.selectedDate.value),
                         fillColor: AppColors.whiteColor,
                         readOnly: true,
                         // prevents typing
@@ -143,8 +110,7 @@ Future<void> showAddHealthDialog(BuildContext context, String id) {
                               lastDate: DateTime(2100),
                             );
                             if (pickedDate != null) {
-                              businessAllPetController.selectedDate.value =
-                                  pickedDate;
+                              businessAllPetController.selectedDate.value = pickedDate;
                             }
                           },
                         ),
@@ -152,23 +118,14 @@ Future<void> showAddHealthDialog(BuildContext context, String id) {
                     }),
 
                     ///========== Treatment Description ===========
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: CustomText(
-                        text: "Treatment Description",
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
+                    Align(alignment: Alignment.topLeft, child: CustomText(text: "Treatment Description", fontSize: 14, fontWeight: FontWeight.w600)),
 
                     CustomTextField(
                       textEditingController: treatmentDescription,
                       hintText: "Treatment Description",
                       fillColor: AppColors.whiteColor,
                       validator: (value) {
-                        if (value == null || value
-                            .trim()
-                            .isEmpty) {
+                        if (value == null || value.trim().isEmpty) {
                           return "Treatment Description is required";
                         }
                         return null;
@@ -183,12 +140,8 @@ Future<void> showAddHealthDialog(BuildContext context, String id) {
                             "treatmentName": treatmentName.text,
                             "doctorName": drName.text,
                             "treatmentDescription": treatmentDescription.text,
-                            "treatmentDate":
-                            businessAllPetController.selectedDate.value
-                                .toUtc()
-                                .toIso8601String(),
-                            "treatmentStatus":
-                            businessAllPetController.statusValue.value,
+                            "treatmentDate": businessAllPetController.selectedDate.value.toUtc().toIso8601String(),
+                            "treatmentStatus": businessAllPetController.statusValue.value,
                           };
 
                           if (formKey.currentState!.validate()) {
@@ -199,13 +152,15 @@ Future<void> showAddHealthDialog(BuildContext context, String id) {
                               body: body,
                               id: id,
                               status: businessAllPetController.statusValue.value,
+                              pagingController1: pagingController1,
+                              pagingController: pagingController,
                             );
                           }
                         },
                         title: "Submit",
                       );
                     }),
-                    Gap(10)
+                    Gap(10),
                   ],
                 ),
               ),
@@ -222,75 +177,40 @@ Future<void> editAddHealthDialog({
   required String title,
   required String name,
   required String id,
+  required PagingController<int, PetMedicalHistoryByTreatmentStatus> pagingController1,
+  required PagingController<int, PetMedicalHistoryByTreatmentStatus> pagingController,
 }) {
   final businessAllPetController = GetControllers.instance.getBusinessAllPetController();
   TextEditingController dateController = TextEditingController(text: date);
   TextEditingController treatmentName = TextEditingController(text: title);
-  final TextEditingController treatmentDescription = TextEditingController(text: description,);
+  final TextEditingController treatmentDescription = TextEditingController(text: description);
   TextEditingController drName = TextEditingController(text: name);
   print(name);
   final formKey = GlobalKey<FormState>();
   return showDialog(
     context: context,
     builder:
-        (context) =>
-        AlertDialog(
+        (context) => AlertDialog(
           backgroundColor: AppColors.whiteColor,
-          title: const CustomText(
-            text: "Edit Health Update",
-            fontWeight: FontWeight.w600,
-            fontSize: 16,
-          ),
+          title: const CustomText(text: "Edit Health Update", fontWeight: FontWeight.w600, fontSize: 16),
           content: SingleChildScrollView(
             child: ConstrainedBox(
-              constraints: BoxConstraints(
-                maxHeight: MediaQuery
-                    .of(context)
-                    .size
-                    .height * 0.6,
-                maxWidth: MediaQuery
-                    .of(context)
-                    .size
-                    .width * 0.9,
-              ),
+              constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.6, maxWidth: MediaQuery.of(context).size.width * 0.9),
               child: Form(
                 key: formKey,
                 child: Column(
                   spacing: 8.h,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-
                     ///============ Treatment Name
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: CustomText(
-                        text: "Treatment Name",
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
+                    Align(alignment: Alignment.topLeft, child: CustomText(text: "Treatment Name", fontSize: 14, fontWeight: FontWeight.w600)),
 
-                    CustomTextField(
-                      textEditingController: treatmentName,
-                      hintText: "Treatment Name",
-                      fillColor: AppColors.whiteColor,
-                    ),
+                    CustomTextField(textEditingController: treatmentName, hintText: "Treatment Name", fillColor: AppColors.whiteColor),
 
                     ///============ Name
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: CustomText(
-                        text: "Dr Name",
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
+                    Align(alignment: Alignment.topLeft, child: CustomText(text: "Dr Name", fontSize: 14, fontWeight: FontWeight.w600)),
 
-                    CustomTextField(
-                      textEditingController: drName,
-                      hintText: " Dr name",
-                      fillColor: AppColors.whiteColor,
-                    ),
+                    CustomTextField(textEditingController: drName, hintText: " Dr name", fillColor: AppColors.whiteColor),
 
                     ///====== Status
                     CustomDropdown(
@@ -307,14 +227,7 @@ Future<void> editAddHealthDialog({
                     ),
 
                     ///======= Date
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: CustomText(
-                        text: "Date",
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
+                    Align(alignment: Alignment.topLeft, child: CustomText(text: "Date", fontSize: 14, fontWeight: FontWeight.w600)),
 
                     CustomTextField(
                       hintText: "Select date",
@@ -333,31 +246,21 @@ Future<void> editAddHealthDialog({
                           );
 
                           if (pickedDate != null) {
-                            dateController.text =
-                            "${pickedDate.year}/${pickedDate.month}/${pickedDate.day}";
+                            dateController.text = "${pickedDate.year}/${pickedDate.month}/${pickedDate.day}";
                           }
                         },
                       ),
                     ),
 
                     ///========== Treatment Description ===========
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: CustomText(
-                        text: "Treatment Description",
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
+                    Align(alignment: Alignment.topLeft, child: CustomText(text: "Treatment Description", fontSize: 14, fontWeight: FontWeight.w600)),
 
                     CustomTextField(
                       textEditingController: treatmentDescription,
                       hintText: "Treatment Description",
                       fillColor: AppColors.whiteColor,
                       validator: (value) {
-                        if (value == null || value
-                            .trim()
-                            .isEmpty) {
+                        if (value == null || value.trim().isEmpty) {
                           return "Treatment Description is required";
                         }
                         return null;
@@ -366,8 +269,7 @@ Future<void> editAddHealthDialog({
 
                     Obx(() {
                       return CustomButton(
-                        isLoading:
-                        businessAllPetController.isUpdateLoading.value,
+                        isLoading: businessAllPetController.isUpdateLoading.value,
                         onTap: () {
                           final body = {
                             "treatmentName": treatmentName.text,
@@ -383,6 +285,8 @@ Future<void> editAddHealthDialog({
                               body: body,
                               id: id,
                               status: businessAllPetController.statusValue.value,
+                              pagingController: pagingController,
+                              pagingController1: pagingController1,
                             );
                           }
                         },
@@ -399,38 +303,18 @@ Future<void> editAddHealthDialog({
   );
 }
 
-Future<void> defaultYesNoDialog({
-  required BuildContext context,
-  required String message,
-  required VoidCallback onYes,
-}) {
+Future<void> defaultYesNoDialog({required BuildContext context, required String message, required VoidCallback onYes}) {
   return showDialog<void>(
     context: context,
     builder:
-        (dialogCtx) =>
-        AlertDialog(
+        (dialogCtx) => AlertDialog(
           backgroundColor: AppColors.whiteColor,
           title: const Text("Are you sure you want to delete this record?"),
           content: SizedBox(
-            height: MediaQuery
-                .of(context)
-                .size
-                .height / 12,
-            width: MediaQuery
-                .of(context)
-                .size
-                .width,
+            height: MediaQuery.of(context).size.height / 12,
+            width: MediaQuery.of(context).size.width,
             child: ConstrainedBox(
-              constraints: BoxConstraints(
-                maxHeight: MediaQuery
-                    .of(context)
-                    .size
-                    .height * 0.6,
-                maxWidth: MediaQuery
-                    .of(context)
-                    .size
-                    .width * 0.9,
-              ),
+              constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.6, maxWidth: MediaQuery.of(context).size.width * 0.9),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -448,12 +332,7 @@ Future<void> defaultYesNoDialog({
                       ),
                       const SizedBox(width: 12),
                       Expanded(
-                        child: CustomButton(
-                          borderRadius: 8.r,
-                          onTap: () => Navigator.of(dialogCtx).pop(),
-                          title: "No",
-                          textColor: Colors.red,
-                        ),
+                        child: CustomButton(borderRadius: 8.r, onTap: () => Navigator.of(dialogCtx).pop(), title: "No", textColor: Colors.red),
                       ),
                     ],
                   ),

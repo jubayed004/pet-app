@@ -1,6 +1,3 @@
-import 'dart:io';
-
-import 'package:badges/badges.dart' as badges;
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -12,23 +9,19 @@ import 'package:pet_app/controller/get_controllers.dart';
 import 'package:pet_app/core/route/route_path.dart';
 import 'package:pet_app/core/route/routes.dart';
 import 'package:pet_app/helper/image/network_image.dart';
-import 'package:pet_app/presentation/components/custom_button/custom_button.dart';
 import 'package:pet_app/presentation/components/custom_image/custom_image.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
-import 'package:pet_app/presentation/components/custom_text_field/custom_text_field.dart';
 import 'package:pet_app/presentation/no_internet/error_card.dart';
 import 'package:pet_app/presentation/no_internet/more_data_error_card.dart';
 import 'package:pet_app/presentation/no_internet/no_data_card.dart';
 import 'package:pet_app/presentation/no_internet/no_internet_card.dart';
-import 'package:pet_app/service/api_url.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
 import 'package:pet_app/utils/app_const/app_const.dart';
-import 'package:pet_app/utils/app_const/padding_constant.dart';
 import 'package:pet_app/utils/app_strings/app_strings.dart';
 import 'package:shimmer/shimmer.dart';
 
 class BusinessHomeScreen extends StatefulWidget {
-   BusinessHomeScreen({super.key});
+   const BusinessHomeScreen({super.key});
 
   @override
   State<BusinessHomeScreen> createState() => _BusinessHomeScreenState();
@@ -36,12 +29,9 @@ class BusinessHomeScreen extends StatefulWidget {
 
 class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
   final homeController = GetControllers.instance.getHomeController();
-
   final controller = GetControllers.instance.getProfileController();
-
   final businessAllPetController = GetControllers.instance.getBusinessAllPetController();
-  final businessProfileController =
-  GetControllers.instance.getBusinessProfileController();
+  final businessProfileController = GetControllers.instance.getBusinessProfileController();
 
   @override
   Widget build(BuildContext context) {
@@ -125,7 +115,7 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
             SliverToBoxAdapter(
               child: Padding(
                   padding: EdgeInsets.only(left: 16),
-                  child: CustomText(text: "Find You Business ",
+                  child: CustomText(text: " Your All Business ",
                     textAlign: TextAlign.start,
                     fontWeight: FontWeight.w400,
                     fontSize: 18,)),
@@ -505,8 +495,8 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
                  children: [
                    Text(
                      "All Booking Pets",
-                     style: const TextStyle(
-                       fontSize: 18,
+                     style:  TextStyle(
+                       fontSize: 18.sp,
                        fontWeight: FontWeight.bold,
                      ),
                    ),
@@ -530,8 +520,8 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
                            borderRadius: BorderRadius.circular(20),
                            boxShadow: [
                              BoxShadow(
-                               color: Colors.black.withOpacity(0.1),
-                               blurRadius: 8,
+                               color: Colors.black.withValues(alpha: 0.1),
+                               blurRadius: 8.r,
                                offset: const Offset(0, 4),
                              ),
                            ],
@@ -551,12 +541,12 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
                                      color: Colors.white,
                                    ),
                                    if (petName.name != null) ...[
-                                     const SizedBox(height: 4),
+                                      SizedBox(height: 4.h),
                                      CustomText(
                                        text: petName.name!,
                                        fontWeight: FontWeight.w400,
                                        fontSize: 12.sp,
-                                       color: Colors.white.withOpacity(0.8),
+                                       color: Colors.white.withValues(alpha: 0.8),
                                      ),
                                    ],
                                  ],
@@ -565,8 +555,8 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
                              const SizedBox(width: 16),
                              CustomNetworkImage(
                                imageUrl: imageUrl,
-                               height: 50,
-                               width: 50, // Make it square for circular image
+                               height: 50.h,
+                               width: 50.w, // Make it square for circular image
                                boxShape: BoxShape.circle,
                              ),
                            ],
@@ -623,11 +613,11 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
       decoration: BoxDecoration(
         color: active
             ? AppColors.primaryColor
-            : AppColors.primaryColor.withOpacity(0.3),
+            : AppColors.primaryColor.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(12),
         border: active
             ? Border.all(
-          color: AppColors.primaryColor.withOpacity(0.6),
+          color: AppColors.primaryColor.withValues(alpha: 0.6),
           width: 0.5,
         )
             : null,

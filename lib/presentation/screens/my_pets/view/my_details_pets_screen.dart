@@ -44,11 +44,11 @@ class _MyDetailsPetsScreenState extends State<MyDetailsPetsScreen> {
         child: CustomScrollView(
           slivers: [
             Obx(() {
-              return CustomDefaultAppbar(title: controller.details.value.pet?.name ?? "");
+              return CustomDefaultAppbar(title: controller.details.value.petWithMedicalHistory?.name ?? "");
             }),
             SliverToBoxAdapter(
               child: Obx(() {
-                final pet = controller.details.value.pet?.petPhoto;
+                final pet = controller.details.value.petWithMedicalHistory?.petPhoto;
                 final image = pet != null && pet.isNotEmpty ? pet : "";
                 return image.isNotEmpty
                     ? Image.network(image, fit: BoxFit.cover, width: double.infinity, height: 200)
@@ -66,7 +66,7 @@ class _MyDetailsPetsScreenState extends State<MyDetailsPetsScreen> {
                 child: Column(
                   children: [
                     Obx(() {
-                      final profileDetails = controller.details.value.pet;
+                      final profileDetails = controller.details.value.petWithMedicalHistory;
                       return Card(
                         elevation: 4,
                         child: Padding(
@@ -129,7 +129,7 @@ class _MyDetailsPetsScreenState extends State<MyDetailsPetsScreen> {
                         Icon(Icons.account_box_outlined),
                         Gap(6),
                         Obx(() {
-                          return CustomText(text: "About ${controller.details.value.pet?.name ?? ""}", fontWeight: FontWeight.w600, fontSize: 16);
+                          return CustomText(text: "About ${controller.details.value.petWithMedicalHistory?.name ?? ""}", fontWeight: FontWeight.w600, fontSize: 16);
                         }),
                       ],
                     ),
@@ -137,7 +137,7 @@ class _MyDetailsPetsScreenState extends State<MyDetailsPetsScreen> {
                     SizedBox(
                       height: 80, // fixed height for the list items
                       child: Obx(() {
-                        final pet = controller.details.value.pet;
+                        final pet = controller.details.value.petWithMedicalHistory;
                         return ListView(
                           scrollDirection: Axis.horizontal,
                           children: [
@@ -157,7 +157,7 @@ class _MyDetailsPetsScreenState extends State<MyDetailsPetsScreen> {
                       children: [
                         Icon(Icons.safety_divider_outlined),
                         Gap(6),
-                        CustomText(text: "${controller.details.value.pet?.name ?? ""} ’s Status", fontWeight: FontWeight.w600, fontSize: 16),
+                        CustomText(text: "${controller.details.value.petWithMedicalHistory?.name ?? ""} ’s Status", fontWeight: FontWeight.w600, fontSize: 16),
                       ],
                     ),
                     Gap(16),
@@ -190,7 +190,7 @@ class _MyDetailsPetsScreenState extends State<MyDetailsPetsScreen> {
                     Align(alignment: Alignment.topLeft, child: CustomText(text: "Health History", fontWeight: FontWeight.w700, fontSize: 14)),
                     Gap(8),
                     Obx(() {
-                      final petMedicalHistory = controller.details.value.petMedicalHistory ?? [];
+                      final petMedicalHistory = controller.details.value.petWithMedicalHistory?.medicalHistory ?? [];
 
                       if (petMedicalHistory.isEmpty) {
                         return Center(child: Text("No medical history available.", style: TextStyle(fontSize: 16.sp, color: Colors.black87)));

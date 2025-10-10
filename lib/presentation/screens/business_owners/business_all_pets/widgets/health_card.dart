@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pet_app/controller/get_controllers.dart';
 import 'package:pet_app/presentation/components/custom_tab_selected/see_more_text.dart';
+import 'package:pet_app/presentation/screens/business_owners/business_all_pets/model/business_medical_history_model.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_all_pets/widgets/custom_add_health_dialog.dart';
 
 class HealthCard extends StatelessWidget {
@@ -12,6 +14,8 @@ class HealthCard extends StatelessWidget {
   final String treatmentDescription;
   final String status;
   final Color? statusColor;
+  final PagingController<int, PetMedicalHistoryByTreatmentStatus> pagingController1;
+  final PagingController<int, PetMedicalHistoryByTreatmentStatus> pagingController;
 
   HealthCard({
     super.key,
@@ -21,7 +25,10 @@ class HealthCard extends StatelessWidget {
     required this.drName,
     required this.treatmentDescription,
     required this.status,
-    this.statusColor,  this.petId,
+    this.statusColor,
+    this.petId,
+    required this.pagingController1,
+    required this.pagingController,
   });
 
   final _businessAllPetController =
@@ -120,7 +127,7 @@ class HealthCard extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
                       ),
                       onPressed: () {
-                        editAddHealthDialog(context: context, date: dateOfMonth, description: treatmentDescription, title: title, name: drName, id: id);
+                        editAddHealthDialog(context: context, date: dateOfMonth, description: treatmentDescription, title: title, name: drName, id: id, pagingController1: pagingController1, pagingController: pagingController,);
                       },
                     ),
                   ),
@@ -141,8 +148,10 @@ class HealthCard extends StatelessWidget {
                           message: "Are you sure you want to delete this record?",
                           onYes: () {
                             _businessAllPetController.deletedHealthHistory(
-                              id: petId ?? "",
+                              id: id ?? "",
                               status: status,
+                              pagingController: pagingController,
+                              pagingController1: pagingController1,
                             );
                           },
                         );
@@ -203,12 +212,12 @@ class _StatusPill extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bg = color.withOpacity(0.12);
+    final bg = color.withValues(alpha: 0.12);
     return Container(
       decoration: BoxDecoration(
         color: bg,
         borderRadius: BorderRadius.circular(999),
-        border: Border.all(color: color.withOpacity(0.35)),
+        border: Border.all(color: color.withValues(alpha: 0.35)),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       child: Row(

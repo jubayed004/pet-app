@@ -89,7 +89,7 @@ Future<void> showAddReviewDialog(BuildContext context, String businessId, String
   );
 }
 
-Future<void> editAddReviewDialog(BuildContext context, String date, String title, String name, String id) {
+/*Future<void> editAddReviewDialog(BuildContext context, String date, String title, String name, String id) {
   final businessAllPetController = GetControllers.instance.getBusinessAllPetController();
   TextEditingController dateController = TextEditingController(text: date);
   TextEditingController treatmentName = TextEditingController(text: title);
@@ -184,4 +184,4 @@ Future<void> editAddReviewDialog(BuildContext context, String date, String title
           ),
         ),
   );
-}
+}*/

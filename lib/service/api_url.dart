@@ -83,10 +83,10 @@ class ApiUrl {
   static getPetBusiness() => '$base/owner/get-all-pets-who-booked';
   ///Health update
 
-  static getHealthHistory({required String id,required String status,required int page}) => '$base/pet-medical-history/get/$id?treatmentStatus=$status&limit=10&page=$page';
+  static getHealthHistory({required String id,required String status,required int page}) => '$base/pet/get-medical-history/$id?treatmentStatus=$status&limit=10&page=$page';
   static healthHistoryCreate({required String id}) => '$base/pet-medical-history/create/$id';
   static healthHistoryUpdate({required String id}) => '$base/pet-medical-history/update/$id';
-  static deleteHealthHistory({required String id}) => '$base/pet-medical-history/delete/$id';
+  static  deleteHealthHistory({required String id}) => '$base/pet-medical-history/delete/$id';
   //static updateVideo({required String id}) => '$base/video/update-video/$id';
   ///Business Service
   static getBusinessService() => '$base/services/getServices';

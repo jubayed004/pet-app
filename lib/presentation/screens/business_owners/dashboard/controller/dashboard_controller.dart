@@ -8,7 +8,7 @@ import 'package:pet_app/utils/app_const/app_const.dart';
 class DashBoardController extends GetxController{
   final ApiClient apiClient = serviceLocator();
   var loading = Status.completed.obs;
-
+  RxString selectedView = 'Monthly'.obs;
   loadingMethod(Status status) => loading.value = status;
   final Rx<DashboardModel> dashboard = DashboardModel().obs;
 
