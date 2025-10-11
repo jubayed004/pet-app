@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:pet_app/core/custom_assets/assets.gen.dart';
 import 'package:pet_app/helper/image/network_image.dart';
-import 'package:pet_app/service/api_url.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
-import 'package:pet_app/presentation/components/custom_button/custom_button.dart';
 
 class CustomBookingCard extends StatelessWidget {
   const CustomBookingCard({
@@ -24,14 +22,18 @@ class CustomBookingCard extends StatelessWidget {
     required this.address,
     this.onApprove,
     this.onReject,
-    this.onComplete = false,
-    this.onRejected = false,
     this.showApproveButton = false,
     this.showRejectButton = false,
+    this.approveText,
+    this.rejectText,
   });
 
+  /// The tab index (0=pending, 1=ongoing, 2=completed, 3=rejected)
   final int index;
+
+  /// Can be a service-type key (e.g., "VET") or a URL to logo/SVG.
   final String logoPath;
+
   final String topTitle;
   final String imagePath;
   final String visitingDate;
@@ -40,33 +42,121 @@ class CustomBookingCard extends StatelessWidget {
   final double rating;
   final String phoneNumber;
   final String address;
+
   final VoidCallback? onApprove;
   final VoidCallback? onReject;
-  final bool onComplete;
-  final bool onRejected;
   final bool showApproveButton;
   final bool showRejectButton;
 
+  /// Optional button label overrides.
+  final String? approveText;
+  final String? rejectText;
+
+  bool get _isUrlLogo =>
+      logoPath.startsWith('http://') ||
+          logoPath.startsWith('https://') ||
+          logoPath.startsWith('www.');
+
+  bool get _isSvgLogo =>
+      _isUrlLogo && logoPath.toLowerCase().trim().endsWith('.svg');
+
+  String get _defaultApproveText {
+    if (index == 1) return 'Complete'; // Ongoing tab
+    if (index == 0) return 'Approve';  // Pending tab
+    return 'Approve';
+  }
+  String get _defaultRejectText => 'Reject';
+
+  SvgPicture _getIconByService({required String name}) {
+    switch (name.toUpperCase()) {
+      case "VET":
+        return Assets.icons.petvets.svg(
+          colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
+          width: 22, height: 22,
+        );
+      case "SHOP":
+        return Assets.icons.petshops.svg(
+          colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
+          width: 22, height: 22,
+        );
+      case "GROOMING":
+        return Assets.icons.petgrooming.svg(
+          colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
+          width: 22, height: 22,
+        );
+      case "HOTEL":
+        return Assets.icons.pethotel.svg(
+          colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
+          width: 22, height: 22,
+        );
+      case "TRAINING":
+        return Assets.icons.pettraining.svg(
+          colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
+          width: 22, height: 22,
+        );
+      case "FRIENDLY":
+      default:
+        return Assets.icons.friendlyplace.svg(
+          colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
+          width: 22, height: 22,
+        );
+    }
+  }
+
+  Widget _buildLogo() {
+    // If URL provided, load it; otherwise map by service key.
+    if (_isUrlLogo) {
+      if (_isSvgLogo) {
+        return SvgPicture.network(
+          logoPath,
+          width: 22,
+          height: 22,
+          colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
+          placeholderBuilder: (context) => const SizedBox(
+            height: 22, width: 22,
+            child: CircularProgressIndicator(strokeWidth: 2),
+          ),
+        );
+      }
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(4),
+        child: CustomNetworkImage(
+          imageUrl: logoPath,
+          height: 22,
+          width: 22,
+          borderRadius: BorderRadius.circular(4),
+        ),
+      );
+    }
+    return _getIconByService(name: logoPath.isNotEmpty ? logoPath : topTitle);
+  }
+
+  Widget _buildMainImage() {
+    if (imagePath.isEmpty) {
+      return Container(
+        height: 70.h,
+        width: 100.w,
+        decoration: BoxDecoration(
+          color: Colors.grey.shade200,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        alignment: Alignment.center,
+        child: const Icon(Icons.image_not_supported, size: 20, color: Colors.grey),
+      );
+    }
+    return CustomNetworkImage(
+      imageUrl: imagePath,
+      height: 70.h,
+      width: 100.w,
+      borderRadius: BorderRadius.circular(10),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    SvgPicture getIconByName({required String name}) {
-      switch (name) {
-        case "VET":
-          return Assets.icons.petvets.svg(colorFilter: ColorFilter.mode(Colors.black,BlendMode.srcIn));
-        case "SHOP":
-          return Assets.icons.petshops.svg(colorFilter: ColorFilter.mode(Colors.black,BlendMode.srcIn));
-        case "GROOMING":
-          return Assets.icons.petgrooming.svg(colorFilter: ColorFilter.mode(Colors.black,BlendMode.srcIn));
-        case "HOTEL":
-          return Assets.icons.pethotel.svg(colorFilter: ColorFilter.mode(Colors.black,BlendMode.srcIn));
-        case "TRAINING":
-          return Assets.icons.pettraining.svg(colorFilter: ColorFilter.mode(Colors.black,BlendMode.srcIn));
-        case "FRIENDLY":
-          return Assets.icons.friendlyplace.svg(colorFilter: ColorFilter.mode(Colors.black,BlendMode.srcIn));
-        default:
-          return Assets.icons.friendlyplace.svg(colorFilter: ColorFilter.mode(Colors.black,BlendMode.srcIn));
-      }
-    }
+    final String primaryBtnText = (approveText ?? _defaultApproveText).toUpperCase();
+    final String secondaryBtnText = (rejectText ?? _defaultRejectText).toUpperCase();
+
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.all(16),
@@ -75,9 +165,9 @@ class CustomBookingCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.3),
-            spreadRadius: 2,
-            blurRadius: 5,
+            color: Colors.grey.withOpacity(0.15),
+            spreadRadius: 1,
+            blurRadius: 6,
             offset: const Offset(0, 3),
           )
         ],
@@ -86,72 +176,107 @@ class CustomBookingCard extends StatelessWidget {
         children: [
           /// Logo & Top Title
           Row(
-            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  getIconByName(name: logoPath),
-                  const Gap(6),
-                  CustomText(
-                    text: topTitle,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ],
+              _buildLogo(),
+              const Gap(6),
+              Expanded(
+                child: CustomText(
+                  text: topTitle,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
-
             ],
           ),
 
-          const Gap(6),
+          const Gap(8),
 
           /// Main Content
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Left: image + date
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CustomNetworkImage(
-                      imageUrl: imagePath,
-                      height: 70.h,
-                      width: 100.w,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
+                    _buildMainImage(),
                     const Gap(6),
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Expanded(child: CustomText(text: "Visiting Date:", fontWeight: FontWeight.w400)),
-                        Expanded(child: CustomText(text: visitingDate, fontWeight: FontWeight.w400)),
+                        const Expanded(
+                          child: CustomText(
+                            text: "Visiting Date:",
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        Expanded(
+                          child: CustomText(
+                            text: visitingDate,
+                            fontWeight: FontWeight.w400,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                       ],
                     ),
                   ],
                 ),
               ),
-              const Gap(6),
+              const Gap(8),
+
+              // Right: titles + phone + address
               Expanded(
                 flex: 2,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CustomText(text: mainTitle, fontSize: 18, fontWeight: FontWeight.w500),
+                    CustomText(
+                      text: mainTitle,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                     const Gap(4),
-                    CustomText(text: subTitle, overflow: TextOverflow.ellipsis),
-             /*       const Gap(4),
+                    CustomText(
+                      text: subTitle,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const Gap(6),
                     Row(
-                      children: [
-                        ...List.generate(5, (i) => Icon(Icons.star, color: i < rating.round() ? Colors.amber : Colors.grey[300], size: 18)),
-                        const Gap(6),
-                        CustomText(text: "$rating", fontWeight: FontWeight.w500, fontSize: 12),
-                      ],
-                    ),*/
-                    const Gap(4),
-                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Icon(Icons.call, size: 18),
-                        Expanded(child: CustomText(text: phoneNumber, textAlign: TextAlign.start)),
+                        const Gap(4),
+                        Expanded(
+                          child: CustomText(
+                            text: phoneNumber,
+                            textAlign: TextAlign.start,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const Gap(4),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
                         const Icon(Icons.location_on, size: 18),
-                        Expanded(child: CustomText(text: address, textAlign: TextAlign.start)),
+                        const Gap(4),
+                        Expanded(
+                          child: CustomText(
+                            text: address,
+                            textAlign: TextAlign.start,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                       ],
                     ),
                   ],
@@ -160,43 +285,54 @@ class CustomBookingCard extends StatelessWidget {
             ],
           ),
 
-          const Gap(10),
+          const Gap(12),
 
-          /// Approve / Reject Section
-          if (index == 0 || index == 1)
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 0),
-              child: Row(
-                spacing: 12,
-                children: [
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: onApprove,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.primaryColor,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+          /// Approve / Reject Section (controlled by flags)
+          if (showApproveButton || showRejectButton)
+            Row(
+              children: [
+                if (showApproveButton)
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: onApprove,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor:
+                        onApprove == null ? Colors.grey : AppColors.primaryColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6),
                         ),
-                        child: const CustomText(text: "Approve", color: Colors.white),
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                      ),
+                      child: CustomText(
+                        text: primaryBtnText,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
-                    Expanded(
-                      child: OutlinedButton(
-                        onPressed: onReject,
-                        style: OutlinedButton.styleFrom(
-                          side: BorderSide(color: AppColors.blueColor),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                  ),
+                if (showApproveButton && showRejectButton) const SizedBox(width: 12),
+                if (showRejectButton)
+                  Expanded(
+                    child: OutlinedButton(
+                      onPressed: onReject,
+                      style: OutlinedButton.styleFrom(
+                        side: BorderSide(color: AppColors.blueColor),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6),
                         ),
-                        child: CustomText(
-                          text: "rejected",
-                          color: AppColors.blackColor,
-                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                      ),
+                      child: CustomText(
+                        text: secondaryBtnText,
+                        color: AppColors.blackColor,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
-                ],
-              ),
+                  ),
+              ],
             ),
 
-          const Gap(10),
+          const Gap(4),
         ],
       ),
     );

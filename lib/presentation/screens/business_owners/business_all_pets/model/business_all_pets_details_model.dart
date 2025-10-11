@@ -39,10 +39,10 @@ class PetWithMedicalHistory {
   final String? name;
   final String? animalType;
   final String? breed;
-  final int? age;
+  final num? age;
   final String? gender;
-  final int? weight;
-  final int? height;
+  final num? weight;
+  final num? height;
   final String? color;
   final String? description;
   final String? userId;
@@ -76,10 +76,10 @@ class PetWithMedicalHistory {
     String? name,
     String? animalType,
     String? breed,
-    int? age,
+    num? age,
     String? gender,
-    int? weight,
-    int? height,
+    num? weight,
+    num? height,
     String? color,
     String? description,
     String? userId,

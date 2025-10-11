@@ -6,27 +6,44 @@ import 'package:pet_app/presentation/screens/business_owners/business_booking/mo
 import 'package:pet_app/service/api_service.dart';
 import 'package:pet_app/service/api_url.dart';
 
-class BusinessBookingController extends GetxController {
-  final RxInt selectedTabIndex = 0.obs;
+/// Tab indices
+const int kTabPending = 0;   // PENDING
+const int kTabOngoing = 1;   // APPROVED
+const int kTabCompleted = 2; // COMPLETED
+const int kTabRejected = 3;  // REJECTED
 
-  final PagingController<int, BookingItem> pendingController = PagingController(firstPageKey: 1);
-  final PagingController<int, BookingItem> ongoingController = PagingController(firstPageKey: 1);
-  final PagingController<int, BookingItem> approvedController = PagingController(firstPageKey: 1);
-  final PagingController<int, BookingItem> rejectedController = PagingController(firstPageKey: 1);
+class BusinessBookingController extends GetxController {
+  final RxInt selectedTabIndex = kTabPending.obs;
+
+  final PagingController<int, BookingItem> pendingController =
+  PagingController(firstPageKey: 1);
+  final PagingController<int, BookingItem> ongoingController =
+  PagingController(firstPageKey: 1);
+  final PagingController<int, BookingItem> approvedController =
+  PagingController(firstPageKey: 1);
+  final PagingController<int, BookingItem> rejectedController =
+  PagingController(firstPageKey: 1);
 
   final ApiClient apiClient = serviceLocator();
 
+  // Loading guards
   RxBool isLoadingPending = false.obs;
   RxBool isLoadingOngoing = false.obs;
   RxBool isLoadingApproved = false.obs;
   RxBool isLoadingRejected = false.obs;
 
+  // Lazy-load helpers
+  final List<bool> _listenerAdded = [false, false, false, false];
+  final List<bool> _firstLoadTriggered = [false, false, false, false];
+
+  /// ---------------- API loads per status ----------------
   Future<void> getPending(int pageKey) async {
     if (isLoadingPending.value) return;
     isLoadingPending.value = true;
     try {
-      final response = await apiClient.get(url: ApiUrl.getAllBooking(status: "PENDING", page: pageKey));
-
+      final response = await apiClient.get(
+        url: ApiUrl.getAllBooking(status: "PENDING", page: pageKey),
+      );
       if (response.statusCode == 200) {
         final data = BusinessBookingModel.fromJson(response.body);
         final newItems = data.bookings ?? [];
@@ -49,8 +66,9 @@ class BusinessBookingController extends GetxController {
     if (isLoadingOngoing.value) return;
     isLoadingOngoing.value = true;
     try {
-      final response = await apiClient.get(url: ApiUrl.getAllBooking(status: "APPROVED", page: pageKey));
-
+      final response = await apiClient.get(
+        url: ApiUrl.getAllBooking(status: "APPROVED", page: pageKey),
+      );
       if (response.statusCode == 200) {
         final data = BusinessBookingModel.fromJson(response.body);
         final newItems = data.bookings ?? [];
@@ -73,7 +91,9 @@ class BusinessBookingController extends GetxController {
     if (isLoadingApproved.value) return;
     isLoadingApproved.value = true;
     try {
-      final response = await apiClient.get(url: ApiUrl.getAllBooking(status: "COMPLETED", page: pageKey));
+      final response = await apiClient.get(
+        url: ApiUrl.getAllBooking(status: "COMPLETED", page: pageKey),
+      );
       if (response.statusCode == 200) {
         final data = BusinessBookingModel.fromJson(response.body);
         final newItems = data.bookings ?? [];
@@ -96,7 +116,9 @@ class BusinessBookingController extends GetxController {
     if (isLoadingRejected.value) return;
     isLoadingRejected.value = true;
     try {
-      final response = await apiClient.get(url: ApiUrl.getAllBooking(status: "REJECTED", page: pageKey));
+      final response = await apiClient.get(
+        url: ApiUrl.getAllBooking(status: "REJECTED", page: pageKey),
+      );
       if (response.statusCode == 200) {
         final data = BusinessBookingModel.fromJson(response.body);
         final newItems = data.bookings ?? [];
@@ -115,33 +137,141 @@ class BusinessBookingController extends GetxController {
     }
   }
 
-  Future<void> updateItemStatus({required String id, required String status}) async {
-    final response = await apiClient.put(url: ApiUrl.updateStatus(id: id), body: {'status': status});
+  /// -------------- Status update + smart refresh --------------
+  /// [status] must be one of: 'APPROVED' | 'COMPLETED' | 'REJECTED'
+  /// [originTab] is the tab where the action originated (0..3) so we can refresh it immediately.
+  Future<void> updateItemStatus({
+    required String id,
+    required String status,
+    required int originTab,
+  }) async {
+    try {
+      final response = await apiClient.put(
+        url: ApiUrl.updateStatus(id: id),
+        body: {'status': status},
+      );
 
-    if (response.statusCode == 200) {
-      if (status == "Approved") {
-        pendingController.refresh();
-        ongoingController.refresh();
-        approvedController.refresh();
-        rejectedController.refresh();
-      } else if (status == "Rejected") {
-        pendingController.refresh();
-        ongoingController.refresh();
-        rejectedController.refresh();
-        approvedController.refresh();
+      if (response.statusCode == 200) {
+        // Refresh the right tabs based on the new status
+        _refreshForStatusChange(status);
+        // Always refresh the origin tab to remove the moved item immediately
+        _refreshTab(originTab);
+
+        toastMessage(message: response.body?["message"]);
+      } else {
+        toastMessage(message: response.body?["message"] ?? 'Update failed');
       }
-      toastMessage(message: response.body?["message"]);
-    } else {
-      toastMessage(message: response.body?["message"]);
+    } catch (e) {
+      toastMessage(message: e.toString());
     }
+  }
+
+  void _refreshForStatusChange(String status) {
+    switch (status) {
+      case 'APPROVED':   // now item lives in Ongoing
+        _refreshTab(kTabPending);
+        _refreshTab(kTabOngoing);
+        break;
+      case 'COMPLETED':  // now item lives in Completed
+        _refreshTab(kTabOngoing);
+        _refreshTab(kTabCompleted);
+        break;
+      case 'REJECTED':   // now item lives in Rejected (from Pending/Ongoing)
+        _refreshTab(kTabPending);
+        _refreshTab(kTabOngoing);
+        _refreshTab(kTabRejected);
+        break;
+      default:
+        _refreshAll();
+    }
+  }
+
+  void _refreshAll() {
+    pendingController.refresh();
+    ongoingController.refresh();
+    approvedController.refresh();
+    rejectedController.refresh();
+  }
+
+  void _refreshTab(int tab) {
+    switch (tab) {
+      case kTabPending:
+        pendingController.refresh();
+        break;
+      case kTabOngoing:
+        ongoingController.refresh();
+        break;
+      case kTabCompleted:
+        approvedController.refresh();
+        break;
+      case kTabRejected:
+        rejectedController.refresh();
+        break;
+    }
+  }
+
+  /// -------------- Lazy load on tab selection --------------
+  void selectTab(int tabIndex) {
+    if (selectedTabIndex.value == tabIndex) return;
+    selectedTabIndex.value = tabIndex;
+    _ensureListenerFor(tabIndex);
+    _triggerFirstLoadIfNeeded(tabIndex);
+  }
+
+  void _ensureListenerFor(int tabIndex) {
+    if (_listenerAdded[tabIndex]) return;
+
+    switch (tabIndex) {
+      case kTabPending:
+        pendingController.addPageRequestListener(getPending);
+        break;
+      case kTabOngoing:
+        ongoingController.addPageRequestListener(getOngoing);
+        break;
+      case kTabCompleted:
+        approvedController.addPageRequestListener(getApproved);
+        break;
+      case kTabRejected:
+        rejectedController.addPageRequestListener(getRejected);
+        break;
+    }
+    _listenerAdded[tabIndex] = true;
+  }
+
+  void _triggerFirstLoadIfNeeded(int tabIndex) {
+    if (_firstLoadTriggered[tabIndex]) return;
+
+    switch (tabIndex) {
+      case kTabPending:
+        pendingController.refresh();
+        break;
+      case kTabOngoing:
+        ongoingController.refresh();
+        break;
+      case kTabCompleted:
+        approvedController.refresh();
+        break;
+      case kTabRejected:
+        rejectedController.refresh();
+        break;
+    }
+    _firstLoadTriggered[tabIndex] = true;
   }
 
   @override
   void onInit() {
-    pendingController.addPageRequestListener(getPending);
-    ongoingController.addPageRequestListener(getOngoing);
-    approvedController.addPageRequestListener(getApproved);
-    rejectedController.addPageRequestListener(getRejected);
     super.onInit();
+    // Attach/Load only for the initial tab (lazy for others)
+    _ensureListenerFor(selectedTabIndex.value);
+    _triggerFirstLoadIfNeeded(selectedTabIndex.value);
+  }
+
+  @override
+  void onClose() {
+    pendingController.dispose();
+    ongoingController.dispose();
+    approvedController.dispose();
+    rejectedController.dispose();
+    super.onClose();
   }
 }

@@ -14,6 +14,7 @@ import 'package:pet_app/presentation/screens/business_owners/business_advertisem
 import 'package:pet_app/presentation/screens/business_owners/business_advertisement/view/details_advertisement_screen.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_all_pets/view/business_all_pets_screen.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_all_pets/view/business_pet_details_screen.dart';
+import 'package:pet_app/presentation/screens/business_owners/business_all_pets/view/health_records_screen.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_booking/view/business_booking_screen.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_nav/business_navigation_page.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_profile/view/business_edit_profile.dart';
@@ -292,6 +293,18 @@ class AppRouter {
           return _buildPageWithAnimation(
             child: BusinessPetsDetailsScreen(id: args,
 
+            ),
+            state: state,
+          );
+        },
+      ),
+      GoRoute(
+        name: RoutePath.healthRecordsScreen,
+        path: RoutePath.healthRecordsScreen.addBasePath,
+        pageBuilder: (context, state) {
+          final args = state.extra as String;
+          return _buildPageWithAnimation(
+            child: HealthRecordsScreen( petId: args,
             ),
             state: state,
           );

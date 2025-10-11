@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pet_app/controller/get_controllers.dart';
 import 'package:pet_app/presentation/components/custom_tab_selected/see_more_text.dart';
@@ -6,7 +7,7 @@ import 'package:pet_app/presentation/screens/business_owners/business_all_pets/m
 import 'package:pet_app/presentation/screens/business_owners/business_all_pets/widgets/custom_add_health_dialog.dart';
 
 class HealthCard extends StatelessWidget {
-  final String? petId;
+  final String? petMedicalHistoryId;
   final String id;
   final String title;
   final String dateOfMonth;
@@ -26,23 +27,20 @@ class HealthCard extends StatelessWidget {
     required this.treatmentDescription,
     required this.status,
     this.statusColor,
-    this.petId,
+    this.petMedicalHistoryId,
     required this.pagingController1,
     required this.pagingController,
   });
 
-  final _businessAllPetController =
-  GetControllers.instance.getBusinessAllPetController();
+  final _businessAllPetController = GetControllers.instance.getBusinessAllPetController();
 
-  // Map status → color (used if statusColor not provided)
   Color _resolveStatusColor(BuildContext context) {
     if (statusColor != null) return statusColor!;
     final s = status.toLowerCase();
-    final scheme = Theme.of(context).colorScheme;
-    if (s.contains('complete') || s == 'done') return scheme.primary;
-    if (s.contains('pending') || s.contains('schedule')) return scheme.tertiary;
+    if (s.contains('complete') || s == 'done') return const Color(0xFF5ED160);
+    if (s.contains('pending') || s.contains('schedule')) return const Color(0xFFFFA726);
     if (s.contains('cancel') || s.contains('miss')) return const Color(0xFFE54D4D);
-    return scheme.onSurfaceVariant;
+    return Colors.grey;
   }
 
   IconData _statusIcon() {
@@ -56,111 +54,184 @@ class HealthCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final resolvedStatusColor = _resolveStatusColor(context);
-    final onCard = Colors.black;
+    final screenWidth = MediaQuery.of(context).size.width;
 
-
-    return Card(
-      elevation: 2,
-      margin: const EdgeInsets.only(right: 10, bottom: 10,top: 10),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        onTap: () {}, // optional: open details
-        child: Padding(
-          padding: const EdgeInsets.all(12),
-          child: Column(
-            mainAxisSize: MainAxisSize.min, // grow only as needed
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Header: Title + Status pill
-              Row(
+    return Container(
+      margin: EdgeInsets.symmetric(
+        horizontal: screenWidth * 0.04,
+        vertical: 6,
+      ),
+      child: Card(
+        elevation: 2,
+        shadowColor: Colors.black.withOpacity(0.1),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          onTap: () {},
+          borderRadius: BorderRadius.circular(16),
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.white,
+                  resolvedStatusColor.withOpacity(0.02),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+            ),
+            child: Padding(
+              padding: EdgeInsets.all(screenWidth * 0.04),
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(
-                    child: Text(
-                      title,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 16,
-                        color: Color(0xff5ED160)
+                  // Header with title and status
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              title,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 17,
+                                color: Color(0xFF2C3E50),
+                              ),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            const Gap(4),
+                            Text(
+                              'Treatment Record',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.grey[600],
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
+                      const Gap(12),
+                      _StatusPill(
+                        text: status,
+                        color: resolvedStatusColor,
+                        icon: _statusIcon(),
+                      ),
+                    ],
+                  ),
+                  const Gap(16),
+
+                  // Divider
+                  Container(
+                    height: 1,
+                    color: Colors.grey[200],
+                  ),
+                  const Gap(16),
+
+                  // Information rows
+                  _InfoTile(
+                    icon: Icons.calendar_today,
+                    label: 'Date',
+                    value: dateOfMonth,
+                    iconColor: Colors.blue,
+                  ),
+                  const Gap(12),
+                  _InfoTile(
+                    icon: Icons.medical_services,
+                    label: 'Doctor',
+                    value: drName,
+                    iconColor: Colors.purple,
+                  ),
+
+                  if (treatmentDescription.trim().isNotEmpty) ...[
+                    const Gap(12),
+                    _InfoTile(
+                      icon: Icons.description,
+                      label: 'Description',
+                      value: treatmentDescription,
+                      iconColor: Colors.orange,
+                      isExpandable: true,
                     ),
-                  ),
-                  const SizedBox(width: 8),
-                  _StatusPill(
-                    text: status,
-                    color: resolvedStatusColor,
-                    icon: _statusIcon(),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
+                  ],
 
-              // Info lines
-              _MetaLine(icon: Icons.event, text: dateOfMonth, color: onCard),
-              const SizedBox(height: 6),
-              _MetaLine(icon: Icons.person, text: drName, color: onCard),
-              if (treatmentDescription.trim().isNotEmpty) ...[
-                const SizedBox(height: 6),
-                _MetaLine(
-                  icon: Icons.medical_information,
-                  text: treatmentDescription,
-                  color: onCard,
-                  maxLines: 3,
-                ),
-              ],
+                  const Gap(20),
 
-              const SizedBox(height: 12),
-
-
-              // Actions
-              Row(
-                children: [
-                  Expanded(
-                    child: OutlinedButton.icon(
-                      icon: const Icon(Icons.edit, size: 18),
-                      label: const Text('Edit'),
-                      style: OutlinedButton.styleFrom(
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-                      ),
-                      onPressed: () {
-                        editAddHealthDialog(context: context, date: dateOfMonth, description: treatmentDescription, title: title, name: drName, id: id, pagingController1: pagingController1, pagingController: pagingController,);
-                      },
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: FilledButton.icon(
-                      icon: const Icon(Icons.delete, size: 18),
-                      label: const Text('Delete'),
-                      style: FilledButton.styleFrom(
-                        backgroundColor: const Color(0xFFE54D4D),
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-                      ),
-                      onPressed: () {
-                        defaultYesNoDialog(
-                          context: context,
-                          message: "Are you sure you want to delete this record?",
-                          onYes: () {
-                            _businessAllPetController.deletedHealthHistory(
-                              id: id ?? "",
-                              status: status,
-                              pagingController: pagingController,
+                  // Action buttons
+                  Row(
+                    children: [
+                      Expanded(
+                        child: OutlinedButton.icon(
+                          icon: const Icon(Icons.edit_outlined, size: 18),
+                          label: const Text('Edit'),
+                          style: OutlinedButton.styleFrom(
+                            foregroundColor: const Color(0xFF2C3E50),
+                            side: BorderSide(color: Colors.grey[300]!, width: 1.5),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 14,
+                            ),
+                          ),
+                          onPressed: () {
+                            editAddHealthDialog(
+                              context: context,
+                              date: dateOfMonth,
+                              description: treatmentDescription,
+                              title: title,
+                              name: drName,
+                              id: petMedicalHistoryId ?? "",
                               pagingController1: pagingController1,
+                              pagingController: pagingController,
                             );
                           },
-                        );
-                      },
-                    ),
+                        ),
+                      ),
+                      const Gap(12),
+                      Expanded(
+                        child: ElevatedButton.icon(
+                          icon: const Icon(Icons.delete_outline, size: 18),
+                          label: const Text('Delete'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFFE54D4D),
+                            foregroundColor: Colors.white,
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 14,
+                            ),
+                          ),
+                          onPressed: () {
+                            defaultYesNoDialog(
+                              context: context,
+                              message: "Are you sure you want to delete this record?",
+                              onYes: () {
+                                _businessAllPetController.deletedHealthHistory(
+                                  id: petMedicalHistoryId ?? "",
+                                  status: status,
+                                  pagingController: pagingController,
+                                  pagingController1: pagingController1,
+                                );
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ],
+            ),
           ),
         ),
       ),
@@ -168,30 +239,59 @@ class HealthCard extends StatelessWidget {
   }
 }
 
-class _MetaLine extends StatelessWidget {
-  const _MetaLine({
+class _InfoTile extends StatelessWidget {
+  const _InfoTile({
     required this.icon,
-    required this.text,
-    this.maxLines = 1,
-    this.color,
+    required this.label,
+    required this.value,
+    required this.iconColor,
+    this.isExpandable = false,
   });
 
   final IconData icon;
-  final String text;
-  final int maxLines;
-  final Color? color;
+  final String label;
+  final String value;
+  final Color iconColor;
+  final bool isExpandable;
 
   @override
   Widget build(BuildContext context) {
-    final textColor = color ?? Theme.of(context).colorScheme.onSurfaceVariant;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(icon, size: 18, color: textColor),
-        const SizedBox(width: 8),
+        Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: iconColor.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Icon(icon, size: 20, color: iconColor),
+        ),
+        const Gap(12),
         Expanded(
-          child: ExpandableText(
-            text: text,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                label,
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.grey[600],
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              const Gap(4),
+              isExpandable
+                  ? ExpandableText(text: value)
+                  : Text(
+                value,
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xFF2C3E50),
+                ),
+              ),
+            ],
           ),
         ),
       ],
@@ -212,26 +312,28 @@ class _StatusPill extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bg = color.withValues(alpha: 0.12);
     return Container(
       decoration: BoxDecoration(
-        color: bg,
-        borderRadius: BorderRadius.circular(999),
-        border: Border.all(color: color.withValues(alpha: 0.35)),
+        color: color.withOpacity(0.15),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: color.withOpacity(0.4),
+          width: 1.5,
+        ),
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(icon, size: 16, color: color),
-          const SizedBox(width: 6),
+          const Gap(6),
           Text(
             text,
             style: TextStyle(
               color: color,
-              fontWeight: FontWeight.w600,
-              fontSize: 12.5,
-              letterSpacing: 0.2,
+              fontWeight: FontWeight.w700,
+              fontSize: 12,
+              letterSpacing: 0.3,
             ),
           ),
         ],

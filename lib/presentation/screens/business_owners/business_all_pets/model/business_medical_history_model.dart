@@ -1,4 +1,3 @@
-
 class BusinessMedicalHistoryModel {
   final bool? success;
   final String? message;
@@ -6,7 +5,7 @@ class BusinessMedicalHistoryModel {
   final int? limit;
   final int? totalPages;
   final int? totalRecords;
-  final List<PetMedicalHistoryByTreatmentStatus>? petMedicalHistoryByTreatmentStatus;
+  final List<PetMedicalHistoryByTreatmentStatus>? petMedicalHistory;
 
   BusinessMedicalHistoryModel({
     this.success,
@@ -15,8 +14,27 @@ class BusinessMedicalHistoryModel {
     this.limit,
     this.totalPages,
     this.totalRecords,
-    this.petMedicalHistoryByTreatmentStatus,
+    this.petMedicalHistory,
   });
+
+  BusinessMedicalHistoryModel copyWith({
+    bool? success,
+    String? message,
+    int? page,
+    int? limit,
+    int? totalPages,
+    int? totalRecords,
+    List<PetMedicalHistoryByTreatmentStatus>? petMedicalHistory,
+  }) =>
+      BusinessMedicalHistoryModel(
+        success: success ?? this.success,
+        message: message ?? this.message,
+        page: page ?? this.page,
+        limit: limit ?? this.limit,
+        totalPages: totalPages ?? this.totalPages,
+        totalRecords: totalRecords ?? this.totalRecords,
+        petMedicalHistory: petMedicalHistory ?? this.petMedicalHistory,
+      );
 
   factory BusinessMedicalHistoryModel.fromJson(Map<String, dynamic> json) => BusinessMedicalHistoryModel(
     success: json["success"],
@@ -25,7 +43,7 @@ class BusinessMedicalHistoryModel {
     limit: json["limit"],
     totalPages: json["totalPages"],
     totalRecords: json["totalRecords"],
-    petMedicalHistoryByTreatmentStatus: json["petMedicalHistoryByTreatmentStatus"] == null ? [] : List<PetMedicalHistoryByTreatmentStatus>.from(json["petMedicalHistoryByTreatmentStatus"]!.map((x) => PetMedicalHistoryByTreatmentStatus.fromJson(x))),
+    petMedicalHistory: json["petMedicalHistory"] == null ? [] : List<PetMedicalHistoryByTreatmentStatus>.from(json["petMedicalHistory"]!.map((x) => PetMedicalHistoryByTreatmentStatus.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -35,14 +53,14 @@ class BusinessMedicalHistoryModel {
     "limit": limit,
     "totalPages": totalPages,
     "totalRecords": totalRecords,
-    "petMedicalHistoryByTreatmentStatus": petMedicalHistoryByTreatmentStatus == null ? [] : List<dynamic>.from(petMedicalHistoryByTreatmentStatus!.map((x) => x.toJson())),
+    "petMedicalHistory": petMedicalHistory == null ? [] : List<dynamic>.from(petMedicalHistory!.map((x) => x.toJson())),
   };
 }
 
 class PetMedicalHistoryByTreatmentStatus {
+  final String? treatmentType;
   final String? id;
   final String? petId;
-  final String? treatmentType;
   final DateTime? treatmentDate;
   final String? treatmentName;
   final String? doctorName;
@@ -53,9 +71,9 @@ class PetMedicalHistoryByTreatmentStatus {
   final int? v;
 
   PetMedicalHistoryByTreatmentStatus({
+    this.treatmentType,
     this.id,
     this.petId,
-    this.treatmentType,
     this.treatmentDate,
     this.treatmentName,
     this.doctorName,
@@ -66,10 +84,37 @@ class PetMedicalHistoryByTreatmentStatus {
     this.v,
   });
 
+  PetMedicalHistoryByTreatmentStatus copyWith({
+    String? treatmentType,
+    String? id,
+    String? petId,
+    DateTime? treatmentDate,
+    String? treatmentName,
+    String? doctorName,
+    String? treatmentDescription,
+    String? treatmentStatus,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    int? v,
+  }) =>
+      PetMedicalHistoryByTreatmentStatus(
+        treatmentType: treatmentType ?? this.treatmentType,
+        id: id ?? this.id,
+        petId: petId ?? this.petId,
+        treatmentDate: treatmentDate ?? this.treatmentDate,
+        treatmentName: treatmentName ?? this.treatmentName,
+        doctorName: doctorName ?? this.doctorName,
+        treatmentDescription: treatmentDescription ?? this.treatmentDescription,
+        treatmentStatus: treatmentStatus ?? this.treatmentStatus,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+        v: v ?? this.v,
+      );
+
   factory PetMedicalHistoryByTreatmentStatus.fromJson(Map<String, dynamic> json) => PetMedicalHistoryByTreatmentStatus(
+    treatmentType: json["treatmentType"],
     id: json["_id"],
     petId: json["petId"],
-    treatmentType: json["treatmentType"],
     treatmentDate: json["treatmentDate"] == null ? null : DateTime.parse(json["treatmentDate"]),
     treatmentName: json["treatmentName"],
     doctorName: json["doctorName"],
@@ -81,9 +126,9 @@ class PetMedicalHistoryByTreatmentStatus {
   );
 
   Map<String, dynamic> toJson() => {
+    "treatmentType": treatmentType,
     "_id": id,
     "petId": petId,
-    "treatmentType": treatmentType,
     "treatmentDate": treatmentDate?.toIso8601String(),
     "treatmentName": treatmentName,
     "doctorName": doctorName,
