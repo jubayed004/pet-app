@@ -17,22 +17,6 @@ class HomeController extends GetxController {
   RxInt currentIndex = 0.obs;
   RxInt selectedTabIndex = 0.obs;
 
-  final List<Widget> iconList = [
-    Assets.icons.petvets.svg(),
-    Assets.icons.petshops.svg(),
-    Assets.icons.petgrooming.svg(),
-    Assets.icons.pethotel.svg(),
-    Assets.icons.pettraining.svg(),
-    Assets.icons.friendlyplace.svg(),
-  ];
-  final List<String> stringList = [
-    AppStrings.petVets,
-    AppStrings.petShops,
-    AppStrings.petGrooming,
-    AppStrings.petHotels,
-    AppStrings.petTraining,
-    AppStrings.friendlyPlace,
-  ];
 
 
 

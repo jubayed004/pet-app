@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:pet_app/controller/get_controllers.dart';
 import 'package:pet_app/core/route/route_path.dart';
 import 'package:pet_app/core/route/routes.dart';
-import 'package:pet_app/presentation/screens/business_owners/business_all_pets/view/health_records_screen.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
 import 'package:pet_app/presentation/components/custom_button/custom_defualt_appbar.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
@@ -125,7 +123,7 @@ class _BusinessPetsDetailsScreenState extends State<BusinessPetsDetailsScreen> {
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: Colors.red.withOpacity(0.1),
+                color: Colors.red.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
               child: const Icon(
@@ -183,7 +181,7 @@ class _BusinessPetsDetailsScreenState extends State<BusinessPetsDetailsScreen> {
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: Colors.grey.withOpacity(0.1),
+                color: Colors.grey.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
               child: const Icon(
@@ -231,7 +229,7 @@ class _BusinessPetsDetailsScreenState extends State<BusinessPetsDetailsScreen> {
   Widget _buildPetImageSection(BuildContext context, String? petPhoto, double screenHeight) {
     final image = (petPhoto != null && petPhoto.isNotEmpty)
         ? petPhoto
-        : 'https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=800&q=80';
+        : 'https://images.unsplash.com/photo-1601758123927-196d5f3f6bb0?auto=format&fit=crop&w=800&q=80';
 
     return Stack(
       children: [
@@ -265,7 +263,8 @@ class _BusinessPetsDetailsScreenState extends State<BusinessPetsDetailsScreen> {
                 child: Center(
                   child: CircularProgressIndicator(
                     value: loadingProgress.expectedTotalBytes != null
-                        ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                        ? loadingProgress.cumulativeBytesLoaded /
+                        loadingProgress.expectedTotalBytes!
                         : null,
                   ),
                 ),
@@ -295,10 +294,11 @@ class _BusinessPetsDetailsScreenState extends State<BusinessPetsDetailsScreen> {
     );
   }
 
+
   Widget _buildPetInfoCard(dynamic pet, double screenWidth) {
     return Card(
       elevation: 3,
-      shadowColor: Colors.black.withOpacity(0.1),
+      shadowColor: Colors.black.withValues(alpha: 0.1),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Padding(
         padding: EdgeInsets.all(screenWidth * 0.05),
@@ -310,13 +310,13 @@ class _BusinessPetsDetailsScreenState extends State<BusinessPetsDetailsScreen> {
                 gradient: LinearGradient(
                   colors: [
                     const Color(0xFFE54D4D),
-                    const Color(0xFFE54D4D).withOpacity(0.7),
+                    const Color(0xFFE54D4D).withValues(alpha: 0.7),
                   ],
                 ),
                 borderRadius: BorderRadius.circular(14),
                 boxShadow: [
                   BoxShadow(
-                    color: const Color(0xFFE54D4D).withOpacity(0.3),
+                    color: const Color(0xFFE54D4D).withValues(alpha: 0.3),
                     blurRadius: 8,
                     offset: const Offset(0, 4),
                   ),
@@ -341,7 +341,7 @@ class _BusinessPetsDetailsScreenState extends State<BusinessPetsDetailsScreen> {
                       Container(
                         padding: const EdgeInsets.all(4),
                         decoration: BoxDecoration(
-                          color: AppColors.purple500.withOpacity(0.1),
+                          color: AppColors.purple500.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: Icon(
@@ -388,7 +388,7 @@ class _BusinessPetsDetailsScreenState extends State<BusinessPetsDetailsScreen> {
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [Colors.blue, Colors.blue.withOpacity(0.7)],
+                  colors: [Colors.blue, Colors.blue.withValues(alpha: 0.7)],
                 ),
                 borderRadius: BorderRadius.circular(10),
               ),
@@ -416,7 +416,7 @@ class _BusinessPetsDetailsScreenState extends State<BusinessPetsDetailsScreen> {
                 border: Border.all(color: Colors.grey[300]!, width: 1.5),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
+                    color: Colors.black.withValues(alpha: 0.05),
                     blurRadius: 8,
                     offset: const Offset(0, 2),
                   ),
@@ -428,7 +428,7 @@ class _BusinessPetsDetailsScreenState extends State<BusinessPetsDetailsScreen> {
                   Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: (detail['color'] as Color).withOpacity(0.1),
+                      color: (detail['color'] as Color).withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Icon(
@@ -471,13 +471,13 @@ class _BusinessPetsDetailsScreenState extends State<BusinessPetsDetailsScreen> {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            const Color(0xFFE54D4D).withOpacity(0.15),
-            const Color(0xFFE54D4D).withOpacity(0.05),
+            const Color(0xFFE54D4D).withValues(alpha: 0.15),
+            const Color(0xFFE54D4D).withValues(alpha: 0.05),
           ],
         ),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: const Color(0xFFE54D4D).withOpacity(0.3),
+          color: const Color(0xFFE54D4D).withValues(alpha: 0.3),
           width: 1.5,
         ),
       ),
@@ -494,7 +494,7 @@ class _BusinessPetsDetailsScreenState extends State<BusinessPetsDetailsScreen> {
                   borderRadius: BorderRadius.circular(12),
                   boxShadow: [
                     BoxShadow(
-                      color: const Color(0xFFE54D4D).withOpacity(0.3),
+                      color: const Color(0xFFE54D4D).withValues(alpha: 0.3),
                       blurRadius: 8,
                       offset: const Offset(0, 4),
                     ),
@@ -566,7 +566,7 @@ class _BusinessPetsDetailsScreenState extends State<BusinessPetsDetailsScreen> {
         border: Border.all(color: Colors.grey[300]!, width: 1.5),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, 3),
           ),
@@ -581,7 +581,7 @@ class _BusinessPetsDetailsScreenState extends State<BusinessPetsDetailsScreen> {
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [Colors.indigo, Colors.indigo.withOpacity(0.7)],
+                    colors: [Colors.indigo, Colors.indigo.withValues(alpha: 0.7)],
                   ),
                   borderRadius: BorderRadius.circular(10),
                 ),

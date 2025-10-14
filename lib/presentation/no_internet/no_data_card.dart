@@ -16,11 +16,11 @@ class NoDataCard extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: Column(
         children: [
-          const Gap(24),
-          CustomText(text: "no items found", fontWeight: FontWeight.w600, fontSize: 22.sp),
-          const Gap(12),
-          CustomText(text: "the list is currently empty",maxLines: 2,),
-          const Gap(24),
+          const Gap(16),
+          CustomText(text: "No items found", fontWeight: FontWeight.w600, fontSize: 22.sp),
+          const Gap(8),
+          CustomText(text: "The list is currently empty",maxLines: 2,),
+          const Gap(16),
           CustomButton(title: "Try again",onTap: onTap),
         ],
       ),

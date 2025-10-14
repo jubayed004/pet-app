@@ -33,26 +33,34 @@ class MessageController extends GetxController {
       final userId = await DBHelper().getUserId();
       SocketApi.socket?.off('conversation_update/$userId');
       SocketApi.socket?.on('conversation_update/$userId', (data) {
-        debugPrint("Conversation ${data.toString()}");
-        final updatedMessage = ConversationItem.fromJson(data);
-        final currentMessages = pagingController.itemList ?? [];
-        int existingIndex = currentMessages.indexWhere((msg) => msg.conversationId == updatedMessage.conversationId);
+        debugPrint("Conversation Received: ${data.toString()}");
 
-        if (existingIndex != -1) {
-          if (existingIndex == 0) {
-            currentMessages[0] = updatedMessage;
+        if (data['messageType'] == 'TEXT') {
+          final updatedMessage = ConversationItem.fromJson(data);
+          final currentMessages = pagingController.itemList ?? [];
+
+          int existingIndex = currentMessages.indexWhere((msg) => msg.conversationId == updatedMessage.conversationId);
+
+          if (existingIndex != -1) {
+            if (existingIndex == 0) {
+              currentMessages[0] = updatedMessage;
+            } else {
+              currentMessages.removeAt(existingIndex);
+              currentMessages.insert(0, updatedMessage);
+            }
           } else {
-            currentMessages.removeAt(existingIndex);
             currentMessages.insert(0, updatedMessage);
           }
+
+          pagingController.itemList = [...currentMessages];
+          debugPrint("Updated conversation list: ${pagingController.itemList?.length}");
         } else {
-          currentMessages.insert(0, updatedMessage);
+          debugPrint("Ignored non-text message");
         }
-        pagingController.itemList = [...currentMessages];
-        debugPrint("Updated conversation list: ${pagingController.itemList?.length}");
       });
     } catch (e) {
       debugPrint("Socket Error Inbox Controller Try Catch $e");
     }
   }
+
 }

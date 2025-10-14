@@ -15,6 +15,7 @@ class RoutePath{
   static const String businessBookingScreen = 'businessBookingScreen';
   static const String businessAdvertisementScreen = 'businessAdvertisementScreen';
   static const String businessDetailsAdvertisementScreen = 'businessDetailsAdvertisementScreen';
+  static const String businessReviewScreen = 'businessReviewScreen';
   static const String reviewScreen = 'reviewScreen';
 
   static const String signInScreen = 'signInScreen';

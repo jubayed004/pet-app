@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:pet_app/controller/get_controllers.dart';
 import 'package:pet_app/core/route/routes.dart';
 import 'package:pet_app/presentation/components/custom_button/custom_defualt_appbar.dart';
@@ -41,6 +42,12 @@ class DashboardScreen extends StatelessWidget {
       _BookingItem(
         title: 'Total Reject',
         icon: Icons.cancel_schedule_send,
+        count: 1245,
+        color: Colors.pinkAccent,
+      ),
+      _BookingItem(
+        title: 'Total Bookings',
+        icon: Iconsax.book,
         count: 1245,
         color: Colors.pinkAccent,
       ),

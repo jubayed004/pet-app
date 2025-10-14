@@ -7,7 +7,6 @@ import 'package:pet_app/helper/local_db/local_db.dart';
 import 'package:pet_app/presentation/components/custom_button/custom_defualt_appbar.dart';
 import 'package:pet_app/presentation/no_internet/error_card.dart';
 import 'package:pet_app/service/socket_service.dart';
-import 'package:socket_io_client/socket_io_client.dart';
 import 'model/conversation_model.dart';
 import 'widget/message_card_item_widget.dart';
 
@@ -19,39 +18,59 @@ class InboxPage extends StatefulWidget {
   State<InboxPage> createState() => _InboxPageState();
 }
 
-class _InboxPageState extends State<InboxPage> {
+class _InboxPageState extends State<InboxPage> with WidgetsBindingObserver {
   final controller = GetControllers.instance.getMessageController();
-
   final pagingController = PagingController<int, ConversationItem>(firstPageKey: 1);
 
   @override
   void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+
     pagingController.addPageRequestListener((pageKey) {
       controller.getAllConversation(pageKey: pageKey, pagingController: pagingController);
     });
 
     listenApi();
-    super.initState();
+  }
+
+  // Called when app lifecycle changes
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      // Refresh when user returns from another screen
+      pagingController.refresh();
+    }
+  }
+
+  // Reconnect and listen every time user comes back
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    listenApi();
   }
 
   Future<void> listenApi() async {
     await SocketApi.init();
     controller.listenForNewConversation(pagingController: pagingController);
-    // Ensure socket is connected before listening
-    if (SocketApi.socket?.connected == true) {
 
-      // Debug all events
+    if (SocketApi.socket?.connected == true) {
       SocketApi.socket!.onAny((event, data) {
         debugPrint("EVENT: $event -> $data");
+
+        // If a new text message arrives, refresh conversations instantly
+        if (event.toString().contains('conversation_update')) {
+          pagingController.refresh();
+        }
       });
-    }else{
-      debugPrint("Socket Not Connected ---------------------------------------------------------------------");
+    } else {
+      debugPrint("Socket Not Connected ❌");
     }
   }
 
-
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     pagingController.dispose();
     super.dispose();
   }
@@ -62,13 +81,14 @@ class _InboxPageState extends State<InboxPage> {
       backgroundColor: Colors.white,
       body: FutureBuilder(
         future: DBHelper().getUserId(),
-        builder: (_, AsyncSnapshot<String> id){
-          if(id.data == null){
-            return Center(child: CircularProgressIndicator(),);
+        builder: (_, AsyncSnapshot<String> id) {
+          if (!id.hasData) {
+            return const Center(child: CircularProgressIndicator());
           }
+
           return CustomScrollView(
             slivers: [
-              CustomDefaultAppbar(title: "Inbox"),
+              const CustomDefaultAppbar(title: "Inbox"),
               SliverFillRemaining(
                 child: RefreshIndicator(
                   onRefresh: () async {
@@ -79,16 +99,14 @@ class _InboxPageState extends State<InboxPage> {
                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
                     builderDelegate: PagedChildBuilderDelegate<ConversationItem>(
                       itemBuilder: (context, item, index) {
-                        print(item.toJson());
-                        print(id.data ?? "Id Null");
                         final partner = item.getPartner(id.data ?? "");
-                        print(partner?.toJson());
                         final name = partner?.name ?? "";
                         final isRead = item.lastMessage?.seen ?? false;
                         final message = item.lastMessage?.text ?? "";
                         final image = partner?.profileImage;
-                        final photo = image != null && image.isNotEmpty ? image : "";
+                        final photo = (image != null && image.isNotEmpty) ? image : "";
                         final date = DateFormat("dd-MM-yyyy").format(item.lastMessage?.createdAt ?? DateTime.now());
+
                         return MessageCardItemWidget(
                           isRead: isRead,
                           name: name,

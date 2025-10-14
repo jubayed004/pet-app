@@ -51,7 +51,7 @@ class ApiUrl {
   static updateProfile() => '$base/user/update-profile';
   static getBusinessShopProfile() => '$base/business/get';
 
- ///======UserAll
+ ///UserAll
 
   static getHomeHeader() => '$base/user-home-page/totalPetsForLoggedInUser';
   static getNotify() => '$base/notifications/simple';
@@ -81,6 +81,8 @@ class ApiUrl {
   ///Health update
 
   static getPetBusiness() => '$base/owner/get-all-pets-who-booked';
+  static getBusinessHomeBrand() => '$base/top-brands/get-all';
+
   ///Health update
 
   static getHealthHistory({required String id,required String status,required int page}) => '$base/pet-medical-history/get/$id?treatmentStatus=$status&limit=10&page=$page';
@@ -113,17 +115,9 @@ class ApiUrl {
 
   ///User All==================
 
-  static getSinglePlace({required String id}) => '$base/place/get-single-place/$id';
-  static addPlace() => '$base/place/add-place';
   static getNotification({required int pageKey}) => '$base/notification/get-all-notifications?page=$pageKey&limit=20';
   static deleteNotification({required String id}) => '$base/notification/delete-notification/$id';
   static getAllBooking({required String status, required int page}) => '$base/owner/get-bookings-by-owner-with-status?status=$status&limit=10&page=$page';
   static getCountryCity() => '$base/get-country-city';
   static updateStatus({required String id}) => '$base/owner/update-booking-status/$id';
-  static getSingleRegulation({required String country}) => '$base/regulation/get-single-regulation?country=$country';
-  static getAllInbox({required int pageKey, required String search}) => '$base/conversation/get-chat-list?page=$pageKey&limit=10&searchTerm=$search';
-  static getAllCollaboration({required int pageKey, required String params}) => '$base/collaboration/my-collaborations?status=$params&page=$pageKey&limit=10';
-  static acceptRejectCollaboration({required String id}) => '$base/collaboration/accept-reject-collaboration/$id';
-  static completeCollaboration({required String id}) => '$base/collaboration/mark-as-complete/$id';
-  static addRemoveBookmark({required String id}) => '$base/bookmark/add-delete-bookmark/$id';
 }

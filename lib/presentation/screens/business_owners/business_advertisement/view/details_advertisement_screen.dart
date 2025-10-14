@@ -17,12 +17,16 @@ class DetailsAdvertisementScreen extends StatefulWidget {
 
 class _DetailsAdvertisementScreenState extends State<DetailsAdvertisementScreen> {
 
+  final controller = GetControllers.instance.getBusinessAdvertisementController();
   @override
   void initState() {
-    controller.getDetailsAdvertisement();
     super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      controller.getDetailsAdvertisement();
+    });
   }
-  final controller = GetControllers.instance.getBusinessAdvertisementController();
+
 
   @override
   Widget build(BuildContext context) {

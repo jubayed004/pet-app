@@ -246,26 +246,25 @@ class _HealthRecordsScreenState extends State<HealthRecordsScreen> with SingleTi
           ],
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.only(bottom: 12),
+          padding: const EdgeInsets.only(bottom: 12, right: 16),
           child: FloatingActionButton(
             onPressed: () => showAddHealthDialog(
               context,
-              widget.petId,           // keep using your screen's id
-              pagingController1,   // PENDING list controller
-              pagingController,    // COMPLETED list controller
+              widget.petId,
+              pagingController1,
+              pagingController,
             ),
             backgroundColor: const Color(0xFFE54D4D),
-            shape: const CircleBorder(), // ensures round shape
+            shape: const CircleBorder(),
             elevation: 4,
             tooltip: 'Add Record',
             child: const Icon(Icons.add, color: Colors.white),
           ),
         ),
       ),
-
     );
   }
 }

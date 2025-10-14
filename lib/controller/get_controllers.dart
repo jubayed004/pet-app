@@ -4,8 +4,11 @@ import 'package:pet_app/presentation/screens/auth/pet_shop_registration/controll
 import 'package:pet_app/presentation/screens/business_owners/business_advertisement/controller/business_advertisement_controller.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_all_pets/controller/business_all_pet_controller.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_booking/controller/business_booking_controller.dart';
+import 'package:pet_app/presentation/screens/business_owners/business_home/controller/business_home_controller.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_nav/controller/navigation_controller.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_profile/controller/business_profile_controller.dart';
+import 'package:pet_app/presentation/screens/business_owners/business_review/controller/business_review_screen_controller.dart';
+import 'package:pet_app/presentation/screens/business_owners/business_review/view/business_review_screen.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_service/controller/business_add_service_controller.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_service/controller/business_service_controller.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_shop_profile/controller/category_details_controller.dart';
@@ -250,6 +253,20 @@ AuthController getAuthController() {
       Get.put(BusinessShopProfileController());
     }
     return Get.find<BusinessShopProfileController>();
+
+  }
+  BusinessHomeController getBusinessHomeController() {
+    if (!Get.isRegistered<BusinessHomeController>()) {
+      Get.put(BusinessHomeController());
+    }
+    return Get.find<BusinessHomeController>();
+
+  }
+  BusinessReviewController getBusinessReviewController() {
+    if (!Get.isRegistered<BusinessReviewController>()) {
+      Get.put(BusinessReviewController());
+    }
+    return Get.find<BusinessReviewController>();
 
   }
   DashBoardController getDashBoardController() {

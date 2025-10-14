@@ -21,30 +21,34 @@ class ButtonSectionAll extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 12),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              children: [
-                icon,
-                const Gap(8),
-                CustomText(
-                  text: text,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                ),
-              ],
-            ),
-
-            if (showTrailingIcon)
-              Icon(
-                Icons.arrow_forward_ios_rounded,
-                size: 20,
-                color: AppColors.purple500,
+      child: Card(
+        color: Colors.white,
+        elevation: 2,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 16,horizontal: 16),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  icon,
+                  const Gap(8),
+                  CustomText(
+                    text: text,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ],
               ),
-          ],
+        
+              if (showTrailingIcon)
+                Icon(
+                  Icons.arrow_forward_ios_rounded,
+                  size: 20,
+                  color: AppColors.purple500,
+                ),
+            ],
+          ),
         ),
       ),
     );

@@ -20,7 +20,7 @@ import 'package:pet_app/utils/app_colors/app_colors.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class BusinessServiceScreen extends StatelessWidget {
-  BusinessServiceScreen({super.key,});
+  BusinessServiceScreen({super.key});
 
   final businessServiceController = GetControllers.instance.getBusinessServiceController();
 
@@ -38,28 +38,19 @@ class BusinessServiceScreen extends StatelessWidget {
             SliverToBoxAdapter(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Assets.icons.animalshelter.svg(),
                   GestureDetector(
                     onTap: () {
-                      AppRouter.route.pushNamed(RoutePath.businessAddServiceScreen,);
+                      AppRouter.route.pushNamed(RoutePath.businessAddServiceScreen);
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(
-                          Icons.add_circle_outline,
-                          size: 26,
-                          color: const Color(0xff3F5332),
-                        ),
+                        Icon(Icons.add_circle_outline, size: 26, color: const Color(0xff3F5332)),
                         const Gap(6),
-                        const CustomText(
-                          text: "Add Service",
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: Color(0xff3F5332),
-                        ),
+                        const CustomText(text: "Add Service", fontSize: 16, fontWeight: FontWeight.w600, color: Color(0xff3F5332)),
                       ],
                     ),
                   ),
@@ -68,281 +59,224 @@ class BusinessServiceScreen extends StatelessWidget {
               ),
             ),
             Obx(() {
+              final services = businessServiceController.service.value.services ?? [];
+
+              if (services.isEmpty) {
+                return SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Assets.icons.animalshelter.svg(width: 120),
+                        const SizedBox(height: 20),
+                        const CustomText(text: "No Services Added Yet!", fontSize: 18, fontWeight: FontWeight.w600, textAlign: TextAlign.center),
+                        const SizedBox(height: 12),
+                        const CustomText(
+                          text: "Start by tapping the + icon above to add your first service and let your customers find you easily.",
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.grey,
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }
+
               return SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                    final item = businessServiceController.service.value.services ?? [];
-                    final serviceImage = item[index].servicesImages ?? "";
-                    final serviceLogo = item[index].shopLogo ?? "";
-                    final logo = serviceLogo.isNotEmpty ? serviceLogo : "";
-                    final image = serviceImage.isNotEmpty ? serviceImage : "";
-                    final provider = item[index].providings ?? [];
-                    final stringProvider = provider.isNotEmpty ? provider.first : "";
-                    final List<String> providerList = stringProvider.split(',').map((e) => e.trim()).where((e) => e.isNotEmpty).toList();
-                    print("${ApiUrl.imageBase}$image");
-                    return GestureDetector(
-                      onTap: () {
-                        // Uncomment and use AppRouter to navigate
-                        // AppRouter.route.pushNamed(RoutePath.categoryDetailsScreen);
-                      },
-                      child: Container(
-                        margin: EdgeInsets.only(
-                          bottom: 10,
-                          left: 16,
-                          right: 16,
-                        ),
-                        padding: EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              spreadRadius: 2.r,
-                              blurRadius: 5,
-                              offset: Offset(
-                                0,
-                                3,
-                              ), // changes position of shadow
-                            ),
-                          ],
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Gap(6),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      image.isNotEmpty
-                                          ? CustomNetworkImage(borderRadius: BorderRadius.circular(6,),
-                                            height: MediaQuery.of(context,).size.height / 10, width:
-                                            MediaQuery.of(context,).size.width, imageUrl: image.replaceAll("\\", "/"),
-                                          )
-                                          : CustomImage(imageSrc: "assets/images/womandogimage.png", boxFit: BoxFit.cover,),
-                                      Gap(6),
-                                      CustomText(
-                                        text: "Open",
-                                        color: AppColors.primaryColor,
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 14.sp,
-                                      ),
-                                    ],
-                                  ),
+                delegate: SliverChildBuilderDelegate((context, index) {
+                  final item = services[index];
+                  final serviceImage = item.servicesImages ?? "";
+                  final serviceLogo = item.shopLogo ?? "";
+                  final logo = serviceLogo.isNotEmpty ? serviceLogo : "";
+                  final image = serviceImage.isNotEmpty ? serviceImage : "";
+                  final provider = item.providings ?? [];
+                  final stringProvider = provider.isNotEmpty ? provider.first : "";
+                  final List<String> providerList = stringProvider.split(',').map((e) => e.trim()).where((e) => e.isNotEmpty).toList();
+
+                  return GestureDetector(
+                    onTap: () {},
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [BoxShadow(color: Colors.grey.withOpacity(0.5), spreadRadius: 2.r, blurRadius: 5, offset: const Offset(0, 3))],
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Gap(6),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  children: [
+                                    image.isNotEmpty
+                                        ? CustomNetworkImage(
+                                          borderRadius: BorderRadius.circular(6),
+                                          height: MediaQuery.of(context).size.height / 10,
+                                          width: MediaQuery.of(context).size.width,
+                                          imageUrl: image.replaceAll("\\", "/"),
+                                        )
+                                        : const CustomImage(imageSrc: "assets/images/womandogimage.png", boxFit: BoxFit.cover),
+                                    Gap(6),
+                                    CustomText(text: "Open", color: AppColors.primaryColor, fontWeight: FontWeight.w500, fontSize: 14.sp),
+                                  ],
                                 ),
-                                Gap(6),
-                                Expanded(
-                                  flex: 2,
-                                  child: Column(
-                                    spacing: 6.h,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      CustomText(
-                                        text: item[index].serviceName ?? "",
-                                        fontSize: 18.sp,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-
-                                      CustomText(
-                                        text: item[index].serviceType ?? "",
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                      Row(
-                                        children: [
-                                          Icon(
-                                            Icons.location_on_sharp,
-                                            size: 18.sp,
-                                          ),
-                                          Expanded(
-                                            child: CustomText(
-                                              text: item[index].location ?? "",
-                                              overflow: TextOverflow.ellipsis,
-                                              textAlign: TextAlign.start,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      Row(
-                                        children: [
-                                          Icon(Icons.phone, size: 18.sp),
-                                          Expanded(
-                                            child: CustomText(
-                                              text: item[index].phone ?? "",
-                                              overflow: TextOverflow.ellipsis,
-                                              textAlign: TextAlign.start,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                logo.isNotEmpty
-                                    ? CustomNetworkImage(
-                                      boxShape: BoxShape.circle,
-                                      width: MediaQuery.of(context).size.width / 8,
-                                      height: MediaQuery.of(context).size.height / 10,
-                                      imageUrl: "${logo.replaceAll("\\", "/")}",
-                                    )
-                                    : CustomImage(
-                                      imageSrc: "assets/images/petshoplogo.png",
-                                      sizeWidth: 50.w,
-                                    ),
-                              ],
-                            ),
-                            Gap(8),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                CustomText(
-                                  text: "Service Provided :",
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                                ...List.generate(providerList.length, (
-                                  subIndex,
-                                ) {
-                                  return CustomText(
-                                    fontSize: 14.sp,
-                                    textAlign: TextAlign.start,
-                                    maxLines: 5,
-                                    text:
-                                        "${subIndex + 1}.  ${providerList[subIndex]} ",
-                                  );
-                                }),
-                              ],
-                            ),
-                            Gap(8),
-                            Row(
-                              spacing: 4,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Icon(Icons.access_time, size: 24.sp),
-
-                                Flexible(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      CustomText(
-                                        text: businessServiceController
-                                            .getOpenDaysTextComplete(
-                                          offDay: item[index].offDay ?? "",
-                                              openingTime: item[index].openingTime ?? "",
-                                              closingTime: item[index].closingTime ?? "",
-                                            ),
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                      CustomText(
-                                        text:
-                                            "${"Off day -"}${item[index].offDay ?? ""}",
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-
-                                Expanded(
-                                  flex: 0,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      GestureDetector(
-                                        onTap: () {
-                                          AppRouter.route.pushNamed(RoutePath.businessEditServiceScreen,
-                                              extra: {
-                                            'id': item[index].id ?? "",
-                                            'serviceName': item[index].serviceName ?? "",
-                                            'location':item[index].location ?? "",
-                                            'websiteLink':item[index].websiteLink ?? "",
-                                            'phoneNumber':item[index].phone ?? "",
-                                            'serviceController': providerList,
-                                              }
-
-                                          );
-                                        },
-                                        child: Assets.icons.editico.svg(width: 26,),
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          defaultDeletedYesNoDialog(
-                                            context: context,
-                                            title: 'Are you sure you want to delete this Service?',
-
-                                            onYes: () {
-                                              businessServiceController.deletedService(id: item[index].id ?? "",);
-                                            },
-
-                                          );
-                                        },
-                                        child: Assets.icons.deletedicon.svg(
-                                          width: 36.w,
-                                          colorFilter: ColorFilter.mode(
-                                            Colors.red,
-                                            BlendMode.srcIn,
-                                          ),
+                              ),
+                              Gap(6),
+                              Expanded(
+                                flex: 2,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    CustomText(text: item.serviceName ?? "", fontSize: 18.sp, fontWeight: FontWeight.w500),
+                                    CustomText(text: item.serviceType ?? "", overflow: TextOverflow.ellipsis),
+                                    Row(
+                                      children: [
+                                        Icon(Icons.location_on_sharp, size: 18.sp),
+                                        Expanded(
+                                          child: CustomText(text: item.location ?? "", overflow: TextOverflow.ellipsis, textAlign: TextAlign.start),
                                         ),
-                                      ),
-                                    ],
-                                  ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Icon(Icons.phone, size: 18.sp),
+                                        Expanded(
+                                          child: CustomText(text: item.phone ?? "", overflow: TextOverflow.ellipsis, textAlign: TextAlign.start),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                            Gap(8),
-                            if (["SHOP", "HOTEL",].contains(item[index].serviceType))
+                              ),
+                              logo.isNotEmpty
+                                  ? CustomNetworkImage(
+                                    boxShape: BoxShape.circle,
+                                    width: MediaQuery.of(context).size.width / 8,
+                                    height: MediaQuery.of(context).size.height / 10,
+                                    imageUrl: logo.replaceAll("\\", "/"),
+                                  )
+                                  : CustomImage(imageSrc: "assets/images/petshoplogo.png", sizeWidth: 50.w),
+                            ],
+                          ),
+                          Gap(8),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CustomText(text: "Service Provided :", fontSize: 14.sp, fontWeight: FontWeight.w600),
+                              ...List.generate(providerList.length, (subIndex) {
+                                return CustomText(
+                                  fontSize: 14.sp,
+                                  textAlign: TextAlign.start,
+                                  maxLines: 5,
+                                  text: "${subIndex + 1}.  ${providerList[subIndex]} ",
+                                );
+                              }),
+                            ],
+                          ),
+                          Gap(8),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Icon(Icons.access_time, size: 24.sp),
+                              Flexible(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    CustomText(
+                                      text: businessServiceController.getOpenDaysTextComplete(
+                                        offDay: item.offDay ?? "",
+                                        openingTime: item.openingTime ?? "",
+                                        closingTime: item.closingTime ?? "",
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    CustomText(text: "Off day - ${item.offDay ?? ""}", overflow: TextOverflow.ellipsis),
+                                  ],
+                                ),
+                              ),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Expanded(child: SizedBox()),
-                                  Expanded(
-                                    child: CustomButton(
-                                      onTap: () async {
-                                        String? websiteUrl = item[index].websiteLink;
-                                        if (websiteUrl == null ||
-                                            websiteUrl.isEmpty) {websiteUrl = "https://www.defaultwebsite.com"; // Provide a default URL
-                                        }
-                                        if (!websiteUrl.startsWith('http://') &&
-                                            !websiteUrl.startsWith('https://',)) {websiteUrl = 'https://' + websiteUrl; // Prepend 'https://' if not present
-                                        }
-                                        final Uri url = Uri.parse(websiteUrl,
-                                        );
-                                        if (await canLaunchUrl(url)) {
-                                          await launchUrl(url);
-                                        } else {
-                                          throw 'Could not launch $url';
-                                        }
-                                      },
-                                      title: "Website",
-                                      height: 24,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w400,
-                                      fillColor: AppColors.purple500,
-                                      textColor: Colors.black,
+                                  GestureDetector(
+                                    onTap: () {
+                                      AppRouter.route.pushNamed(
+                                        RoutePath.businessEditServiceScreen,
+                                        extra: {
+                                          'id': item.id ?? "",
+                                          'serviceName': item.serviceName ?? "",
+                                          'location': item.location ?? "",
+                                          'websiteLink': item.websiteLink ?? "",
+                                          'phoneNumber': item.phone ?? "",
+                                          'serviceController': providerList,
+                                        },
+                                      );
+                                    },
+                                    child: Assets.icons.editico.svg(width: 26),
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      defaultDeletedYesNoDialog(
+                                        context: context,
+                                        title: 'Are you sure you want to delete this Service?',
+                                        onYes: () {
+                                          businessServiceController.deletedService(id: item.id ?? "");
+                                        },
+                                      );
+                                    },
+                                    child: Assets.icons.deletedicon.svg(
+                                      width: 36.w,
+                                      colorFilter: const ColorFilter.mode(Colors.red, BlendMode.srcIn),
                                     ),
                                   ),
-                                  Expanded(child: SizedBox()),
                                 ],
                               ),
-                          ],
-                        ),
+                            ],
+                          ),
+                          Gap(8),
+                          if (["SHOP", "HOTEL"].contains(item.serviceType))
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Expanded(child: SizedBox()),
+                                Expanded(
+                                  child: CustomButton(
+                                    onTap: () async {
+                                      String? websiteUrl = item.websiteLink;
+                                      if (websiteUrl == null || websiteUrl.isEmpty) {
+                                        websiteUrl = "https://www.defaultwebsite.com";
+                                      }
+                                      if (!websiteUrl.startsWith('http')) {
+                                        websiteUrl = 'https://$websiteUrl';
+                                      }
+                                      final Uri url = Uri.parse(websiteUrl);
+                                      if (await canLaunchUrl(url)) {
+                                        await launchUrl(url);
+                                      }
+                                    },
+                                    title: "Website",
+                                    height: 24,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                    fillColor: AppColors.purple500,
+                                    textColor: Colors.black,
+                                  ),
+                                ),
+                                Expanded(child: SizedBox()),
+                              ],
+                            ),
+                        ],
                       ),
-                    );
-                  },
-                  childCount: businessServiceController.service.value.services?.length ?? 0, // Set the number of items in your list
-                ),
+                    ),
+                  );
+                }, childCount: services.length),
               );
             }),
-
-
           ],
         ),
       ),
