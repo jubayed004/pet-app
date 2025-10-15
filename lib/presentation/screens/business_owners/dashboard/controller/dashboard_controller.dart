@@ -5,41 +5,47 @@ import 'package:pet_app/service/api_service.dart';
 import 'package:pet_app/service/api_url.dart';
 import 'package:pet_app/utils/app_const/app_const.dart';
 
-class DashBoardController extends GetxController{
+class DashBoardController extends GetxController {
   final ApiClient apiClient = serviceLocator();
+
   var loading = Status.completed.obs;
-  RxString selectedView = 'Monthly'.obs;
-  loadingMethod(Status status) => loading.value = status;
+  final RxString selectedView = 'Monthly'.obs;
   final Rx<DashboardModel> dashboard = DashboardModel().obs;
 
-  ///===================== Business Shop Profile ====================
-  Future<void> getBusinessShopProfile({required String month, required String week}) async {
-    loadingMethod(Status.completed);
+  void loadingMethod(Status status) => loading.value = status;
+
+  Future<void> getDashboard({required String statuse}) async {
+    loadingMethod(Status.loading);
     try {
-      loadingMethod(Status.loading);
-      final response = await apiClient.get(url: ApiUrl.getBusinessDashboard(month: month, week: week));
+      final response =
+      await apiClient.get(url: ApiUrl.getBusinessDashboard(status: statuse));
       if (response.statusCode == 200) {
-        final newData = DashboardModel.fromJson(response.body);
-        dashboard.value = newData;
+        dashboard.value = DashboardModel.fromJson(response.body);
         loadingMethod(Status.completed);
+        print("✅ Dashboard data fetched for: $statuse");
+      } else if (response.statusCode == 503) {
+        loadingMethod(Status.internetError);
+      } else if (response.statusCode == 404) {
+        loadingMethod(Status.noDataFound);
       } else {
-        if (response.statusCode == 503) {
-          loadingMethod(Status.internetError);
-        } else if (response.statusCode == 404) {
-          loadingMethod(Status.noDataFound);
-        } else {
-          loadingMethod(Status.error);
-        }
+        loadingMethod(Status.error);
       }
     } catch (e) {
       loadingMethod(Status.error);
+      print("❌ Dashboard fetch error: $e");
     }
   }
-/*  @override
-  void onReady() {
-    getBusinessShopProfile(month: month, week: week);
-    super.onReady();
-  }*/
 
+  @override
+  void onInit() {
+    super.onInit();
 
+    // Initial fetch
+    getDashboard(statuse: selectedView.value.toLowerCase());
+
+    // Auto-fetch when view is changed
+    ever<String>(selectedView, (newView) {
+      getDashboard(statuse: newView.toLowerCase());
+    });
+  }
 }

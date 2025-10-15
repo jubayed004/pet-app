@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -11,7 +9,6 @@ import 'package:pet_app/presentation/components/custom_button/custom_defualt_app
 import 'package:pet_app/presentation/components/custom_image/custom_image.dart';
 import 'package:pet_app/presentation/components/custom_netwrok_image/custom_network_image.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
-import 'package:pet_app/service/api_url.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
 import 'package:pet_app/utils/app_strings/app_strings.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -19,221 +16,261 @@ import 'package:url_launcher/url_launcher.dart';
 class BusinessShopProfileScreen extends StatelessWidget {
   BusinessShopProfileScreen({super.key});
 
-  final controller = GetControllers.instance.getMyPetsProfileController();
-  final shopProfileController = GetControllers.instance.getBusinessShopProfileController();
+  final shopProfileController =
+  GetControllers.instance.getBusinessShopProfileController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: RefreshIndicator(
-        onRefresh: ()async{
-          shopProfileController.getBusinessShopProfile();
+        onRefresh: () async {
+          await shopProfileController.getBusinessShopProfile();
         },
         child: CustomScrollView(
           slivers: [
-            CustomDefaultAppbar(
-              title: "Business Profile ",
+            const CustomDefaultAppbar(
+              title: "Business Profile",
             ),
 
+            /// ---------- Main Profile Section ----------
             SliverToBoxAdapter(
-              child: SizedBox(
-                height: 380,
-                // increased from 320 to allow for taller card content
-                child: Stack(
-                  clipBehavior: Clip.none,
+              child: Obx(() {
+                final businesses =
+                    shopProfileController.shopProfile.value.business ?? [];
+
+                if (businesses.isEmpty) {
+                  return const Center(
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 80),
+                        child: CircularProgressIndicator(),
+                      ));
+                }
+
+                final business = businesses.first; // Display first one
+
+                final shopPic = business.shopPic?.isNotEmpty == true
+                    ? business.shopPic!.first
+                    : 'https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=800&q=80';
+
+                final shopLogo = business.shopLogo ??
+                    'https://via.placeholder.com/150x150.png?text=Pet+Shop';
+
+                return Column(
                   children: [
-                    // Background Image
-                    Obx(() {
-                      final value = shopProfileController.shopProfile.value.business?.shopPic;
+                    SizedBox(
+                      height: 380,
+                      child: Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          /// Background Image
+                          Image.network(
+                            shopPic,
+                            fit: BoxFit.cover,
+                            width: double.infinity,
+                            height: 250,
+                            errorBuilder: (context, _, __) => Container(
+                              height: 250,
+                              color: Colors.grey[300],
+                              child: const Icon(Icons.image_not_supported),
+                            ),
+                          ),
 
-                      return value != null && value.isNotEmpty ? Image.network(
-                        value.first,
-                        fit: BoxFit.cover,
-                        width: double.infinity,
-                        height: 250,
-                      ) : Image.network(
-                        'https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=800&q=80',
-                        fit: BoxFit.cover,
-                        width: double.infinity,
-                        height: 250,
-                      );
-                    }),
+                          /// Card
+                          Positioned(
+                            top: 200,
+                            left: 24,
+                            right: 24,
+                            child: Card(
+                              color: AppColors.kWhiteColor,
+                              elevation: 6,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 40, horizontal: 16),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    CustomText(
+                                      text: business.businessName ??
+                                          "Unknown Business",
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w600,
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    const Gap(8),
+                                    CustomText(
+                                      text: business.address ?? "",
+                                      fontSize: 14,
+                                      color: Colors.grey[600],
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    const Gap(16),
 
-                    // Card positioned below image, no fixed height, mainAxisSize.min ensures height matches content
-                    Positioned(
-                      top: 200,
-                      left: 30,
-                      right: 30,
-                      child: Card(
-                        color: AppColors.kWhiteColor,
-                        elevation: 6,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                              top: 40, bottom: 20, left: 16, right: 16),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Obx(() {
-                                return Text(
-                                  shopProfileController.shopProfile.value.business
-                                      ?.businessName ?? "",
-                                  style: TextStyle(fontSize: 16),
-                                );
-                              }),
+                                    /// Visit Website Button
+                                    CustomButton(
+                                      onTap: () async {
+                                        String websiteUrl =
+                                            business.website ?? "";
 
-                              Gap(16),
-                              CustomButton(
-                                onTap: () async {
-                                  // Get the website URL
-                                  String? websiteUrl = shopProfileController.shopProfile.value.business?.website;
+                                        if (websiteUrl.isEmpty) {
+                                          websiteUrl =
+                                          "https://www.defaultwebsite.com";
+                                        }
 
-                                  // If website URL is null or empty, use a fallback URL
-                                  if (websiteUrl == null || websiteUrl.isEmpty) {
-                                    websiteUrl = "https://www.defaultwebsite.com"; // Provide a default URL
-                                  }
+                                        if (!websiteUrl.startsWith('http')) {
+                                          websiteUrl = 'https://$websiteUrl';
+                                        }
 
-                                  // Ensure the URL starts with 'http://' or 'https://'
-                                  if (!websiteUrl.startsWith('http://') && !websiteUrl.startsWith('https://')) {
-                                    websiteUrl = 'https://' + websiteUrl; // Prepend 'https://' if not present
-                                  }
+                                        final Uri url = Uri.parse(websiteUrl);
 
-                                  final Uri url = Uri.parse(websiteUrl); // Convert the string to Uri
+                                        if (await canLaunchUrl(url)) {
+                                          await launchUrl(url,
+                                              mode: LaunchMode
+                                                  .externalApplication);
+                                        } else {
+                                          Get.snackbar(
+                                            "Error",
+                                            "Could not launch website",
+                                            backgroundColor:
+                                            Colors.redAccent.shade100,
+                                          );
+                                        }
+                                      },
+                                      title: "Visit Website",
+                                      textColor: Colors.black,
+                                      height: 40,
+                                      width: 150,
+                                      fontWeight: FontWeight.w500,
+                                      fillColor: Colors.white,
+                                      borderColor: Colors.black,
+                                      borderWidth: 1,
+                                      isBorder: true,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
 
-                                  // Check if the URL can be launched
-                                  if (await canLaunchUrl(url)) {
-                                    // Launch the URL if possible
-                                    await launchUrl(url);
-                                  } else {
-                                    // Handle error if the URL can't be launched
-                                    throw 'Could not launch $url';
-                                  }
+                          /// Floating Shop Logo
+                          Positioned(
+                            top: 150,
+                            left: 0,
+                            right: 0,
+                            child: Center(
+                              child: Container(
+                                width: 90,
+                                height: 90,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black26,
+                                      blurRadius: 8,
+                                      offset: const Offset(0, 4),
+                                    ),
+                                  ],
+                                ),
+                                child: ClipOval(
+                                  child: CustomNetworkImage(imageUrl: shopLogo),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    const Gap(20),
+
+                    /// ---------- Business Details ----------
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Column(
+                        children: [
+                          _buildRow(
+                            title: AppStrings.businessType,
+                            contentWidget: Wrap(
+                              children: List.generate(
+                                (business.servicesType ?? []).length,
+                                    (index) {
+                                  final text =
+                                      business.servicesType![index] ?? '';
+                                  return Padding(
+                                    padding:
+                                    const EdgeInsets.only(right: 4.0),
+                                    child: CustomText(
+                                      text: text +
+                                          (index !=
+                                              business.servicesType!
+                                                  .length -
+                                                  1
+                                              ? ','
+                                              : ''),
+                                      fontSize: 14,
+                                    ),
+                                  );
                                 },
-                                title: "Visit Website",
-                                textColor: Color(0xFF1E1E1E),
-                                height: 30,
-                                width: 140,
-                                fontWeight: FontWeight.w400,
-                                fillColor: Colors.white,
-                                borderColor: Colors.black,
-                                borderWidth: 1,
-                                isBorder: true,
                               ),
-
-                            ],
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
-
-                    // Floating avatar/logo overlapping the card
-                    Positioned(
-                      top: 150,
-                      left: 0,
-                      right: 0,
-                      child: Center(
-                        child: Container(
-                          width: 90,
-                          height: 90,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black26,
-                                blurRadius: 8,
-                                offset: Offset(0, 4),
-                              ),
-                            ],
+                          const Gap(16),
+                          _buildRow(
+                            title: AppStrings.businessAddress,
+                            content: business.address ?? "Not Available",
                           ),
-                          child: ClipOval(
-                            child: Obx(() {
-                              final logo = shopProfileController.shopProfile.value.business?.shopLogo;
-                              return logo != null && logo.isNotEmpty ?
-                              CustomNetworkImage(
-                                imageUrl: logo,
-                              )
-                                  : CustomImage(
-                                  imageSrc: "assets/images/petshoplogo.png",
-                                  sizeWidth: 90);
-                            }),
+                          const Gap(16),
+                          _buildRow(
+                            title: "More Info",
+                            content: business.moreInfo?.isNotEmpty == true
+                                ? business.moreInfo!
+                                : "No additional info available",
                           ),
-                        ),
+                          const Gap(24),
+                        ],
                       ),
                     ),
                   ],
-                ),
-              ),
+                );
+              }),
             ),
-
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 16.0, right: 16),
-                child: Column(
-                  children: [
-                    Gap(16),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CustomText(
-                          text: AppStrings.businessType,
-                          textAlign: TextAlign.start,
-                        ),
-                        Expanded(
-                          child: Obx(() {
-                            final List<String?> type = shopProfileController
-                                .shopProfile.value.business?.servicesType ?? [];
-                            return Wrap(
-                              children: List.generate(type.length, (index) {
-                                String text = "${type[index]}${index !=
-                                    type.length - 1 ? ',' : ''}";
-                                return CustomText(
-                                  text: text,
-                                  maxLines: 4,
-                                  right: 4,
-                                  textAlign: TextAlign.start,
-                                  overflow: TextOverflow.ellipsis,
-                                );
-                              }),
-                            );
-                          }),
-                        ),
-                      ],
-                    ),
-                    Gap(16),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CustomText(
-                          text: AppStrings.businessAddress,
-                          textAlign: TextAlign.start,
-                        ),
-                        Expanded(
-                          child: Obx(() {
-                            final address = shopProfileController.shopProfile
-                                .value.business?.address;
-                            return CustomText(
-                              text: address ?? "",
-                              maxLines: 4,
-                              textAlign: TextAlign.start,
-                              overflow: TextOverflow.ellipsis,
-                            );
-                          }),
-                        ),
-                      ],
-                    ),
-                    Gap(24),
-                  ],
-                ),
-              ),
-            )
           ],
         ),
       ),
+    );
+  }
+
+  /// Reusable Row Builder
+  Widget _buildRow({
+    required String title,
+    String? content,
+    Widget? contentWidget,
+  }) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          flex: 2,
+          child: CustomText(
+            text: title,
+            fontWeight: FontWeight.w600,
+            color: Colors.black87,
+          ),
+        ),
+        Expanded(
+          flex: 4,
+          child: contentWidget ??
+              CustomText(
+                text: content ?? "",
+                maxLines: 4,
+                textAlign: TextAlign.start,
+                overflow: TextOverflow.ellipsis,
+              ),
+        ),
+      ],
     );
   }
 }

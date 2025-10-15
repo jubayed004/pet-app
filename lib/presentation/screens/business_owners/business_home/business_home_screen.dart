@@ -1,5 +1,4 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
@@ -23,7 +22,7 @@ import 'package:pet_app/utils/app_strings/app_strings.dart';
 import 'package:shimmer/shimmer.dart';
 
 class BusinessHomeScreen extends StatefulWidget {
-  const BusinessHomeScreen({super.key});
+  const BusinessHomeScreen({Key? key}) : super(key: key);
 
   @override
   State<BusinessHomeScreen> createState() => _BusinessHomeScreenState();
@@ -33,17 +32,118 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
   final businessAllPetController = GetControllers.instance.getBusinessAllPetController();
   final businessProfileController = GetControllers.instance.getBusinessProfileController();
   final businessHomeBrandController = GetControllers.instance.getBusinessHomeController();
-  final businessAdvertisementController= GetControllers.instance.getBusinessAdvertisementController();
+  final businessAdvertisementController = GetControllers.instance.getBusinessAdvertisementController();
 
   @override
   void initState() {
+    super.initState();
     businessHomeBrandController.getBusinessHomeBrand();
     businessAdvertisementController.getDetailsAdvertisement();
-    super.initState();
+    businessAllPetController.getBusinessAllPets();
   }
 
   @override
   Widget build(BuildContext context) {
+    // Ensure ScreenUtil is initialized higher up (e.g. in main)
+    return Scaffold(
+      backgroundColor: AppColors.appBackgroundColor,
+      body: RefreshIndicator(
+        onRefresh: () async {
+          await businessAllPetController.getBusinessAllPets();
+          await businessHomeBrandController.getBusinessHomeBrand();
+          await businessAdvertisementController.getDetailsAdvertisement();
+        },
+        child: CustomScrollView(
+          slivers: [
+            _buildSliverAppBar(),
+            SliverToBoxAdapter(child: const Gap(8)),
+            _buildOnboardingSection(),
+            SliverToBoxAdapter(child: const Gap(8)),
+            _buildBusinessCategories(),
+            SliverToBoxAdapter(child: const Gap(16)),
+            _buildBrandSection(),
+            SliverToBoxAdapter(child: const Gap(16)),
+            _buildActivePromotionHeader(),
+            _buildActivePromotion(),
+            SliverToBoxAdapter(child: const Gap(16)),
+            _buildReviewSection(),
+            SliverToBoxAdapter(child: const Gap(24)),
+          ],
+        ),
+      ),
+    );
+  }
+
+  SliverAppBar _buildSliverAppBar() {
+    return SliverAppBar(
+      floating: true,
+      snap: true,
+      backgroundColor: AppColors.appBackgroundColor,
+      elevation: 0,
+      toolbarHeight: 56.h,
+      flexibleSpace: FlexibleSpaceBar(
+        titlePadding: EdgeInsets.zero,
+        centerTitle: false,
+        title: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.w),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Row(
+                children: [
+                  Obx(() {
+                    final images = businessProfileController.profile.value
+                        .ownerDetails
+                        ?.business
+                        ?.shopPic;
+                    if (images != null && images.isNotEmpty) {
+                      final imageUrl = images[0].replaceAll('\\', '/');
+                      return ClipOval(
+                        child: CustomNetworkImage(
+                          imageUrl: imageUrl,
+                          width: 50.w,
+                          height: 50.h,
+                          fit: BoxFit.cover,
+                        ),
+                      );
+                    } else {
+                      return Shimmer.fromColors(
+                        baseColor: AppColors.blackColor.withAlpha(50),
+                        highlightColor: AppColors.blackColor.withAlpha(100),
+                        child: Container(
+                          width: 50.w,
+                          height: 50.h,
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: AppColors.primaryColor,
+                          ),
+                        ),
+                      );
+                    }
+                  }),
+                  SizedBox(width: 12.w),
+                  CustomText(
+                    text: 'Welcome To Pet Shops',
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  const Spacer(),
+                  IconButton(
+                    onPressed: () {
+                      AppRouter.route.pushNamed(RoutePath.notifyScreen);
+                    },
+                    icon: const Icon(Iconsax.notification_bing),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  SliverToBoxAdapter _buildBusinessCategories() {
     final List<Widget> iconList = [
       Assets.icons.petvets.svg(),
       Assets.icons.petshops.svg(),
@@ -52,7 +152,7 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
       Assets.icons.pettraining.svg(),
       Assets.icons.friendlyplace.svg(),
     ];
-    final List<String> stringList = [
+    final List<String> labelList = [
       AppStrings.petVets,
       AppStrings.petShops,
       AppStrings.petGrooming,
@@ -61,344 +161,169 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
       AppStrings.friendlyPlace,
     ];
 
-    return Scaffold(
-      backgroundColor: AppColors.appBackgroundColor,
-      body: RefreshIndicator(
-        onRefresh: () async {
-          businessAllPetController.getBusinessAllPets();
-        },
-        child: CustomScrollView(
-          slivers: [
-            SliverAppBar(
-              floating: true,
-              snap: true,
-              backgroundColor: AppColors.appBackgroundColor,
-              elevation: 0,
-              toolbarHeight: 56,
-              flexibleSpace: FlexibleSpaceBar(
-                titlePadding: EdgeInsets.zero,
-                centerTitle: false,
-                title: Padding(
-                  padding: const EdgeInsets.only(left: 16, right: 10),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(right: 10),
-                                child: Container(
-                                  height: 50,
-                                  width: 50,
-                                  decoration: const BoxDecoration(shape: BoxShape.circle),
-                                  child: Obx(() {
-                                    final images = businessProfileController.profile.value.ownerDetails?.business?.shopPic;
-                                    if (images != null && images.isNotEmpty) {
-                                      final imageUrl = images[0].replaceAll('\\', '/'); // Ensure proper URL format
-                                      return CustomNetworkImage(
-                                        imageUrl: imageUrl,
-                                        width: 50.w,
-                                        height: 50.h,
-                                        fit: BoxFit.cover,
-                                        boxShape: BoxShape.circle,
-                                      );
-                                    } else {
-                                      return Shimmer.fromColors(
-                                        baseColor: AppColors.blackColor.withAlpha(50),
-                                        highlightColor: AppColors.blackColor.withAlpha(100),
-                                        child: Container(
-                                          height: 50,
-                                          width: 50,
-                                          decoration: const BoxDecoration(shape: BoxShape.circle, color: AppColors.primaryColor),
-                                        ),
-                                      );
-                                    }
-                                  }),
-                                ),
-                              ),
-
-                              CustomText(text: 'Welcome To Pet Shops', fontSize: 14, fontWeight: FontWeight.w600),
-                            ],
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              AppRouter.route.pushNamed(RoutePath.notifyScreen);
-                            },
-                            icon: Icon(Iconsax.notification_bing),
-                          ),
-                        ],
-                      ),
-                    ],
+    return SliverToBoxAdapter(
+      child: SizedBox(
+        height: 110.h,
+        child: ListView.separated(
+          padding: EdgeInsets.symmetric(horizontal: 16.w),
+          scrollDirection: Axis.horizontal,
+          itemCount: iconList.length,
+          separatorBuilder: (context, index) => SizedBox(width: 12.w),
+          itemBuilder: (context, index) {
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    // TODO: navigate to respective category
+                  },
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50.r)),
+                    elevation: 3,
+                    child: CircleAvatar(
+                      backgroundColor: Colors.white,
+                      radius: 35.r,
+                      child: iconList[index],
+                    ),
                   ),
                 ),
-              ),
-            ),
-            _buildOnboardingSection(),
-            SliverGap(8),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.only(left: 16),
-                child: CustomText(text: " Your All Business ", textAlign: TextAlign.start, fontWeight: FontWeight.w400, fontSize: 18),
-              ),
-            ),
-            SliverGap(8),
-            SliverToBoxAdapter(
-              child: SizedBox(
-                height: 130.h,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 6,
-                  padding: EdgeInsets.only(left: 16, right: 10),
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: EdgeInsets.only(right: 10),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              /*   //homeController.selectedIndex.value = index;
-                              AppRouter.route.pushNamed(RoutePath.categoryScreen);*/
-                            },
-                            child: Card(
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
-                              elevation: 3,
-                              child: CircleAvatar(
-                                backgroundColor: /* isSelected ? AppColors.primaryColor :*/ Colors.white,
-                                radius: 40,
-                                child: iconList[index],
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: 4),
-                          CustomText(text: stringList[index], fontSize: 16, fontWeight: FontWeight.w400),
-                        ],
-                      ),
-                    );
-                  },
+                SizedBox(height: 8.h),
+                CustomText(
+                  text: labelList[index],
+                  fontSize: 13.sp,
+                  fontWeight: FontWeight.w400,
                 ),
-              ),
-            ),
-            SliverGap(16),
-            _buildBrandSection(),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    CustomText(text: AppStrings.activePromotions, fontWeight: FontWeight.w400, fontSize: 18),
-                    TextButton(
-                      onPressed: () {
-                        AppRouter.route.pushNamed(RoutePath.businessDetailsAdvertisementScreen);
-                      },
-                      child: CustomText(text: AppStrings.seeAll, fontWeight: FontWeight.w400, fontSize: 14),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            _buildActivePromotion(),
-
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.only(left: 16, right: 16),
-                child: Column(
-                  children: [
-                    ///===============reviewScreen===========
-                     GestureDetector(
-                        onTap: (){
-                          AppRouter.route.pushNamed(RoutePath.businessReviewScreen);
-                        },
-                        child: Card(
-                          color: Colors.white,
-                          child: Container(
-                            padding: padding12,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(4)
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        CustomText(text: "Rating & Reviews",fontWeight: FontWeight.w800,fontSize: 18,),
-                                       Row(
-                                         crossAxisAlignment: CrossAxisAlignment.start,
-                                         mainAxisAlignment: MainAxisAlignment.start,
-                                         children: [
-                                           ...List.generate(5, (index){
-                                             return Icon(Icons.star,color: AppColors.purple500,);
-                                           })
-                                         ],
-                                       )
-                                      ],
-                                    ),
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        CustomText(text: "4.5",fontSize: 24,fontWeight: FontWeight.w700,),
-                                        CustomText(text: "234 Ratings",fontSize: 10,fontWeight: FontWeight.w500,),
-
-                                      ],
-                                    )
-                                  ],
-                                ),
-                                 Gap(12),
-                                 Divider(height: 2,color: Color(0xffCFCFCF),),
-                                Gap(12),
-                                CustomText(text: "View Customer Reviews",fontWeight: FontWeight.w600,fontSize: 14,color: AppColors.purple500,decoration: TextDecoration.underline,decorationColor: AppColors.purple500,)
-                              ],
-                            ),
-                          ),
-                        ),
-                      )
-                  ],
-                ),
-              ),
-            ),
-
-            SliverGap(24),
-          ],
+              ],
+            );
+          },
         ),
       ),
     );
   }
-  /// -------------------- Onboarding Section --------------------
+
   SliverToBoxAdapter _buildOnboardingSection() {
     return SliverToBoxAdapter(
       child: Padding(
-        padding: const EdgeInsets.only(left: 16, top: 10, right: 16),
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
         child: Obx(() {
-          final item = businessAllPetController.profile.value.pets ?? [];
-          final status = businessAllPetController.loading.value; // Rx<Status>
+          final pets = businessAllPetController.profile.value.pets ?? [];
+          final status = businessAllPetController.loading.value;
+
           switch (status) {
             case Status.loading:
-              return Center(child: CircularProgressIndicator());
-
+              return const Center(child: CircularProgressIndicator());
             case Status.error:
               return Center(
-                child: ErrorCard(
-                  onTap: () {
-                    businessAllPetController.getBusinessAllPets(); // Reload
-                  },
-                ),
-              );
-
+                  child: ErrorCard(
+                    onTap: () => businessAllPetController.getBusinessAllPets(),
+                  ));
             case Status.internetError:
               return Center(
-                child: NoInternetCard(
-                  onTap: () {
-                    businessAllPetController.getBusinessAllPets();
-                  },
-                ),
-              );
-
+                  child: NoInternetCard(
+                    onTap: () => businessAllPetController.getBusinessAllPets(),
+                  ));
             case Status.noDataFound:
               return Center(
-                child: MoreDataErrorCard(
-                  onTap: () {
-                    businessAllPetController.getBusinessAllPets();
-                  },
-                ),
-              );
-
+                  child: MoreDataErrorCard(
+                    onTap: () => businessAllPetController.getBusinessAllPets(),
+                  ));
             case Status.completed:
-              if (item.isEmpty) {
+              if (pets.isEmpty) {
                 return Center(
-                  child: NoDataCard(
-                    onTap: () {
-                      businessAllPetController.getBusinessAllPets();
-                    },
-                  ),
-                );
+                    child: NoDataCard(
+                      onTap: () => businessAllPetController.getBusinessAllPets(),
+                    ));
               }
-
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("All Booking Pets", style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold)),
-                  const Gap(16),
-
-                  // Carousel
+                  CustomText(
+                    text: "All Booking Pets",
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  Gap(12.h),
                   CarouselSlider.builder(
-                    itemCount: item.length,
+                    itemCount: pets.length,
                     itemBuilder: (context, index, realIndex) {
-                      final petName = item[index];
-                      final image = petName.petPhoto ?? "";
-                      final imageUrl = image.isEmpty ? "assets/images/default_pet_image.png" : image;
+                      final pet = pets[index];
+                      final image = pet.petPhoto ?? "";
+                      final imageUrl =
+                      image.isNotEmpty ? image : "assets/images/default_pet_image.png";
 
                       return Container(
-                        padding: const EdgeInsets.all(20),
+                        padding: EdgeInsets.all(16.r),
                         decoration: BoxDecoration(
                           color: AppColors.primaryColor,
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.1), blurRadius: 8.r, offset: const Offset(0, 4))],
+                          borderRadius: BorderRadius.circular(16.r),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              blurRadius: 6.r,
+                              offset: Offset(0, 3.r),
+                            )
+                          ],
                         ),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  CustomText(text: petName.name ?? "Unknown", fontWeight: FontWeight.w600, fontSize: 16.sp, color: Colors.white),
-                                  if (petName.name != null) ...[
-                                    SizedBox(height: 4.h),
+                                  CustomText(
+                                    text: pet.name ?? "Unknown",
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white,
+                                  ),
+                                  if (pet.name != null) ...[
+                                    Gap(4.h),
                                     CustomText(
-                                      text: petName.name!,
-                                      fontWeight: FontWeight.w400,
+                                      text: pet.name!,
                                       fontSize: 12.sp,
-                                      color: Colors.white.withValues(alpha: 0.8),
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.white.withOpacity(0.8),
                                     ),
                                   ],
                                 ],
                               ),
                             ),
-                            const SizedBox(width: 16),
                             CustomNetworkImage(
                               imageUrl: imageUrl,
+                              width: 50.w,
                               height: 50.h,
-                              width: 50.w, // Make it square for circular image
                               boxShape: BoxShape.circle,
+                              fit: BoxFit.cover,
                             ),
                           ],
                         ),
                       );
                     },
                     options: CarouselOptions(
-                      height: MediaQuery.of(context).size.height / 8,
-                      autoPlay: item.length > 1,
-                      // Only auto-play if multiple items
+                      height: 120.h,
+                      autoPlay: pets.length > 1,
                       autoPlayInterval: const Duration(seconds: 3),
                       enlargeCenterPage: true,
-                      enableInfiniteScroll: item.length > 1,
-                      // Only infinite scroll if multiple items
+                      enableInfiniteScroll: pets.length > 1,
                       viewportFraction: 0.85,
-                      scrollPhysics: item.length > 1 ? const BouncingScrollPhysics() : const NeverScrollableScrollPhysics(),
+                      scrollPhysics: pets.length > 1
+                          ? const BouncingScrollPhysics()
+                          : const NeverScrollableScrollPhysics(),
                       onPageChanged: (index, reason) {
-                        // 🔥 FIX: Use modulo to handle infinite scroll properly
-                        businessAllPetController.currentIndex.value = index % item.length;
+                        businessAllPetController.currentIndex.value = index % pets.length;
                       },
                     ),
                   ),
-
-                  // Dots indicator (only show if multiple items)
-                  if (item.length > 1) ...[
-                    const Gap(12),
+                  if (pets.length > 1) ...[
+                    Gap(12.h),
                     Obx(() {
-                      final activeIdx = businessAllPetController.currentIndex.value;
+                      final active = businessAllPetController.currentIndex.value;
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: List.generate(item.length, (index) => buildDot(index, active: index == activeIdx)),
+                        children: List.generate(pets.length,
+                                (i) => _buildDot(i, active: i == active)),
                       );
                     }),
                   ],
@@ -409,112 +334,100 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
       ),
     );
   }
-  // Updated buildDot method with active parameter
-  Widget buildDot(int index, {bool active = false}) {
+
+  Widget _buildDot(int index, {required bool active}) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
       margin: const EdgeInsets.symmetric(horizontal: 4),
-      height: 8,
-      width: active ? 24 : 8,
+      height: 8.h,
+      width: active ? 24.w : 8.w,
       decoration: BoxDecoration(
-        color: active ? AppColors.primaryColor : AppColors.primaryColor.withValues(alpha: 0.3),
-        borderRadius: BorderRadius.circular(12),
-        border: active ? Border.all(color: AppColors.primaryColor.withValues(alpha: 0.6), width: 0.5) : null,
+        color: active
+            ? AppColors.primaryColor
+            : AppColors.primaryColor.withOpacity(0.3),
+        borderRadius: BorderRadius.circular(12.r),
+        border: active
+            ? Border.all(
+            color: AppColors.primaryColor.withOpacity(0.6), width: 0.5)
+            : null,
       ),
     );
   }
-  /// -------------------- Brand Section --------------------
+
   SliverToBoxAdapter _buildBrandSection() {
     return SliverToBoxAdapter(
       child: Padding(
-        padding: const EdgeInsets.only(left: 16, top: 10, right: 16),
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
         child: Obx(() {
-          final item = businessHomeBrandController.brand.value.topBrands ?? [];
+          final brands = businessHomeBrandController.brand.value.topBrands ?? [];
           final status = businessHomeBrandController.loading.value;
 
           switch (status) {
             case Status.loading:
               return const Center(child: CircularProgressIndicator());
-
             case Status.error:
               return Center(
-                child: ErrorCard(
-                  onTap: () => businessHomeBrandController.getBusinessHomeBrand(),
-                ),
-              );
-
+                  child: ErrorCard(
+                    onTap: () => businessHomeBrandController.getBusinessHomeBrand(),
+                  ));
             case Status.internetError:
               return Center(
-                child: NoInternetCard(
-                  onTap: () => businessHomeBrandController.getBusinessHomeBrand(),
-                ),
-              );
-
+                  child: NoInternetCard(
+                    onTap: () => businessHomeBrandController.getBusinessHomeBrand(),
+                  ));
             case Status.noDataFound:
               return Center(
-                child: MoreDataErrorCard(
-                  onTap: () => businessHomeBrandController.getBusinessHomeBrand(),
-                ),
-              );
-
-            case Status.completed:
-              if (item.isEmpty) {
-                return Center(
-                  child: NoDataCard(
+                  child: MoreDataErrorCard(
                     onTap: () => businessHomeBrandController.getBusinessHomeBrand(),
-                  ),
-                );
+                  ));
+            case Status.completed:
+              if (brands.isEmpty) {
+                return Center(
+                    child: NoDataCard(
+                      onTap: () => businessHomeBrandController.getBusinessHomeBrand(),
+                    ));
               }
-
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    "All Booking Pets",
-                    style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+                  CustomText(
+                    text: "Top Brands",
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.bold,
                   ),
-                  const Gap(16),
+                  Gap(12.h),
                   CarouselSlider.builder(
-                    itemCount: item.length,
+                    itemCount: brands.length,
                     itemBuilder: (context, index, realIndex) {
-                      final brand = item[index];
-                      final logoList = brand.logo;
-                      final imageUrl = (logoList != null && logoList.isNotEmpty)
-                          ? logoList.first
+                      final brand = brands[index];
+                      final logos = brand.logo;
+                      final imageUrl = (logos != null && logos.isNotEmpty)
+                          ? logos.first
                           : "assets/images/default_pet_image.png";
 
-                      return Container(
-                        decoration: BoxDecoration(
-                          color: AppColors.primaryColor,
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withValues(alpha: 0.1),
-                              blurRadius: 8.r,
-                              offset: const Offset(0, 4),
-                            )
-                          ],
-                        ),
+                      return ClipRRect(
+                        borderRadius: BorderRadius.circular(12.r),
                         child: CustomNetworkImage(
                           imageUrl: imageUrl,
                           height: 80.h,
-                          borderRadius: BorderRadius.circular(10),
+                          width: double.infinity,
+                          fit: BoxFit.cover,
                         ),
                       );
                     },
                     options: CarouselOptions(
-                      height: MediaQuery.of(context).size.height / 6,
-                      autoPlay: item.length > 1,
+                      height: 100.h,
+                      autoPlay: brands.length > 1,
                       autoPlayInterval: const Duration(seconds: 3),
                       enlargeCenterPage: true,
-                      enableInfiniteScroll: item.length > 1,
-                      viewportFraction: 0.98,
-                      scrollPhysics: item.length > 1
+                      enableInfiniteScroll: brands.length > 1,
+                      viewportFraction: 0.9,
+                      scrollPhysics: brands.length > 1
                           ? const BouncingScrollPhysics()
                           : const NeverScrollableScrollPhysics(),
                       onPageChanged: (index, reason) {
-                        businessAllPetController.currentIndex.value =
-                            index % item.length;
+                        businessHomeBrandController.currentIndex.value =
+                            index % brands.length;
                       },
                     ),
                   ),
@@ -525,98 +438,103 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
       ),
     );
   }
+
+  SliverToBoxAdapter _buildActivePromotionHeader() {
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16.w),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            CustomText(
+              text: AppStrings.activePromotions,
+              fontSize: 18.sp,
+              fontWeight: FontWeight.w400,
+            ),
+            TextButton(
+              onPressed: () {
+                AppRouter.route.pushNamed(RoutePath.businessDetailsAdvertisementScreen);
+              },
+              child: CustomText(
+                text: AppStrings.seeAll,
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   SliverToBoxAdapter _buildActivePromotion() {
     return SliverToBoxAdapter(
       child: Padding(
-        padding: const EdgeInsets.only(left: 16, right: 16),
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
         child: Obx(() {
-          final allAds = businessAdvertisementController.profile.value.advertisement ?? [];
-
-          final activeAds = allAds.where((ad) => ad.status == "ACTIVE").toList(); // ✅ FIXED
-
+          final ads = businessAdvertisementController.profile.value.advertisement ?? [];
+          final activeAds = ads.where((ad) => ad.status == "ACTIVE").toList();
           final status = businessAdvertisementController.loading.value;
 
           switch (status) {
             case Status.loading:
               return const Center(child: CircularProgressIndicator());
-
             case Status.error:
               return Center(
-                child: ErrorCard(
-                  onTap: () => businessAdvertisementController.getDetailsAdvertisement(),
-                ),
-              );
-
+                  child: ErrorCard(
+                    onTap: () => businessAdvertisementController.getDetailsAdvertisement(),
+                  ));
             case Status.internetError:
               return Center(
-                child: NoInternetCard(
-                  onTap: () => businessAdvertisementController.getDetailsAdvertisement(),
-                ),
-              );
-
+                  child: NoInternetCard(
+                    onTap: () => businessAdvertisementController.getDetailsAdvertisement(),
+                  ));
             case Status.noDataFound:
               return Center(
-                child: MoreDataErrorCard(
-                  onTap: () => businessAdvertisementController.getDetailsAdvertisement(),
-                ),
-              );
-
+                  child: MoreDataErrorCard(
+                    onTap: () => businessAdvertisementController.getDetailsAdvertisement(),
+                  ));
             case Status.completed:
               if (activeAds.isEmpty) {
                 return Center(
-                  child: NoDataCard(
-                    onTap: () => businessAdvertisementController.getDetailsAdvertisement(),
-                  ),
-                );
+                    child: NoDataCard(
+                      onTap: () => businessAdvertisementController.getDetailsAdvertisement(),
+                    ));
               }
+              return CarouselSlider.builder(
+                itemCount: activeAds.length,
+                itemBuilder: (context, index, realIndex) {
+                  final ad = activeAds[index];
+                  final imgs = ad.advertisementImg ?? [];
+                  final imageUrl = imgs.isNotEmpty
+                      ? imgs.first
+                      : "assets/images/default_promotion_image.png";
 
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CarouselSlider.builder(
-                    itemCount: activeAds.length,
-                    itemBuilder: (context, index, realIndex) {
-                      final ad = activeAds[index];
-                      final imgList = ad.advertisementImg ?? [];
-                      final imageUrl = imgList.isNotEmpty
-                          ? imgList.first
-                          : "assets/images/default_promotion_image.png";
-
-                      return Container(
-                        decoration: BoxDecoration(
-                          color: AppColors.primaryColor,
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
-                              blurRadius: 8.r,
-                              offset: const Offset(0, 4),
-                            )
-                          ],
-                        ),
-                        child: CustomNetworkImage(
-                          imageUrl: imageUrl,
-                          height: 80.h,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      );
-                    },
-                    options: CarouselOptions(
-                      height: MediaQuery.of(context).size.height / 6,
-                      autoPlay: activeAds.length > 1,
-                      autoPlayInterval: const Duration(seconds: 3),
-                      enlargeCenterPage: true,
-                      enableInfiniteScroll: activeAds.length > 1,
-                      viewportFraction: 0.98,
-                      scrollPhysics: activeAds.length > 1
-                          ? const BouncingScrollPhysics()
-                          : const NeverScrollableScrollPhysics(),
-                      onPageChanged: (index, reason) {
-                        businessAllPetController.currentIndex.value = index % activeAds.length;
-                      },
+                  return ClipRRect(
+                    borderRadius: BorderRadius.circular(12.r),
+                    child: CustomNetworkImage(
+                      imageUrl: imageUrl,
+                      height: 100.h,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
                     ),
-                  ),
-                ],
+                  );
+                },
+                options: CarouselOptions(
+                  height: 120.h,
+                  autoPlay: activeAds.length > 1,
+                  autoPlayInterval: const Duration(seconds: 3),
+                  enlargeCenterPage: true,
+                  enableInfiniteScroll: activeAds.length > 1,
+                  viewportFraction: 0.9,
+                  scrollPhysics: activeAds.length > 1
+                      ? const BouncingScrollPhysics()
+                      : const NeverScrollableScrollPhysics(),
+                  onPageChanged: (index, reason) {
+                    businessAllPetController.currentIndex.value =
+                        index % activeAds.length;
+                  },
+                ),
               );
           }
         }),
@@ -624,7 +542,84 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
     );
   }
 
-
-
-
+  SliverToBoxAdapter _buildReviewSection() {
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16.w),
+        child: GestureDetector(
+          onTap: () {
+            AppRouter.route.pushNamed(RoutePath.businessReviewScreen);
+          },
+          child: Card(
+            elevation: 2,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.r),
+            ),
+            child: Padding(
+              padding: padding12, // from your constants
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CustomText(
+                            text: "Rating & Reviews",
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.w800,
+                          ),
+                          Gap(8.h),
+                          Row(
+                            children: List.generate(
+                              5,
+                                  (i) => const Icon(
+                                Icons.star,
+                                color: AppColors.purple500,
+                                size: 20,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          CustomText(
+                            text: "4.5",
+                            fontSize: 24.sp,
+                            fontWeight: FontWeight.w700,
+                          ),
+                          CustomText(
+                            text: "234 Ratings",
+                            fontSize: 10.sp,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  Gap(12.h),
+                  Divider(color: const Color(0xffCFCFCF)),
+                  Gap(12.h),
+                  Center(
+                    child: CustomText(
+                      text: "View Customer Reviews",
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.purple500,
+                      decoration: TextDecoration.underline,
+                      decorationColor: AppColors.purple500,
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }
