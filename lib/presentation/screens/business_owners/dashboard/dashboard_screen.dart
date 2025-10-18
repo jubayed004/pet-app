@@ -147,9 +147,9 @@ class DashboardScreen extends StatelessWidget {
                     itemCount: items.length,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3,
-                      mainAxisSpacing: 18.h,
-                      crossAxisSpacing: 18.w,
-                      childAspectRatio: 0.7,
+                      mainAxisSpacing: 16.h,
+                      crossAxisSpacing: 22.w,
+                      childAspectRatio: 0.8,
 
                     ),
                     itemBuilder: (context, index) =>
@@ -191,6 +191,8 @@ class DashboardScreen extends StatelessWidget {
                                     text: vendorGridList[index].title,
                                     textAlign: TextAlign.center,
                                     fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+
                                     // maxLines: 1,
                                     // overflow: TextOverflow.ellipsis,
                                   ),
@@ -227,36 +229,32 @@ class DashboardScreen extends StatelessWidget {
           ),
         ],
       ),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(12.r),
-        onTap: () {},
-        child: Padding(
-          padding: EdgeInsets.all(12.r),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(item.icon, size: 32.sp, color: item.color),
-              SizedBox(height: 12.h),
-              Text(
-                item.title,
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.black87,
-                ),
-                textAlign: TextAlign.center,
+      child: Padding(
+        padding: EdgeInsets.all(8.r),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(item.icon, size: 32.sp, color: item.color),
+            SizedBox(height: 12.h),
+            Text(
+              item.title,
+              style: TextStyle(
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w600,
+                color: Colors.black87,
               ),
-              SizedBox(height: 8.h),
-              Text(
-                item.count.toString(),
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 8.h),
+            Text(
+              item.count.toString(),
+              style: TextStyle(
+                fontSize: 16.sp,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

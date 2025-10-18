@@ -1,7 +1,7 @@
 class BusinessAllPetsDetailsModel {
   final bool? success;
   final String? message;
-  final PetWithMedicalHistory? petWithMedicalHistory;
+  final PetWithMedicalHistoryItem? petWithMedicalHistory;
 
   BusinessAllPetsDetailsModel({
     this.success,
@@ -12,7 +12,7 @@ class BusinessAllPetsDetailsModel {
   BusinessAllPetsDetailsModel copyWith({
     bool? success,
     String? message,
-    PetWithMedicalHistory? petWithMedicalHistory,
+    PetWithMedicalHistoryItem? petWithMedicalHistory,
   }) =>
       BusinessAllPetsDetailsModel(
         success: success ?? this.success,
@@ -23,7 +23,7 @@ class BusinessAllPetsDetailsModel {
   factory BusinessAllPetsDetailsModel.fromJson(Map<String, dynamic> json) => BusinessAllPetsDetailsModel(
     success: json["success"],
     message: json["message"],
-    petWithMedicalHistory: json["petWithMedicalHistory"] == null ? null : PetWithMedicalHistory.fromJson(json["petWithMedicalHistory"]),
+    petWithMedicalHistory: json["petWithMedicalHistory"] == null ? null : PetWithMedicalHistoryItem.fromJson(json["petWithMedicalHistory"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -33,7 +33,7 @@ class BusinessAllPetsDetailsModel {
   };
 }
 
-class PetWithMedicalHistory {
+class PetWithMedicalHistoryItem {
   final String? petPhoto;
   final String? id;
   final String? name;
@@ -51,7 +51,7 @@ class PetWithMedicalHistory {
   final int? v;
   final List<PetMedicalHistory>? medicalHistory;
 
-  PetWithMedicalHistory({
+  PetWithMedicalHistoryItem({
     this.petPhoto,
     this.id,
     this.name,
@@ -70,7 +70,7 @@ class PetWithMedicalHistory {
     this.medicalHistory,
   });
 
-  PetWithMedicalHistory copyWith({
+  PetWithMedicalHistoryItem copyWith({
     String? petPhoto,
     String? id,
     String? name,
@@ -88,7 +88,7 @@ class PetWithMedicalHistory {
     int? v,
     List<PetMedicalHistory>? medicalHistory,
   }) =>
-      PetWithMedicalHistory(
+      PetWithMedicalHistoryItem(
         petPhoto: petPhoto ?? this.petPhoto,
         id: id ?? this.id,
         name: name ?? this.name,
@@ -107,7 +107,7 @@ class PetWithMedicalHistory {
         medicalHistory: medicalHistory ?? this.medicalHistory,
       );
 
-  factory PetWithMedicalHistory.fromJson(Map<String, dynamic> json) => PetWithMedicalHistory(
+  factory PetWithMedicalHistoryItem.fromJson(Map<String, dynamic> json) => PetWithMedicalHistoryItem(
     petPhoto: json["petPhoto"],
     id: json["_id"],
     name: json["name"],

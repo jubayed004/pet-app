@@ -1,134 +1,123 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pet_app/presentation/components/custom_button/custom_defualt_appbar.dart';
 import 'package:pet_app/presentation/components/custom_tab_selected/see_more_text.dart';
+import 'package:pet_app/presentation/screens/business_owners/business_review/controller/business_review_screen_controller.dart';
+import 'package:pet_app/presentation/screens/business_owners/business_review/model/business_review_model.dart';
 
 class BusinessReviewScreen extends StatelessWidget {
   const BusinessReviewScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final List<Map<String, dynamic>> reviews = [
-      {
-        "name": "Haylie Aminoff",
-        "time": "Just now",
-        "rating": 4.5,
-        "comment":
-        "The thing I like best about COCO is the amount of time it has saved while trying to manage my three pets.sdfsdfdfsdfsdfsdfsdfsdfsdfsdfsdfsadfsadfdfdfdfdf",
-        "avatar": "https://randomuser.me/api/portraits/women/1.jpg",
-      },
-      {
-        "name": "Carla Septimus",
-        "time": "32 minutes ago",
-        "rating": 4.5,
-        "comment":
-        "Lorem ipsum dolor sit amet, consectetur sadi spssicing elit, sed diam nonumy",
-        "avatar": "https://randomuser.me/api/portraits/women/2.jpg",
-      },
-      {
-        "name": "Carla George",
-        "time": "2 days ago",
-        "rating": 4.5,
-        "comment":
-        "Lorem ipsum dolor sit amet, consectetur sadi spssicing elit, sed diam nonumy",
-        "avatar": "https://randomuser.me/api/portraits/women/3.jpg",
-      },
-    ];
+    final controller = Get.put(BusinessReviewController());
 
     return Scaffold(
-
       backgroundColor: Colors.white,
       body: CustomScrollView(
         slivers: [
-          CustomDefaultAppbar(title: "Reviews",),
-          /// Rating header
+          const CustomDefaultAppbar(title: "Reviews"),
+
+          /// Header with average rating
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text("4.5",
+              child: Obx(
+                    () => Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      controller.avgRating.value.toStringAsFixed(1),
                       style: TextStyle(
-                          fontSize: 40.sp,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black)),
-                  const SizedBox(height: 4),
-                  RatingBarIndicator(
-                    rating: 4.5,
-                    itemBuilder: (context, index) => const Icon(Icons.star, color: Colors.amber),
-                    itemCount: 5,
-                    itemSize: 24,
-                  ),
-                  const SizedBox(height: 4),
-                  const Text(
-                    "Based on 89 reviews",
-                    style: TextStyle(color: Colors.grey, fontSize: 14),
-                  ),
-                ],
+                        fontSize: 40.sp,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    RatingBarIndicator(
+                      rating: controller.avgRating.value,
+                      itemBuilder: (context, _) =>
+                      const Icon(Icons.star, color: Colors.amber),
+                      itemCount: 5,
+                      itemSize: 24,
+                    ),
+                    const SizedBox(height: 4),
+                    const Text(
+                      "Based on user reviews",
+                      style: TextStyle(color: Colors.grey, fontSize: 14),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
 
-          /// Divider
           SliverToBoxAdapter(
             child: Divider(thickness: 1, color: Colors.grey.shade300),
           ),
 
-          /// Reviews List
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                final review = reviews[index];
+          /// Review list
+          PagedSliverList<int, ReviewItem>(
+            pagingController: controller.pagingController,
+            builderDelegate: PagedChildBuilderDelegate<ReviewItem>(
+              itemBuilder: (context, item, index) {
                 return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  padding:
+                  const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      /// User Info
+                      /// User info
                       Row(
                         children: [
                           CircleAvatar(
                             radius: 20,
-                            backgroundImage: NetworkImage(review['avatar']),
+                            backgroundImage:
+                            NetworkImage(item.userId?.profilePic ?? ''),
                           ),
                           const SizedBox(width: 10),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                review['name'],
+                                item.userId?.name ?? "Unknown",
                                 style: const TextStyle(
                                   fontWeight: FontWeight.w600,
                                   fontSize: 14,
                                 ),
                               ),
                               Text(
-                                review['time'],
+                                item.createdAt != null ? _formatTimeAgo(item.createdAt!) : '',
                                 style: const TextStyle(
                                   color: Colors.grey,
                                   fontSize: 12,
                                 ),
                               ),
+
                             ],
                           ),
                         ],
                       ),
                       const SizedBox(height: 8),
 
-                      /// Star rating
+                      /// Rating
                       Row(
                         children: [
                           Text(
-                            review['rating'].toString(),
+                            item.rating.toString(),
                             style: const TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 14),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                            ),
                           ),
                           const SizedBox(width: 4),
                           RatingBarIndicator(
-                            rating: review['rating'],
-                            itemBuilder: (context, index) =>
+                            rating: item.rating?.toDouble() ?? 0.0,
+                            itemBuilder: (context, _) =>
                             const Icon(Icons.star, color: Colors.amber),
                             itemCount: 5,
                             itemSize: 18,
@@ -138,20 +127,45 @@ class BusinessReviewScreen extends StatelessWidget {
                       const SizedBox(height: 6),
 
                       /// Comment
-                        ExpandableText(text: review['comment'],),
+                      ExpandableText(text: item.comment ?? ""),
                       const SizedBox(height: 10),
-
-                      /// Divider
                       Divider(thickness: 1, color: Colors.grey.shade200),
                     ],
                   ),
                 );
               },
-              childCount: reviews.length,
+              noItemsFoundIndicatorBuilder: (_) => const Center(
+                child: Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Text("No reviews yet."),
+                ),
+              ),
+              firstPageProgressIndicatorBuilder: (_) => const Center(
+                child: Padding(
+                  padding: EdgeInsets.all(16),
+                  child: CircularProgressIndicator(),
+                ),
+              ),
+              newPageProgressIndicatorBuilder: (_) => const Center(
+                child: Padding(
+                  padding: EdgeInsets.all(16),
+                  child: CircularProgressIndicator(),
+                ),
+              ),
             ),
           ),
         ],
       ),
     );
   }
+
+  String _formatTimeAgo(DateTime dateTime) {
+    final diff = DateTime.now().difference(dateTime);
+
+    if (diff.inMinutes < 1) return 'Just now';
+    if (diff.inMinutes < 60) return '${diff.inMinutes} min ago';
+    if (diff.inHours < 24) return '${diff.inHours} hr ago';
+    return '${diff.inDays} days ago';
+  }
+
 }

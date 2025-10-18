@@ -74,7 +74,7 @@ class CategoryServiceItem {
   final int? v;
   final String? websiteLink;
   final bool? isOpenNow;
-  final int? avgRating;
+  final num? avgRating;
 
   CategoryServiceItem({
     this.id,
@@ -125,7 +125,7 @@ class CategoryServiceItem {
     int? v,
     String? websiteLink,
     bool? isOpenNow,
-    int? avgRating,
+    num? avgRating,
   }) =>
       CategoryServiceItem(
         id: id ?? this.id,

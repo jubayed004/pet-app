@@ -12,7 +12,6 @@ import 'package:pet_app/service/api_url.dart';
 import 'package:pet_app/utils/app_const/app_const.dart';
 
 class MyAppointmentController extends GetxController {
-  final navController = GetControllers.instance.getNavigationControllerMain();
 
   final ApiClient apiClient = serviceLocator();
   final PagingController<int, BookingItem> pagingController1 = PagingController(firstPageKey: 1);

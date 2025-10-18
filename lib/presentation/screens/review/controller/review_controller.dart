@@ -8,7 +8,9 @@ import 'package:pet_app/service/api_url.dart';
 import 'package:pet_app/utils/app_const/app_const.dart';
 
 class ReviewController extends GetxController {
-  ///================================= Add Review
+
+
+  ///================================= Add Review ========================================
   final ApiClient apiClient = serviceLocator();
   RxBool isLoading = false.obs;
   RxString statusValue = "COMPLETED".obs;
@@ -57,7 +59,7 @@ class ReviewController extends GetxController {
   loadingMethod(Status status) => loading.value = status;
   final Rx<ReviewModel> review = ReviewModel().obs;
 
-  ///===================== Appointment Booking Details ====================
+  ///===================== getReviewByService ====================
   Future<void> getReviewByService({required String id}) async {
     loadingMethod(Status.completed);
     try {

@@ -273,8 +273,8 @@ class AppRouter {
       ),
 
       GoRoute(
-        name: RoutePath.myPetsScreen,
-        path: RoutePath.myPetsScreen.addBasePath,
+        name: RoutePath.myPetsDetailsScreen,
+        path: RoutePath.myPetsDetailsScreen.addBasePath,
         pageBuilder: (context, state) {
           final args = state.extra as String;
 

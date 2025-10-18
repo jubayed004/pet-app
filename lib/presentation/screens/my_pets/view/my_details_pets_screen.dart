@@ -11,9 +11,6 @@ import 'package:pet_app/core/route/routes.dart';
 import 'package:pet_app/presentation/components/custom_button/custom_defualt_appbar.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_all_pets/widgets/details_card.dart';
-import 'package:pet_app/presentation/screens/my_pets/widgets/health_history_section.dart';
-import 'package:pet_app/presentation/widget/align/custom_align_text.dart';
-import 'package:pet_app/service/api_url.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
 
 class MyDetailsPetsScreen extends StatefulWidget {
