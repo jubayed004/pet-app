@@ -41,11 +41,12 @@ class _MyDetailsPetsScreenState extends State<MyDetailsPetsScreen> {
         child: CustomScrollView(
           slivers: [
             Obx(() {
-              return CustomDefaultAppbar(title: controller.details.value.petWithMedicalHistory?.name ?? "");
+              print("Name4 ${controller.details.value.pet?.name}");
+              return CustomDefaultAppbar(title: controller.details.value.pet?.name ?? "");
             }),
             SliverToBoxAdapter(
               child: Obx(() {
-                final pet = controller.details.value.petWithMedicalHistory?.petPhoto;
+                final pet = controller.details.value.pet?.petPhoto;
                 final image = pet != null && pet.isNotEmpty ? pet : "";
                 return image.isNotEmpty
                     ? Image.network(image, fit: BoxFit.cover, width: double.infinity, height: 200)
@@ -63,7 +64,7 @@ class _MyDetailsPetsScreenState extends State<MyDetailsPetsScreen> {
                 child: Column(
                   children: [
                     Obx(() {
-                      final profileDetails = controller.details.value.petWithMedicalHistory;
+                      final profileDetails = controller.details.value.pet;
                       return Card(
                         elevation: 4,
                         child: Padding(
@@ -126,7 +127,7 @@ class _MyDetailsPetsScreenState extends State<MyDetailsPetsScreen> {
                         Icon(Icons.account_box_outlined),
                         Gap(6),
                         Obx(() {
-                          return CustomText(text: "About ${controller.details.value.petWithMedicalHistory?.name ?? ""}", fontWeight: FontWeight.w600, fontSize: 16);
+                          return CustomText(text: "About ${controller.details.value.pet?.name ?? ""}", fontWeight: FontWeight.w600, fontSize: 16);
                         }),
                       ],
                     ),
@@ -134,7 +135,7 @@ class _MyDetailsPetsScreenState extends State<MyDetailsPetsScreen> {
                     SizedBox(
                       height: 80, // fixed height for the list items
                       child: Obx(() {
-                        final pet = controller.details.value.petWithMedicalHistory;
+                        final pet = controller.details.value.pet;
                         return ListView(
                           scrollDirection: Axis.horizontal,
                           children: [
@@ -154,7 +155,7 @@ class _MyDetailsPetsScreenState extends State<MyDetailsPetsScreen> {
                       children: [
                         Icon(Icons.safety_divider_outlined),
                         Gap(6),
-                        CustomText(text: "${controller.details.value.petWithMedicalHistory?.name ?? ""} ’s Status", fontWeight: FontWeight.w600, fontSize: 16),
+                        CustomText(text: "${controller.details.value.pet?.name ?? ""} ’s Status", fontWeight: FontWeight.w600, fontSize: 16),
                       ],
                     ),
                     Gap(16),
@@ -186,96 +187,7 @@ class _MyDetailsPetsScreenState extends State<MyDetailsPetsScreen> {
                     Gap(16),
                     Align(alignment: Alignment.topLeft, child: CustomText(text: "Health History", fontWeight: FontWeight.w700, fontSize: 14)),
                     Gap(8),
-                    Obx(() {
-                      final petMedicalHistory = controller.details.value.petWithMedicalHistory?.medicalHistory ?? [];
 
-                      if (petMedicalHistory.isEmpty) {
-                        return Center(child: Text("No medical history available.", style: TextStyle(fontSize: 16.sp, color: Colors.black87)));
-                      }
-
-                      final treatment = petMedicalHistory[0];
-                      final treatmentName = treatment.treatmentName ?? "Unknown";
-                      final doctorName = treatment.doctorName ?? "Unknown Doctor";
-                      final treatmentDate = treatment.treatmentDate != null ? DateFormat('EEE dd MMM yyyy').format(treatment.treatmentDate ?? DateTime.now()) : "Unknown Date";
-                      final treatmentDescription = treatment.treatmentDescription ?? "No description provided";
-                      final treatmentStatus = treatment.treatmentStatus ?? "Unknown Status";
-
-                      return Container(
-                        margin: EdgeInsets.all(12.w),
-                        padding: EdgeInsets.all(12.w),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(12.r),
-                          boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 6, offset: const Offset(0, 2))],
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            /// Treatment Name
-                            Text(
-                              "Treatment Name: $treatmentName",
-                              style: TextStyle(color: Colors.green, fontSize: 14.sp, fontWeight: FontWeight.w600),
-                            ),
-                            Gap(4.h),
-
-                            /// Doctor Name
-                            Text("Doctor Name: $doctorName", style: TextStyle(color: Colors.black87, fontSize: 13.sp)),
-                            Gap(4.h),
-
-                            /// Treatment Date
-                            Text("Treatment Date: $treatmentDate", style: TextStyle(color: Colors.black87, fontSize: 13.sp)),
-                            Gap(4.h),
-
-                            /*         /// Location Row
-                            Row(
-                              children: [
-                                const Icon(Icons.location_on, color: Colors.red, size: 18),
-                                Gap(4.w),
-                                Expanded(
-                                  child: Text(
-                                    "Location Placeholder", // Replace with actual location if available
-                                    style: TextStyle(
-                                      color: Colors.black87,
-                                      fontSize: 13.sp,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Gap(8.h),*/
-
-                            /// Treatment Description Title
-                            Text("Treatment Description", style: TextStyle(color: Colors.orange, fontWeight: FontWeight.w600, fontSize: 14.sp)),
-                            Gap(6.h),
-
-                            /// Description Box
-                            Container(
-                              padding: EdgeInsets.all(10.w),
-                              decoration: BoxDecoration(
-                                color: Colors.green.withOpacity(0.05),
-                                borderRadius: BorderRadius.circular(8.r),
-                                border: Border.all(color: Colors.green.withOpacity(0.4)),
-                              ),
-                              child: Text(treatmentDescription, style: TextStyle(fontSize: 12.5.sp, color: Colors.black87)),
-                            ),
-                            Gap(10.h),
-
-                            /// Status Button (like Completed)
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Container(
-                                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-                                decoration: BoxDecoration(
-                                  color: treatmentStatus == "COMPLETED" ? Colors.green.shade700 : Colors.orange.shade700,
-                                  borderRadius: BorderRadius.circular(6.r),
-                                ),
-                                child: Text(treatmentStatus, style: TextStyle(fontSize: 12.sp, color: Colors.white, fontWeight: FontWeight.w500)),
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    }),
 
                     /*  CustomAlignText(text: "More Info",fontWeight: FontWeight.w600,fontSize: 14,),
                    Gap(8),*/
@@ -290,14 +202,91 @@ class _MyDetailsPetsScreenState extends State<MyDetailsPetsScreen> {
                 ),
               ),
             ),
-            /*         SliverList(
-             delegate: SliverChildBuilderDelegate(
-                   (context, index) => ListTile(
-                 title: Text('Item #$index'),
-               ),
-               childCount: 20,
-             ),
-           ),*/
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                    (context, index) => Obx(() {
+                  final petMedicalHistory = controller.details.value.petMedicalHistory ?? [];
+
+                  if (petMedicalHistory.isEmpty) {
+                    return Center(
+                      child: Text(
+                        "No medical history available.",
+                        style: TextStyle(fontSize: 16.sp, color: Colors.black87),
+                      ),
+                    );
+                  }
+
+                  final treatment = petMedicalHistory[index]; // ✅ index-wise data
+                  final treatmentName = treatment.treatmentName ?? "Unknown";
+                  final doctorName = treatment.doctorName ?? "Unknown Doctor";
+                  final treatmentDate = treatment.treatmentDate != null
+                      ? DateFormat('EEE dd MMM yyyy').format(treatment.treatmentDate ?? DateTime.now())
+                      : "Unknown Date";
+                  final treatmentDescription = treatment.treatmentDescription ?? "No description provided";
+                  final treatmentStatus = treatment.treatmentStatus ?? "Unknown Status";
+
+                  return Container(
+                    margin: EdgeInsets.all(12.w),
+                    padding: EdgeInsets.all(12.w),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12.r),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.05),
+                          blurRadius: 6,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Treatment Name: $treatmentName",
+                          style: TextStyle(color: Colors.green, fontSize: 14.sp, fontWeight: FontWeight.w600),
+                        ),
+                        Gap(4.h),
+                        Text("Doctor Name: $doctorName", style: TextStyle(color: Colors.black87, fontSize: 13.sp)),
+                        Gap(4.h),
+                        Text("Treatment Date: $treatmentDate", style: TextStyle(color: Colors.black87, fontSize: 13.sp)),
+                        Gap(4.h),
+                        Text("Treatment Description", style: TextStyle(color: Colors.orange, fontWeight: FontWeight.w600, fontSize: 14.sp)),
+                        Gap(6.h),
+                        Container(
+                          padding: EdgeInsets.all(10.w),
+                          decoration: BoxDecoration(
+                            color: Colors.green.withOpacity(0.05),
+                            borderRadius: BorderRadius.circular(8.r),
+                            border: Border.all(color: Colors.green.withOpacity(0.4)),
+                          ),
+                          child: Text(treatmentDescription, style: TextStyle(fontSize: 12.5.sp, color: Colors.black87)),
+                        ),
+                        Gap(10.h),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                            decoration: BoxDecoration(
+                              color: treatmentStatus == "COMPLETED"
+                                  ? Colors.green.shade700
+                                  : Colors.orange.shade700,
+                              borderRadius: BorderRadius.circular(6.r),
+                            ),
+                            child: Text(
+                              treatmentStatus,
+                              style: TextStyle(fontSize: 12.sp, color: Colors.white, fontWeight: FontWeight.w500),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }),
+                childCount: controller.details.value.petMedicalHistory?.length ?? 0,
+              ),
+            ),
+
           ],
         ),
       ),

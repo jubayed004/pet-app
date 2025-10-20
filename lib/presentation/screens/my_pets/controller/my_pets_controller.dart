@@ -6,6 +6,7 @@ import 'package:pet_app/core/dependency/get_it_injection.dart';
 import 'package:pet_app/core/route/routes.dart';
 import 'package:pet_app/helper/toast_message/toast_message.dart';
 import 'package:pet_app/presentation/screens/my_pets/model/my_all_pet_model.dart';
+import 'package:pet_app/presentation/screens/my_pets/model/my_all_pets_details_model.dart';
 import 'package:pet_app/service/api_service.dart';
 import 'package:pet_app/service/api_url.dart';
 import 'package:pet_app/utils/app_const/app_const.dart';
@@ -22,7 +23,7 @@ class MyPetsProfileController extends GetxController {
 
   /// Data Holders
   final Rx<MyAllPetModel> profile = MyAllPetModel().obs;
-  final Rx<BusinessAllPetsDetailsModel> details = BusinessAllPetsDetailsModel().obs;
+  final Rx<MyAllPetsDetailsModel> details = MyAllPetsDetailsModel().obs;
 
   /// Image + Gender
   var genderSelected = "MALE".obs;
@@ -59,7 +60,7 @@ class MyPetsProfileController extends GetxController {
       final statusCode = response.statusCode ?? 0;
 
       if (statusCode == 200) {
-        details.value = BusinessAllPetsDetailsModel.fromJson(response.body);
+        details.value = MyAllPetsDetailsModel.fromJson(response.body);
         detailsLoading.value = Status.completed;
       } else {
         handleError(statusCode, isDetails: true);

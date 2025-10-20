@@ -1,8 +1,7 @@
-/*
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:service_provider_app/core/utils/app_colors/app_colors.dart';
+import 'package:pet_app/utils/app_colors/app_colors.dart';
 
 
 
@@ -13,11 +12,10 @@ class CustomLoader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: SpinKitCircle(
-        color: AppColors.primary,
+        color: AppColors.primaryColor,
         // color: AppColors.appBarBackground,
         size: 60.h,
       ),
     );
   }
 }
-*/

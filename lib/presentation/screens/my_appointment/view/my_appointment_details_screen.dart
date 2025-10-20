@@ -219,7 +219,7 @@ class _MyAppointmentDetailsScreenState extends State<MyAppointmentDetailsScreen>
                           Row(
                             spacing: 10,
                             children: [
-                              Flexible(
+                              if (["COMPLETE"].contains(item1?.bookingStatus)) Flexible(
                                 child: CustomButton(
                                   onTap: () {
                                     AppRouter.route.pushNamed(
@@ -245,6 +245,7 @@ class _MyAppointmentDetailsScreenState extends State<MyAppointmentDetailsScreen>
                                   textColor: Colors.black,
                                 ),
                               ),
+
                               if (["HOTEL"].contains(item?.serviceType))
                                 Flexible(
                                   child: CustomButton(

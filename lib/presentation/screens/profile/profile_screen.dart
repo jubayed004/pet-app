@@ -132,7 +132,7 @@ class ProfileScreen extends StatelessWidget {
                                         onTap: () {
                                           AppRouter.route.pushNamed(
                                             RoutePath.editProfileScreen,
-                                            extra: {"name": item.name ?? "", "phoneNumber": item.phone ?? "", "address": item.address ?? ""},
+                                            extra: {"name": item.name ?? "", "phoneNumber": item.phone ?? "", "address": item.address ?? "",},
                                           );
                                         },
                                         child: Card(
@@ -187,113 +187,110 @@ class ProfileScreen extends StatelessWidget {
                     }),
 
                     Gap(16),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 24.0, right: 24),
-                      child: Column(
-                        children: [
-                          ButtonSectionAll(
-                            icon: Assets.icons.myappointmenticon.svg(),
-                            text: AppStrings.myAppointments,
-                            onTap: () {
-                              AppRouter.route.pushNamed(RoutePath.myAppointmentScreen);
-                            },
-                          ),
+                    Column(
+                      children: [
+                        ButtonSectionAll(
+                          icon: Assets.icons.myappointmenticon.svg(),
+                          text: AppStrings.myAppointments,
+                          onTap: () {
+                            AppRouter.route.pushNamed(RoutePath.myAppointmentScreen);
+                          },
+                        ),
 
-                          ButtonSectionAll(
-                            icon: Assets.icons.mypeticon.svg(colorFilter: ColorFilter.mode(AppColors.purple500, BlendMode.srcIn)),
-                            text: AppStrings.myPets,
-                            onTap: () {
-                              controller.selectedNavIndex.value = 3;
-                            },
-                          ),
+                        ButtonSectionAll(
+                          icon: Assets.icons.mypeticon.svg(colorFilter: ColorFilter.mode(AppColors.purple500, BlendMode.srcIn)),
+                          text: AppStrings.myPets,
+                          onTap: () {
+                            controller.selectedNavIndex.value = 3;
+                          },
+                        ),
 
-                          ButtonSectionAll(
-                            icon: Assets.icons.addpeticon.svg(),
-                            text: AppStrings.addPet,
-                            onTap: () {
-                              AppRouter.route.pushNamed(RoutePath.addPetScreen);
-                            },
-                          ),
+                        ButtonSectionAll(
+                          icon: Assets.icons.addpeticon.svg(),
+                          text: AppStrings.addPet,
+                          onTap: () {
+                            AppRouter.route.pushNamed(RoutePath.addPetScreen);
+                          },
+                        ),
 
-                          ButtonSectionAll(
-                            icon: Assets.icons.chaticon.svg(colorFilter: ColorFilter.mode(AppColors.purple500, BlendMode.srcIn)),
-                            text: AppStrings.chat,
-                            onTap: () {
-                              controller.selectedNavIndex.value = 2;
-                            },
-                          ),
+                        ButtonSectionAll(
+                          icon: Assets.icons.chaticon.svg(colorFilter: ColorFilter.mode(AppColors.purple500, BlendMode.srcIn)),
+                          text: AppStrings.chat,
+                          onTap: () {
+                            controller.selectedNavIndex.value = 2;
+                          },
+                        ),
 
-                          ButtonSectionAll(
-                            icon: Assets.icons.settingicon.svg(),
-                            text: AppStrings.settings,
-                            onTap: () {
-                              AppRouter.route.pushNamed(RoutePath.settingsPage);
-                            },
-                          ),
+                        ButtonSectionAll(
+                          icon: Assets.icons.settingicon.svg(),
+                          text: AppStrings.settings,
+                          onTap: () {
+                            AppRouter.route.pushNamed(RoutePath.settingsPage);
+                          },
+                        ),
 
-                          ButtonSectionAll(
-                            showTrailingIcon: false,
-                            icon: Assets.icons.logouticon.svg(),
-                            text: AppStrings.signOut,
-                            onTap: () {
-                              showCustomAnimatedDialog(
-                                animationSrc: "assets/images/warning.png",
-                                context: context,
-                                title: "Warning",
-                                subtitle: "Are you sure you want to change your subscription plan?",
-                                actionButton: [
-                                  CustomButton(
-                                    width: double.infinity,
-                                    height: 36,
-                                    fillColor: Colors.white,
-                                    // White background
-                                    borderWidth: 1,
-                                    // Border width
-                                    borderColor: AppColors.greenColor,
-                                    // Border color (black)
-                                    onTap: () {
-                                      AppRouter.route.pop();
-                                    },
-                                    textColor: AppColors.greenColor,
-                                    title: "Cancel",
-                                    isBorder: true,
-                                    fontSize: 14, // Ensure the border is visible
-                                  ),
-                                  CustomButton(
-                                    width: double.infinity,
-                                    height: 36,
-                                    onTap: () async {
-                                      AppRouter.route.pop();
-                                      await Future.delayed(Duration(milliseconds: 100));
-                                      showCustomAnimatedDialog(
-                                        context: context,
-                                        title: "Success",
-                                        subtitle: "You have been logged out successfully.",
-                                        animationSrc: "assets/animation/success.json",
-                                        // Path to your Lottie animation
-                                        isDismissible: true,
-                                        actionButton: [
-                                          CustomButton(
-                                            height: 36,
-                                            width: 100,
-                                            onTap: () {
-                                              DBHelper().logOut(); // Navigate
-                                            },
-                                            title: "Confirm",
-                                            fontSize: 14,
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                    title: " Confirm",
-                                    fontSize: 14,
-                                  ),
-                                ],
-                              );
-                            },
-                          ),
-                        ],
-                      ),
+                        ButtonSectionAll(
+                          showTrailingIcon: false,
+                          icon: Assets.icons.logouticon.svg(),
+                          text: AppStrings.signOut,
+                          onTap: () {
+                            showCustomAnimatedDialog(
+                              animationSrc: "assets/images/warning.png",
+                              context: context,
+                              title: "Warning",
+                              subtitle: "Are you sure you want to change your subscription plan?",
+                              actionButton: [
+                                CustomButton(
+                                  width: double.infinity,
+                                  height: 36,
+                                  fillColor: Colors.white,
+                                  // White background
+                                  borderWidth: 1,
+                                  // Border width
+                                  borderColor: AppColors.greenColor,
+                                  // Border color (black)
+                                  onTap: () {
+                                    AppRouter.route.pop();
+                                  },
+                                  textColor: AppColors.greenColor,
+                                  title: "Cancel",
+                                  isBorder: true,
+                                  fontSize: 14, // Ensure the border is visible
+                                ),
+                                CustomButton(
+                                  width: double.infinity,
+                                  height: 36,
+                                  onTap: () async {
+                                    AppRouter.route.pop();
+                                    await Future.delayed(Duration(milliseconds: 100));
+                                    showCustomAnimatedDialog(
+                                      context: context,
+                                      title: "Success",
+                                      subtitle: "You have been logged out successfully.",
+                                      animationSrc: "assets/animation/success.json",
+                                      // Path to your Lottie animation
+                                      isDismissible: true,
+                                      actionButton: [
+                                        CustomButton(
+                                          height: 36,
+                                          width: 100,
+                                          onTap: () {
+                                            DBHelper().logOut(); // Navigate
+                                          },
+                                          title: "Confirm",
+                                          fontSize: 14,
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                  title: " Confirm",
+                                  fontSize: 14,
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                      ],
                     ),
                   ],
                 ),
