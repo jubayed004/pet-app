@@ -27,269 +27,571 @@ class _MyDetailsPetsScreenState extends State<MyDetailsPetsScreen> {
 
   @override
   void initState() {
-    controller.myAllPetDetails(id: widget.id);
     super.initState();
+    controller.myAllPetDetails(id: widget.id);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey.shade50,
       body: RefreshIndicator(
         onRefresh: () async {
-          controller.myAllPetDetails(id: widget.id);
+          await controller.myAllPetDetails(id: widget.id);
         },
+        color: AppColors.primaryColor,
         child: CustomScrollView(
           slivers: [
             Obx(() {
-              print("Name4 ${controller.details.value.pet?.name}");
-              return CustomDefaultAppbar(title: controller.details.value.pet?.name ?? "");
+              return CustomDefaultAppbar(
+                  title: controller.details.value.pet?.name ?? "Pet Details");
             }),
+
+            // Hero Image Section
             SliverToBoxAdapter(
               child: Obx(() {
-                final pet = controller.details.value.pet?.petPhoto;
-                final image = pet != null && pet.isNotEmpty ? pet : "";
-                return image.isNotEmpty
-                    ? Image.network(image, fit: BoxFit.cover, width: double.infinity, height: 200)
-                    : Image.network(
-                      'https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=800&q=80',
+                final petPhoto = controller.details.value.pet?.petPhoto ?? "";
+                return Stack(
+                  children: [
+                    petPhoto.isNotEmpty
+                        ? Image.network(
+                      petPhoto,
                       fit: BoxFit.cover,
                       width: double.infinity,
-                      height: 200,
-                    );
+                      height: 280.h,
+                      errorBuilder: (context, error, stackTrace) {
+                        return _buildPlaceholderImage();
+                      },
+                    )
+                        : _buildPlaceholderImage(),
+                    // Gradient overlay
+                    Container(
+                      height: 280.h,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Colors.transparent,
+                            Colors.black.withOpacity(0.6),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                );
               }),
             ),
+
+            // Main Content
             SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-                child: Column(
-                  children: [
-                    Obx(() {
-                      final profileDetails = controller.details.value.pet;
-                      return Card(
-                        elevation: 4,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        CustomText(
-                                          text: profileDetails?.name ?? "",
-                                          textAlign: TextAlign.start,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 16,
+              child: Transform.translate(
+                offset: Offset(0, -30.h),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade50,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(30.r),
+                      topRight: Radius.circular(30.r),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.all(20.w),
+                    child: Column(
+                      children: [
+                        // Pet Info Card
+                        Obx(() {
+                          final pet = controller.details.value.pet;
+                          return Container(
+                            padding: EdgeInsets.all(20.w),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(20.r),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.06),
+                                  blurRadius: 10,
+                                  offset: const Offset(0, 4),
+                                ),
+                              ],
+                            ),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.start,
+                                    children: [
+                                      CustomText(
+                                        text: pet?.name ?? "",
+                                        textAlign: TextAlign.start,
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 24.sp,
+                                      ),
+                                      Gap(8.h),
+                                      Container(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 12.w,
+                                          vertical: 6.h,
                                         ),
-                                        Gap(6),
-                                        CustomText(
-                                          text: profileDetails?.gender ?? "",
+                                        decoration: BoxDecoration(
+                                          color: AppColors.purple500
+                                              .withOpacity(0.1),
+                                          borderRadius:
+                                          BorderRadius.circular(20.r),
+                                        ),
+                                        child: CustomText(
+                                          text: pet?.gender ?? "",
                                           textAlign: TextAlign.start,
                                           fontWeight: FontWeight.w600,
                                           color: AppColors.purple500,
+                                          fontSize: 14.sp,
                                         ),
-                                      ],
-                                    ),
-                                  ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              IconButton(
-                                onPressed: () {
-                                  AppRouter.route.pushNamed(
-                                    RoutePath.editMyPetsScreen,
-                                    extra: {
-                                      "id": profileDetails?.id ?? "",
-                                      "name": profileDetails?.name ?? "",
-                                      "animalType": profileDetails?.animalType ?? "",
-                                      "breed": profileDetails?.breed ?? "",
-                                      "age": profileDetails?.age.toString() ?? "",
-                                      "gender": profileDetails?.gender ?? "",
-                                      "weight": profileDetails?.weight.toString() ?? "",
-                                      "height": profileDetails?.height.toString() ?? "",
-                                      "color": profileDetails?.color ?? "",
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color:
+                                    AppColors.primaryColor.withOpacity(0.1),
+                                    borderRadius: BorderRadius.circular(15.r),
+                                  ),
+                                  child: IconButton(
+                                    onPressed: () {
+                                      AppRouter.route.pushNamed(
+                                        RoutePath.editMyPetsScreen,
+                                        extra: {
+                                          "id": pet?.id ?? "",
+                                          "name": pet?.name ?? "",
+                                          "animalType": pet?.animalType ?? "",
+                                          "breed": pet?.breed ?? "",
+                                          "age": pet?.age.toString() ?? "",
+                                          "gender": pet?.gender ?? "",
+                                          "weight": pet?.weight.toString() ?? "",
+                                          "height": pet?.height.toString() ?? "",
+                                          "color": pet?.color ?? "",
+                                        },
+                                      );
                                     },
-                                  );
-                                },
-                                icon: Icon(Iconsax.edit),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    }),
-                    Gap(8),
-                    Row(
-                      children: [
-                        Icon(Icons.account_box_outlined),
-                        Gap(6),
-                        Obx(() {
-                          return CustomText(text: "About ${controller.details.value.pet?.name ?? ""}", fontWeight: FontWeight.w600, fontSize: 16);
-                        }),
-                      ],
-                    ),
-                    Gap(16),
-                    SizedBox(
-                      height: 80, // fixed height for the list items
-                      child: Obx(() {
-                        final pet = controller.details.value.pet;
-                        return ListView(
-                          scrollDirection: Axis.horizontal,
-                          children: [
-                            DetailsCard(title: "Age", details: pet?.age.toString() ?? ""),
-                            DetailsCard(title: "Pet Type", details: pet?.animalType ?? ""),
-                            DetailsCard(title: "Gender", details: pet?.gender ?? ""),
-                            DetailsCard(title: "Height", details: pet?.height.toString() ?? ""),
-                            DetailsCard(title: "Weight", details: pet?.weight.toString() ?? ""),
-                            DetailsCard(title: "Color", details: pet?.color ?? ""),
-                            DetailsCard(title: "Breed", details: pet?.breed ?? ""),
-                          ],
-                        );
-                      }),
-                    ),
-                    Gap(16),
-                    Row(
-                      children: [
-                        Icon(Icons.safety_divider_outlined),
-                        Gap(6),
-                        CustomText(text: "${controller.details.value.pet?.name ?? ""} ’s Status", fontWeight: FontWeight.w600, fontSize: 16),
-                      ],
-                    ),
-                    Gap(16),
-                    Divider(height: 1, color: Colors.grey),
-                    Gap(16),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            CircleAvatar(
-                              radius: 20,
-                              backgroundColor: Color(0xFFE54D4D),
-                              child: Icon(Icons.health_and_safety, size: 24, color: Colors.white),
+                                    icon: Icon(
+                                      Iconsax.edit,
+                                      color: AppColors.primaryColor,
+                                      size: 24.sp,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                            Gap(6),
-                            CustomText(text: "Health", fontSize: 16, fontWeight: FontWeight.w600),
-                          ],
+                          );
+                        }),
+                        Gap(20.h),
+
+                        // About Section
+                        _buildSectionHeader(
+                          icon: Icons.info_outline,
+                          title: "About",
+                          subtitle: controller.details.value.pet?.name ?? "",
                         ),
-                        TextButton(
-                          onPressed: () {
-                            AppRouter.route.pushNamed(RoutePath.petHealthScreen, extra: widget.id);
+                        Gap(12.h),
+
+                        // Details Cards
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height/6,
+                          child: Obx(() {
+                            final pet = controller.details.value.pet;
+                            return ListView(
+                              scrollDirection: Axis.horizontal,
+                              children: [
+                                _buildModernDetailsCard(
+                                  title: "Age",
+                                  value: "${pet?.age ?? 0}",
+                                  icon: Iconsax.calendar,
+                                  color: Colors.blue,
+                                ),
+                                _buildModernDetailsCard(
+                                  title: "Type",
+                                  value: pet?.animalType ?? "",
+                                  icon: Iconsax.category,
+                                  color: Colors.purple,
+                                ),
+                                _buildModernDetailsCard(
+                                  title: "Weight",
+                                  value: "${pet?.weight ?? 0} kg",
+                                  icon: Iconsax.weight,
+                                  color: Colors.orange,
+                                ),
+                                _buildModernDetailsCard(
+                                  title: "Height",
+                                  value: "${pet?.height ?? 0} cm",
+                                  icon: Iconsax.arrow_up_3,
+                                  color: Colors.green,
+                                ),
+                                _buildModernDetailsCard(
+                                  title: "Color",
+                                  value: pet?.color ?? "",
+                                  icon: Iconsax.colorfilter,
+                                  color: Colors.red,
+                                ),
+                                _buildModernDetailsCard(
+                                  title: "Breed",
+                                  value: pet?.breed ?? "",
+                                  icon: Iconsax.share,
+                                  color: Colors.teal,
+                                ),
+                              ],
+                            );
+                          }),
+                        ),
+                        Gap(24.h),
+
+                        // Health Section Header
+                        _buildSectionHeader(
+                          icon: Icons.health_and_safety,
+                          title: "Health Status",
+                          subtitle:
+                          controller.details.value.pet?.name ?? "Pet",
+                          actionText: "See All",
+                          onActionTap: () {
+                            AppRouter.route.pushNamed(
+                              RoutePath.petHealthScreen,
+                              extra: widget.id,
+                            );
                           },
-                          child: CustomText(text: "See All", fontWeight: FontWeight.w400, fontSize: 14),
                         ),
                       ],
                     ),
-                    Gap(16),
-                    Align(alignment: Alignment.topLeft, child: CustomText(text: "Health History", fontWeight: FontWeight.w700, fontSize: 14)),
-                    Gap(8),
-
-
-                    /*  CustomAlignText(text: "More Info",fontWeight: FontWeight.w600,fontSize: 14,),
-                   Gap(8),*/
-                    /*      Container(
-                     padding: EdgeInsets.all(12),
-                     decoration: BoxDecoration(
-                     borderRadius: BorderRadius.circular(10),
-                     border: Border.all(color: AppColors.purple500)),
-                     child:CustomText(text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut ",fontSize: 16,fontWeight: FontWeight.w400,maxLines: 6,textAlign: TextAlign.start,),
-                   )*/
-                  ],
+                  ),
                 ),
               ),
             ),
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                    (context, index) => Obx(() {
-                  final petMedicalHistory = controller.details.value.petMedicalHistory ?? [];
 
-                  if (petMedicalHistory.isEmpty) {
-                    return Center(
-                      child: Text(
-                        "No medical history available.",
-                        style: TextStyle(fontSize: 16.sp, color: Colors.black87),
-                      ),
-                    );
-                  }
+            // Medical History List
+            SliverPadding(
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              sliver: SliverList(
+                delegate: SliverChildBuilderDelegate(
+                      (context, index) => Obx(() {
+                    final medicalHistory =
+                        controller.details.value.petMedicalHistory ?? [];
 
-                  final treatment = petMedicalHistory[index]; // ✅ index-wise data
-                  final treatmentName = treatment.treatmentName ?? "Unknown";
-                  final doctorName = treatment.doctorName ?? "Unknown Doctor";
-                  final treatmentDate = treatment.treatmentDate != null
-                      ? DateFormat('EEE dd MMM yyyy').format(treatment.treatmentDate ?? DateTime.now())
-                      : "Unknown Date";
-                  final treatmentDescription = treatment.treatmentDescription ?? "No description provided";
-                  final treatmentStatus = treatment.treatmentStatus ?? "Unknown Status";
-
-                  return Container(
-                    margin: EdgeInsets.all(12.w),
-                    padding: EdgeInsets.all(12.w),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12.r),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.05),
-                          blurRadius: 6,
-                          offset: const Offset(0, 2),
+                    if (medicalHistory.isEmpty) {
+                      return Container(
+                        //padding: EdgeInsets.all(40.w),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20.r),
                         ),
-                      ],
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Treatment Name: $treatmentName",
-                          style: TextStyle(color: Colors.green, fontSize: 14.sp, fontWeight: FontWeight.w600),
-                        ),
-                        Gap(4.h),
-                        Text("Doctor Name: $doctorName", style: TextStyle(color: Colors.black87, fontSize: 13.sp)),
-                        Gap(4.h),
-                        Text("Treatment Date: $treatmentDate", style: TextStyle(color: Colors.black87, fontSize: 13.sp)),
-                        Gap(4.h),
-                        Text("Treatment Description", style: TextStyle(color: Colors.orange, fontWeight: FontWeight.w600, fontSize: 14.sp)),
-                        Gap(6.h),
-                        Container(
-                          padding: EdgeInsets.all(10.w),
-                          decoration: BoxDecoration(
-                            color: Colors.green.withOpacity(0.05),
-                            borderRadius: BorderRadius.circular(8.r),
-                            border: Border.all(color: Colors.green.withOpacity(0.4)),
-                          ),
-                          child: Text(treatmentDescription, style: TextStyle(fontSize: 12.5.sp, color: Colors.black87)),
-                        ),
-                        Gap(10.h),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-                            decoration: BoxDecoration(
-                              color: treatmentStatus == "COMPLETED"
-                                  ? Colors.green.shade700
-                                  : Colors.orange.shade700,
-                              borderRadius: BorderRadius.circular(6.r),
+                        child: Column(
+                          children: [
+                            Icon(Icons.medical_services_outlined,
+                                size: 60.sp, color: Colors.grey.shade300),
+                            Gap(16.h),
+                            CustomText(
+                              text: "No medical history available",
+                              fontSize: 16.sp,
+                              color: Colors.grey,
+                              fontWeight: FontWeight.w500,
                             ),
-                            child: Text(
-                              treatmentStatus,
-                              style: TextStyle(fontSize: 12.sp, color: Colors.white, fontWeight: FontWeight.w500),
-                            ),
-                          ),
+                          ],
                         ),
-                      ],
-                    ),
-                  );
-                }),
-                childCount: controller.details.value.petMedicalHistory?.length ?? 0,
+                      );
+                    }
+
+                    final treatment = medicalHistory[index];
+                    return _buildMedicalHistoryCard(treatment);
+                  }),
+                  childCount:
+                  controller.details.value.petMedicalHistory?.isEmpty ??
+                      true
+                      ? 1
+                      : controller.details.value.petMedicalHistory?.length ??
+                      0,
+                ),
               ),
             ),
-
+            SliverGap(20.h),
           ],
         ),
       ),
     );
   }
+
+  Widget _buildPlaceholderImage() {
+    return Container(
+      height: 280.h,
+      color: Colors.grey.shade200,
+      child: Image.network(
+        'https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=800&q=80',
+        fit: BoxFit.cover,
+        width: double.infinity,
+        errorBuilder: (context, error, stackTrace) {
+          return Center(
+            child: Icon(Icons.pets, size: 80.sp, color: Colors.grey),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildSectionHeader({
+    required IconData icon,
+    required String title,
+    String? subtitle,
+    String? actionText,
+    VoidCallback? onActionTap,
+  }) {
+    return Row(
+      children: [
+        Container(
+          padding: EdgeInsets.all(10.w),
+          decoration: BoxDecoration(
+            color: AppColors.primaryColor.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(12.r),
+          ),
+          child: Icon(icon, color: AppColors.primaryColor, size: 24.sp),
+        ),
+        Gap(12.w),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CustomText(
+                text: title,
+                fontWeight: FontWeight.w700,
+                fontSize: 18.sp,
+              ),
+              if (subtitle != null)
+                CustomText(
+                  text: subtitle,
+                  fontSize: 12.sp,
+                  color: Colors.grey,
+                ),
+            ],
+          ),
+        ),
+        if (actionText != null && onActionTap != null)
+          TextButton(
+            onPressed: onActionTap,
+            child: CustomText(
+              text: actionText,
+              fontWeight: FontWeight.w600,
+              fontSize: 14.sp,
+              color: AppColors.primaryColor,
+            ),
+          ),
+      ],
+    );
+  }
+
+  Widget _buildModernDetailsCard({
+    required String title,
+    required String value,
+    required IconData icon,
+    required Color color,
+  }) {
+    return Container(
+      width: 120.w,
+      margin: EdgeInsets.only(right: 12.w),
+      padding: EdgeInsets.all(16.w),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16.r),
+        border: Border.all(color: color.withOpacity(0.2)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.04),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            padding: EdgeInsets.all(8.w),
+            decoration: BoxDecoration(
+              color: color.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(10.r),
+            ),
+            child: Icon(icon, color: color, size: 24.sp),
+          ),
+          Gap(8.h),
+          CustomText(
+            text: title,
+            fontSize: 11.sp,
+            color: Colors.grey,
+            fontWeight: FontWeight.w500,
+          ),
+          Gap(4.h),
+          CustomText(
+            text: value,
+            fontSize: 14.sp,
+            fontWeight: FontWeight.w700,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMedicalHistoryCard(treatment) {
+    final treatmentName = treatment.treatmentName ?? "Unknown";
+    final doctorName = treatment.doctorName ?? "Unknown Doctor";
+    final treatmentDate = treatment.treatmentDate != null
+        ? DateFormat('EEE, dd MMM yyyy').format(treatment.treatmentDate!)
+        : "Unknown Date";
+    final treatmentDescription =
+        treatment.treatmentDescription ?? "No description";
+    final treatmentStatus = treatment.treatmentStatus ?? "PENDING";
+    final isCompleted = treatmentStatus == "COMPLETED";
+
+    return Container(
+      margin: EdgeInsets.only(bottom: 16.h),
+      padding: EdgeInsets.all(16.w),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20.r),
+        border: Border.all(
+          color: isCompleted
+              ? Colors.green.withOpacity(0.3)
+              : Colors.orange.withOpacity(0.3),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.04),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: EdgeInsets.all(8.w),
+                decoration: BoxDecoration(
+                  color: (isCompleted ? Colors.green : Colors.orange)
+                      .withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(10.r),
+                ),
+                child: Icon(
+                  isCompleted ? Iconsax.tick_circle4 : Iconsax.clock5,
+                  color: isCompleted ? Colors.green : Colors.orange,
+                  size: 20.sp,
+                ),
+              ),
+              Gap(12.w),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomText(
+                      text: treatmentName,
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w700,
+                      color: isCompleted ? Colors.green.shade700 : Colors.orange.shade700,
+                      textAlign: TextAlign.start,
+                    ),
+                    Gap(4.h),
+                    Row(
+                      children: [
+                        Icon(Iconsax.user_octagon, size: 14.sp, color: Colors.grey),
+                        Gap(4.w),
+                        CustomText(
+                          text: doctorName,
+                          fontSize: 13.sp,
+                          color: Colors.grey.shade700,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                decoration: BoxDecoration(
+                  color: isCompleted ? Colors.green.shade700 : Colors.orange.shade700,
+                  borderRadius: BorderRadius.circular(20.r),
+                ),
+                child: CustomText(
+                  text: treatmentStatus,
+                  fontSize: 11.sp,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+          Gap(12.h),
+          Divider(height: 1, color: Colors.grey.shade200),
+          Gap(12.h),
+
+          // Date
+          Row(
+            children: [
+              Icon(Iconsax.calendar_1, size: 16.sp, color: AppColors.purple500),
+              Gap(8.w),
+              CustomText(
+                text: treatmentDate,
+                fontSize: 13.sp,
+                fontWeight: FontWeight.w500,
+                color: Colors.black87,
+              ),
+            ],
+          ),
+          Gap(12.h),
+
+          // Description
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(Iconsax.document_text, size: 16.sp, color: AppColors.purple500),
+              Gap(8.w),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomText(
+                      text: "Treatment Description",
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.purple500,
+                    ),
+                    Gap(6.h),
+                    Container(
+                      padding: EdgeInsets.all(12.w),
+                      decoration: BoxDecoration(
+                        color: (isCompleted ? Colors.green : Colors.orange).withOpacity(0.05),
+                        borderRadius: BorderRadius.circular(12.r),
+                        border: Border.all(
+                          color: (isCompleted ? Colors.green : Colors.orange).withOpacity(0.2),
+                        ),
+                      ),
+                      child: CustomText(
+                        text: treatmentDescription,
+                        fontSize: 13.sp,
+                        color: Colors.black87,
+                        textAlign: TextAlign.start,
+                        maxLines: 5,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// Helper widget for Gap in Sliver
+class SliverGap extends SliverToBoxAdapter {
+  SliverGap(double height) : super(child: SizedBox(height: height));
 }

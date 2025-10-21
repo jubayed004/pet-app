@@ -24,26 +24,48 @@ import '../model/category_model.dart';
 
 class CategoryScreen extends StatefulWidget {
   final int index;
-   const CategoryScreen({super.key, required this.index});
 
-
+  const CategoryScreen({super.key, required this.index});
 
   @override
   State<CategoryScreen> createState() => _CategoryScreenState();
 }
 
 class _CategoryScreenState extends State<CategoryScreen> {
-
   late final ValueNotifier<int> selectedIndex;
 
   final categoryController = GetControllers.instance.getCategoryController();
   final List<CategoryItem> categories = [
-    CategoryItem(icon: Assets.icons.petvets.svg(), title: AppStrings.petVets, type: "VET"),
-    CategoryItem(icon: Assets.icons.petshops.svg(), title: AppStrings.petShops, type: "SHOP"),
-    CategoryItem(icon: Assets.icons.petgrooming.svg(), title: AppStrings.petGrooming, type: "GROOMING"),
-    CategoryItem(icon: Assets.icons.pethotel.svg(), title: AppStrings.petHotels, type: "HOTEL"),
-    CategoryItem(icon: Assets.icons.pettraining.svg(), title: AppStrings.petTraining, type: "TRAINING"),
-    CategoryItem(icon: Assets.icons.friendlyplace.svg(), title: AppStrings.friendlyPlace, type: "FRIENDLY"),
+    CategoryItem(
+      icon: Assets.icons.petvets.svg(),
+      title: AppStrings.petVets,
+      type: "VET",
+    ),
+    CategoryItem(
+      icon: Assets.icons.petshops.svg(),
+      title: AppStrings.petShops,
+      type: "SHOP",
+    ),
+    CategoryItem(
+      icon: Assets.icons.petgrooming.svg(),
+      title: AppStrings.petGrooming,
+      type: "GROOMING",
+    ),
+    CategoryItem(
+      icon: Assets.icons.pethotel.svg(),
+      title: AppStrings.petHotels,
+      type: "HOTEL",
+    ),
+    CategoryItem(
+      icon: Assets.icons.pettraining.svg(),
+      title: AppStrings.petTraining,
+      type: "TRAINING",
+    ),
+    CategoryItem(
+      icon: Assets.icons.friendlyplace.svg(),
+      title: AppStrings.friendlyPlace,
+      type: "FRIENDLY",
+    ),
   ];
 
   @override
@@ -66,7 +88,11 @@ class _CategoryScreenState extends State<CategoryScreen> {
         appBar: AppBar(
           backgroundColor: Colors.white,
           centerTitle: true,
-          title: CustomText(text: "Category",fontWeight: FontWeight.w600,fontSize: 16,),
+          title: CustomText(
+            text: "Category",
+            fontWeight: FontWeight.w600,
+            fontSize: 16,
+          ),
         ),
         backgroundColor: AppColors.whiteColor,
         body: Column(
@@ -92,7 +118,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                             GestureDetector(
                               onTap: () {
                                 selectedIndex.value = index;
-                        /*        if (index == 5) {
+                                /*        if (index == 5) {
                                   showModalBottomSheet(
                                     context: context,
                                     builder: (_) {
@@ -122,7 +148,10 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                 ),
                                 elevation: 3,
                                 child: CircleAvatar(
-                                  backgroundColor: isSelected ? AppColors.primaryColor : Colors.white,
+                                  backgroundColor:
+                                      isSelected
+                                          ? AppColors.primaryColor
+                                          : Colors.white,
                                   radius: 40.r,
                                   child: category.icon,
                                 ),
@@ -142,6 +171,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 },
               ),
             ),
+
             /// PagedSliverList - changes with category
             Expanded(
               child: ValueListenableBuilder<int>(
@@ -150,30 +180,18 @@ class _CategoryScreenState extends State<CategoryScreen> {
                   return IndexedStack(
                     index: index,
                     children: [
-                      VetWidget(
-                        controller: categoryController,
-                        index: index,
-                      ),
-                      ShopWidget(
-                        controller: categoryController,
-                        index: index,
-                      ),
+                      VetWidget(controller: categoryController, index: index),
+                      ShopWidget(controller: categoryController, index: index),
                       GroomingWidget(
                         controller: categoryController,
                         index: index,
                       ),
-                      HotelWidget(
-                        controller: categoryController,
-                        index: index,
-                      ),
+                      HotelWidget(controller: categoryController, index: index),
                       TrainingWidget(
                         controller: categoryController,
                         index: index,
                       ),
-                      PlaceWidget(
-                        controller: categoryController,
-                        index: index,
-                      ),
+                      PlaceWidget(controller: categoryController, index: index),
                     ],
                   );
                 },

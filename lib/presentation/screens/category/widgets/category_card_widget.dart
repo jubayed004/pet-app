@@ -58,9 +58,9 @@ class CategoryCardWidget extends StatelessWidget {
         margin: EdgeInsets.symmetric(vertical: 6),
         padding: EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: AppColors.greenColor,width: 1)
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: AppColors.greenColor,width: 1)
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,16 +72,16 @@ class CategoryCardWidget extends StatelessWidget {
                     children: [
                       image.isNotEmpty
                           ? CustomNetworkImage(
-                           imageUrl:  image,
-                            fit: BoxFit.cover,
+                        imageUrl:  image,
+                        fit: BoxFit.cover,
                         height: MediaQuery.of(context).size.height / 10,
                         width: MediaQuery.of(context).size.width,
                         borderRadius: BorderRadius.circular(12.r),
-                          )
+                      )
                           : CustomImage(
-                            imageSrc: "assets/images/womandogimage.png",
-                            boxFit: BoxFit.cover,
-                          ),
+                        imageSrc: "assets/images/womandogimage.png",
+                        boxFit: BoxFit.cover,
+                      ),
                       Gap(6),
                       CustomText(
                         text: shop? "Open":"Closed",
@@ -153,16 +153,16 @@ class CategoryCardWidget extends StatelessWidget {
                 ),
                 logo.isNotEmpty
                     ? CustomNetworkImage(
-                      boxShape: BoxShape.circle,
-                      width: MediaQuery.of(context).size.width / 8,
-                      height: MediaQuery.of(context).size.height / 10,
-                      imageUrl:
-                          logo.replaceAll("\\", "/"),
-                    )
+                  boxShape: BoxShape.circle,
+                  width: MediaQuery.of(context).size.width / 8,
+                  height: MediaQuery.of(context).size.height / 10,
+                  imageUrl:
+                  logo.replaceAll("\\", "/"),
+                )
                     : CustomImage(
-                      imageSrc: "assets/images/petshoplogo.png",
-                      sizeWidth: 50,
-                    ),
+                  imageSrc: "assets/images/petshoplogo.png",
+                  sizeWidth: 50,
+                ),
               ],
             ),
             Gap(8),

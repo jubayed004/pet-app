@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -11,7 +12,6 @@ import 'package:pet_app/presentation/no_internet/no_internet_card.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
 import 'package:pet_app/utils/app_const/app_const.dart';
-
 class BrandSection extends StatelessWidget {
   const BrandSection({super.key});
 
@@ -74,7 +74,7 @@ class BrandSection extends StatelessWidget {
                       );
                     },
                     options: CarouselOptions(
-                      height: 140.h,
+                      height: 100.h,
                       autoPlay: brands.length > 1,
                       autoPlayInterval: const Duration(seconds: 3),
                       enlargeCenterPage: true,

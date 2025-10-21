@@ -22,6 +22,7 @@ import 'package:pet_app/presentation/no_internet/error_card.dart';
 import 'package:pet_app/presentation/no_internet/more_data_error_card.dart';
 import 'package:pet_app/presentation/no_internet/no_data_card.dart';
 import 'package:pet_app/presentation/no_internet/no_internet_card.dart';
+import 'package:pet_app/presentation/screens/business_owners/business_home/widgets/brand_section.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_service/widgets/default_dialog.dart';
 import 'package:pet_app/presentation/screens/home/controller/home_controller.dart';
 import 'package:pet_app/presentation/screens/home/widget/category_iist_widget.dart';
@@ -82,7 +83,8 @@ class _HomeScreenState extends State<HomeScreen> {
               _buildAppointmentsHeader(),
               _buildAppointmentsSection(),
               const SliverGap(16),
-              SliverToBoxAdapter(
+          BrandSection(),
+          /*    SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Column(
@@ -90,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: const [CustomText(text: AppStrings.topBrands, fontWeight: FontWeight.w400, fontSize: 18), TopBrandsCarousel()],
                   ),
                 ),
-              ),
+              ),*/
               const SliverGap(24),
             ],
           ),
