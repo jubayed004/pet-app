@@ -28,7 +28,6 @@ class DashboardScreen extends StatelessWidget {
         child: CustomScrollView(
           slivers: [
             const CustomDefaultAppbar(title: "Dashboard"),
-
             /// Dropdown selection
             SliverToBoxAdapter(
               child: Padding(
@@ -76,7 +75,6 @@ class DashboardScreen extends StatelessWidget {
 
               ),
             ),
-
             /// Stats Grid
             SliverToBoxAdapter(
               child: Obx(() {
@@ -92,7 +90,7 @@ class DashboardScreen extends StatelessWidget {
                   return _buildMessage("Something went wrong");
                 }
                 if (status == Status.internetError) {
-                  return _buildMessage("No internet connection");
+                  return _buildMessage("No internet connection\nPull down to retry");
                 }
                 if (status == Status.noDataFound) {
                   return _buildMessage("No data found");
@@ -215,7 +213,6 @@ class DashboardScreen extends StatelessWidget {
       ),
     );
   }
-
   Widget _buildStatCard(_BookingItem item) {
     return Container(
       decoration: BoxDecoration(
@@ -259,7 +256,6 @@ class DashboardScreen extends StatelessWidget {
       ),
     );
   }
-
   Widget _buildMessage(String message) {
     return Padding(
       padding: const EdgeInsets.only(top: 100),
@@ -269,7 +265,6 @@ class DashboardScreen extends StatelessWidget {
     );
   }
 }
-
 class _BookingItem {
   final String title;
   final IconData icon;
