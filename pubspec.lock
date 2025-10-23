@@ -1658,6 +1658,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.5.0"
+  purchases_flutter:
+    dependency: "direct main"
+    description:
+      name: purchases_flutter
+      sha256: "5c472741d1e073ac8603b1b7d7e1707870a869c927dc31d6f38a4a8658c8d335"
+      url: "https://pub.dev"
+    source: hosted
+    version: "9.8.0"
   readmore:
     dependency: "direct main"
     description:
@@ -1682,6 +1690,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.0"
+  shadify:
+    dependency: "direct main"
+    description:
+      name: shadify
+      sha256: a190f027fbcaf386ec9bfcf0e71cc2ef94e5424141df218dcd2288e886000255
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   share_plus:
     dependency: "direct main"
     description:

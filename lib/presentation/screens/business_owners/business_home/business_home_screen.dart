@@ -15,6 +15,7 @@ import 'package:pet_app/presentation/screens/business_owners/business_home/widge
 import 'package:pet_app/presentation/screens/business_owners/business_home/widgets/onboarding_section.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_home/widgets/review_section.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
+import 'package:shadify/shadify.dart';
 import 'package:shimmer/shimmer.dart';
 
 class BusinessHomeScreen extends StatefulWidget {
@@ -46,7 +47,6 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
     businessReviewController.getReviews(page: 1); // <-- important
   }
 
-
   @override
   Widget build(BuildContext context) {
     // Ensure ScreenUtil is initialized higher up (e.g. in main)
@@ -57,7 +57,6 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
           await businessAllPetController.getBusinessAllPets();
           await businessHomeBrandController.getBusinessHomeBrand();
           await businessAdvertisementController.getDetailsAdvertisement();
-
           businessReviewController.pagingController.refresh();
           businessReviewController.getReviews(page: 1);
         },
@@ -71,11 +70,12 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
             ReviewSection(),
           ],
         ),
-      )
-
+      ),
     );
   }
+
   SliverAppBar _buildSliverAppBar() {
+    bool isLoading = true;
     return SliverAppBar(
       floating: true,
       snap: true,
@@ -93,41 +93,22 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
               Row(
                 children: [
                   Obx(() {
-                    final images = businessProfileController.profile.value
-                        .ownerDetails
-                        ?.business
-                        ?.shopPic;
-                    if (images != null && images.isNotEmpty) {
-                      final imageUrl = images[0].replaceAll('\\', '/');
-                      return ClipOval(
-                        child: CustomNetworkImage(
-                          imageUrl: imageUrl,
-                          width: 50.w,
-                          height: 50.h,
-                          fit: BoxFit.cover,
-                        ),
-                      );
-                    } else {
-                      return Shimmer.fromColors(
-                        baseColor: AppColors.blackColor.withAlpha(50),
-                        highlightColor: AppColors.blackColor.withAlpha(100),
-                        child: Container(
-                          width: 50.w,
-                          height: 50.h,
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: AppColors.primaryColor,
-                          ),
-                        ),
-                      );
-                    }
+                    final images = businessProfileController
+                        .profile.value.ownerDetails?.business?.shopPic;
+                    if (images == null || images.isEmpty) return const SizedBox.shrink();
+                    final imageUrl = images.first.replaceAll('\\', '/');
+                    return ClipOval(
+                      child: CustomNetworkImage(
+                        imageUrl: imageUrl,
+                        width: 50.w,
+                        height: 50.h,
+                        fit: BoxFit.cover,
+                      )
+                    );
                   }),
+
                   SizedBox(width: 12.w),
-                  CustomText(
-                    text: 'Welcome To Pet Shops',
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  CustomText(text: 'Welcome To Pet Shops', fontSize: 14.sp, fontWeight: FontWeight.w600),
                   const Spacer(),
                   IconButton(
                     onPressed: () {
@@ -143,5 +124,4 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
       ),
     );
   }
-
 }

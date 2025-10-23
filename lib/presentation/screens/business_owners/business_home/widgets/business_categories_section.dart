@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:pet_app/core/custom_assets/assets.gen.dart';
+import 'package:shadify/shadify.dart';
 
 class BusinessCategoriesSection extends StatelessWidget {
   const BusinessCategoriesSection({super.key});

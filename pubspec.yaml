@@ -84,6 +84,8 @@ dependencies:
   flutter_rating_bar: ^4.0.1
   geolocator: ^14.0.2
   map_location_picker: ^2.0.3
+
+  purchases_flutter:
   # File Management
   file_picker: ^9.0.2
   permission_handler: ^11.3.1
@@ -91,6 +93,7 @@ dependencies:
   flutter_inappwebview: ^6.1.5
   badges: ^3.1.2
   timeago_flutter: ^3.7.0
+  shadify: ^1.0.0
 
 
 dev_dependencies:
