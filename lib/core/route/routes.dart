@@ -50,6 +50,7 @@ import 'package:pet_app/presentation/screens/profile/terms_of_condition.dart';
 import 'package:pet_app/presentation/screens/review/view/review_screen.dart';
 import 'package:pet_app/presentation/screens/search/search_screen.dart';
 import 'package:pet_app/presentation/screens/splash/splash_screen.dart';
+import 'package:pet_app/presentation/screens/subscription/subscription_screen.dart';
 import 'package:pet_app/presentation/screens/text_screen/view/text_screen.dart';
 import 'package:pet_app/presentation/screens/vendor_selection/vendor_selection_screen.dart';
 import 'route_path.dart';
@@ -523,6 +524,7 @@ class AppRouter {
             ),
       ),
 
+/*
       GoRoute(
         name: RoutePath.subscriptionStatusScreen,
         path: RoutePath.subscriptionStatusScreen.addBasePath,
@@ -532,7 +534,9 @@ class AppRouter {
               state: state,
             ),
       ),
+*/
 
+/*
       GoRoute(
         name: RoutePath.changeSubscriptionScreen,
         path: RoutePath.changeSubscriptionScreen.addBasePath,
@@ -542,6 +546,7 @@ class AppRouter {
               state: state,
             ),
       ),
+*/
 
       ///======================= Business Owner =======================
       GoRoute(

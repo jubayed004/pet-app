@@ -13,6 +13,7 @@ import 'package:pet_app/presentation/screens/business_owners/business_service/co
 import 'package:pet_app/presentation/screens/business_owners/business_service/controller/business_service_controller.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_shop_profile/controller/category_details_controller.dart';
 import 'package:pet_app/presentation/screens/business_owners/dashboard/controller/dashboard_controller.dart';
+import 'package:pet_app/presentation/screens/business_owners/subscription/controller/subscription_controller.dart';
 import 'package:pet_app/presentation/screens/business_owners/subscription/subscription_screen.dart';
 import 'package:pet_app/presentation/screens/category/category_details/controller/category_details_controller.dart';
 import 'package:pet_app/presentation/screens/category/controller/category_controller.dart';
@@ -32,6 +33,7 @@ import 'package:pet_app/presentation/screens/profile/controller/profile_controll
 import 'package:pet_app/presentation/screens/profile/faq/controller/faq_controller.dart';
 import 'package:pet_app/presentation/screens/review/controller/review_controller.dart';
 import 'package:pet_app/presentation/screens/search/controller/search_screen_controller.dart';
+import 'package:pet_app/presentation/screens/subscription/subscription_screen.dart';
 import 'package:pet_app/presentation/screens/text_screen/controller/test_controller.dart';
 
 class GetControllers {
@@ -184,11 +186,11 @@ AuthController getAuthController() {
     return Get.find<PetShopRegistrationController>();
   }
 
-  SubscriptionScreen getSubscriptionController() {
-    if (!Get.isRegistered<SubscriptionScreen>()) {
-      Get.put(SubscriptionScreen());
+  SubscriptionController            getSubscriptionController() {
+    if (!Get.isRegistered<SubscriptionController>()) {
+      Get.put(SubscriptionController());
     }
-    return Get.find<SubscriptionScreen>();
+    return Get.find<SubscriptionController>();
   }
 
   BusinessNavigationControllerMain getBusinessNavigationControllerMain() {
@@ -297,6 +299,7 @@ AuthController getAuthController() {
     return Get.find<PetHealthController>();
 
   }
+
 
 /*
   NotifyController getNotifyController() {

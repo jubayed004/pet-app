@@ -1,3 +1,4 @@
+/*
 
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -83,8 +84,10 @@ class _SubscriptionStatusScreenState extends State<SubscriptionStatusScreen> {
                             fontSize: 12,
                             fontWeight: FontWeight.w500,),
                           CustomText(text: DateFormat('MMMM dd, yyyy').format(
-                     /*       profileController.profile.value.data
-                                ?.subscriptionEndDate ??*/
+                     */
+/*       profileController.profile.value.data
+                                ?.subscriptionEndDate ??*//*
+
                                 DateTime.now(),
                           ),
                             fontWeight: FontWeight.w600,
@@ -121,8 +124,10 @@ class _SubscriptionStatusScreenState extends State<SubscriptionStatusScreen> {
                 child: Padding(
                   padding: const EdgeInsets.all(18.0),
                   child: CustomText(
-                    text: /*profileController.profile.value.data?.subscriptionPlan
-                        ?.subscriptionType ??*/ "Gold",
+                    text: */
+/*profileController.profile.value.data?.subscriptionPlan
+                        ?.subscriptionType ??*//*
+ "Gold",
                     fontWeight: FontWeight.w400,
                     fontSize: 14,
                     textAlign: TextAlign.start,
@@ -149,8 +154,10 @@ class _SubscriptionStatusScreenState extends State<SubscriptionStatusScreen> {
               padding: const EdgeInsets.all(18.0),
               child: CustomText(
                 text: DateFormat('MMMM dd, yyyy').format(
-                  /*  profileController.profile.value.data
-                            ?.subscriptionStartDate ?? */DateTime.now(),
+                  */
+/*  profileController.profile.value.data
+                            ?.subscriptionStartDate ?? *//*
+DateTime.now(),
                 ),
                 fontWeight: FontWeight.w400,
                 fontSize: 14,
@@ -159,9 +166,11 @@ class _SubscriptionStatusScreenState extends State<SubscriptionStatusScreen> {
             ),
           ),
         ),
-           /* Obx(() {
+           */
+/* Obx(() {
               return
-            }),*/
+            }),*//*
+
             CustomText(text: "Subscription Expiry Date",
               fontSize: 14,
               fontWeight: FontWeight.w400,
@@ -180,8 +189,10 @@ class _SubscriptionStatusScreenState extends State<SubscriptionStatusScreen> {
                 child: Padding(
                   padding: const EdgeInsets.all(18.0),
                   child: CustomText(text: DateFormat('MMMM dd, yyyy').format(
-                    /*  profileController.profile.value.data
-                          ?.subscriptionEndDate ??*/
+                    */
+/*  profileController.profile.value.data
+                          ?.subscriptionEndDate ??*//*
+
                     DateTime.now(),
                   ),
                     fontWeight: FontWeight.w400,
@@ -191,10 +202,16 @@ class _SubscriptionStatusScreenState extends State<SubscriptionStatusScreen> {
                 ),
               ),
             ),
-        /*    Obx(() {
-    *//*          print(profileController.profile.value.data?.subscriptionEndDate);*//*
+        */
+/*    Obx(() {
+    *//*
+*/
+/*          print(profileController.profile.value.data?.subscriptionEndDate);*//*
+*/
+/*
               return ;
-            }),*/
+            }),*//*
+
             Gap(20),
             CustomButton(
               onTap: () {
@@ -237,11 +254,13 @@ class _SubscriptionStatusScreenState extends State<SubscriptionStatusScreen> {
                               height: 36,
                               width: 100,
                               onTap: () {
-                         /*       final play =  profileController.profile.value.data?.subscriptionPlan?.id;
+                         */
+/*       final play =  profileController.profile.value.data?.subscriptionPlan?.id;
                                 print(play);
                                 if(play != null){
                                   controller.paymentUrl(subscriptionId: play);
-                                }*/
+                                }*//*
+
                                 AppRouter.route.pop();
                               },
                               title: "Confirm",
@@ -309,3 +328,4 @@ class _SubscriptionStatusScreenState extends State<SubscriptionStatusScreen> {
     );
   }
 }
+*/

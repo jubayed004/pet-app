@@ -1,9 +1,9 @@
 class ApiUrl {
   ApiUrl._();
-  static String base = "http://10.10.20.52:8001/api";
-  static String imageBase = "http://10.10.20.52:8001/";
+  static String base = "http://13.50.247.46/api";
+  static String imageBase = "http://13.50.247.46/";
 
-  static socketUrl({required String id}) => 'http://10.10.20.52:8001?id=$id';
+  static socketUrl({required String id}) => 'http://13.50.247.46?id=$id';
 
   ///Create Account
   static register() => '$base/auth/register';

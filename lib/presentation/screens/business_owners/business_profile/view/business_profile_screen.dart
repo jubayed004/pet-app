@@ -160,7 +160,7 @@ class BusinessProfileScreen extends StatelessWidget {
                           icon: Assets.icons.myappointmenticon.svg(),
                           text: "Subscription",
                           onTap: () {
-                            AppRouter.route.pushNamed(RoutePath.subscriptionStatusScreen);
+                            AppRouter.route.pushNamed(RoutePath.subscriptionScreen);
                           },
                         ),
                         ButtonSectionAll(

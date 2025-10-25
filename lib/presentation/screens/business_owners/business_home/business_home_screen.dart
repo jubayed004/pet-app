@@ -38,7 +38,6 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
     businessHomeBrandController.getBusinessHomeBrand();
     businessAdvertisementController.getDetailsAdvertisement();
     businessAllPetController.getBusinessAllPets();
-
     businessReviewController.pagingController.addPageRequestListener((pageKey) {
       businessReviewController.getReviews(page: pageKey);
     });
