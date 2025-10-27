@@ -103,7 +103,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                 Gap(14),
 
-                CustomAlignText(text: "PassWord", fontWeight: FontWeight.w500),
+                CustomAlignText(text: "Password", fontWeight: FontWeight.w500),
                 Gap(8.0),
                 CustomTextField(
                   fieldBorderColor: AppColors.purple500,

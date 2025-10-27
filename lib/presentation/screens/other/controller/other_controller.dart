@@ -93,6 +93,7 @@ class OtherController extends GetxController{
     }
 
 
+
   }
 
   /// ============================= DELETE Delete Account =====================================
