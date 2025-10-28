@@ -69,6 +69,8 @@ class OtherController extends GetxController{
 
   }
 
+
+
   /// ============================= POST Change Password =====================================
   var changePasswordLoading = false.obs;
   changePasswordLoadingMethod(bool loading) => changePasswordLoading.value = loading;
