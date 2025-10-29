@@ -86,6 +86,7 @@ class OtherController extends GetxController{
 
         AppRouter.route.pop();
       } else {
+
         toastMessage(message: response.body?['message']?.toString());
         changePasswordLoadingMethod(false);
       }
