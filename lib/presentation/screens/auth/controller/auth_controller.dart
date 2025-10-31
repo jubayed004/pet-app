@@ -72,13 +72,9 @@ class AuthController extends GetxController {
     try {
       loginMethod(true);
 
-
       var response = await apiClient.post(body: body, url: ApiUrl.login(), isBasic: true);
-
       if (response.statusCode == 200) {
-
         final loginModel = LoginModel.fromJson(response.body);
-
         Map<String, dynamic> decodedToken = JwtDecoder.decode(loginModel.accessToken??'');
       final role= decodedToken['role']??"";
         dbHelper.saveUserdata(
@@ -227,7 +223,7 @@ class AuthController extends GetxController {
         "password": passwordSignUp.text,
         "confirmPassword": confirmPasswordSignUp.text,
         "phone":phoneNumberSignUp.text,
-        "role": isUser.value?"user": "owner",
+        "role": isUser.value? "user": "owner",
       };
 
       print(body);
@@ -326,7 +322,7 @@ class AuthController extends GetxController {
 
 
 
-  ///==============Pet Shop Registration
+  ///======================================Pet Shop Registration=======================================
   RxBool shopRegistrationUpLoading = false.obs;
   Rx<XFile?> selectedLogo = Rx<XFile?>(null);
   Rx<XFile?> selectedPic = Rx<XFile?>(null);
@@ -351,8 +347,6 @@ class AuthController extends GetxController {
       selectedPic.value = image;
     }
   }
-
-
   Future<void> petShopRegistration()  async {
     try{
       shopRegistrationUpLoadingMethod(true);
@@ -392,7 +386,7 @@ class AuthController extends GetxController {
 
 
 
-  ///==============Pet Registration
+  ///==========================================Pet Registration================================================
 
   var genderSelected = Rx<String>("MALE");
   RxBool petRegistrationUpLoading = false.obs;

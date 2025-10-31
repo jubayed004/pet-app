@@ -11,12 +11,11 @@ Future<void> initDependencies() async {
 
   serviceLocator.registerFactory(() => InternetConnection());
 
-  /// core
+  /// ======================= core ==================
   serviceLocator.registerFactory<ConnectionChecker>(() => ConnectionCheckerImpl(serviceLocator()));
 
   /// ===================== DB =====================
   serviceLocator.registerFactory<DBHelper>(() => DBHelper());
-
 
   /// ================= Api client ================
   serviceLocator.registerFactory<ApiClient>(() => ApiClient());

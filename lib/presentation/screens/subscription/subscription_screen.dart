@@ -12,7 +12,7 @@ class SubscriptionScreen extends StatefulWidget {
 
 class _SubscriptionScreenState extends State<SubscriptionScreen> {
   late final controller;
-  int selectedPlanIndex = 1; // Default to yearly (usually best value)
+  int selectedPlanIndex = 1;
 
   @override
   void initState() {
@@ -266,7 +266,6 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
     bool isPopular = false,
   }) {
     final isSelected = selectedPlanIndex == index;
-
     return GestureDetector(
       onTap: () {
         setState(() {
