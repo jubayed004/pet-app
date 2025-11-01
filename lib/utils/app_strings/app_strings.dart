@@ -86,7 +86,7 @@ static const String sendCode = "Send Code";
 static const String resetPassword = "Reset Password";
 static const String enterNewPassword = "Enter New Password";
 static const String enterYourNewPassword = "Enter your new password";
-static const String confirmNewPassword = "Confirm New Password";
+static const String confirmNewPassword = "Confirm new password";
 static const String confirmYourNewPassword = "Confirm your new password";
 
 

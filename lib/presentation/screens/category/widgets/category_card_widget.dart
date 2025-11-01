@@ -110,7 +110,7 @@ class CategoryCardWidget extends StatelessWidget {
                         text: item.serviceType ?? "",
                         overflow: TextOverflow.ellipsis,
                       ),
-                      Row(
+                     ratingStar == 0? SizedBox():Row(
                         children: [
                           StarRating(
                             rating: ratingStar,

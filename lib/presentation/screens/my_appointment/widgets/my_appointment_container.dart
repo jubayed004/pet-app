@@ -263,7 +263,7 @@ class MyAppointmentContainer extends StatelessWidget {
                     },
                     child: CustomText(text: "View Details",fontSize: 12,fontWeight: FontWeight.w400,)
                 ),
-                OutlinedButton(
+                bookingStatus == "CANCELLED" ? SizedBox():OutlinedButton(
                   style: ButtonStyle(
                     side: WidgetStateProperty.all(
                       BorderSide(color: Colors.red, width: 1), // Set the border color here

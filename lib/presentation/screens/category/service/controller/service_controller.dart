@@ -17,6 +17,7 @@ class ServiceController extends GetxController{
   final Rx<DateTime> bookingDate = Rx<DateTime>(DateTime.now());
   final Rx<DateTime> checkingDate = Rx<DateTime>(DateTime.now());
   final Rx<DateTime> checkoutDate = Rx<DateTime>(DateTime.now());
+
   Future<void> pickBookingTime(BuildContext context) async {
     final initial = bookingTime.value ?? TimeOfDay.now();
     final result = await showTimePicker(
@@ -57,6 +58,7 @@ class ServiceController extends GetxController{
         AppRouter.route.pushNamed(RoutePath.congratulationScreen);
         final myAppointmentController = GetControllers.instance.getMyAppointmentController();
         myAppointmentController.pagingController1.refresh();
+       await myAppointmentController.getSingleAppointmentBooking();
        // AppRouter.route.pop();
       } else {
         toastMessage(message: response.body?['message']?.toString());

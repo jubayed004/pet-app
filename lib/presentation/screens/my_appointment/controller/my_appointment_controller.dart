@@ -132,6 +132,7 @@ class MyAppointmentController extends GetxController {
         pagingController1.refresh();
         toastMessage(message: response.body?['message']?.toString());
         AppRouter.route.pop();
+        await getSingleAppointmentBooking();
       }
     } catch (error) {
       if (kDebugMode) {

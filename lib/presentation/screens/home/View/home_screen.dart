@@ -48,12 +48,16 @@ class _HomeScreenState extends State<HomeScreen> {
   final homeController = GetControllers.instance.getHomeController();
   final navController = GetControllers.instance.getNavigationControllerMain();
   final myAppointmentController = GetControllers.instance.getMyAppointmentController();
+  final businessHomeController = GetControllers.instance.getBusinessHomeController();
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       myAppointmentController.getSingleAppointmentBooking();
+      businessHomeController.getBusinessHomeBrand();
+      homeController.userHomeHeader();
+      homeController.getAllAdvertisement();
     });
   }
 
@@ -69,6 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
             homeController.userHomeHeader();
             homeController.getAllAdvertisement();
             myAppointmentController.getSingleAppointmentBooking();
+            businessHomeController.getBusinessHomeBrand();
           },
           child: CustomScrollView(
             slivers: [
@@ -83,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
               _buildAppointmentsHeader(),
               _buildAppointmentsSection(),
               const SliverGap(16),
-          BrandSection(),
+              BrandSection(),
           /*    SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -126,20 +131,16 @@ class _HomeScreenState extends State<HomeScreen> {
                       decoration: const BoxDecoration(shape: BoxShape.circle),
                       child: Obx(() {
                         final imageFile = homeController.homeHeader.value.data?.userPic;
-
-                        if (imageFile != null) {
-                          return CustomNetworkImage(imageUrl: imageFile, boxShape: BoxShape.circle);
-                        } else {
-                          return CustomNetworkImage(
-                              imageUrl: "https://images.unsplash.com/photo-1548767797-d8c844163c4c?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                            height: 50.h,
-                            width: 50.w,
-                            boxShape: BoxShape.circle,
-                          );
-
-                        }
+                        return CustomNetworkImage(
+                          imageUrl: imageFile ??
+                              'https://images.unsplash.com/photo-1548767797-d8c844163c4c?q=80&w=1171&auto=format&fit=crop',
+                          height: 50.h,
+                          width: 50.w,
+                          boxShape: BoxShape.circle,
+                        );
                       }),
                     ),
+
                   ),
                   Expanded(
                     child: GestureDetector(

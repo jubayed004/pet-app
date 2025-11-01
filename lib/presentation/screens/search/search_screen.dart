@@ -58,7 +58,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       ),
                     ),
                     placeholder: "Search here...",
-                    padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12), // ⬅️ height বাড়বে
+                    padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.black, width: 1),
                       color: Colors.green.shade50,

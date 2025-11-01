@@ -38,8 +38,9 @@ class NotifyController extends GetxController{
   }
   @override
   void onReady() {
-    super.onReady();
     getNotify();
+    super.onReady();
+
   }
 
 }
