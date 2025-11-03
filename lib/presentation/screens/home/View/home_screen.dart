@@ -109,6 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
   /// -------------------- AppBar --------------------
   SliverAppBar _buildAppBar() {
     return SliverAppBar(
+      scrolledUnderElevation: 0,
       floating: true,
       snap: true,
       backgroundColor: AppColors.appBackgroundColor,

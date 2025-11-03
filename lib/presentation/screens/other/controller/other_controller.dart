@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pet_app/core/dependency/get_it_injection.dart';
+import 'package:pet_app/core/route/route_path.dart';
 import 'package:pet_app/core/route/routes.dart';
 import 'package:pet_app/helper/local_db/local_db.dart';
 import 'package:pet_app/helper/toast_message/toast_message.dart';
@@ -99,36 +100,46 @@ class OtherController extends GetxController{
 
   }
 
-  /// ============================= DELETE Delete Account =====================================
+/*  /// ============================= DELETE Delete Account =====================================
   RxBool deleteLoading = false.obs;
   deleteMethod(bool status) => deleteLoading.value = status;
   final deletePassword = TextEditingController();
 
-  void deleteAccount() async {
-/*
-    try{
+  Future<void> deleteAccount() async {
+    try {
       deleteMethod(true);
+      final userEmail = await dbHelper.getUserEmail();
       final body = {
-        "password": deletePassword.text
+        "email": userEmail,
+        "password": deletePassword.text.trim(),
       };
-      var response = await apiClient.post(body: body, url: ApiUrl.deleteUser());
+
+      var response = await apiClient.delete(
+        body: body,
+        url: ApiUrl.deleteUser(),
+      );
 
       if (response.statusCode == 200) {
         deleteMethod(false);
-        toastMessage(message: response.body?['message'].toString()??"something want wrong");
+        toastMessage(message: response.body?['message']?.toString() ?? "Account deleted successfully");
+
+
         await dbHelper.logOut();
+        AppRouter.route.go(RoutePath.signInScreen);
       } else {
         deleteMethod(false);
-        toastMessage(message: response.body?['message'].toString()??"something want wrong");
+        toastMessage(message: response.body?['message']?.toString() ?? "Something went wrong");
       }
-    }catch (err){
+    } catch (err) {
       deleteMethod(false);
+      toastMessage(message: "Failed to delete account");
     }
-*/
 
 
 
-  }
+
+  }*/
+
   @override
   void onReady() {
     getPrivacyPolicy();

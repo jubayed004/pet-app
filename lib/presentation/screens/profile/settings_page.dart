@@ -9,6 +9,7 @@ import 'package:pet_app/core/route/route_path.dart';
 import 'package:pet_app/core/route/routes.dart';
 import 'package:pet_app/helper/dialog/show_custom_animated_dialog.dart';
 import 'package:pet_app/helper/local_db/local_db.dart';
+import 'package:pet_app/helper/toast_message/toast_message.dart';
 import 'package:pet_app/presentation/components/custom_button/custom_button.dart';
 import 'package:pet_app/presentation/components/custom_button/custom_defualt_appbar.dart';
 import 'package:pet_app/presentation/components/custom_button_tap/custom_button_tap.dart';
@@ -21,6 +22,7 @@ import 'package:pet_app/utils/app_strings/app_strings.dart';
 class SettingsPage extends StatelessWidget {
    SettingsPage({super.key});
   final profileController = GetControllers.instance.getProfileController();
+  final otherController = GetControllers.instance.getOtherController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,40 +84,88 @@ class SettingsPage extends StatelessWidget {
                     icon: Assets.icons.delete.svg(),
                     onTap: () {
                       showCustomAnimatedDialog(
-
+                        animationSrc: "assets/images/warning.png",
                         context: context,
                         title: "Warning",
-                        subtitle:
-                        "Do you want to delete your profile?",
+                        subtitle: "Are you sure you want to permanently delete your account? This action cannot be undone.",
                         actionButton: [
+                          // Cancel Button
                           CustomButton(
                             width: double.infinity,
                             height: 36,
                             fillColor: Colors.white,
-                            // White background
                             borderWidth: 1,
-                            // Border width
                             borderColor: AppColors.greenColor,
-                            // Border color (black)
                             onTap: () {
                               AppRouter.route.pop();
                             },
                             textColor: AppColors.greenColor,
                             title: "Cancel",
                             isBorder: true,
-                            fontSize: 14, // Ensure the border is visible
+                            fontSize: 14.sp,
                           ),
+                          const SizedBox(height: 12),
+                          // Confirm Button -> Open Password Dialog
                           CustomButton(
-
-                            fillColor: AppColors.primaryColor,
                             width: double.infinity,
                             height: 36,
-                            onTap: ()  {
+                            onTap: () {
+                              AppRouter.route.pop(); // Close first dialog
 
-                              DBHelper().logOut();// Navigate
+                              final TextEditingController deletePassword = TextEditingController();
+
+                              // Step 2: Password Input Dialog
+                              showCustomAnimatedDialog(
+                                animationSrc: "assets/images/warning.png",
+                                context: context,
+                                title: "Warning",
+                                subtitle: "Please enter your password to permanently delete your account.",
+                                contentWidget: TextField(
+                                  controller: deletePassword,
+                                  obscureText: true,
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    hintText: "Enter your password",
+                                  ),
+                                ),
+                                actionButton: [
+                                  // Cancel
+                                  CustomButton(
+                                    width: double.infinity,
+                                    height: 36,
+                                    fillColor: Colors.white,
+                                    borderWidth: 1,
+                                    borderColor: AppColors.greenColor,
+                                    onTap: () {
+                                      AppRouter.route.pop();
+                                    },
+                                    textColor: AppColors.greenColor,
+                                    title: "Cancel",
+                                    isBorder: true,
+                                    fontSize: 14.sp,
+                                  ),
+                                  const SizedBox(height: 12),
+                                  // Confirm -> Call deleteAccount()
+                                  CustomButton(
+                                    width: double.infinity,
+                                    height: 36,
+                                    onTap: () async {
+                                      if (deletePassword.text.trim().isEmpty) {
+                                        toastMessage(message: "Password cannot be empty");
+                                        return;
+                                      }
+                                      AppRouter.route.pop();
+                                      /*otherController.deletePassword.text = deletePassword.text.trim();
+                                      await otherController.deleteAccount();*/
+                                    },
+                                    title: "Confirm",
+                                    fontSize: 14.sp,
+                                  ),
+                                ],
+                              );
                             },
-                            title: " Confirm",
-                            fontSize: 14,
+                            title: "Confirm",
+                            fontSize: 14.sp,
                           ),
                         ],
                       );

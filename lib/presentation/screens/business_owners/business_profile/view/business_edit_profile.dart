@@ -29,6 +29,7 @@ class _BusinessEditProfileScreenState extends State<BusinessEditProfileScreen> {
   TextEditingController phone = TextEditingController();
   TextEditingController address = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+
   @override
   void dispose() {
     name.dispose();
@@ -43,7 +44,7 @@ class _BusinessEditProfileScreenState extends State<BusinessEditProfileScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Form(
-        key:_formKey ,
+        key: _formKey,
         child: CustomScrollView(
           slivers: [
             SliverAppBar(
@@ -66,7 +67,7 @@ class _BusinessEditProfileScreenState extends State<BusinessEditProfileScreen> {
               expandedHeight: 200,
               automaticallyImplyLeading: false,
               flexibleSpace: FlexibleSpaceBar(
-                  background:Obx(() {
+                  background: Obx(() {
                     return Stack(
                       children: [
                         businessProfileController.selectedImage.value != null
@@ -100,13 +101,12 @@ class _BusinessEditProfileScreenState extends State<BusinessEditProfileScreen> {
                         ),
                       ],
                     );
-
                   })
               ),
             ),
             SliverToBoxAdapter(
               child: Padding(
-                padding: EdgeInsets.only(left: 16,right: 16,top: 20),
+                padding: EdgeInsets.only(left: 16, right: 16, top: 20),
                 child: Column(
                   children: [
 
@@ -155,18 +155,21 @@ class _BusinessEditProfileScreenState extends State<BusinessEditProfileScreen> {
                       textEditingController: address,
                     ),
                     Gap(24),
-                    CustomButton(onTap: (){
-                      final body = {
-                        "name": name.text,
-                        "phone": phone.text,
-                        "address": address.text,
-                      };
-                      businessProfileController.businessUpdateProfile(body : body);
-
-                    },
-                      title: "Save",
-                      textColor: Colors.black,
-                    )
+                    Obx(() {
+                      return CustomButton(
+                        isLoading:businessProfileController.isUpdateLoading.value,
+                        onTap: () {
+                          final body = {
+                            "name": name.text,
+                            "phone": phone.text,
+                            "address": address.text,
+                          };
+                          businessProfileController.businessUpdateProfile(body: body);
+                        },
+                        title: "Save",
+                        textColor: Colors.black,
+                      );
+                    })
                   ],
                 ),
               ),

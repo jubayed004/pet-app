@@ -369,7 +369,7 @@ class AuthController extends GetxController {
         shopRegistrationUpLoadingMethod(false);
         toastMessage(message: response.body?['message'].toString());
 
-        AppRouter.route.pushNamed(RoutePath.subscriptionScreen,);
+        AppRouter.route.pushNamed(RoutePath.navigationPage,);
         businessName.clear();
         address.clear();
         website.clear();

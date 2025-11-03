@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pet_app/controller/get_controllers.dart';
 import 'package:pet_app/core/dependency/get_it_injection.dart';
+import 'package:pet_app/core/route/route_path.dart';
 import 'package:pet_app/core/route/routes.dart';
 import 'package:pet_app/helper/toast_message/toast_message.dart';
 import 'package:pet_app/service/api_service.dart';
@@ -71,7 +72,7 @@ class BusinessAddServiceController extends GetxController {
       if (response.statusCode == 201) {
         await businessServiceController.getBusinessService();
         isLoading.value = false;
-        AppRouter.route.pop();
+        AppRouter.route.pushNamed(RoutePath.businessServiceScreen);
       } else {
         isLoading.value = false;
         toastMessage(message: response.body?['message']?.toString());

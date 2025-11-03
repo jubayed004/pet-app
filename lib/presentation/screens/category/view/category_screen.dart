@@ -86,6 +86,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
       top: false,
       child: Scaffold(
         appBar: AppBar(
+          scrolledUnderElevation: 0,
           backgroundColor: Colors.white,
           centerTitle: true,
           title: CustomText(
