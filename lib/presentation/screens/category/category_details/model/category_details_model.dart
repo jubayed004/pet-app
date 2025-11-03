@@ -23,8 +23,6 @@ class CategoryDetailsModel {
 }
 
 class Service {
-  final List<dynamic>? reviews;
-  final bool? isActive;
   final String? id;
   final String? serviceType;
   final String? serviceName;
@@ -39,15 +37,15 @@ class Service {
   final String? servicesImages;
   final List<String>? bookings;
   final String? businessId;
+  final List<Review>? reviews;
+  final bool? isActive;
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final int? v;
   final bool? isOpenNow;
-  final String? serviceId;
+  final int? avgRating;
 
   Service({
-    this.reviews,
-    this.isActive,
     this.id,
     this.serviceType,
     this.serviceName,
@@ -62,16 +60,16 @@ class Service {
     this.servicesImages,
     this.bookings,
     this.businessId,
+    this.reviews,
+    this.isActive,
     this.createdAt,
     this.updatedAt,
     this.v,
     this.isOpenNow,
-    this.serviceId,
+    this.avgRating,
   });
 
   factory Service.fromJson(Map<String, dynamic> json) => Service(
-    reviews: json["reviews"] == null ? [] : List<dynamic>.from(json["reviews"]!.map((x) => x)),
-    isActive: json["isActive"],
     id: json["_id"],
     serviceType: json["serviceType"],
     serviceName: json["serviceName"],
@@ -86,16 +84,16 @@ class Service {
     servicesImages: json["servicesImages"],
     bookings: json["bookings"] == null ? [] : List<String>.from(json["bookings"]!.map((x) => x)),
     businessId: json["businessId"],
+    reviews: json["reviews"] == null ? [] : List<Review>.from(json["reviews"]!.map((x) => Review.fromJson(x))),
+    isActive: json["isActive"],
     createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
     updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
     v: json["__v"],
     isOpenNow: json["isOpenNow"],
-    serviceId: json["id"],
+    avgRating: json["avgRating"],
   );
 
   Map<String, dynamic> toJson() => {
-    "reviews": reviews == null ? [] : List<dynamic>.from(reviews!.map((x) => x)),
-    "isActive": isActive,
     "_id": id,
     "serviceType": serviceType,
     "serviceName": serviceName,
@@ -110,10 +108,72 @@ class Service {
     "servicesImages": servicesImages,
     "bookings": bookings == null ? [] : List<dynamic>.from(bookings!.map((x) => x)),
     "businessId": businessId,
+    "reviews": reviews == null ? [] : List<dynamic>.from(reviews!.map((x) => x.toJson())),
+    "isActive": isActive,
     "createdAt": createdAt?.toIso8601String(),
     "updatedAt": updatedAt?.toIso8601String(),
     "__v": v,
     "isOpenNow": isOpenNow,
-    "id": serviceId,
+    "avgRating": avgRating,
+  };
+}
+
+class Review {
+  final String? id;
+  final String? comment;
+  final int? rating;
+  final UserId? userId;
+  final DateTime? createdAt;
+
+  Review({
+    this.id,
+    this.comment,
+    this.rating,
+    this.userId,
+    this.createdAt,
+  });
+
+  factory Review.fromJson(Map<String, dynamic> json) => Review(
+    id: json["_id"],
+    comment: json["comment"],
+    rating: json["rating"],
+    userId: json["userId"] == null ? null : UserId.fromJson(json["userId"]),
+    createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "_id": id,
+    "comment": comment,
+    "rating": rating,
+    "userId": userId?.toJson(),
+    "createdAt": createdAt?.toIso8601String(),
+  };
+}
+
+class UserId {
+  final String? id;
+  final String? name;
+  final String? email;
+  final String? profilePic;
+
+  UserId({
+    this.id,
+    this.name,
+    this.email,
+    this.profilePic,
+  });
+
+  factory UserId.fromJson(Map<String, dynamic> json) => UserId(
+    id: json["_id"],
+    name: json["name"],
+    email: json["email"],
+    profilePic: json["profilePic"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "_id": id,
+    "name": name,
+    "email": email,
+    "profilePic": profilePic,
   };
 }
