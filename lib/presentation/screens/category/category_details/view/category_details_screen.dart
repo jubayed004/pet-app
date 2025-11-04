@@ -76,18 +76,7 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
                     fit: StackFit.expand,
                     children: [
                       image != null && image.isNotEmpty
-                          ? Image.network(
-                        image,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return CustomNetworkImage(
-                            imageUrl: 'https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=800&q=80',
-                            width: double.infinity,
-                            height: 280.h,
-                          );
-                        },
-                      )
-                          : CustomNetworkImage(
+                          ? CustomNetworkImage(imageUrl: image,) : CustomNetworkImage(
                         imageUrl: 'https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=800&q=80',
                         width: double.infinity,
                         height: 280.h,
@@ -116,7 +105,6 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
                 }),
               ),
             ),
-
             // Main Content
             SliverToBoxAdapter(
               child: Transform.translate(
@@ -210,54 +198,61 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
                             ),
                           ],
                         ),
+                        Gap(24.h),
+                        // Rating Card with modern design
+                        Obx(() {
+                          final service = controller.categoryDetails.value.service;
+                          final avgRating = service?.avgRating ?? 0.0;
+                          final rating = avgRating.toStringAsFixed(2);
+                          return Column(
+                            children: [
+                              avgRating > 0
+                                  ? Container(
+                                padding: EdgeInsets.all(20.w),
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      const Color(0xFFFBBF24).withOpacity(0.1),
+                                      const Color(0xFFF59E0B).withOpacity(0.1),
+                                    ],
+                                  ),
+                                  borderRadius: BorderRadius.circular(16.r),
+                                  border: Border.all(
+                                    color: const Color(0xFFFBBF24).withOpacity(0.3),
+                                    width: 1,
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(Icons.star_rounded, color: const Color(0xFFFBBF24), size: 32.sp),
+                                    Gap(8.w),
+                                    Text(
+                                      rating,
+                                      style: TextStyle(
+                                        fontSize: 28.sp,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black87,
+                                      ),
+                                    ),
+                                    Gap(8.w),
+                                    Text(
+                                      "Rating",
+                                      style: TextStyle(
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.grey.shade600,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                                  : SizedBox(), // jodi review 0.0 hoy tahole kichu dekhabe na
+                            ],
+                          );
+                        }),
 
                         Gap(24.h),
-
-                        // Rating Card with modern design
-                        Container(
-                          padding: EdgeInsets.all(20.w),
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                const Color(0xFFFBBF24).withOpacity(0.1),
-                                const Color(0xFFF59E0B).withOpacity(0.1),
-                              ],
-                            ),
-                            borderRadius: BorderRadius.circular(16.r),
-                            border: Border.all(color: const Color(0xFFFBBF24).withOpacity(0.3), width: 1),
-                          ),
-                          child: Obx(() {
-                            final service = controller.categoryDetails.value.service;
-                            final avgRating = service?.avgRating ?? 0.0;
-                            final rating = avgRating.toStringAsFixed(2);
-                            return Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(Icons.star_rounded, color: const Color(0xFFFBBF24), size: 32.sp),
-                                Gap(8.w),
-                                Text(
-                                  rating,
-                                  style: TextStyle(
-                                    fontSize: 28.sp,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black87,
-                                  ),
-                                ),
-                                Gap(8.w),
-                                Text(
-                                  "Rating",
-                                  style: TextStyle(
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.grey.shade600,
-                                  ),
-                                ),
-                              ],
-                            );
-                          }),
-                        ),
-                        Gap(32.h),
-
                         // Schedule Section
                         Text(
                           "Schedule",
@@ -350,9 +345,7 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
                             ),
                           );
                         }),
-
-                        Gap(32.h),
-
+                        Gap(24.h),
                         // Contact Information
                         Text(
                           "Contact Information",
@@ -364,7 +357,6 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
                           ),
                         ),
                         Gap(16.h),
-
                         // Business Type
                         Obx(() {
                           final businessType = controller.categoryDetails.value.service?.serviceName;
@@ -375,9 +367,7 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
                             value: businessType ?? "Not available",
                           );
                         }),
-
                         Gap(12.h),
-
                         // Address
                         Obx(() {
                           final address = controller.categoryDetails.value.service?.location;
@@ -388,9 +378,7 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
                             value: address ?? "Not available",
                           );
                         }),
-
                         Gap(12.h),
-
                         // Phone
                         Obx(() {
                           final phone = controller.categoryDetails.value.service?.phone;
@@ -401,9 +389,7 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
                             value: phone ?? "Not available",
                           );
                         }),
-
-                        Gap(32.h),
-
+                        Gap(24.h),
                         // Action Buttons
                         Row(
                           children: [
@@ -447,14 +433,12 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
                                   onTap: () {
                                     final businessID = controller.categoryDetails.value.service?.businessId;
                                     final id = controller.categoryDetails.value.service?.id;
-
                                     if (id == null || id.isEmpty || businessID == null || businessID.isEmpty) {
                                       ScaffoldMessenger.of(context).showSnackBar(
                                         const SnackBar(content: Text('Service information not available')),
                                       );
                                       return;
                                     }
-
                                     final extraData = {
                                       'isHotel': widget.showWebsite,
                                       'id': id,
@@ -471,7 +455,6 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
                               ),
                           ],
                         ),
-
                         Gap(24.h),
                       ],
                     ),

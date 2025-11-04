@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:gap/gap.dart';
 import 'package:pet_app/controller/get_controllers.dart';
+import 'package:pet_app/presentation/components/custom_netwrok_image/custom_network_image.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:pet_app/presentation/no_internet/error_card.dart';
 import 'package:pet_app/presentation/no_internet/more_data_error_card.dart';
@@ -65,11 +66,11 @@ class BrandSection extends StatelessWidget {
 
                       return ClipRRect(
                         borderRadius: BorderRadius.circular(12.r),
-                        child: Image.network(
-                          imageUrl,
+                        child: CustomNetworkImage(
+                          imageUrl:  imageUrl,
                           height: 80.h,
                           width: double.infinity,
-                          fit: BoxFit.cover,
+
                         ),
                       );
                     },

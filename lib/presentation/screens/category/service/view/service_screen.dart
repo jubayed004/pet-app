@@ -337,7 +337,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                 "petId": selectedPet,
                                 "notes": extraInformationController.text.trim(),
                               };
-
+                                print(body);
                               serviceController.bookingAppointmentService(body: body);
                             },
                             title: "Book Appointment",

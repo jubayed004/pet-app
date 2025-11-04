@@ -64,7 +64,10 @@ class _MyAppointmentScreenState extends State<MyAppointmentScreen> {
                     final address = serviceType?.location;
                     final bookingStatus = item.bookingStatus;
                     final selectedService = item.selectedService ?? "";
-                    final bookingDate = DateFormat("dd MMMM yyyy").format(item.bookingDate ?? DateTime.now());
+                    final bookingDate = DateFormat("dd MMMM yyyy").format(
+                      (item.bookingDate ?? DateTime.now()).toLocal(),
+                    );
+
                     return MyAppointmentContainer(
                       id: appointmentId ?? "",
                       petLogo: Assets.images.vet.image(width: 24),

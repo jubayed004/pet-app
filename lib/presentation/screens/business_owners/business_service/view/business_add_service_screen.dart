@@ -361,11 +361,28 @@ class _BusinessAddServiceScreenState extends State<BusinessAddServiceScreen> {
                   return SizedBox();
                 }),
                 Gap(24),
+                // In BusinessAddServiceScreen
                 Obx(() {
                   return CustomButton(
                     isLoading: businessAddServiceController.isLoading.value,
-                    onTap: () {
-                      final List<String> services = serviceController.value.map((controller) => controller.text).toList();
+                    onTap: () async {
+                      // Get subscription controller
+                      final subscriptionController = GetControllers.instance.getSubscriptionController();
+
+                      // Check if user has active subscription before creating service
+                      final canCreate = await subscriptionController.checkSubscriptionBeforeAction(
+                        actionName: "add a service", context: context,
+                      );
+
+                      if (!canCreate) {
+                        return; // Don't proceed if no subscription
+                      }
+
+                      // Proceed with service creation
+                      final List<String> services = serviceController.value
+                          .map((controller) => controller.text)
+                          .toList();
+
                       final body = {
                         "serviceType": businessAddServiceController.selectedAnalystType.value,
                         "serviceName": serviceName.text,
@@ -378,6 +395,7 @@ class _BusinessAddServiceScreenState extends State<BusinessAddServiceScreen> {
                         "latitude": selectedLocation.value.latLng.latitude.toString(),
                         "longitude": selectedLocation.value.latLng.longitude.toString(),
                       };
+
                       if (_formKey.currentState!.validate()) {
                         businessAddServiceController.addService(body: body);
                       }

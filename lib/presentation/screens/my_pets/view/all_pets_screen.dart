@@ -35,9 +35,10 @@ class _AllPetsScreenState extends State<AllPetsScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
+
       top: true,
       child: Scaffold(
-        backgroundColor: Colors.grey[50],
+        backgroundColor: Colors.transparent,
         body: RefreshIndicator(
           onRefresh: _refresh,
           color: AppColors.purple500,
@@ -85,24 +86,17 @@ class _AllPetsScreenState extends State<AllPetsScreen> {
                   sliver: SliverToBoxAdapter(
                     child: Text(
                       "${pets.length} ${pets.length == 1 ? 'Pet' : 'Pets'}",
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        color: Colors.grey[600],
-                        fontWeight: FontWeight.w500,
-                      ),
+                      style: TextStyle(fontSize: 14.sp, color: Colors.grey[600], fontWeight: FontWeight.w500),
                     ),
                   ),
                 ),
                 SliverPadding(
                   padding: EdgeInsets.symmetric(horizontal: 16.w),
                   sliver: SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                          (context, index) {
-                        final item = pets[index];
-                        return _buildPetCard(item, index);
-                      },
-                      childCount: pets.length,
-                    ),
+                    delegate: SliverChildBuilderDelegate((context, index) {
+                      final item = pets[index];
+                      return _buildPetCard(item, index);
+                    }, childCount: pets.length),
                   ),
                 ),
                 SliverToBoxAdapter(child: SizedBox(height: 16.h)),
@@ -128,21 +122,12 @@ class _AllPetsScreenState extends State<AllPetsScreen> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16.r),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.04),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.04), blurRadius: 10, offset: const Offset(0, 2))],
       ),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: () => AppRouter.route.pushNamed(
-            RoutePath.myPetsDetailsScreen,
-            extra: id,
-          ),
+          onTap: () => AppRouter.route.pushNamed(RoutePath.myPetsDetailsScreen, extra: id),
           borderRadius: BorderRadius.circular(16.r),
           child: Padding(
             padding: EdgeInsets.all(12.w),
@@ -156,34 +141,18 @@ class _AllPetsScreenState extends State<AllPetsScreen> {
                     height: 60.w,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      gradient: photo.isEmpty
-                          ? LinearGradient(
-                        colors: [
-                          AppColors.purple200,
-                          AppColors.purple500.withOpacity(0.6),
-                        ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      )
-                          : null,
-                      image: photo.isNotEmpty
-                          ? DecorationImage(
-                        image: NetworkImage(photo),
-                        fit: BoxFit.cover,
-                      )
-                          : null,
-                      border: Border.all(
-                        color: AppColors.purple500.withOpacity(0.2),
-                        width: 2,
-                      ),
+                      gradient:
+                          photo.isEmpty
+                              ? LinearGradient(
+                                colors: [AppColors.purple200, AppColors.purple500.withValues(alpha: 0.6)],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              )
+                              : null,
+                      image: photo.isNotEmpty ? DecorationImage(image: NetworkImage(photo), fit: BoxFit.cover) : null,
+                      border: Border.all(color: AppColors.purple500.withValues(alpha: 0.2), width: 2),
                     ),
-                    child: photo.isEmpty
-                        ? Icon(
-                      Iconsax.pet5,
-                      color: AppColors.purple500,
-                      size: 28.sp,
-                    )
-                        : null,
+                    child: photo.isEmpty ? Icon(Iconsax.pet5, color: AppColors.purple500, size: 28.sp) : null,
                   ),
                 ),
                 SizedBox(width: 12.w),
@@ -198,47 +167,25 @@ class _AllPetsScreenState extends State<AllPetsScreen> {
                           Flexible(
                             child: Text(
                               name,
-                              style: TextStyle(
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.grey[900],
-                              ),
+                              style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600, color: Colors.grey[900]),
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
                           if (gender.isNotEmpty) ...[
                             SizedBox(width: 6.w),
                             Icon(
-                              gender.toUpperCase() == "MALE"
-                                  ? Iconsax.man
-                                  : Iconsax.woman,
+                              gender.toUpperCase() == "MALE" ? Iconsax.man : Iconsax.woman,
                               size: 16.sp,
-                              color: gender.toUpperCase() == "MALE"
-                                  ? Colors.blue
-                                  : Colors.pink,
+                              color: gender.toUpperCase() == "MALE" ? Colors.blue : Colors.pink,
                             ),
                           ],
                         ],
                       ),
                       SizedBox(height: 4.h),
-                      Text(
-                        petType,
-                        style: TextStyle(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.purple500,
-                        ),
-                      ),
+                      Text(petType, style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500, color: AppColors.purple500)),
                       if (breed.isNotEmpty) ...[
                         SizedBox(height: 2.h),
-                        Text(
-                          breed,
-                          style: TextStyle(
-                            fontSize: 12.sp,
-                            color: Colors.grey[600],
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                        ),
+                        Text(breed, style: TextStyle(fontSize: 12.sp, color: Colors.grey[600]), overflow: TextOverflow.ellipsis),
                       ],
                     ],
                   ),
@@ -246,17 +193,10 @@ class _AllPetsScreenState extends State<AllPetsScreen> {
 
                 /// Delete Button
                 Container(
-                  decoration: BoxDecoration(
-                    color: Colors.red.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
+                  decoration: BoxDecoration(color: Colors.red.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(8.r)),
                   child: IconButton(
                     onPressed: () => _showDeleteDialog(id, name),
-                    icon: Icon(
-                      Iconsax.trash,
-                      color: Colors.red,
-                      size: 20.sp,
-                    ),
+                    icon: Icon(Iconsax.trash, color: Colors.red, size: 20.sp),
                     padding: EdgeInsets.all(8.w),
                     constraints: const BoxConstraints(),
                   ),
@@ -270,11 +210,7 @@ class _AllPetsScreenState extends State<AllPetsScreen> {
   }
 
   void _showDeleteDialog(String id, String name) {
-    defaultDeletedYesNoDialog(
-      context: context,
-      title: 'Are you sure you want to delete $name?',
-      onYes: () => myPetsController.deletedPet(id: id),
-    );
+    defaultDeletedYesNoDialog(context: context, title: 'Are you sure you want to delete $name?', onYes: () => myPetsController.deletedPet(id: id));
   }
 
   /// Loading State
@@ -290,20 +226,10 @@ class _AllPetsScreenState extends State<AllPetsScreen> {
                 SizedBox(
                   width: 60.w,
                   height: 60.w,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 3,
-                    valueColor: AlwaysStoppedAnimation(AppColors.purple500),
-                  ),
+                  child: CircularProgressIndicator(strokeWidth: 3, valueColor: AlwaysStoppedAnimation(AppColors.purple500)),
                 ),
                 SizedBox(height: 24.h),
-                Text(
-                  "Loading your pets...",
-                  style: TextStyle(
-                    fontSize: 16.sp,
-                    color: Colors.grey[600],
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
+                Text("Loading your pets...", style: TextStyle(fontSize: 16.sp, color: Colors.grey[600], fontWeight: FontWeight.w500)),
               ],
             ),
           ),
@@ -313,12 +239,7 @@ class _AllPetsScreenState extends State<AllPetsScreen> {
   }
 
   /// Error State
-  Widget _buildErrorState({
-    required IconData icon,
-    required String title,
-    required String message,
-    required VoidCallback onRetry,
-  }) {
+  Widget _buildErrorState({required IconData icon, required String title, required String message, required VoidCallback onRetry}) {
     return CustomScrollView(
       physics: const AlwaysScrollableScrollPhysics(),
       slivers: [
@@ -332,57 +253,23 @@ class _AllPetsScreenState extends State<AllPetsScreen> {
                 children: [
                   Container(
                     padding: EdgeInsets.all(24.w),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[100],
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      icon,
-                      size: 64.sp,
-                      color: Colors.grey[400],
-                    ),
+                    decoration: BoxDecoration(color: Colors.grey[100], shape: BoxShape.circle),
+                    child: Icon(icon, size: 64.sp, color: Colors.grey[400]),
                   ),
                   SizedBox(height: 24.h),
-                  Text(
-                    title,
-                    style: TextStyle(
-                      fontSize: 20.sp,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.grey[900],
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
+                  Text(title, style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w700, color: Colors.grey[900]), textAlign: TextAlign.center),
                   SizedBox(height: 12.h),
-                  Text(
-                    message,
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      color: Colors.grey[600],
-                      height: 1.5,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
+                  Text(message, style: TextStyle(fontSize: 14.sp, color: Colors.grey[600], height: 1.5), textAlign: TextAlign.center),
                   SizedBox(height: 32.h),
                   ElevatedButton.icon(
                     onPressed: onRetry,
                     icon: Icon(Iconsax.refresh, size: 20.sp),
-                    label: Text(
-                      "Try Again",
-                      style: TextStyle(
-                        fontSize: 15.sp,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
+                    label: Text("Try Again", style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w600)),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.purple500,
                       foregroundColor: Colors.white,
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 32.w,
-                        vertical: 14.h,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12.r),
-                      ),
+                      padding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 14.h),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
                       elevation: 0,
                     ),
                   ),
@@ -410,56 +297,27 @@ class _AllPetsScreenState extends State<AllPetsScreen> {
                 children: [
                   Container(
                     padding: EdgeInsets.all(24.w),
-                    decoration: BoxDecoration(
-                      color: AppColors.purple200.withOpacity(0.3),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      Iconsax.pet5,
-                      size: 80.sp,
-                      color: AppColors.purple500,
-                    ),
+                    decoration: BoxDecoration(color: AppColors.purple200.withOpacity(0.3), shape: BoxShape.circle),
+                    child: Icon(Iconsax.pet5, size: 80.sp, color: AppColors.purple500),
                   ),
                   SizedBox(height: 24.h),
-                  Text(
-                    "No Pets Yet",
-                    style: TextStyle(
-                      fontSize: 24.sp,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.grey[900],
-                    ),
-                  ),
+                  Text("No Pets Yet", style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.w700, color: Colors.grey[900])),
                   SizedBox(height: 12.h),
                   Text(
                     "You haven't added any pets yet. Add your first pet to get started!",
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      color: Colors.grey[600],
-                      height: 1.5,
-                    ),
+                    style: TextStyle(fontSize: 14.sp, color: Colors.grey[600], height: 1.5),
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 32.h),
                   ElevatedButton.icon(
                     onPressed: () => myPetsController.getAllPet(),
                     icon: Icon(Iconsax.refresh, size: 20.sp),
-                    label: Text(
-                      "Refresh",
-                      style: TextStyle(
-                        fontSize: 15.sp,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
+                    label: Text("Refresh", style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w600)),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.purple500,
                       foregroundColor: Colors.white,
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 32.w,
-                        vertical: 14.h,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12.r),
-                      ),
+                      padding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 14.h),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
                       elevation: 0,
                     ),
                   ),

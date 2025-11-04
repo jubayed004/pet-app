@@ -450,7 +450,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return SliverToBoxAdapter(
       child: Padding(
         padding: EdgeInsets.only(left: 16),
-        child: CustomText(text: AppStrings.findWhatYouNeed, textAlign: TextAlign.start, fontWeight: FontWeight.w400, fontSize: 18.sp),
+        child: CustomText(text: AppStrings.findWhatYouNeed, textAlign: TextAlign.start, fontWeight: FontWeight.w600, fontSize: 18.sp),
       ),
     );
   }
@@ -463,17 +463,16 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            CustomText(text: AppStrings.upcomingAppointments, fontWeight: FontWeight.w400, fontSize: 18.sp),
+            CustomText(text: AppStrings.upcomingAppointments, fontWeight: FontWeight.w600, fontSize: 18.sp),
             TextButton(
               onPressed: () => AppRouter.route.pushNamed(RoutePath.myAppointmentScreen),
-              child: CustomText(text: AppStrings.seeAll, fontWeight: FontWeight.w400, fontSize: 14.sp),
+              child: CustomText(text: AppStrings.seeAll, fontWeight: FontWeight.w600, fontSize: 14.sp),
             ),
           ],
         ),
       ),
     );
   }
-
   /// -------------------- Appointment Section --------------------
   SliverToBoxAdapter _buildAppointmentsSection() {
     return SliverToBoxAdapter(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pet_app/core/route/route_path.dart';
 import 'package:pet_app/core/route/routes.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
@@ -10,7 +11,7 @@ class CategoryList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 130,
+      height: 130.h,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: controller.iconList.length,
@@ -32,7 +33,7 @@ class CategoryList extends StatelessWidget {
                     ),
                     child: CircleAvatar(
                       backgroundColor: Colors.white,
-                      radius: 40,
+                      radius: 36,
                       child: controller.iconList[index],
                     ),
                   ),
@@ -40,7 +41,7 @@ class CategoryList extends StatelessWidget {
                 const SizedBox(height: 4),
                 CustomText(
                   text: controller.stringList[index],
-                  fontSize: 16,
+                  fontSize: 14,
                   fontWeight: FontWeight.w400,
                 ),
               ],

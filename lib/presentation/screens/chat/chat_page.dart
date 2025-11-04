@@ -209,6 +209,8 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        scrolledUnderElevation: 0,
         title: Obx(() {
           final name = controller.chatModel.value.participant?.name ?? "Chat";
           return Text(name);

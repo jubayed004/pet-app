@@ -1,16 +1,13 @@
 import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:pet_app/service/socket_service.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'core/dependency/get_it_injection.dart';
 import 'core/route/routes.dart';
 import 'helper/device_utils/device_utils.dart';
 import 'package:device_preview/device_preview.dart';
-
 import 'helper/local_db/local_db.dart';
 
 Future<void> main() async {
@@ -19,33 +16,37 @@ Future<void> main() async {
 
   initDependencies();
 
-  // RevenueCat live API key
-  final liveApiKey = Platform.isAndroid
+  // RevenueCat API keys
+  final apiKey = Platform.isAndroid
       ? "goog_sCftdXMYAurDYVZVoYgBtPyWPbQ"
       : "appl_BXKcaKbTpnefeGGYkxEtmWkSiEL";
 
   // Configure RevenueCat
   DBHelper dbHelper = DBHelper();
   String userId = await dbHelper.getUserId() ?? "";
-  await Purchases.configure(PurchasesConfiguration(liveApiKey)..appUserID = userId);
+
+  await Purchases.configure(
+    PurchasesConfiguration(apiKey)..appUserID = userId,
+  );
 
   // Fetch initial customer info
-  final customerInfo = await Purchases.getCustomerInfo();
-  debugPrint("🔹 Initial Customer Info: $customerInfo");
+  try {
+    final customerInfo = await Purchases.getCustomerInfo();
+    debugPrint("🔹 Initial Customer Info: ${customerInfo.entitlements.active.keys}");
+  } catch (e) {
+    debugPrint("❌ Error fetching customer info: $e");
+  }
 
   // Listen for subscription updates
   Purchases.addCustomerInfoUpdateListener((customerInfo) {
-    debugPrint("🔔 RevenueCat Customer Info Updated: $customerInfo");
+    debugPrint("🔔 Subscription Updated: ${customerInfo.entitlements.active.keys}");
   });
-
-
 
   runApp(
     DevicePreview(
       enabled: !kReleaseMode,
-      builder: (context) => MyApp(), // Wrap your app
+      builder: (context) => const MyApp(),
     ),
-     /* MyApp()*/
   );
 }
 
@@ -59,9 +60,8 @@ class MyApp extends StatelessWidget {
       builder: (context, child) {
         return GetMaterialApp.router(
           debugShowCheckedModeBanner: false,
-          // Route Section
           routeInformationParser: AppRouter.route.routeInformationParser,
-         routerDelegate: AppRouter.route.routerDelegate,
+          routerDelegate: AppRouter.route.routerDelegate,
           routeInformationProvider: AppRouter.route.routeInformationProvider,
         );
       },

@@ -26,7 +26,7 @@ class ErrorCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                CustomText(text: "something_went_wrong", fontWeight: FontWeight.w600, fontSize: 24.sp),
+                CustomText(text: "something went wrong", fontWeight: FontWeight.w600, fontSize: 24.sp),
                 const Gap(12),
                 CustomText(text: "the application has encountered an unknown error",maxLines: 2,),
                 CustomText(text: "please try again later"),

@@ -49,7 +49,7 @@ class _MyAppointmentDetailsScreenState extends State<MyAppointmentDetailsScreen>
                 child: Obx(() {
                   final item = controller.appointmentBookingDetails.value.booking?.serviceId;
                   final serviceImage = item?.servicesImages;
-                  final image = serviceImage != null && serviceImage.isNotEmpty ? serviceImage : "";
+                  final image = (serviceImage != null && serviceImage.isNotEmpty) ? serviceImage : "";
                   final serviceLogo = item?.shopLogo;
                   final logo = (serviceLogo != null && serviceLogo.isNotEmpty) ? serviceLogo : "";
                   final serviceType = item?.serviceType ?? "";
@@ -60,24 +60,46 @@ class _MyAppointmentDetailsScreenState extends State<MyAppointmentDetailsScreen>
                   final item1 = controller.appointmentBookingDetails.value.booking;
                   final selectedService = item1?.selectedService ?? "";
                   final bookingStatus = item1?.bookingStatus ?? "";
-                  final bookingDate = DateFormat("dd MMMM yyyy").format(item1?.bookingDate ?? DateTime.now());
+
+                  // ✅ Convert all server dates to local timezone before formatting
+                  final bookingDate = DateFormat("dd MMMM yyyy").format(
+                    (item1?.bookingDate ?? DateTime.now()).toLocal(),
+                  );
                   final bookingTime = item1?.bookingTime ?? "";
-                  final checkInDate = DateFormat("dd MMMM yyyy").format(item1?.checkInDate ?? DateTime.now());
+
+                  final checkInDate = DateFormat("dd MMMM yyyy").format(
+                    (item1?.checkInDate ?? DateTime.now()).toLocal(),
+                  );
                   final checkInTime = item1?.checkInTime ?? "";
-                  final checkOutDate = DateFormat("dd MMMM yyyy").format(item1?.checkOutDate ?? DateTime.now());
+
+                  final checkOutDate = DateFormat("dd MMMM yyyy").format(
+                    (item1?.checkOutDate ?? DateTime.now()).toLocal(),
+                  );
                   final checkOutTime = item1?.checkOutTime ?? "";
+
                   final notes = item1?.notes ?? "";
 
                   print("===============================================${ApiUrl.imageBase}$image");
+
                   return Column(
                     children: [
                       Stack(
                         alignment: Alignment.bottomRight,
                         children: [
-                          CustomNetworkImage(imageUrl:image, width: 200, height: 200, boxShape: BoxShape.circle),
+                          CustomNetworkImage(
+                            imageUrl: image,
+                            width: 200,
+                            height: 200,
+                            boxShape: BoxShape.circle,
+                          ),
                           Positioned(
                             bottom: 0,
-                            child: CustomNetworkImage(imageUrl: logo, width: 70, height: 100, boxShape: BoxShape.circle),
+                            child: CustomNetworkImage(
+                              imageUrl: logo,
+                              width: 70,
+                              height: 100,
+                              boxShape: BoxShape.circle,
+                            ),
                           ),
                         ],
                       ),
@@ -86,10 +108,10 @@ class _MyAppointmentDetailsScreenState extends State<MyAppointmentDetailsScreen>
                         spacing: 8,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Center(
-                            child: const Text(
-                              textAlign: TextAlign.center,
+                          const Center(
+                            child: Text(
                               "Appointment",
+                              textAlign: TextAlign.center,
                               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                             ),
                           ),
@@ -121,17 +143,6 @@ class _MyAppointmentDetailsScreenState extends State<MyAppointmentDetailsScreen>
                               ],
                             ),
                           ),
-                          /*           RichText(
-                            text: TextSpan(
-                              style: TextStyle(color: Colors.black),
-                              children: [
-                                TextSpan(text: "Service: ",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold)),
-                                TextSpan(text: "general veterinary checkup"),
-                              ],
-                            ),
-                          ),*/
                           RichText(
                             text: TextSpan(
                               style: TextStyle(color: Colors.black),
@@ -153,7 +164,6 @@ class _MyAppointmentDetailsScreenState extends State<MyAppointmentDetailsScreen>
                           if (["HOTEL"].contains(item?.serviceType))
                             Column(
                               spacing: 8,
-                              mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 RichText(
@@ -197,13 +207,19 @@ class _MyAppointmentDetailsScreenState extends State<MyAppointmentDetailsScreen>
                           RichText(
                             text: TextSpan(
                               style: TextStyle(color: Colors.black),
-                              children: [TextSpan(text: "Location: ", style: TextStyle(fontWeight: FontWeight.bold)), TextSpan(text: location)],
+                              children: [
+                                TextSpan(text: "Location: ", style: TextStyle(fontWeight: FontWeight.bold)),
+                                TextSpan(text: location),
+                              ],
                             ),
                           ),
                           RichText(
                             text: TextSpan(
                               style: TextStyle(color: Colors.black),
-                              children: [TextSpan(text: "Phone: ", style: TextStyle(fontWeight: FontWeight.bold)), TextSpan(text: phone)],
+                              children: [
+                                TextSpan(text: "Phone: ", style: TextStyle(fontWeight: FontWeight.bold)),
+                                TextSpan(text: phone),
+                              ],
                             ),
                           ),
                           RichText(
@@ -219,44 +235,40 @@ class _MyAppointmentDetailsScreenState extends State<MyAppointmentDetailsScreen>
                           Row(
                             spacing: 10,
                             children: [
-                              if (["COMPLETE"].contains(item1?.bookingStatus)) Flexible(
-                                child: CustomButton(
-                                  onTap: () {
-                                    AppRouter.route.pushNamed(
-                                      RoutePath.reviewScreen,
-                                      extra: {
-                                        "serviceId": item1?.id ?? "",
-                                        "ownerId": item1?.ownerId ?? "",
-                                        "businessId": item1?.businessId ?? "",
-                                      },
-                                    );
-                                  },
-                                  title: "Review",
-                                  fillColor: Colors.yellow,
-                                  textColor: Colors.black,
+                              if (["COMPLETE"].contains(item1?.bookingStatus))
+                                Flexible(
+                                  child: CustomButton(
+                                    onTap: () {
+                                      AppRouter.route.pushNamed(
+                                        RoutePath.reviewScreen,
+                                        extra: {
+                                          "serviceId": item1?.id ?? "",
+                                          "ownerId": item1?.ownerId ?? "",
+                                          "businessId": item1?.businessId ?? "",
+                                        },
+                                      );
+                                    },
+                                    title: "Review",
+                                    fillColor: Colors.yellow,
+                                    textColor: Colors.black,
+                                  ),
                                 ),
-                              ),
                               Flexible(
                                 child: CustomButton(
-                                  onTap: (){
+                                  onTap: () {
                                     AppRouter.route.pushNamed(RoutePath.chatScreen, extra: item1?.ownerId);
                                   },
                                   title: "Chat",
                                   textColor: Colors.black,
                                 ),
                               ),
-
                               if (["HOTEL"].contains(item?.serviceType))
                                 Flexible(
                                   child: CustomButton(
                                     onTap: () async {
-                                      String? websiteUrl = item?.websiteLink ?? "";
-                                      if (websiteUrl.isEmpty) {
-                                        websiteUrl = "https://www.defaultwebsite.com";
-                                      }
-                                      if (!websiteUrl.startsWith('http://') && !websiteUrl.startsWith('https://')) {
-                                        websiteUrl = 'https://$websiteUrl';
-                                      }
+                                      String websiteUrl = item?.websiteLink ?? "";
+                                      if (websiteUrl.isEmpty) websiteUrl = "https://www.defaultwebsite.com";
+                                      if (!websiteUrl.startsWith('http')) websiteUrl = 'https://$websiteUrl';
                                       final Uri url = Uri.parse(websiteUrl);
                                       if (await canLaunchUrl(url)) {
                                         await launchUrl(url);
@@ -275,7 +287,7 @@ class _MyAppointmentDetailsScreenState extends State<MyAppointmentDetailsScreen>
                       ),
                     ],
                   );
-                }),
+                })
               ),
             ),
           ],
