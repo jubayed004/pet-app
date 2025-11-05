@@ -21,7 +21,7 @@ class NoDataCard extends StatelessWidget {
           const Gap(8),
           CustomText(text: "The list is currently empty",maxLines: 2,),
           const Gap(16),
-          CustomButton(title: "Try again",onTap: onTap),
+          /*CustomButton(title: "Try again",onTap: onTap),*/
         ],
       ),
     );

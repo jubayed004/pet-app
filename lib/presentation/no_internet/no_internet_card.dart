@@ -21,9 +21,9 @@ class NoInternetCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Gap(20),
-            CustomText(text: "oops You are offline check your connection and give it another shot", color: AppColors.blackColor, maxLines: 3,),
+            CustomText(text: "oops You are offline check your connection", color: AppColors.blackColor, maxLines: 3,),
             const Gap(20),
-            CustomButton(title: "Try again",onTap: onTap),
+           /* CustomButton(title: "Try again",onTap: onTap),*/
           ],
         ),
       ),

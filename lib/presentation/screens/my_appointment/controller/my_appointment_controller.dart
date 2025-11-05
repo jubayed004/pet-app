@@ -38,7 +38,7 @@ class MyAppointmentController extends GetxController {
           pagingController1.appendPage(newItems, page + 1);
         }
       } else {
-        pagingController1.error = 'An error occurred';
+        pagingController1.error = 'No internet connection. \nPlease check your connection and try again.';
       }
     }catch(_){
       pagingController1.error = 'An error occurred';

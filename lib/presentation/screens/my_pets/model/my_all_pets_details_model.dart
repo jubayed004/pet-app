@@ -31,16 +31,16 @@ class Pet {
   final String? name;
   final String? animalType;
   final String? breed;
-  final int? age;
+  final num? age;
   final String? gender;
-  final int? weight;
-  final int? height;
+  final num? weight;
+  final num? height;
   final String? color;
   final String? description;
   final String? userId;
   final DateTime? createdAt;
   final DateTime? updatedAt;
-  final int? v;
+  final num? v;
   final String? petPhoto;
 
   Pet({
@@ -109,7 +109,7 @@ class PetMedicalHistory {
   final String? treatmentStatus;
   final DateTime? createdAt;
   final DateTime? updatedAt;
-  final int? v;
+  final num? v;
 
   PetMedicalHistory({
     this.id,

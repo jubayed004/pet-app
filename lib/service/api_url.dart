@@ -25,6 +25,7 @@ class ApiUrl {
   static getFaq() => '$base/faq/get';
   static giveFeedbacks() => '$base/help/create';
   static privacyPolicy() => '$base/privacy/get';
+  static deletedAccount()=> '$base/user/delete-account';
   ///Advertisement
   static addAdvertisement()=> '$base/advertisement/add-advertisement';
   static getAdvertisement()=> '$base/advertisement/get-ads';

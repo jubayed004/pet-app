@@ -20,13 +20,26 @@ import 'package:pet_app/service/api_url.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
 import 'package:pet_app/utils/app_strings/app_strings.dart';
 
-class BusinessProfileScreen extends StatelessWidget {
+class BusinessProfileScreen extends StatefulWidget {
   BusinessProfileScreen({super.key});
 
+  @override
+  State<BusinessProfileScreen> createState() => _BusinessProfileScreenState();
+}
+
+class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
   // final profileController = GetControllers.instance.getProfileController();
   final _controller = GetControllers.instance.getMyPetsProfileController();
+
   final controller = GetControllers.instance.getNavigationControllerMain();
+
   final businessProfileController = GetControllers.instance.getBusinessProfileController();
+
+  @override
+  void initState() {
+    businessProfileController.getBusinessProfile();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -194,7 +207,7 @@ class BusinessProfileScreen extends StatelessWidget {
                               animationSrc: "assets/images/warning.png",
                               context: context,
                               title: "Warning",
-                              subtitle: "Are you sure you want to change your subscription plan?",
+                              subtitle: "Are you sure you want to Sing Out ?",
                               actionButton: [
                                 CustomButton(
                                   width: double.infinity,

@@ -34,7 +34,7 @@ class ErrorCard extends StatelessWidget {
               ],
             ),
             const Gap(24),
-            CustomButton(title: "Try Again",onTap: onTap),
+        /*    CustomButton(title: "Try Again",onTap: onTap),*/
           ],
         ),
       ),

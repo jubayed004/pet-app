@@ -238,7 +238,7 @@ class ProfileScreen extends StatelessWidget {
                               animationSrc: "assets/images/warning.png",
                               context: context,
                               title: "Warning",
-                              subtitle: "Are you sure you want to change your subscription plan?",
+                              subtitle: "Are you sure you want to Sign Out ?",
                               actionButton: [
                                 CustomButton(
                                   width: double.infinity,

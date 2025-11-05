@@ -100,7 +100,7 @@ class OtherController extends GetxController{
 
   }
 
-/*  /// ============================= DELETE Delete Account =====================================
+  /// ============================= DELETE Delete Account =====================================
   RxBool deleteLoading = false.obs;
   deleteMethod(bool status) => deleteLoading.value = status;
   final deletePassword = TextEditingController();
@@ -116,14 +116,12 @@ class OtherController extends GetxController{
 
       var response = await apiClient.delete(
         body: body,
-        url: ApiUrl.deleteUser(),
+        url: ApiUrl.deletedAccount(),
       );
 
       if (response.statusCode == 200) {
         deleteMethod(false);
         toastMessage(message: response.body?['message']?.toString() ?? "Account deleted successfully");
-
-
         await dbHelper.logOut();
         AppRouter.route.go(RoutePath.signInScreen);
       } else {
@@ -138,7 +136,7 @@ class OtherController extends GetxController{
 
 
 
-  }*/
+  }
 
   @override
   void onReady() {

@@ -74,10 +74,7 @@ class MyPetsProfileController extends GetxController {
   }
 
   /// ================= Update Pet =================
-  Future<void> updateMyPet({
-    required Map<String, String> body,
-    required String id,
-  }) async {
+  Future<void> updateMyPet({required Map<String, String> body, required String id}) async {
     try {
       isUpdateLoading.value = true;
       final List<MultipartBody> multipartBody = [];
@@ -86,12 +83,7 @@ class MyPetsProfileController extends GetxController {
         multipartBody.add(MultipartBody("petPhoto", File(selectedImage.value!.path)));
       }
 
-      final response = await apiClient.multipartRequest(
-        url: ApiUrl.updateMyPet(id: id),
-        body: body,
-        multipartBody: multipartBody,
-        reqType: "PUT",
-      );
+      final response = await apiClient.multipartRequest(url: ApiUrl.updateMyPet(id: id), body: body, multipartBody: multipartBody, reqType: "PUT");
 
       final statusCode = response.statusCode ?? 0;
 
@@ -135,10 +127,7 @@ class MyPetsProfileController extends GetxController {
   /// ================= Pick Image =================
   Future<void> pickImage() async {
     try {
-      final image = await _imagePicker.pickImage(
-        source: ImageSource.gallery,
-        imageQuality: 80,
-      );
+      final image = await _imagePicker.pickImage(source: ImageSource.gallery, imageQuality: 80);
       if (image != null) {
         selectedImage.value = image;
       }
@@ -150,17 +139,11 @@ class MyPetsProfileController extends GetxController {
   /// ================= Error Handler =================
   void handleError(int statusCode, {bool isDetails = false}) {
     if (statusCode == 503) {
-      isDetails
-          ? detailsLoading.value = Status.internetError
-          : loading.value = Status.internetError;
+      isDetails ? detailsLoading.value = Status.internetError : loading.value = Status.internetError;
     } else if (statusCode == 404) {
-      isDetails
-          ? detailsLoading.value = Status.noDataFound
-          : loading.value = Status.noDataFound;
+      isDetails ? detailsLoading.value = Status.noDataFound : loading.value = Status.noDataFound;
     } else {
-      isDetails
-          ? detailsLoading.value = Status.error
-          : loading.value = Status.error;
+      isDetails ? detailsLoading.value = Status.error : loading.value = Status.error;
     }
   }
 

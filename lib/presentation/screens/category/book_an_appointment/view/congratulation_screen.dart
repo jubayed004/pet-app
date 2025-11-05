@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:pet_app/controller/get_controllers.dart';
 import 'package:pet_app/core/custom_assets/assets.gen.dart';
@@ -29,11 +30,9 @@ class CongratulationScreen extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-
                     Assets.icons.waitingforapprovel.svg(),
-
                     Gap(24),
-                    CustomText(text: "Waiting for the approval......",fontSize: 14,fontWeight: FontWeight.w500,color: Color(0xFFEEAB4A),),
+                    Flexible(child: CustomText(text: "Waiting for the approval from Business Owner......",fontSize: 14.sp,fontWeight: FontWeight.w500,color: Color(0xFFEEAB4A),)),
                     Gap(44),
                     CustomButton(onTap: (){
                       controller.selectedNavIndex.value = 0;

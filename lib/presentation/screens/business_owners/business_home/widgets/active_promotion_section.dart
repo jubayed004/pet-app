@@ -26,7 +26,6 @@ class ActivePromotionSection extends StatelessWidget {
           final ads = controller.profile.value.advertisement ?? [];
           final activeAds = ads.where((ad) => ad.status == "ACTIVE").toList();
           final status = controller.loading.value;
-
           switch (status) {
             case Status.loading:
               return const Center(child: CircularProgressIndicator());

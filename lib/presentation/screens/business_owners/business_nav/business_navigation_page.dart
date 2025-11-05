@@ -27,15 +27,9 @@ class _BusinessNavigationPageState extends State<BusinessNavigationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          Expanded(
-            child: Obx(() {
-              return IndexedStack(index: _controller.selectedNavIndex.value, children: _controller.getPages());
-            }),
-          ),
-        ],
-      ),
+      body: Obx(() {
+        return _controller.getPages()[_controller.selectedNavIndex.value];
+      }),
       bottomNavigationBar: Container(
         padding: EdgeInsets.only(bottom: 20, top: 6),
         decoration: BoxDecoration(
@@ -45,68 +39,71 @@ class _BusinessNavigationPageState extends State<BusinessNavigationPage> {
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children:
-              List.generate(
-                _controller.icons.length,
+          children: List.generate(
+            _controller.icons.length,
                 (index) => Expanded(
-                  child: GestureDetector(
-                    onTap: () {
-                      _controller.selectedNavIndex.value = index;
-                    },
-                    child: Obx(() {
-                      bool isSelected = _controller.selectedNavIndex.value == index;
-                      return Column(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          if (isSelected)
-                            AnimatedContainer(
-                              duration: const Duration(milliseconds: 300),
-                              curve: Curves.easeInOut,
-                              transform: Matrix4.translationValues(0, -20, 0),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                shape: BoxShape.circle,
-                                boxShadow: [BoxShadow(color: AppColors.blueColor.withValues(alpha: 0.2), blurRadius: 4.r, offset: Offset(0, 4))],
-                              ),
-                              padding: EdgeInsets.all(6),
-                              child: AnimatedContainer(
-                                duration: const Duration(milliseconds: 300),
-                                curve: Curves.easeInOut,
-                                padding: EdgeInsets.all(12),
-                                decoration: BoxDecoration(
-                                  color: isSelected ? AppColors.primaryColor : Colors.transparent,
-                                  shape: BoxShape.circle,
-                                  boxShadow: [BoxShadow(color: AppColors.blueColor.withValues(alpha: 0.2), blurRadius: 4.r, offset: Offset(0, 4))],
-                                ),
-                                child: SvgPicture.asset(
-                                  _controller.icons[index],
-                                  colorFilter: ColorFilter.mode(isSelected ? AppColors.purple500 : AppColors.purple500, BlendMode.srcIn),
-                                ),
-                              ),
-                            )
-                          else
-                            SvgPicture.asset(_controller.icons[index], colorFilter: ColorFilter.mode(AppColors.whiteColor, BlendMode.srcIn)),
-                          if (!isSelected)
-                            Padding(
-                              padding: EdgeInsets.only(top: 4.w),
-                              child: CustomText(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 14,
-                                color: Colors.white,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                text: _controller.labels[index],
-                              ),
+              child: GestureDetector(
+                onTap: () {
+                  _controller.selectedNavIndex.value = index;
+                },
+                child: Obx(() {
+                  bool isSelected = _controller.selectedNavIndex.value == index;
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      if (isSelected)
+                        AnimatedContainer(
+                          duration: const Duration(milliseconds: 300),
+                          curve: Curves.easeInOut,
+                          transform: Matrix4.translationValues(0, -20, 0),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            shape: BoxShape.circle,
+                            boxShadow: [BoxShadow(color: AppColors.blueColor.withOpacity(0.2), blurRadius: 4.r, offset: Offset(0, 4))],
+                          ),
+                          padding: EdgeInsets.all(6),
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 300),
+                            curve: Curves.easeInOut,
+                            padding: EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: isSelected ? AppColors.primaryColor : Colors.transparent,
+                              shape: BoxShape.circle,
+                              boxShadow: [BoxShadow(color: AppColors.blueColor.withOpacity(0.2), blurRadius: 4.r, offset: Offset(0, 4))],
                             ),
-                        ],
-                      );
-                    }),
-                  ),
-                ),
-              ).toList(),
+                            child: SvgPicture.asset(
+                              _controller.icons[index],
+                              colorFilter: ColorFilter.mode(isSelected ? AppColors.purple500 : AppColors.purple500, BlendMode.srcIn),
+                            ),
+                          ),
+                        )
+                      else
+                        SvgPicture.asset(
+                          _controller.icons[index],
+                          colorFilter: ColorFilter.mode(AppColors.whiteColor, BlendMode.srcIn),
+                        ),
+                      if (!isSelected)
+                        Padding(
+                          padding: EdgeInsets.only(top: 4.w),
+                          child: CustomText(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 14,
+                            color: Colors.white,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            text: _controller.labels[index],
+                          ),
+                        ),
+                    ],
+                  );
+                }),
+              ),
+            ),
+          ).toList(),
         ),
       ),
     );
+
   }
 }

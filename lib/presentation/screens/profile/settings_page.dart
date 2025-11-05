@@ -155,8 +155,8 @@ class SettingsPage extends StatelessWidget {
                                         return;
                                       }
                                       AppRouter.route.pop();
-                                      /*otherController.deletePassword.text = deletePassword.text.trim();
-                                      await otherController.deleteAccount();*/
+                                      otherController.deletePassword.text = deletePassword.text.trim();
+                                      await otherController.deleteAccount();
                                     },
                                     title: "Confirm",
                                     fontSize: 14.sp,

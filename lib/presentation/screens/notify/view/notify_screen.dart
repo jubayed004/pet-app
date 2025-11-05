@@ -14,8 +14,6 @@ class NotifyScreen extends StatelessWidget {
 
   final notifyController = GetControllers.instance.getNotifyController();
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

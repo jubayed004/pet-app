@@ -26,17 +26,20 @@ class _ReviewScreenState extends State<ReviewScreen> {
 
   @override
   void initState() {
-    controller.getReviewByService(id: widget.serviceId);
     super.initState();
+    // Fetch reviews when the screen is initialized.
+    controller.getReviewByService(id: widget.serviceId);
+  }
+
+  Future<void> _refreshReviews() async {
+    await controller.getReviewByService(id: widget.serviceId);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: RefreshIndicator(
-        onRefresh: () async {
-          controller.getReviewByService(id: widget.serviceId);
-        },
+        onRefresh: _refreshReviews,
         child: CustomScrollView(
           slivers: [
             CustomDefaultAppbar(title: "Customer Reviews"),
@@ -45,21 +48,26 @@ class _ReviewScreenState extends State<ReviewScreen> {
               sliver: SliverToBoxAdapter(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-
                   children: [
                     ListTile(
                       title: Obx(() {
+                        final avgRating = controller.review.value.avgRating;
+                        final totalReviews = controller.review.value.totalReviews;
                         return Row(
                           spacing: 6,
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             CustomText(
                               color: Colors.amber,
-                              text: controller.review.value.avgRating?.toStringAsFixed(2) ?? "",
+                              text: avgRating?.toStringAsFixed(2) ?? "0.00",
                               fontWeight: FontWeight.w600,
                               fontSize: 16,
                             ),
-                            CustomText(color: Colors.amber, text: "(${controller.review.value.totalReviews.toString()} Ratings)", fontSize: 14),
+                            CustomText(
+                              color: Colors.amber,
+                              text: "($totalReviews Ratings)",
+                              fontSize: 14,
+                            ),
                           ],
                         );
                       }),
@@ -83,11 +91,15 @@ class _ReviewScreenState extends State<ReviewScreen> {
               ),
             ),
             Obx(() {
+              final reviews = controller.review.value.reviews;
               return SliverList(
-                delegate: SliverChildBuilderDelegate((context, index) {
-                  final item = controller.review.value.reviews?[index];
-                  return ReviewCardItem(item: item);
-                }, childCount: controller.review.value.reviews?.length),
+                delegate: SliverChildBuilderDelegate(
+                      (context, index) {
+                    final item = reviews?[index];
+                    return ReviewCardItem(item: item);
+                  },
+                  childCount: reviews?.length ?? 0,  // Safely handle null value
+                ),
               );
             }),
           ],

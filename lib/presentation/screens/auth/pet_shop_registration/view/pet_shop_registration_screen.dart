@@ -298,7 +298,7 @@ class PetShopRegistrationScreen extends StatelessWidget {
               Gap(24),
               Obx(() {
                 return CustomButton(
-                  isLoading: _authController.loginLoading.value,
+                  isLoading: _authController.shopRegistrationUpLoading.value,
                   title: " Continue   ",
                   textColor: Colors.black,
                   showIcon: false,
@@ -310,7 +310,6 @@ class PetShopRegistrationScreen extends StatelessWidget {
                     } else {
                       toastMessage(message: "Please agree trems and conditions");
                     }
-
                     /*        AppRouter.route.goNamed(RoutePath.subscriptionScreen);*/
                   },
                 );

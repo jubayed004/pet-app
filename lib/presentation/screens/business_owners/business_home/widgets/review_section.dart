@@ -19,7 +19,7 @@ class ReviewSection extends StatelessWidget {
 
     return SliverToBoxAdapter(
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.w),
+        padding: EdgeInsets.symmetric(horizontal: 16.w,vertical: 24.h),
         child: GestureDetector(
           onTap: () {
             AppRouter.route.pushNamed(RoutePath.businessReviewScreen);

@@ -36,9 +36,17 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
-    final width = MediaQuery.of(context).size.width;
-    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final height = MediaQuery
+        .of(context)
+        .size
+        .height;
+    final width = MediaQuery
+        .of(context)
+        .size
+        .width;
+    final isDarkMode = Theme
+        .of(context)
+        .brightness == Brightness.dark;
     print(widget.email);
 
     return Scaffold(
@@ -81,12 +89,12 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                             text: (_authController.resendOTPLoading.value ? "loading" : "Resend Otp"),
                             style: TextStyle(color: AppColors.purple500, fontWeight: FontWeight.w600, decoration: TextDecoration.underline),
                             recognizer:
-                                TapGestureRecognizer()
-                                  ..onTap = () {
-                                    if (!_authController.resendOTPLoading.value) {
-                                      _authController.resendOTP(email: widget.email);
-                                    }
-                                  },
+                            TapGestureRecognizer()
+                              ..onTap = () {
+                                if (!_authController.resendOTPLoading.value) {
+                                  _authController.resendOTP(email: widget.email);
+                                }
+                              },
                           ),
                         ],
                       ),
@@ -131,13 +139,15 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                 ),
                 Gap(24),
 
-                CustomButton(
-                  isLoading: _authController.otpLoading.value,
-                  title: "Confirm",
-                  onTap: () {
-                    _authController.otpVerify(email: widget.email, code: verifyOtp.text);
-                  },
-                ),
+                Obx(() {
+                  return CustomButton(
+                    isLoading: _authController.otpLoading.value,
+                    title: "Confirm",
+                    onTap: () {
+                      _authController.otpVerify(email: widget.email, code: verifyOtp.text);
+                    },
+                  );
+                }),
                 Gap(24),
               ],
             ),

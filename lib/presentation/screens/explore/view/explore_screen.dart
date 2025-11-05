@@ -10,6 +10,7 @@ import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:pet_app/presentation/screens/category/model/category_item_model.dart';
 import 'package:pet_app/presentation/screens/explore/model/map_category_details_model.dart';
 import 'package:pet_app/presentation/screens/explore/widgets/category_card_map.dart';
+import 'package:pet_app/presentation/screens/explore/widgets/explore_card.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
 import 'package:pet_app/utils/app_const/app_const.dart';
 import 'package:pet_app/utils/app_strings/app_strings.dart';
@@ -64,7 +65,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
-    final bottomSheetHeight = screenHeight * 0.38;
+    final bottomSheetHeight = screenHeight * 0.33;
 
     return Scaffold(
       body: Stack(
@@ -89,6 +90,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
             right: 0,
             bottom: 0,
             child: Container(
+
               height: bottomSheetHeight,
               padding: EdgeInsets.all(12.r),
               decoration: BoxDecoration(
@@ -99,7 +101,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
+                    color: Colors.black.withValues(alpha: 0.1),
                     blurRadius: 10.r,
                     offset: const Offset(0, -5),
                   ),
@@ -107,9 +109,9 @@ class _ExploreScreenState extends State<ExploreScreen> {
               ),
               child: Column(
                 children: [
-                  // Category selection
+                  ///========================== Service Category selection ==================
                   SizedBox(
-                    height: 120.h,
+                    height:screenHeight/8,
                     child: ValueListenableBuilder<int>(
                       valueListenable: selectedIndex,
                       builder: (_, currentIndex, __) {
@@ -142,7 +144,6 @@ class _ExploreScreenState extends State<ExploreScreen> {
                                   ),
                                   Gap(4.h),
                                   SizedBox(
-                                    width: 70.w,
                                     child: CustomText(
                                       text: category.title,
                                       fontSize: 14.sp,
@@ -163,7 +164,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
 
                   Gap(8.h),
 
-                  // Services List Section
+                  ///============================Services List Section ======================
                   Expanded(
                     child: ValueListenableBuilder<int>(
                       valueListenable: selectedIndex,
@@ -275,46 +276,4 @@ class _ExploreScreenState extends State<ExploreScreen> {
     );
   }
 }
-class ExploreCatCard extends StatelessWidget {
-  const ExploreCatCard({super.key, required this.items, required this.itemIndex});
 
-  final int itemIndex;
-  final List<MapCategoryService> items;
-
-  @override
-  Widget build(BuildContext context) {
-    if (items.isEmpty) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.pets, size: 48.sp, color: Colors.grey),
-            SizedBox(height: 8.h),
-            Text(
-              'No services available in this category',
-              style: TextStyle(fontSize: 14.sp, color: Colors.grey),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
-      );
-    }
-
-    return ListView.builder(
-      itemCount: items.length,
-      scrollDirection: Axis.horizontal,
-      padding: EdgeInsets.symmetric(horizontal: 16.w),
-      itemBuilder: (context, index) {
-        return Padding(
-          padding: EdgeInsets.only(right: 12.w),
-          child: CategoryCard(
-            item: items[index],
-            index: index,
-            showWebsite: itemIndex == 1 || itemIndex == 3,
-            isShop: itemIndex == 1 ? false : true,
-          ),
-        );
-      },
-    );
-  }
-}

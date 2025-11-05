@@ -55,7 +55,7 @@ class ServiceController extends GetxController{
       print(body.values);
       if (response.statusCode == 201) {
         appointmentLoadingMethod(false);
-        AppRouter.route.pushNamed(RoutePath.congratulationScreen);
+        AppRouter.route.goNamed(RoutePath.congratulationScreen);
         final myAppointmentController = GetControllers.instance.getMyAppointmentController();
         myAppointmentController.pagingController1.refresh();
        await myAppointmentController.getSingleAppointmentBooking();

@@ -19,7 +19,7 @@ class MoreDataErrorCard extends StatelessWidget {
           children: [
             CustomText(text: "something went wrong tap to try again", maxLines: 3, fontWeight: FontWeight.w600, fontSize: 12.sp),
             const Gap(5),
-            const Icon(Icons.refresh),
+            /*const Icon(Icons.refresh),*/
           ],
         ),
       ),

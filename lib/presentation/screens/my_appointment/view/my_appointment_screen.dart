@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:intl/intl.dart';
@@ -22,19 +23,21 @@ import 'package:url_launcher/url_launcher.dart';
 
 class MyAppointmentScreen extends StatefulWidget {
   const MyAppointmentScreen({super.key});
+
   @override
   State<MyAppointmentScreen> createState() => _MyAppointmentScreenState();
 }
+
 class _MyAppointmentScreenState extends State<MyAppointmentScreen> {
   final myAppointmentController = GetControllers.instance.getMyAppointmentController();
   final navController = GetControllers.instance.getNavigationControllerMain();
 
   @override
   void initState() {
+    super.initState();
     myAppointmentController.pagingController1.addPageRequestListener((pageKey) {
       myAppointmentController.getAppointmentBooking(page: pageKey);
     });
-    super.initState();
   }
 
   @override
@@ -54,7 +57,6 @@ class _MyAppointmentScreenState extends State<MyAppointmentScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
                 builderDelegate: PagedChildBuilderDelegate<BookingItem>(
                   itemBuilder: (context, item, index) {
-                    // final time = GetTimeAgo.parse(item.updatedAt ?? DateTime.now());
                     final appointmentId = item.id;
                     final bookingTime = item.bookingTime;
                     final serviceType = item.serviceId;
@@ -80,47 +82,52 @@ class _MyAppointmentScreenState extends State<MyAppointmentScreen> {
                       selectedService: selectedService,
                       address: address ?? "",
                       phone: phone ?? "",
-                      /*         chatOnTab: () {
-                          final navController =
-                          GetControllers.instance.getNavigationControllerMain();
-                          navController.selectedNavIndex.value = 2;
-                        },
-                        websiteOnTab: () async{
-                          String? websiteUrl = serviceType?.websiteLink ?? "";
-                          if (websiteUrl.isEmpty) {
-                            websiteUrl = "https://www.defaultwebsite.com";
-                          }
-                          if (!websiteUrl.startsWith('http://') &&
-                              !websiteUrl.startsWith('https://')) {
-                            websiteUrl = 'https://$websiteUrl';
-                          }
-                          final Uri url = Uri.parse(websiteUrl);
-                          if (await canLaunchUrl(url)) {
-                          await launchUrl(url);
-                          } else {
-                          throw 'Could not launch $url';
-                          }
-                        },
-                        addReviewOnnTab: () {
-                          AppRouter.route.pushNamed(RoutePath.reviewScreen);
-                          },*/
                       deletedOnTab: () {
                         defaultDeletedYesNoCencelDialog(
                           context: context,
                           title: 'Are you sure you want to Cancel this Appointment?',
-                           id:  appointmentId ?? "",
+                          id: appointmentId ?? "",
                           controller: myAppointmentController,
                         );
                       },
                     );
                   },
-                  firstPageErrorIndicatorBuilder:
-                      (context) => Center(
-                        child: ErrorCard(
-                          onTap: () => myAppointmentController.pagingController1.refresh(),
-                          text: myAppointmentController.pagingController1.error.toString(),
-                        ),
+                  firstPageErrorIndicatorBuilder: (context) {
+                    return Center(
+                      child: ErrorCard(
+                        onTap: () => myAppointmentController.pagingController1.refresh(),
+                        text: myAppointmentController.pagingController1.error.toString(),
                       ),
+                    );
+                  },
+                  newPageErrorIndicatorBuilder: (context) {
+                    return Center(
+                      child: ErrorCard(
+                        onTap: () => myAppointmentController.pagingController1.retryLastFailedRequest(),
+                        text: myAppointmentController.pagingController1.error.toString(),
+                      ),
+                    );
+                  },
+                  // Empty state handling when no data is found
+                  noItemsFoundIndicatorBuilder: (context) {
+                    return Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            "No Appointments Found",
+                            style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w500, color: Colors.black),
+                          ),
+                          Gap(8),
+                          Text(
+                            textAlign: TextAlign.center,
+                            "It seems you have no appointments yet. \nCheck back later!",
+                            style: TextStyle(fontSize: 14.sp, color: Colors.black),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
                 ),
               ),
             ),

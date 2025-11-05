@@ -323,24 +323,21 @@ class AuthController extends GetxController {
 
 
   ///======================================Pet Shop Registration=======================================
+
   RxBool shopRegistrationUpLoading = false.obs;
   Rx<XFile?> selectedLogo = Rx<XFile?>(null);
   Rx<XFile?> selectedPic = Rx<XFile?>(null);
   shopRegistrationUpLoadingMethod(bool status) => shopRegistrationUpLoading.value = status;
-
   final TextEditingController businessName = TextEditingController();
   final TextEditingController address = TextEditingController();
   final TextEditingController website = TextEditingController();
   final TextEditingController moreInfo = TextEditingController();
-
   Future<void> shopLogo() async {
     XFile? image = await _imagePicker.pickImage(source: ImageSource.gallery, imageQuality: 80);
     if (image != null) {
       selectedLogo.value = image;
     }
   }
-
-
   Future<void> shopPic() async {
     XFile? image = await _imagePicker.pickImage(source: ImageSource.gallery, imageQuality: 80);
     if (image != null) {

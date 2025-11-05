@@ -325,7 +325,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-
 // Updated buildDot method with active parameter
   Widget buildDot(int index, {bool active = false}) {
     return AnimatedContainer(
@@ -375,24 +374,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     margin: const EdgeInsets.symmetric(horizontal: 5),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8),
-                      child: Image.network(
-                        imgUrl,
-                        fit: BoxFit.cover,
-                        width: double.infinity,
-                        height: double.infinity,
-                        loadingBuilder: (context, child, progress) {
-                          if (progress == null) return child;
-                          return const Center(
-                            child: CircularProgressIndicator(strokeWidth: 2),
-                          );
-                        },
-                        errorBuilder: (context, error, stackTrace) {
-                          return Container(
-                            color: Colors.grey[300],
-                            child: const Icon(Icons.broken_image),
-                          );
-                        },
-                      ),
+                      child: CustomNetworkImage(imageUrl: imgUrl)
                     ),
                   );
                 },
@@ -423,9 +405,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-
-
-
 
   Widget buildDot1(int index, {bool active = false}) {
     return AnimatedContainer(
@@ -473,6 +452,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+
   /// -------------------- Appointment Section --------------------
   SliverToBoxAdapter _buildAppointmentsSection() {
     return SliverToBoxAdapter(

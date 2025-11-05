@@ -12,10 +12,25 @@ import 'package:pet_app/presentation/components/custom_button/custom_defualt_app
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:pet_app/utils/variable/variable.dart';
 
-class DashboardScreen extends StatelessWidget {
+class DashboardScreen extends StatefulWidget {
   DashboardScreen({super.key});
 
+  @override
+  State<DashboardScreen> createState() => _DashboardScreenState();
+}
+
+
+
+class _DashboardScreenState extends State<DashboardScreen> {
   final controller = GetControllers.instance.getDashBoardController();
+
+
+
+  @override
+  void initState() {
+    controller.getDashboard(statuse: "monthly");
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -188,7 +203,7 @@ class DashboardScreen extends StatelessWidget {
                                   child: CustomText(
                                     text: vendorGridList[index].title,
                                     textAlign: TextAlign.center,
-                                    fontSize: 16,
+                                    fontSize: 14,
                                     fontWeight: FontWeight.w600,
 
                                     // maxLines: 1,
@@ -215,6 +230,7 @@ class DashboardScreen extends StatelessWidget {
       ),
     );
   }
+
   Widget _buildStatCard(_BookingItem item) {
     return Container(
       decoration: BoxDecoration(
@@ -258,6 +274,7 @@ class DashboardScreen extends StatelessWidget {
       ),
     );
   }
+
   Widget _buildMessage(String message) {
     return Padding(
       padding: const EdgeInsets.only(top: 100),

@@ -22,6 +22,16 @@ class $AssetsAnimationGen {
   List<String> get values => [success];
 }
 
+class $AssetsAppIconGen {
+  const $AssetsAppIconGen();
+
+  /// File path: assets/app_icon/icon.png
+  AssetGenImage get icon => const AssetGenImage('assets/app_icon/icon.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [icon];
+}
+
 class $AssetsFontsGen {
   const $AssetsFontsGen();
 
@@ -324,6 +334,9 @@ class $AssetsImagesGen {
   /// File path: assets/images/vet.png
   AssetGenImage get vet => const AssetGenImage('assets/images/vet.png');
 
+  /// File path: assets/images/warning.png
+  AssetGenImage get warning => const AssetGenImage('assets/images/warning.png');
+
   /// File path: assets/images/womandogimage.png
   AssetGenImage get womandogimage =>
       const AssetGenImage('assets/images/womandogimage.png');
@@ -344,6 +357,7 @@ class $AssetsImagesGen {
         subicon2,
         topbrandsimage,
         vet,
+        warning,
         womandogimage
       ];
 }
@@ -352,6 +366,7 @@ class Assets {
   const Assets._();
 
   static const $AssetsAnimationGen animation = $AssetsAnimationGen();
+  static const $AssetsAppIconGen appIcon = $AssetsAppIconGen();
   static const $AssetsFontsGen fonts = $AssetsFontsGen();
   static const $AssetsIconsGen icons = $AssetsIconsGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();

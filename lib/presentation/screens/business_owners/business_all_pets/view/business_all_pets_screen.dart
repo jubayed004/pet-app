@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:pet_app/controller/get_controllers.dart';
 import 'package:pet_app/core/route/route_path.dart';
 import 'package:pet_app/core/route/routes.dart';
 import 'package:pet_app/presentation/components/custom_button/custom_defualt_appbar.dart';
+import 'package:pet_app/utils/app_colors/app_colors.dart';
 import 'package:pet_app/utils/app_const/app_const.dart';
 
 class BusinessAllPetsScreen extends StatelessWidget {
@@ -38,6 +40,12 @@ class BusinessAllPetsScreen extends StatelessWidget {
       );
     }
 
+/*    if (state == Status.error) {
+      return SliverFillRemaining(
+        child: _buildErrorState(icon: icon, title: title, message: message, onRetry: onRetry)
+      );
+    }*/
+
     if (pets.isEmpty) {
       return SliverFillRemaining(
         child: _buildEmptyState(),
@@ -55,7 +63,7 @@ class BusinessAllPetsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildEmptyState() {
+/*  Widget _buildEmptyState() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -73,6 +81,122 @@ class BusinessAllPetsScreen extends StatelessWidget {
         Text(
           "Add your first pet to get started",
           style: TextStyle(fontSize: 14.sp, color: Colors.grey[500]),
+        ),
+      ],
+    );
+  }*/
+  /// Loading State
+  Widget _buildLoadingState() {
+    return CustomScrollView(
+      slivers: [
+        CustomDefaultAppbar(title: "All Pets"),
+        SliverFillRemaining(
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: 60.w,
+                  height: 60.w,
+                  child: CircularProgressIndicator(strokeWidth: 3, valueColor: AlwaysStoppedAnimation(AppColors.purple500)),
+                ),
+                SizedBox(height: 24.h),
+                Text("Loading your pets...", style: TextStyle(fontSize: 16.sp, color: Colors.grey[600], fontWeight: FontWeight.w500)),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  /// Error State
+  Widget _buildErrorState({required IconData icon, required String title, required String message, required VoidCallback onRetry}) {
+    return CustomScrollView(
+      physics: const AlwaysScrollableScrollPhysics(),
+      slivers: [
+        CustomDefaultAppbar(title: "All Pets"),
+        SliverFillRemaining(
+          child: Center(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 32.w),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(24.w),
+                    decoration: BoxDecoration(color: Colors.grey[100], shape: BoxShape.circle),
+                    child: Icon(icon, size: 64.sp, color: Colors.grey[400]),
+                  ),
+                  SizedBox(height: 24.h),
+                  Text(title, style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w700, color: Colors.grey[900]), textAlign: TextAlign.center),
+                  SizedBox(height: 12.h),
+                  Text(message, style: TextStyle(fontSize: 14.sp, color: Colors.grey[600], height: 1.5), textAlign: TextAlign.center),
+                  SizedBox(height: 32.h),
+                  ElevatedButton.icon(
+                    onPressed: onRetry,
+                    icon: Icon(Iconsax.refresh, size: 20.sp),
+                    label: Text("Try Again", style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w600)),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.purple500,
+                      foregroundColor: Colors.white,
+                      padding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 14.h),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+                      elevation: 0,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  /// Empty State
+  Widget _buildEmptyState() {
+    return CustomScrollView(
+      physics: const AlwaysScrollableScrollPhysics(),
+      slivers: [
+    /*    CustomDefaultAppbar(title: "All Pets"),*/
+        SliverFillRemaining(
+          child: Center(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 32.w),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(24.w),
+                    decoration: BoxDecoration(color: AppColors.purple200.withOpacity(0.3), shape: BoxShape.circle),
+                    child: Icon(Iconsax.pet5, size: 80.sp, color: AppColors.purple500),
+                  ),
+                  SizedBox(height: 24.h),
+                  Text("No Pets Yet", style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.w700, color: Colors.grey[900])),
+                  SizedBox(height: 12.h),
+                  Text(
+                    "You haven't added any pets yet. Add your first pet to get started!",
+                    style: TextStyle(fontSize: 14.sp, color: Colors.grey[600], height: 1.5),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 32.h),
+                  ElevatedButton.icon(
+                    onPressed: () => controller.getBusinessAllPets(),
+                    icon: Icon(Iconsax.refresh, size: 20.sp),
+                    label: Text("Refresh", style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w600)),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.purple500,
+                      foregroundColor: Colors.white,
+                      padding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 14.h),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+                      elevation: 0,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ),
       ],
     );

@@ -58,9 +58,8 @@ class _SignInScreenState extends State<SignInScreen> {
                   Gap(16),
                   Assets.icons.loginimage.svg(), // Your login image
                   Gap(24),
-
                   // Email Field
-                  CustomAlignText(text: "Email"),
+                  CustomAlignText(text: "Email",fontSize: 16,fontWeight: FontWeight.w600,),
                   Gap(8),
                   CustomTextField(
                     fillColor: Colors.white,
@@ -84,7 +83,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   Gap(24),
 
                   // Password Field
-                  CustomAlignText(text: "Password"),
+                  CustomAlignText(text: "Password",fontWeight: FontWeight.w600,fontSize: 16,),
                   Gap(8),
                   CustomTextField(
                     fillColor: Colors.white,

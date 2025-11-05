@@ -64,7 +64,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   },
                 ),
                 Gap(14),
-                CustomAlignText(text: "Email", fontWeight: FontWeight.w500),
+                CustomAlignText(text: "Email", fontWeight: FontWeight.w500, fontSize: 16,),
                 Gap(8.0),
                 CustomTextField(
                   hintText: AppStrings.enterYourEmail,
@@ -85,7 +85,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   },
                 ),
                 Gap(14),
-                CustomAlignText(text: AppStrings.phoneNumber, fontWeight: FontWeight.w500),
+                CustomAlignText(text: AppStrings.phoneNumber, fontWeight: FontWeight.w500,fontSize: 16,),
                 Gap(8.0),
                 CustomTextField(
                   textEditingController: _authController.phoneNumberSignUp,
@@ -103,7 +103,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                 Gap(14),
 
-                CustomAlignText(text: "Password", fontWeight: FontWeight.w500),
+                CustomAlignText(text: "Password", fontWeight: FontWeight.w500,fontSize: 16,),
                 Gap(8.0),
                 CustomTextField(
                   fieldBorderColor: AppColors.purple500,
@@ -124,7 +124,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   },
                 ),
                 Gap(14),
-                CustomAlignText(text: AppStrings.confirmPassword, fontWeight: FontWeight.w500),
+                CustomAlignText(text: AppStrings.confirmPassword, fontWeight: FontWeight.w500,fontSize: 16,),
                 Gap(8.0),
                 CustomTextField(
                   fieldBorderColor: AppColors.purple500,
