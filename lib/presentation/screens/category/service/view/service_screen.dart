@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
@@ -322,11 +323,9 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                 "serviceId": widget.id,
                                 "businessId": widget.businessId,
                                 "bookingTime": bookingTime != null
-                                    ? "${bookingTime.hour.toString().padLeft(2, '0')}:${bookingTime.minute.toString().padLeft(2, '0')}"
-                                    : "",
+                                    ? "${bookingTime.hour.toString().padLeft(2, '0')}:${bookingTime.minute.toString().padLeft(2, '0')}" : "",
                                 "checkInTime": checkInTime != null
-                                    ? "${checkInTime.hour.toString().padLeft(2, '0')}:${checkInTime.minute.toString().padLeft(2, '0')}"
-                                    : "",
+                                    ? "${checkInTime.hour.toString().padLeft(2, '0')}:${checkInTime.minute.toString().padLeft(2, '0')}" : "",
                                 "checkOutTime": checkOutTime != null
                                     ? "${checkOutTime.hour.toString().padLeft(2, '0')}:${checkOutTime.minute.toString().padLeft(2, '0')}"
                                     : "",
@@ -337,7 +336,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                 "petId": selectedPet,
                                 "notes": extraInformationController.text.trim(),
                               };
-                                print(body);
+                              if (kDebugMode) debugPrint("===============${body.toString()}================", wrapWidth: 120,);
                               serviceController.bookingAppointmentService(body: body);
                             },
                             title: "Book Appointment",
@@ -406,7 +405,8 @@ class _ServiceScreenState extends State<ServiceScreen> {
         borderRadius: BorderRadius.circular(16.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: Colors.black.
+      withValues(alpha: 0.04),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),

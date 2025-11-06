@@ -15,6 +15,7 @@ import 'package:pet_app/presentation/screens/profile/model/profile_model.dart';
 import 'package:pet_app/service/api_service.dart';
 import 'package:pet_app/service/api_url.dart';
 import 'package:pet_app/utils/app_const/app_const.dart';
+import 'package:pet_app/utils/variable/variable.dart';
 
 class ProfileController extends GetxController {
   final controller = GetControllers.instance.getNavigationControllerMain();
@@ -30,13 +31,19 @@ class ProfileController extends GetxController {
   final Rx<ProfileModel> profile = ProfileModel().obs;
   /*final RxBool isAdmin = false.obs;*/
 
-  Future<void> userProfile() async{
+  Future<void> userProfile() async {
+    final log = logger;
+
     loadingMethod(Status.completed);
-    try{
+    try {
       loadingMethod(Status.loading);
       final response = await apiClient.get(url: ApiUrl.getProfile());
+      log.i('API call: ${ApiUrl.getProfile()}');
+      log.d('Response: ${response.statusCode}');
+
       if (response.statusCode == 200) {
         final newData = ProfileModel.fromJson(response.body);
+        log.d(newData.toJson()             );
         profile.value = newData;
         loadingMethod(Status.completed);
       } else {
@@ -47,8 +54,10 @@ class ProfileController extends GetxController {
         } else {
           loadingMethod(Status.error);
         }
+        log.w('Bad status: ${response.statusCode}');
       }
-    }catch(e){
+    } catch (e, st) {
+      log.e('Profile load failed', error: e, stackTrace: st);
       loadingMethod(Status.error);
     }
   }

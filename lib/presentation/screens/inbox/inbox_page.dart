@@ -85,7 +85,6 @@ class _InboxPageState extends State<InboxPage> with WidgetsBindingObserver {
           if (!id.hasData) {
             return const Center(child: CircularProgressIndicator());
           }
-
           return CustomScrollView(
             slivers: [
               const CustomDefaultAppbar(title: "Inbox"),

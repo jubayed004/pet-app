@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -7,6 +10,7 @@ import 'package:pet_app/presentation/screens/inbox/model/conversation_model.dart
 import 'package:pet_app/service/api_service.dart';
 import 'package:pet_app/service/api_url.dart';
 import 'package:pet_app/service/socket_service.dart';
+import 'package:pet_app/utils/logger/logger.dart';
 
 class MessageController extends GetxController {
   final ApiClient apiClient = serviceLocator<ApiClient>();
@@ -14,21 +18,30 @@ class MessageController extends GetxController {
   bool isRunning = false;
 
   Future<void> getAllConversation({required int pageKey, required PagingController<int, ConversationItem> pagingController}) async {
-    final response = await apiClient.get(url: ApiUrl.getConversation(pageKey: pageKey));
-    if (response.statusCode == 200) {
-      final newData = ConversationModel.fromJson(response.body);
-      final newItems = newData.data ?? [];
-      if (newItems.isEmpty) {
-        pagingController.appendLastPage(newItems);
+    try{
+      final resp = await apiClient.get(url: ApiUrl.getConversation(pageKey: pageKey))
+          .timeout(const Duration(seconds: 15));
+
+      if (resp.statusCode == 200) {
+        final data = ConversationModel.fromJson(resp.body);
+        final items = data.data ?? [];
+        final isLast = items.isEmpty;
+        if (isLast) {
+          pagingController.appendLastPage(items);
+        } else {
+          pagingController.appendPage(items, pageKey + 1);
+        }
       } else {
-        pagingController.appendPage(newItems, pageKey + 1);
+        pagingController.error = 'No Internet Connection';
       }
-    } else {
-      pagingController.error = 'An error occurred';
+    } catch (_) {
+      pagingController.error = 'Error';
     }
+
   }
 
   void listenForNewConversation({required PagingController<int, ConversationItem> pagingController}) async {
+
     try {
       final userId = await DBHelper().getUserId();
       SocketApi.socket?.off('conversation_update/$userId');
@@ -49,6 +62,7 @@ class MessageController extends GetxController {
               currentMessages.insert(0, updatedMessage);
             }
           } else {
+
             currentMessages.insert(0, updatedMessage);
           }
 

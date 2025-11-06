@@ -61,6 +61,8 @@ class CategoryController extends GetxController {
         return 'Service not found.';
       case 500:
         return 'Server error. Please try again later.';
+      case 503:
+        return 'No Internet Connection';
       default:
         return 'An error occurred. Please try again.';
     }

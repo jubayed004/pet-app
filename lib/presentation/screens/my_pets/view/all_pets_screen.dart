@@ -257,7 +257,7 @@ class _AllPetsScreenState extends State<AllPetsScreen> {
                   SizedBox(height: 12.h),
                   Text(message, style: TextStyle(fontSize: 14.sp, color: Colors.grey[600], height: 1.5), textAlign: TextAlign.center),
                   SizedBox(height: 32.h),
-                  ElevatedButton.icon(
+          /*        ElevatedButton.icon(
                     onPressed: onRetry,
                     icon: Icon(Iconsax.refresh, size: 20.sp),
                     label: Text("Try Again", style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w600)),
@@ -268,7 +268,7 @@ class _AllPetsScreenState extends State<AllPetsScreen> {
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
                       elevation: 0,
                     ),
-                  ),
+                  ),*/
                 ],
               ),
             ),
@@ -305,7 +305,7 @@ class _AllPetsScreenState extends State<AllPetsScreen> {
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 32.h),
-                  ElevatedButton.icon(
+          /*        ElevatedButton.icon(
                     onPressed: () => myPetsController.getAllPet(),
                     icon: Icon(Iconsax.refresh, size: 20.sp),
                     label: Text("Refresh", style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w600)),
@@ -316,7 +316,7 @@ class _AllPetsScreenState extends State<AllPetsScreen> {
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
                       elevation: 0,
                     ),
-                  ),
+                  ),*/
                 ],
               ),
             ),

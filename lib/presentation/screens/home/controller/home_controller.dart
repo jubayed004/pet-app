@@ -7,16 +7,16 @@ import 'package:pet_app/presentation/screens/home/model/home_model.dart';
 import 'package:pet_app/service/api_service.dart';
 import 'package:pet_app/service/api_url.dart';
 import 'package:pet_app/utils/app_const/app_const.dart';
-import 'package:pet_app/utils/app_strings/app_strings.dart';
 
 class HomeController extends GetxController {
+
   final TextEditingController searchController = TextEditingController();
+
   final ApiClient apiClient = serviceLocator();
   RxBool isLoadingMove = false.obs;
   RxInt selectedIndex = 0.obs;
   RxInt currentIndex = 0.obs;
   RxInt selectedTabIndex = 0.obs;
-
 
   final List<Widget> iconList = [
     Assets.icons.petvets.svg(),
@@ -26,6 +26,7 @@ class HomeController extends GetxController {
     Assets.icons.pettraining.svg(),
     Assets.icons.friendlyplace.svg(),
   ];
+
   final List<String> stringList = [
     "Pet Vets",
     "Pet Shops",
@@ -35,69 +36,80 @@ class HomeController extends GetxController {
     "Friendly Place",
   ];
 
-
-
-
   /// ============================= GET Home Header =====================================
+
   var loading = Status.completed.obs;
 
-  loadingMethod(Status status) => loading.value = status;
   final Rx<HomeHeaderModel> homeHeader = HomeHeaderModel().obs;
 
+  void loadingMethod(Status status) => loading.value = status;
+
   Future<void> userHomeHeader() async {
-    loadingMethod(Status.completed);
+    loadingMethod(Status.loading);
     try {
-      loadingMethod(Status.loading);
       final response = await apiClient.get(url: ApiUrl.getHomeHeader());
+      log.i('GET ${ApiUrl.getHomeHeader()} → ${response.statusCode}');
+
       if (response.statusCode == 200) {
-        final newData = HomeHeaderModel.fromJson(response.body);
-        homeHeader.value = newData;
+
+        final data = HomeHeaderModel.fromJson(response.body);
+
+        log.d(data.toJson());
+
+        homeHeader.value = data;
+
         loadingMethod(Status.completed);
+
+      } else if (response.statusCode == 503) {
+        loadingMethod(Status.internetError);
+      } else if (response.statusCode == 404) {
+        loadingMethod(Status.noDataFound);
       } else {
-        if (response.statusCode == 503) {
-          loadingMethod(Status.internetError);
-        } else if (response.statusCode == 404) {
-          loadingMethod(Status.noDataFound);
-        } else {
-          loadingMethod(Status.error);
-        }
+        loadingMethod(Status.error);
       }
-    } catch (e) {
+    } catch (e, st) {
+      log.e('userHomeHeader() failed', error: e, stackTrace: st);
       loadingMethod(Status.error);
     }
   }
 
-  RxList<String> adsPic = RxList([]);
-  RxBool isRunning = false.obs; // <-- now reactive
+  /// ============================= GET Advertisement =====================================
+
+  RxList<String> adsPic = <String>[].obs;
+  RxBool isRunning = false.obs;
 
   Future<void> getAllAdvertisement() async {
-    if (isRunning.value) return; // check reactive value
-    isRunning.value = true; // set reactive value
+    if (isRunning.value) return;
+    isRunning.value = true;
 
     try {
       final response = await apiClient.get(url: ApiUrl.getAllAdvertisement());
+      log.i('GET ${ApiUrl.getAllAdvertisement()} → ${response.statusCode}');
 
       if (response.statusCode == 200) {
-        final newData = AdvertisementModel.fromJson(response.body);
-        final newItems = newData.ads ?? [];
-
+        final data = AdvertisementModel.fromJson(response.body);
+        log.d(data.toJson());
+        final items = data.ads ?? [];
         adsPic.clear();
-
-        for (final ad in newItems) {
-          if (ad.advertisementImg != null && ad.advertisementImg!.isNotEmpty) {
-            for (final e in ad.advertisementImg!) {
-              final url = "${ApiUrl.imageBase}${e.replaceAll('\\', '/')}";
-              if (Uri.tryParse(url)?.isAbsolute ?? false) {
-                adsPic.add(url);
-              }
+        for (final ad in items) {
+          final imgs = ad.advertisementImg ?? [];
+          for (final path in imgs) {
+            final clean = path.replaceAll('\\', '/');
+            final fullUrl = "${ApiUrl.imageBase}$clean";
+            if (Uri.tryParse(fullUrl)?.isAbsolute ?? false) {
+              adsPic.add(fullUrl);
+            } else {
+              log.w('Invalid image URL skipped: $fullUrl');
             }
           }
         }
+      } else {
+        log.w('Advertisement request failed (${response.statusCode})');
       }
-    } catch (e) {
-      debugPrint("Error fetching ads: $e");
+    } catch (e, st) {
+      log.e('getAllAdvertisement() failed', error: e, stackTrace: st);
     } finally {
-      isRunning.value = false; // reset reactive value
+      isRunning.value = false;
     }
   }
 
