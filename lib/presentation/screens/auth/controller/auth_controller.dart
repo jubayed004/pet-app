@@ -207,6 +207,10 @@ class AuthController extends GetxController {
   RxBool signUpLoading = false.obs;
   signUpLoadingMethod(bool status) => signUpLoading.value = status;
 
+  RxBool isLoading = false.obs;
+
+  loginLoadingMethod( bool status) => isLoading.value = status;
+
   ///Sign Up
   final TextEditingController nameSignUp = TextEditingController();
   final TextEditingController emailSignUp = TextEditingController();
@@ -217,6 +221,7 @@ class AuthController extends GetxController {
   Future<void> signUp()  async {
     try{
       signUpLoadingMethod(true);
+
       final body = {
         "name": nameSignUp.text,
         "email": emailSignUp.text,
@@ -248,6 +253,7 @@ class AuthController extends GetxController {
         toastMessage(message: response.body?['message'].toString());
       }
     }catch (err){
+
       signUpLoadingMethod(false);
     }
   }

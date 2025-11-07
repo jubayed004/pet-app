@@ -21,7 +21,7 @@ class ProfileController extends GetxController {
   final controller = GetControllers.instance.getNavigationControllerMain();
   final myPetsController = GetControllers.instance.getMyPetsProfileController();
   RxString selectedCountryCode = "+880".obs;
-  final ImagePicker _imagePicker = ImagePicker();
+  final ImagePicker  _imagePicker = ImagePicker();
   final ApiClient apiClient = serviceLocator();
   final DBHelper dbHelper = serviceLocator();
 

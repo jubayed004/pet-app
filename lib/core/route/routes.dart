@@ -123,8 +123,7 @@ class AppRouter {
         name: RoutePath.verifyOtpScreen,
         path: RoutePath.verifyOtpScreen.addBasePath,
         pageBuilder: (context, state) {
-          final extra =
-              state.extra != null && state.extra is String ? state.extra as String : "";
+          final extra = state.extra != null && state.extra is String ? state.extra as String : "";
           return _buildPageWithAnimation(
             child: VerifyOtpScreen(email: extra),
             state: state,
@@ -359,11 +358,9 @@ class AppRouter {
         pageBuilder: (context, state) {
           final value = state.extra;
           final Map data = value != null && value is Map ? value : {};
-
           final isHotel = data['isHotel'] as bool? ?? false;
           final id = data['id'] as String? ?? "";
           final businessId = data['businessId'] as String? ?? "";
-
           debugPrint("🟢 Navigating with id: $id");
           debugPrint("🟢 Navigating with businessId: $businessId");
 

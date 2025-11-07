@@ -9,6 +9,8 @@ import 'package:pet_app/controller/get_controllers.dart';
 import 'package:pet_app/core/route/route_path.dart';
 import 'package:pet_app/core/route/routes.dart';
 import 'package:pet_app/presentation/components/custom_button/custom_button.dart';
+import 'package:pet_app/presentation/components/custom_button/custom_defualt_appbar.dart';
+import 'package:pet_app/presentation/components/custom_netwrok_image/custom_network_image.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:pet_app/presentation/components/custom_text_field/custom_text_field.dart';
 import 'package:pet_app/presentation/widget/align/custom_align_text.dart';
@@ -39,7 +41,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   TextEditingController address = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
-
   @override
   void initState() {
     name = TextEditingController(text: widget.name);
@@ -47,7 +48,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     address = TextEditingController(text: widget.address);
     super.initState();
   }
-
   @override
   void dispose() {
     name.dispose();
@@ -55,7 +55,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     address.dispose();
     super.dispose();
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,63 +63,41 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         key: _formKey,
         child: CustomScrollView(
           slivers: [
-            SliverAppBar(
-              floating: true,
-              snap: true,
-              backgroundColor: AppColors.primaryColor,
-              toolbarHeight: kToolbarHeight,
-              centerTitle: true,
-              title: CustomText(
-                text: "Edit Profile",
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                color: Colors.black,
-              ),
-            ),
-            SliverAppBar(
-              foregroundColor: AppColors.primaryColor,
-              pinned: true,
-              backgroundColor: Colors.white,
-              expandedHeight: 200,
-              automaticallyImplyLeading: false,
-              flexibleSpace: FlexibleSpaceBar(
-                background: Obx(() {
-                  return Stack(
-                    children: [
-                      profileController.selectedImage.value != null
-                          ? Image.file(
-                        File(profileController.selectedImage.value!.path),
-                        fit: BoxFit.cover,
-                        width: double.infinity,
-                        height: 200.h,
-                      )
-                          : Image.network(
-                        'https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=800&q=80',
-                        fit: BoxFit.cover,
-                        width: double.infinity,
-                        height: 200.h,
-                      ),
-                      Positioned(
-                        top: 0,
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        child: GestureDetector(
-                          onTap: () {
-                            profileController.pickImage();
-                          },
-                          child: Icon(
-                            Icons.camera_alt,
-                            size: 40,
-                            color: AppColors.primaryColor,
-                          ),
-                        ),
-                      ),
-                    ],
-                  );
-                }),
-              ),
-            ),
+            CustomDefaultAppbar(title: "Edit Profile",),
+
+           SliverToBoxAdapter(
+             child: Obx(() {
+               return Stack(
+                 children: [
+                   profileController.selectedImage.value != null
+                       ? Image.file(
+                     File(profileController.selectedImage.value!.path),
+                     fit: BoxFit.cover,
+                     width: double.infinity,
+                     height: 200.h,
+                   ) : CustomNetworkImage(imageUrl:'https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=800&q=80',
+                     width: double.infinity,
+                     height: 200.h,),
+                   Positioned(
+                     top: 0,
+                     bottom: 0,
+                     left: 0,
+                     right: 0,
+                     child: GestureDetector(
+                       onTap: () {
+                         profileController.pickImage();
+                       },
+                       child: Icon(
+                         Icons.camera_alt,
+                         size: 40,
+                         color: AppColors.primaryColor,
+                       ),
+                     ),
+                   ),
+                 ],
+               );
+             }),
+           ),
             SliverToBoxAdapter(
               child: Padding(
                 padding: EdgeInsets.only(left: 16, right: 16, top: 20),
