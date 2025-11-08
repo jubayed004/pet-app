@@ -54,13 +54,12 @@ class BusinessServiceScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const Gap(16), // spacing before list
+                  const Gap(16),
                 ],
               ),
             ),
             Obx(() {
               final services = businessServiceController.service.value.services ?? [];
-
               if (services.isEmpty) {
                 return SliverToBoxAdapter(
                   child: Padding(

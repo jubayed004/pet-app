@@ -13,9 +13,7 @@ import 'helper/local_db/local_db.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   DeviceUtils.lockDevicePortrait();
-
   initDependencies();
-
   // RevenueCat API keys
   final apiKey = Platform.isAndroid
       ? "goog_sCftdXMYAurDYVZVoYgBtPyWPbQ"

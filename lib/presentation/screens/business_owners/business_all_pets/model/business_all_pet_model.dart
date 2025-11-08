@@ -1,6 +1,6 @@
 class BusinessAllPetsModel {
   final bool? success;
-  final int? totalPets;
+  final num? totalPets;
   final List<Pet>? pets;
 
   BusinessAllPetsModel({
@@ -11,7 +11,7 @@ class BusinessAllPetsModel {
 
   BusinessAllPetsModel copyWith({
     bool? success,
-    int? totalPets,
+    num? totalPets,
     List<Pet>? pets,
   }) =>
       BusinessAllPetsModel(
@@ -39,16 +39,16 @@ class Pet {
   final String? name;
   final String? animalType;
   final String? breed;
-  final int? age;
+  final num? age;
   final String? gender;
-  final double? weight;
-  final int? height;
+  final num? weight;
+  final num? height;
   final String? color;
   final String? description;
   final UserId? userId;
   final DateTime? createdAt;
   final DateTime? updatedAt;
-  final int? v;
+  final num? v;
   final List<MedicalHistory>? medicalHistory;
 
   Pet({
@@ -76,16 +76,16 @@ class Pet {
     String? name,
     String? animalType,
     String? breed,
-    int? age,
+    num? age,
     String? gender,
-    double? weight,
-    int? height,
+    num? weight,
+    num? height,
     String? color,
     String? description,
     UserId? userId,
     DateTime? createdAt,
     DateTime? updatedAt,
-    int? v,
+    num? v,
     List<MedicalHistory>? medicalHistory,
   }) =>
       Pet(
@@ -157,7 +157,7 @@ class MedicalHistory {
   final String? treatmentStatus;
   final DateTime? createdAt;
   final DateTime? updatedAt;
-  final int? v;
+  final num? v;
 
   MedicalHistory({
     this.id,
@@ -184,7 +184,7 @@ class MedicalHistory {
     String? treatmentStatus,
     DateTime? createdAt,
     DateTime? updatedAt,
-    int? v,
+    num? v,
   }) =>
       MedicalHistory(
         id: id ?? this.id,

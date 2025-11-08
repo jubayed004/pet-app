@@ -1,19 +1,13 @@
 import 'dart:io';
-
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:map_location_picker/map_location_picker.dart';
 import 'package:pet_app/controller/get_controllers.dart';
-import 'package:pet_app/core/route/route_path.dart';
-import 'package:pet_app/core/route/routes.dart';
 import 'package:pet_app/helper/image/network_image.dart';
 import 'package:pet_app/presentation/components/custom_button/custom_button.dart';
-import 'package:pet_app/presentation/components/custom_button/custom_defualt_appbar.dart';
 import 'package:pet_app/presentation/components/custom_dropdown/custom_drop_down_field.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:pet_app/presentation/components/custom_text_field/custom_text_field.dart';
@@ -51,6 +45,7 @@ class _BusinessEditServiceScreenState extends State<BusinessEditServiceScreen> {
   ValueNotifier<List<TextEditingController>> serviceController = ValueNotifier([]);
   final _formKey = GlobalKey<FormState>();
   final selectedLocation = ValueNotifier<RecordLocation>(RecordLocation(LatLng(0.0, 0.0), ""));
+
   @override
   void initState() {
     serviceName = TextEditingController(text: widget.serviceName);
@@ -160,7 +155,7 @@ class _BusinessEditServiceScreenState extends State<BusinessEditServiceScreen> {
                       }).toList(),
                   onChanged: (value) {
                     if (value != null) {
-                      businessAddServiceController.selectedAnalystType.value = value ?? "";
+                      businessAddServiceController.selectedAnalystType.value = value;
                     }
                   },
                 ),
@@ -269,12 +264,9 @@ class _BusinessEditServiceScreenState extends State<BusinessEditServiceScreen> {
                   child: Container(
                     padding: EdgeInsets.all(16),
                     width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black, width: 1),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
+                    decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1), borderRadius: BorderRadius.circular(12)),
                     child: ValueListenableBuilder<RecordLocation>(
-                      valueListenable: selectedLocation,  // Listen to changes
+                      valueListenable: selectedLocation, // Listen to changes
                       builder: (_, item, _) {
                         String address = item.address.isEmpty ? " selected Your Location" : item.address;
                         return Text(address);
@@ -347,7 +339,7 @@ class _BusinessEditServiceScreenState extends State<BusinessEditServiceScreen> {
                       }).toList(),
                   onChanged: (value) {
                     if (value != null) {
-                      businessAddServiceController.selectedWeek.value = value ?? "";
+                      businessAddServiceController.selectedWeek.value = value;
                     }
                   },
                 ),

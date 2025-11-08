@@ -1,3 +1,4 @@
+
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pet_app/core/dependency/get_it_injection.dart';
@@ -23,9 +24,10 @@ class BusinessAllPetController extends GetxController {
     loadingMethod(Status.loading);
     try {
       final response = await apiClient.get(url: ApiUrl.getBusinessAllPets());
-
+          log.d(response);
       if (response.statusCode == 200) {
         final newData = BusinessAllPetsModel.fromJson(response.body);
+        log.d(newData.toJson());
         profile.value = newData;
         profile.refresh();
         loadingMethod(Status.completed);
@@ -39,6 +41,7 @@ class BusinessAllPetController extends GetxController {
         }
       }
     } catch (e) {
+      log.e(e.toString());
       print('Error in getBusinessAllPets: $e');
       loadingMethod(Status.error);
     }

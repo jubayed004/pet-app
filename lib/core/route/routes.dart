@@ -62,72 +62,47 @@ class AppRouter {
       GoRoute(
         name: RoutePath.splashScreen,
         path: RoutePath.splashScreen.addBasePath,
-        pageBuilder:
-            (context, state) =>
-                _buildPageWithAnimation(child: SplashScreen(), state: state),
+        pageBuilder: (context, state) => _buildPageWithAnimation(child: SplashScreen(), state: state),
       ),
       GoRoute(
         name: RoutePath.onboardingScreen,
         path: RoutePath.onboardingScreen.addBasePath,
-        pageBuilder:
-            (context, state) => _buildPageWithAnimation(
-              child: OnboardingScreen(),
-              state: state,
-            ),
+        pageBuilder: (context, state) => _buildPageWithAnimation(child: OnboardingScreen(), state: state),
       ),
 
       GoRoute(
         name: RoutePath.vendorSelectionScreen,
         path: RoutePath.vendorSelectionScreen.addBasePath,
-        pageBuilder:
-            (context, state) => _buildPageWithAnimation(
-              child: VendorSelectionScreen(),
-              state: state,
-            ),
+        pageBuilder: (context, state) => _buildPageWithAnimation(child: VendorSelectionScreen(), state: state),
       ),
 
       ///======================= Auth Route =======================
       GoRoute(
         name: RoutePath.signInScreen,
         path: RoutePath.signInScreen.addBasePath,
-        pageBuilder:
-            (context, state) =>
-                _buildPageWithAnimation(child: SignInScreen(), state: state),
+        pageBuilder: (context, state) => _buildPageWithAnimation(child: SignInScreen(), state: state),
       ),
       GoRoute(
         name: RoutePath.signUpScreen,
         path: RoutePath.signUpScreen.addBasePath,
-        pageBuilder:
-            (context, state) =>
-                _buildPageWithAnimation(child: SignUpScreen(), state: state),
+        pageBuilder: (context, state) => _buildPageWithAnimation(child: SignUpScreen(), state: state),
       ),
       GoRoute(
         name: RoutePath.petRegistrationScreen,
         path: RoutePath.petRegistrationScreen.addBasePath,
-        pageBuilder:
-            (context, state) => _buildPageWithAnimation(
-              child: PetRegistrationScreen(),
-              state: state,
-            ),
+        pageBuilder: (context, state) => _buildPageWithAnimation(child: PetRegistrationScreen(), state: state),
       ),
       GoRoute(
         name: RoutePath.forgotPassScreen,
         path: RoutePath.forgotPassScreen.addBasePath,
-        pageBuilder:
-            (context, state) => _buildPageWithAnimation(
-              child: ForgotPassScreen(),
-              state: state,
-            ),
+        pageBuilder: (context, state) => _buildPageWithAnimation(child: ForgotPassScreen(), state: state),
       ),
       GoRoute(
         name: RoutePath.verifyOtpScreen,
         path: RoutePath.verifyOtpScreen.addBasePath,
         pageBuilder: (context, state) {
           final extra = state.extra != null && state.extra is String ? state.extra as String : "";
-          return _buildPageWithAnimation(
-            child: VerifyOtpScreen(email: extra),
-            state: state,
-          );
+          return _buildPageWithAnimation(child: VerifyOtpScreen(email: extra), state: state);
         },
       ),
       GoRoute(
@@ -136,12 +111,7 @@ class AppRouter {
         pageBuilder: (context, state) {
           final extra = state.extra as Map<String, dynamic>? ?? {};
           final email = extra['email'] as String;
-          return _buildPageWithAnimation(
-            child: AccountActiveOtpScreen(
-              email: email,
-            ),
-            state: state,
-          );
+          return _buildPageWithAnimation(child: AccountActiveOtpScreen(email: email), state: state);
         },
       ),
       GoRoute(
@@ -151,10 +121,7 @@ class AppRouter {
           final extra = state.extra as Map<String, dynamic>? ?? {};
 
           return _buildPageWithAnimation(
-            child: SetNewPassword(
-              email: extra["email"] as String? ?? "",
-              code: extra["code"] as String? ?? "",
-            ),
+            child: SetNewPassword(email: extra["email"] as String? ?? "", code: extra["code"] as String? ?? ""),
             state: state,
           );
         },
@@ -166,12 +133,7 @@ class AppRouter {
         path: RoutePath.navigationPage.addBasePath,
         pageBuilder:
             (context, state) => _buildPageWithAnimation(
-              child: NavigationPage(
-                index:
-                    state.extra != null && (state.extra is int)
-                        ? state.extra as int
-                        : 0,
-              ),
+              child: NavigationPage(index: state.extra != null && (state.extra is int) ? state.extra as int : 0),
               state: state,
             ),
       ),
@@ -180,9 +142,7 @@ class AppRouter {
       GoRoute(
         name: RoutePath.chatScreen,
         path: RoutePath.chatScreen.addBasePath,
-        pageBuilder:
-            (context, state) =>
-                _buildPageWithAnimation(child: ChatScreen(senderId: state.extra as String,), state: state),
+        pageBuilder: (context, state) => _buildPageWithAnimation(child: ChatScreen(senderId: state.extra as String), state: state),
       ),
 
       ///======================= MY Pets Route =======================
@@ -215,58 +175,40 @@ class AppRouter {
 
             state: state,
           );
-            }
+        },
       ),
 
       GoRoute(
         name: RoutePath.editProfileScreen,
         path: RoutePath.editProfileScreen.addBasePath,
-        pageBuilder:
-            (context, state) {
-          final extra = state.extra as Map<String , dynamic>;
+        pageBuilder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>;
           final name = extra['name'] as String;
-          final phoneNumber = extra['phoneNumber'] as String ;
+          final phoneNumber = extra['phoneNumber'] as String;
           final address = extra['address'] as String;
-          return _buildPageWithAnimation(
-            child: EditProfileScreen(
-              name: name,
-              phoneNumber: phoneNumber
-              , address: address,
-            ),
-            state: state,
-          );
-            }
+          return _buildPageWithAnimation(child: EditProfileScreen(name: name, phoneNumber: phoneNumber, address: address), state: state);
+        },
       ),
 
       GoRoute(
         name: RoutePath.addPetScreen,
         path: RoutePath.addPetScreen.addBasePath,
-        pageBuilder:
-            (context, state) =>
-                _buildPageWithAnimation(child: AddPetScreen(), state: state),
+        pageBuilder: (context, state) => _buildPageWithAnimation(child: AddPetScreen(), state: state),
       ),
 
       GoRoute(
         name: RoutePath.petHealthScreen,
         path: RoutePath.petHealthScreen.addBasePath,
-        pageBuilder:
-            (context, state) {
-          final args = state.extra as String ;
-          return _buildPageWithAnimation(
-              child: PetHealthScreen(
-                id: args,
-              ),
-              state: state);
-            }
-
+        pageBuilder: (context, state) {
+          final args = state.extra as String;
+          return _buildPageWithAnimation(child: PetHealthScreen(id: args), state: state);
+        },
       ),
 
       GoRoute(
         name: RoutePath.settingsPage,
         path: RoutePath.settingsPage.addBasePath,
-        pageBuilder:
-            (context, state) =>
-                _buildPageWithAnimation(child: SettingsPage(), state: state),
+        pageBuilder: (context, state) => _buildPageWithAnimation(child: SettingsPage(), state: state),
       ),
 
       GoRoute(
@@ -275,12 +217,7 @@ class AppRouter {
         pageBuilder: (context, state) {
           final args = state.extra as String;
 
-          return _buildPageWithAnimation(
-            child: MyDetailsPetsScreen(
-              id: args,
-            ),
-            state: state,
-          );
+          return _buildPageWithAnimation(child: MyDetailsPetsScreen(id: args), state: state);
         },
       ),
       GoRoute(
@@ -288,12 +225,7 @@ class AppRouter {
         path: RoutePath.businessPetsDetailsScreen.addBasePath,
         pageBuilder: (context, state) {
           final args = state.extra as String;
-          return _buildPageWithAnimation(
-            child: BusinessPetsDetailsScreen(id: args,
-
-            ),
-            state: state,
-          );
+          return _buildPageWithAnimation(child: BusinessPetsDetailsScreen(id: args), state: state);
         },
       ),
       GoRoute(
@@ -301,11 +233,7 @@ class AppRouter {
         path: RoutePath.healthRecordsScreen.addBasePath,
         pageBuilder: (context, state) {
           final args = state.extra as String;
-          return _buildPageWithAnimation(
-            child: HealthRecordsScreen( petId: args,
-            ),
-            state: state,
-          );
+          return _buildPageWithAnimation(child: HealthRecordsScreen(petId: args), state: state);
         },
       ),
 
@@ -313,12 +241,10 @@ class AppRouter {
       GoRoute(
         name: RoutePath.categoryScreen,
         path: RoutePath.categoryScreen.addBasePath,
-        pageBuilder:
-            (context, state) {
+        pageBuilder: (context, state) {
           final args = state.extra as int;
-           return   _buildPageWithAnimation(child: CategoryScreen(index: args,), state: state);
-            }
-
+          return _buildPageWithAnimation(child: CategoryScreen(index: args), state: state);
+        },
       ),
       GoRoute(
         name: RoutePath.categoryDetailsScreen,
@@ -333,23 +259,9 @@ class AppRouter {
             final id = data[1];
             final isShop = data[2];
 
-            return _buildPageWithAnimation(
-              child: CategoryDetailsScreen(
-                showWebsite: showWebsite,
-                id: id,
-                isShop: isShop,
-              ),
-              state: state,
-            );
+            return _buildPageWithAnimation(child: CategoryDetailsScreen(showWebsite: showWebsite, id: id, isShop: isShop), state: state);
           }
-          return _buildPageWithAnimation(
-            child: CategoryDetailsScreen(
-              showWebsite: false,
-              id: "id",
-              isShop: false,
-            ),
-            state: state,
-          );
+          return _buildPageWithAnimation(child: CategoryDetailsScreen(showWebsite: false, id: "id", isShop: false), state: state);
         },
       ),
       GoRoute(
@@ -364,17 +276,10 @@ class AppRouter {
           debugPrint("🟢 Navigating with id: $id");
           debugPrint("🟢 Navigating with businessId: $businessId");
 
-          return _buildPageWithAnimation(
-            child: ServiceScreen(
-              showWebsite: isHotel,
-              id: id,
-              businessId: businessId,
-            ),
-            state: state,
-          );
+          return _buildPageWithAnimation(child: ServiceScreen(showWebsite: isHotel, id: id, businessId: businessId), state: state);
         },
       ),
-/*      GoRoute(
+      /*      GoRoute(
         name: RoutePath.bookAnAppointmentScreen,
         path: RoutePath.bookAnAppointmentScreen.addBasePath,
         pageBuilder:
@@ -388,56 +293,34 @@ class AppRouter {
       GoRoute(
         name: RoutePath.congratulationScreen,
         path: RoutePath.congratulationScreen.addBasePath,
-        pageBuilder:
-            (context, state) => _buildPageWithAnimation(
-              child: CongratulationScreen(),
-              state: state,
-            ),
+        pageBuilder: (context, state) => _buildPageWithAnimation(child: CongratulationScreen(), state: state),
       ),
 
       ///======================= MY Appointments Route =======================
       GoRoute(
         name: RoutePath.myAppointmentScreen,
         path: RoutePath.myAppointmentScreen.addBasePath,
-        pageBuilder:
-            (context, state) => _buildPageWithAnimation(
-              child: MyAppointmentScreen(),
-              state: state,
-            ),
+        pageBuilder: (context, state) => _buildPageWithAnimation(child: MyAppointmentScreen(), state: state),
       ),
       GoRoute(
         name: RoutePath.myAppointmentDetailsScreen,
         path: RoutePath.myAppointmentDetailsScreen.addBasePath,
-        pageBuilder:
-            (context, state) {
-              final args = state.extra as String;
-            return  _buildPageWithAnimation(
-                child: MyAppointmentDetailsScreen(
-                  id: args,
-                ),
-                state: state,
-              );
-            }
+        pageBuilder: (context, state) {
+          final args = state.extra as String;
+          return _buildPageWithAnimation(child: MyAppointmentDetailsScreen(id: args), state: state);
+        },
       ),
 
       ///======================= Notify Route =======================
       GoRoute(
         name: RoutePath.notifyScreen,
         path: RoutePath.notifyScreen.addBasePath,
-        pageBuilder:
-            (context, state) => _buildPageWithAnimation(
-              child:  NotifyScreen(),
-              state: state,
-            ),
+        pageBuilder: (context, state) => _buildPageWithAnimation(child: NotifyScreen(), state: state),
       ),
       GoRoute(
         name: RoutePath.searchScreen,
         path: RoutePath.searchScreen.addBasePath,
-        pageBuilder:
-            (context, state) => _buildPageWithAnimation(
-              child: const SearchScreen(),
-              state: state,
-            ),
+        pageBuilder: (context, state) => _buildPageWithAnimation(child: const SearchScreen(), state: state),
       ),
       // GoRoute(
       //   name: RoutePath.checkNotify,
@@ -459,66 +342,42 @@ class AppRouter {
       GoRoute(
         name: RoutePath.changePasswordScreen,
         path: RoutePath.changePasswordScreen.addBasePath,
-        pageBuilder:
-            (context, state) => _buildPageWithAnimation(
-              child: ChangePasswordScreen(),
-              state: state,
-            ),
+        pageBuilder: (context, state) => _buildPageWithAnimation(child: ChangePasswordScreen(), state: state),
       ),
       GoRoute(
         name: RoutePath.privacyPolicy,
         path: RoutePath.privacyPolicy.addBasePath,
-        pageBuilder:
-            (context, state) =>
-                _buildPageWithAnimation(child: PrivacyPolicy(), state: state),
+        pageBuilder: (context, state) => _buildPageWithAnimation(child: PrivacyPolicy(), state: state),
       ),
       GoRoute(
         name: RoutePath.termsOfCondition,
         path: RoutePath.termsOfCondition.addBasePath,
-        pageBuilder:
-            (context, state) => _buildPageWithAnimation(
-              child: TermsOfCondition(),
-              state: state,
-            ),
+        pageBuilder: (context, state) => _buildPageWithAnimation(child: TermsOfCondition(), state: state),
       ),
       GoRoute(
         name: RoutePath.addToOrderScrreen,
         path: RoutePath.addToOrderScrreen.addBasePath,
-        pageBuilder:
-            (context, state) => _buildPageWithAnimation(
-              child: AddToOrderScrreen(),
-              state: state,
-            ),
+        pageBuilder: (context, state) => _buildPageWithAnimation(child: AddToOrderScrreen(), state: state),
       ),
       GoRoute(
         name: RoutePath.helpFaqScreen,
         path: RoutePath.helpFaqScreen.addBasePath,
-        pageBuilder:
-            (context, state) =>
-                _buildPageWithAnimation(child: HelpFaqScreen(), state: state),
+        pageBuilder: (context, state) => _buildPageWithAnimation(child: HelpFaqScreen(), state: state),
       ),
       GoRoute(
         name: RoutePath.helpCenterScreen,
         path: RoutePath.helpCenterScreen.addBasePath,
-        pageBuilder:
-            (context, state) => _buildPageWithAnimation(
-              child: HelpCenterScreen(),
-              state: state,
-            ),
+        pageBuilder: (context, state) => _buildPageWithAnimation(child: HelpCenterScreen(), state: state),
       ),
 
       ///======================= Subscription =======================
       GoRoute(
         name: RoutePath.subscriptionScreen,
         path: RoutePath.subscriptionScreen.addBasePath,
-        pageBuilder:
-            (context, state) => _buildPageWithAnimation(
-              child: SubscriptionScreen(),
-              state: state,
-            ),
+        pageBuilder: (context, state) => _buildPageWithAnimation(child: SubscriptionScreen(), state: state),
       ),
 
-/*
+      /*
       GoRoute(
         name: RoutePath.subscriptionStatusScreen,
         path: RoutePath.subscriptionStatusScreen.addBasePath,
@@ -530,7 +389,7 @@ class AppRouter {
       ),
 */
 
-/*
+      /*
       GoRoute(
         name: RoutePath.changeSubscriptionScreen,
         path: RoutePath.changeSubscriptionScreen.addBasePath,
@@ -546,161 +405,105 @@ class AppRouter {
       GoRoute(
         name: RoutePath.petShopRegistrationScreen,
         path: RoutePath.petShopRegistrationScreen.addBasePath,
-        pageBuilder:
-            (context, state) => _buildPageWithAnimation(
-              child: PetShopRegistrationScreen(),
-              state: state,
-            ),
+        pageBuilder: (context, state) => _buildPageWithAnimation(child: PetShopRegistrationScreen(), state: state),
       ),
       GoRoute(
         name: RoutePath.businessNavigationPage,
         path: RoutePath.businessNavigationPage.addBasePath,
-        pageBuilder:
-            (context, state) => _buildPageWithAnimation(
-              child: BusinessNavigationPage(),
-              state: state,
-            ),
+        pageBuilder: (context, state) => _buildPageWithAnimation(child: BusinessNavigationPage(), state: state),
       ),
       GoRoute(
         name: RoutePath.businessAllPetsScreen,
         path: RoutePath.businessAllPetsScreen.addBasePath,
-        pageBuilder:
-            (context, state) => _buildPageWithAnimation(
-              child: BusinessAllPetsScreen(),
-              state: state,
-            ),
+        pageBuilder: (context, state) => _buildPageWithAnimation(child: BusinessAllPetsScreen(), state: state),
       ),
       GoRoute(
         name: RoutePath.businessShopProfileScreen,
         path: RoutePath.businessShopProfileScreen.addBasePath,
-        pageBuilder:
-            (context, state) => _buildPageWithAnimation(
-              child: BusinessShopProfileScreen(),
-              state: state,
-            ),
+        pageBuilder: (context, state) => _buildPageWithAnimation(child: BusinessShopProfileScreen(), state: state),
       ),
       GoRoute(
         name: RoutePath.businessServiceScreen,
         path: RoutePath.businessServiceScreen.addBasePath,
-        pageBuilder:
-            (context, state) {
-
-          return _buildPageWithAnimation(
-          child: BusinessServiceScreen(),
-            state: state,
-          );
-            }
+        pageBuilder: (context, state) {
+          return _buildPageWithAnimation(child: BusinessServiceScreen(), state: state);
+        },
       ),
       GoRoute(
         name: RoutePath.businessAddServiceScreen,
         path: RoutePath.businessAddServiceScreen.addBasePath,
-        pageBuilder:
-            (context, state) => _buildPageWithAnimation(
-              child: BusinessAddServiceScreen(),
-              state: state,
-            ),
+        pageBuilder: (context, state) => _buildPageWithAnimation(child: BusinessAddServiceScreen(), state: state),
       ),
 
       GoRoute(
         name: RoutePath.businessEditServiceScreen,
         path: RoutePath.businessEditServiceScreen.addBasePath,
-        pageBuilder:
-            (context, state) {
-              final extra = state.extra as Map<String, dynamic>? ?? {};
-              final serviceName = extra['serviceName'] != null && extra['serviceName'] is String ? extra['serviceName'] as String: "";
-              final id = extra['id'] as String;
-              final phoneNumber = extra['phoneNumber'] as String;
-              final location = extra['location'] as String;
-              final webSiteLInk = extra['websiteLink'] as String;
-              final serviceController = extra['serviceController'] is List<String> ? extra['serviceController'] as List<String> : <String>[];
-          return  _buildPageWithAnimation(
+        pageBuilder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>? ?? {};
+          final serviceName = extra['serviceName'] != null && extra['serviceName'] is String ? extra['serviceName'] as String : "";
+          final id = extra['id'] as String;
+          final phoneNumber = extra['phoneNumber'] as String;
+          final location = extra['location'] as String;
+          final webSiteLInk = extra['websiteLink'] as String;
+          final serviceController = extra['serviceController'] is List<String> ? extra['serviceController'] as List<String> : <String>[];
+          return _buildPageWithAnimation(
             child: BusinessEditServiceScreen(
-                serviceName:serviceName,
-                phoneNumber: phoneNumber,
-                location: location,
-                webSiteLInk: webSiteLInk,
+              serviceName: serviceName,
+              phoneNumber: phoneNumber,
+              location: location,
+              webSiteLInk: webSiteLInk,
               id: id,
               serviceList: serviceController,
             ),
             state: state,
           );
-            }
+        },
       ),
       GoRoute(
         name: RoutePath.businessBookingScreen,
         path: RoutePath.businessBookingScreen.addBasePath,
-        pageBuilder:
-            (context, state) => _buildPageWithAnimation(
-              child: BusinessBookingScreen(),
-              state: state,
-            ),
+        pageBuilder: (context, state) => _buildPageWithAnimation(child: BusinessBookingScreen(), state: state),
       ),
       GoRoute(
         name: RoutePath.businessAdvertisementScreen,
         path: RoutePath.businessAdvertisementScreen.addBasePath,
-        pageBuilder:
-            (context, state) => _buildPageWithAnimation(
-              child: BusinessAdvertisementScreen(),
-              state: state,
-            ),
+        pageBuilder: (context, state) => _buildPageWithAnimation(child: BusinessAdvertisementScreen(), state: state),
       ),
       GoRoute(
         name: RoutePath.businessDetailsAdvertisementScreen,
         path: RoutePath.businessDetailsAdvertisementScreen.addBasePath,
-        pageBuilder:
-            (context, state) => _buildPageWithAnimation(
-              child: DetailsAdvertisementScreen(),
-              state: state,
-            ),
+        pageBuilder: (context, state) => _buildPageWithAnimation(child: DetailsAdvertisementScreen(), state: state),
       ),
       GoRoute(
         name: RoutePath.businessReviewScreen,
         path: RoutePath.businessReviewScreen.addBasePath,
-        pageBuilder:
-            (context, state) => _buildPageWithAnimation(
-              child: BusinessReviewScreen(),
-              state: state,
-            ),
+        pageBuilder: (context, state) => _buildPageWithAnimation(child: BusinessReviewScreen(), state: state),
       ),
       GoRoute(
         name: RoutePath.reviewScreen,
         path: RoutePath.reviewScreen.addBasePath,
         pageBuilder: (context, state) {
           final extra = state.extra as Map<String, Object>? ?? {};
-           final businessId = extra["businessId"] as String;
-           final ownerId = extra["ownerId"] as String;
-           final serviceId = extra["serviceId"] as String;
-          return  _buildPageWithAnimation(
-              child: ReviewScreen(
-            businessId: businessId,
-            ownerId: ownerId,
-            serviceId: serviceId,
-          ),
-              state: state);
-            }
-
+          final businessId = extra["businessId"] as String;
+          final ownerId = extra["ownerId"] as String;
+          final serviceId = extra["serviceId"] as String;
+          return _buildPageWithAnimation(child: ReviewScreen(businessId: businessId, ownerId: ownerId, serviceId: serviceId), state: state);
+        },
       ),
       GoRoute(
         name: RoutePath.businessEditProfileScreen,
         path: RoutePath.businessEditProfileScreen.addBasePath,
-        pageBuilder:
-            (context, state) =>
-                _buildPageWithAnimation(child: BusinessEditProfileScreen(), state: state),
+        pageBuilder: (context, state) => _buildPageWithAnimation(child: BusinessEditProfileScreen(), state: state),
       ),
       GoRoute(
         name: RoutePath.textScreen,
         path: RoutePath.textScreen.addBasePath,
-        pageBuilder:
-            (context, state) =>
-                _buildPageWithAnimation(child: TextScreen(), state: state),
+        pageBuilder: (context, state) => _buildPageWithAnimation(child: TextScreen(), state: state),
       ),
     ],
   );
 
-  static CustomTransitionPage _buildPageWithAnimation({
-    required Widget child,
-    required GoRouterState state,
-  }) {
+  static CustomTransitionPage _buildPageWithAnimation({required Widget child, required GoRouterState state}) {
     return CustomTransitionPage(
       key: state.pageKey,
       child: child,

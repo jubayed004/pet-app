@@ -28,11 +28,7 @@ class ChatController extends GetxController {
 
   bool isLoading = false;
 
-  Future<void> getChatList({
-    required int pageKey,
-    required String id,
-    required PagingController<int, MessageItem> pagingController,
-  }) async {
+  Future<void> getChatList({required int pageKey, required String id, required PagingController<int, MessageItem> pagingController,}) async {
     if (isLoading) return;
     isLoading = true;
     try {

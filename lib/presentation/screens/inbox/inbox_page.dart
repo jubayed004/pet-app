@@ -26,24 +26,19 @@ class _InboxPageState extends State<InboxPage> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-
     pagingController.addPageRequestListener((pageKey) {
       controller.getAllConversation(pageKey: pageKey, pagingController: pagingController);
     });
-
     listenApi();
   }
 
-  // Called when app lifecycle changes
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      // Refresh when user returns from another screen
       pagingController.refresh();
     }
   }
 
-  // Reconnect and listen every time user comes back
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -53,12 +48,9 @@ class _InboxPageState extends State<InboxPage> with WidgetsBindingObserver {
   Future<void> listenApi() async {
     await SocketApi.init();
     controller.listenForNewConversation(pagingController: pagingController);
-
     if (SocketApi.socket?.connected == true) {
       SocketApi.socket!.onAny((event, data) {
-        debugPrint("EVENT: $event -> $data");
-
-        // If a new text message arrives, refresh conversations instantly
+        debugPrint("============EVENT: $event -> $data========================");
         if (event.toString().contains('conversation_update')) {
           pagingController.refresh();
         }
@@ -105,7 +97,6 @@ class _InboxPageState extends State<InboxPage> with WidgetsBindingObserver {
                         final image = partner?.profileImage;
                         final photo = (image != null && image.isNotEmpty) ? image : "";
                         final date = DateFormat("dd-MM-yyyy").format(item.lastMessage?.createdAt ?? DateTime.now());
-
                         return MessageCardItemWidget(
                           isRead: isRead,
                           name: name,

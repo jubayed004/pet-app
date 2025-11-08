@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pet_app/controller/get_controllers.dart';
+import 'package:pet_app/core/route/route_path.dart';
+import 'package:pet_app/core/route/routes.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
 class SubscriptionScreen extends StatefulWidget {
@@ -337,7 +340,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                           child: Text(
                             savings,
                             style: TextStyle(
-                              fontSize: 12,
+                              fontSize: 12.sp,
                               fontWeight: FontWeight.w600,
                               color: Colors.green.shade800,
                             ),
@@ -353,8 +356,8 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                   children: [
                     Text(
                       price,
-                      style: const TextStyle(
-                        fontSize: 24,
+                      style:  TextStyle(
+                        fontSize: 24.sp,
                         fontWeight: FontWeight.bold,
                         color: Colors.black87,
                       ),
@@ -362,7 +365,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                     Text(
                       period,
                       style: TextStyle(
-                        fontSize: 12,
+                        fontSize: 12.sp,
                         color: Colors.grey.shade600,
                       ),
                     ),
@@ -390,11 +393,11 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                     ),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: const Text(
+                  child:  Text(
                     'BEST VALUE',
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 12,
+                      fontSize: 12.sp,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -417,8 +420,8 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 10.r,
             offset: const Offset(0, -5),
           ),
         ],
@@ -429,7 +432,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
           Obx(() {
             return SizedBox(
               width: double.infinity,
-              height: 56,
+              height: 56.h,
               child: ElevatedButton(
                 onPressed: controller.isPurchasing.value
                     ? null
@@ -443,18 +446,18 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                   elevation: 0,
                 ),
                 child: controller.isPurchasing.value
-                    ? const SizedBox(
-                  width: 24,
-                  height: 24,
+                    ?  SizedBox(
+                  width: 24.w,
+                  height: 24.h,
                   child: CircularProgressIndicator(
                     color: Colors.white,
                     strokeWidth: 2,
                   ),
                 )
-                    : const Text(
+                    :  Text(
                   'Continue',
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: 18.sp,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -462,13 +465,16 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
             );
           }),
           const SizedBox(height: 16),
-          Text(
-            'Cancel anytime. Terms and privacy policy apply.',
-            style: TextStyle(
-              fontSize: 12,
-              color: Colors.grey.shade600,
+          GestureDetector(
+            onTap: ()=>AppRouter.route.pushNamed(RoutePath.privacyPolicy),
+            child: Text(
+              'Cancel anytime. Terms and privacy policy apply.',
+              style: TextStyle(
+                fontSize: 12,
+                color: Colors.grey.shade600,
+              ),
+              textAlign: TextAlign.center,
             ),
-            textAlign: TextAlign.center,
           ),
         ],
       ),

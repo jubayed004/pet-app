@@ -31,16 +31,11 @@ class BusinessReviewController extends GetxController {
       final response = await apiClient.get(
         url: ApiUrl.getOwnerServiceReviews(page: page),
       );
-
       if (response.statusCode == 200) {
         final data = BusinessReviewModel.fromJson(response.body);
-
-
         /// Save average rating
         avgRating.value = data.avgRating ?? 0.0;
-
         final newItems = data.reviews ?? [];
-
         /// Pagination check
         final isLastPage = newItems.length < 10;
         if (isLastPage) {

@@ -41,14 +41,12 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
     businessReviewController.pagingController.addPageRequestListener((pageKey) {
       businessReviewController.getReviews(page: pageKey);
     });
-
-    // fetch first page immediately
-    businessReviewController.getReviews(page: 1); // <-- important
+    businessReviewController.getReviews(page: 1);
   }
 
   @override
   Widget build(BuildContext context) {
-    // Ensure ScreenUtil is initialized higher up (e.g. in main)
+
     return Scaffold(
       backgroundColor: AppColors.appBackgroundColor,
       body: RefreshIndicator(
@@ -92,8 +90,7 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
               Row(
                 children: [
                   Obx(() {
-                    final images = businessProfileController
-                        .profile.value.ownerDetails?.business?.shopPic;
+                    final images = businessProfileController.profile.value.ownerDetails?.business?.shopPic;
                     if (images == null || images.isEmpty) return const SizedBox.shrink();
                     final imageUrl = images.first.replaceAll('\\', '/');
                     return ClipOval(

@@ -21,7 +21,7 @@ import 'package:pet_app/utils/app_colors/app_colors.dart';
 import 'package:pet_app/utils/app_strings/app_strings.dart';
 
 class BusinessProfileScreen extends StatefulWidget {
-  BusinessProfileScreen({super.key});
+  const BusinessProfileScreen({super.key});
 
   @override
   State<BusinessProfileScreen> createState() => _BusinessProfileScreenState();

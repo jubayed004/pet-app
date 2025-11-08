@@ -288,7 +288,8 @@ class _BusinessAddServiceScreenState extends State<BusinessAddServiceScreen> {
                   );
                 }),
                 Gap(14),
-                CustomText(text: "Closing time", fontWeight: FontWeight.w500, fontSize: 16),
+                CustomText(text: "Closing time", fontWeight: FontWeight.w500, fontSize: 16.sp
+                ),
                 Gap(8),
                 Obx(() {
                   return GestureDetector(
@@ -307,14 +308,14 @@ class _BusinessAddServiceScreenState extends State<BusinessAddServiceScreen> {
                         businessAddServiceController.closingTime.value == null
                             ? "Select closing time"
                             : businessAddServiceController.closingTime.value!.format(context),
-                        style: TextStyle(fontSize: 16, color: businessAddServiceController.closingTime.value == null ? Colors.grey : Colors.black),
+                        style: TextStyle(fontSize: 16.sp, color: businessAddServiceController.closingTime.value == null ? Colors.grey : Colors.black),
                       ),
                     ),
                   );
                 }),
 
                 Gap(14),
-                CustomText(text: "Off day", fontWeight: FontWeight.w500, fontSize: 16),
+                CustomText(text: "Off day", fontWeight: FontWeight.w500, fontSize: 16.sp),
                 Gap(8),
                 CustomDropdownField(
                   hintText: "Off Day Type",
@@ -324,7 +325,7 @@ class _BusinessAddServiceScreenState extends State<BusinessAddServiceScreen> {
                       }).toList(),
                   onChanged: (value) {
                     if (value != null) {
-                      businessAddServiceController.selectedWeek.value = value ?? "";
+                      businessAddServiceController.selectedWeek.value = value;
                     }
                   },
                 ),
@@ -366,23 +367,16 @@ class _BusinessAddServiceScreenState extends State<BusinessAddServiceScreen> {
                   return CustomButton(
                     isLoading: businessAddServiceController.isLoading.value,
                     onTap: () async {
-                      // Get subscription controller
                       final subscriptionController = GetControllers.instance.getSubscriptionController();
-
-                      // Check if user has active subscription before creating service
                       final canCreate = await subscriptionController.checkSubscriptionBeforeAction(
                         actionName: "add a service", context: context,
                       );
-
                       if (!canCreate) {
-                        return; // Don't proceed if no subscription
+                        return;
                       }
-
-                      // Proceed with service creation
                       final List<String> services = serviceController.value
                           .map((controller) => controller.text)
                           .toList();
-
                       final body = {
                         "serviceType": businessAddServiceController.selectedAnalystType.value,
                         "serviceName": serviceName.text,

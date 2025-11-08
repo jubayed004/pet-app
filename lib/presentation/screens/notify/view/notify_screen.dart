@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';  // For date formatting
+import 'package:intl/intl.dart';
 import 'package:pet_app/controller/get_controllers.dart';
 import 'package:pet_app/core/custom_assets/assets.gen.dart';
-import 'package:pet_app/core/route/route_path.dart';
 import 'package:pet_app/presentation/components/custom_button/custom_defualt_appbar.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
+import 'package:pet_app/presentation/no_internet/error_card.dart';
+import 'package:pet_app/presentation/no_internet/more_data_error_card.dart';
+import 'package:pet_app/presentation/no_internet/no_data_card.dart';
+import 'package:pet_app/presentation/no_internet/no_internet_card.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
+import 'package:pet_app/utils/app_const/app_const.dart';
 
 class NotifyScreen extends StatelessWidget {
   NotifyScreen({super.key});
@@ -29,54 +33,118 @@ class NotifyScreen extends StatelessWidget {
         ),
       ),
       body: RefreshIndicator(
-        onRefresh: ()async{
-          notifyController.getNotify();
+        onRefresh: () async {
+          await notifyController.getNotify();
         },
-        child: CustomScrollView(
-          slivers: [
-            Obx(() {
-              final item = notifyController.notify.value.data ?? [];
-              return SliverList(
-                delegate: SliverChildBuilderDelegate(
-                      (context, index) {
-                    final notification = item[index];
-                    final title = notification.title ?? "No Title";
-                    final  time = DateFormat(
-                      "dd MMMM yyyy",
-                    ).format(notification.time ?? DateTime.now());
+        child: Obx(() {
+          final item = notifyController.notify.value.data ?? [];
+          final status = notifyController.loading.value;
 
-                    return Padding(
-                      padding: EdgeInsets.only(left: 16, right: 16),
-                      child: Card(
-                        shape: OutlineInputBorder(
-                          borderSide: BorderSide(color: AppColors.purple500),
-                          borderRadius: BorderRadius.circular(8.r),
-                        ),
-                        color: Colors.white,
-                        child: ListTile(
-                          title: CustomText(
-                            text: title,
-                            textAlign: TextAlign.start,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
-                          subtitle: CustomText(
-                            text: time,  // Format the date and time dynamically
-                            textAlign: TextAlign.start,
-                          ),
-                          leading: CircleAvatar(
-                            child: Assets.images.splashlogo.image(),
-                          ),
+          switch (status) {
+            case Status.loading:
+              return const Center(child: CircularProgressIndicator());
+
+            case Status.error:
+              return CustomScrollView(
+                slivers: [
+                  SliverFillRemaining(
+                    hasScrollBody: false,
+                    child: Center(
+                      child: ErrorCard(
+                        onTap: () => notifyController.getNotify(),
+                      ),
+                    ),
+                  ),
+                ],
+              );
+
+            case Status.internetError:
+              return CustomScrollView(
+                slivers: [
+                  SliverFillRemaining(
+                    hasScrollBody: false,
+                    child: Center(
+                      child: NoInternetCard(
+                        onTap: () => notifyController.getNotify(),
+                      ),
+                    ),
+                  ),
+                ],
+              );
+
+            case Status.noDataFound:
+              return CustomScrollView(
+                slivers: [
+                  SliverFillRemaining(
+                    hasScrollBody: false,
+                    child: Center(
+                      child: MoreDataErrorCard(
+                        onTap: () => notifyController.getNotify(),
+                      ),
+                    ),
+                  ),
+                ],
+              );
+
+            case Status.completed:
+              if (item.isEmpty) {
+                return CustomScrollView(
+                  slivers: [
+                    SliverFillRemaining(
+                      hasScrollBody: false,
+                      child: Center(
+                        child: NoDataCard(
+                          onTap: () => notifyController.getNotify(),
                         ),
                       ),
-                    );
-                  },
-                  childCount: item.length,
-                ),
+                    ),
+                  ],
+                );
+              }
+
+              return CustomScrollView(
+                slivers: [
+                  SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                          (context, index) {
+                        final notification = item[index];
+                        final title = notification.title ?? "No Title";
+                        final time = DateFormat("dd MMMM yyyy").format(
+                          notification.time ?? DateTime.now(),
+                        );
+
+                        return Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          child: Card(
+                            shape: OutlineInputBorder(
+                              borderSide: BorderSide(color: AppColors.purple500),
+                              borderRadius: BorderRadius.circular(8.r),
+                            ),
+                            child: ListTile(
+                              title: CustomText(
+                                text: title,
+                                textAlign: TextAlign.start,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                              subtitle: CustomText(
+                                text: time,
+                                textAlign: TextAlign.start,
+                              ),
+                              leading: CircleAvatar(
+                                child: Assets.images.splashlogo.image(),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                      childCount: item.length,
+                    ),
+                  ),
+                ],
               );
-            }),
-          ],
-        ),
+          }
+        }),
       ),
     );
   }

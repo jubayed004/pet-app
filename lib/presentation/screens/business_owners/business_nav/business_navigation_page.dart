@@ -40,8 +40,7 @@ class _BusinessNavigationPageState extends State<BusinessNavigationPage> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: List.generate(
-            _controller.icons.length,
-                (index) => Expanded(
+            _controller.icons.length, (index) => Expanded(
               child: GestureDetector(
                 onTap: () {
                   _controller.selectedNavIndex.value = index;
@@ -60,7 +59,7 @@ class _BusinessNavigationPageState extends State<BusinessNavigationPage> {
                           decoration: BoxDecoration(
                             color: Colors.white,
                             shape: BoxShape.circle,
-                            boxShadow: [BoxShadow(color: AppColors.blueColor.withOpacity(0.2), blurRadius: 4.r, offset: Offset(0, 4))],
+                            boxShadow: [BoxShadow(color: AppColors.blueColor.withValues(alpha: 0.2), blurRadius: 4.r, offset: Offset(0, 4))],
                           ),
                           padding: EdgeInsets.all(6),
                           child: AnimatedContainer(
@@ -70,7 +69,7 @@ class _BusinessNavigationPageState extends State<BusinessNavigationPage> {
                             decoration: BoxDecoration(
                               color: isSelected ? AppColors.primaryColor : Colors.transparent,
                               shape: BoxShape.circle,
-                              boxShadow: [BoxShadow(color: AppColors.blueColor.withOpacity(0.2), blurRadius: 4.r, offset: Offset(0, 4))],
+                              boxShadow: [BoxShadow(color: AppColors.blueColor.withValues(alpha: 0.2), blurRadius: 4.r, offset: Offset(0, 4))],
                             ),
                             child: SvgPicture.asset(
                               _controller.icons[index],
