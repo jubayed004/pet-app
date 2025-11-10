@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pet_app/controller/get_controllers.dart';
 import 'package:pet_app/core/custom_assets/assets.gen.dart';
 import 'package:pet_app/core/route/route_path.dart';
@@ -12,11 +11,8 @@ import 'package:pet_app/presentation/components/custom_button/custom_defualt_app
 import 'package:pet_app/presentation/components/custom_image/custom_image.dart';
 import 'package:pet_app/presentation/components/custom_netwrok_image/custom_network_image.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
-import 'package:pet_app/presentation/no_internet/error_card.dart';
-import 'package:pet_app/presentation/screens/business_owners/business_all_pets/widgets/custom_add_health_dialog.dart';
-import 'package:pet_app/presentation/screens/business_owners/business_service/widgets/default_dialog.dart';
-import 'package:pet_app/service/api_url.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
+import 'package:pet_app/utils/dialog/dialog_utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class BusinessServiceScreen extends StatelessWidget {
@@ -103,7 +99,7 @@ class BusinessServiceScreen extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(10),
-                        boxShadow: [BoxShadow(color: Colors.grey.withOpacity(0.5), spreadRadius: 2.r, blurRadius: 5, offset: const Offset(0, 3))],
+                        boxShadow: [BoxShadow(color: Colors.grey.withValues(alpha: 0.5), spreadRadius: 2.r, blurRadius: 5, offset: const Offset(0, 3))],
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -220,9 +216,10 @@ class BusinessServiceScreen extends StatelessWidget {
                                   ),
                                   GestureDetector(
                                     onTap: () {
-                                      defaultDeletedYesNoDialog(
+                                      DialogUtils.showYesNoDialog(
                                         context: context,
                                         title: 'Are you sure you want to delete this Service?',
+                                        isLoading: businessServiceController.isDeletedServiceLoading,
                                         onYes: () {
                                           businessServiceController.deletedService(id: item.id ?? "");
                                         },
@@ -233,6 +230,7 @@ class BusinessServiceScreen extends StatelessWidget {
                                       colorFilter: const ColorFilter.mode(Colors.red, BlendMode.srcIn),
                                     ),
                                   ),
+
                                 ],
                               ),
                             ],

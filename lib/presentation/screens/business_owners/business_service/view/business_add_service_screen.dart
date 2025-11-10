@@ -7,6 +7,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:map_location_picker/map_location_picker.dart'; // Import the package
 import 'package:pet_app/controller/get_controllers.dart';
 import 'package:pet_app/helper/image/network_image.dart';
+import 'package:pet_app/helper/toast_message/toast_message.dart';
 import 'package:pet_app/presentation/components/custom_button/custom_button.dart';
 import 'package:pet_app/presentation/components/custom_dropdown/custom_drop_down_field.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
@@ -116,7 +117,7 @@ class _BusinessAddServiceScreenState extends State<BusinessAddServiceScreen> {
                   ),
                 ),
                 Gap(14),
-                CustomText(text: "Service Type", fontWeight: FontWeight.w500, fontSize: 16),
+                /*CustomText(text: "Service Type", fontWeight: FontWeight.w500, fontSize: 16),
                 Gap(8),
                 CustomDropdownField(
                   hintText: "Service Type",
@@ -129,7 +130,131 @@ class _BusinessAddServiceScreenState extends State<BusinessAddServiceScreen> {
                       businessAddServiceController.selectedAnalystType.value = value;
                     }
                   },
-                ),
+                ),*/
+                // Add this in your Service Type dropdown section
+                /*Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        CustomText(text: "Service Type", fontWeight: FontWeight.w500, fontSize: 16),
+                        const Gap(8),
+                        // Show badge based on selected service type
+                        Obx(() {
+                          final selectedType = businessAddServiceController.selectedAnalystType.value;
+                          final subscriptionController = GetControllers.instance.getSubscriptionController();
+
+                          if (selectedType.isEmpty) return const SizedBox();
+
+                          final isFree = subscriptionController.isServiceTypeFree(selectedType);
+
+                          return Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                            decoration: BoxDecoration(
+                              color: isFree ? Colors.green[100] : Colors.orange[100],
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: isFree ? Colors.green[300]! : Colors.orange[300]!,
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  isFree ? Icons.check_circle : Icons.workspace_premium,
+                                  size: 14,
+                                  color: isFree ? Colors.green[700] : Colors.orange[700],
+                                ),
+                                const SizedBox(width: 4),
+                                Text(
+                                  isFree ? "FREE" : "PREMIUM",
+                                  style: TextStyle(
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.bold,
+                                    color: isFree ? Colors.green[700] : Colors.orange[700],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        }),
+                      ],
+                    ),
+                    const Gap(8),
+                    CustomDropdownField(
+                      hintText: "Service Type",
+                      items: businessAddServiceController.analystType.map((item) => item).toList(),
+                      onChanged: (value) {
+                        if (value != null) {
+                          businessAddServiceController.selectedAnalystType.value = value;
+                        }
+                      },
+                    ),
+                  ],
+                ),*/
+              // Service Type dropdown section mein ye add karo
+
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      CustomText(text: "Service Type", fontWeight: FontWeight.w500, fontSize: 16),
+                      const Gap(8),
+                      // Badge show karo
+                      Obx(() {
+                        final selectedType = businessAddServiceController.selectedAnalystType.value;
+                        final subscriptionController = GetControllers.instance.getSubscriptionController();
+
+                        if (selectedType.isEmpty) return const SizedBox();
+
+                        final isFree = subscriptionController.isFriendlyPlace(selectedType);
+
+                        return Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: isFree ? Colors.green[100] : Colors.orange[100],
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: isFree ? Colors.green[400]! : Colors.orange[400]!,
+                              width: 1.5,
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                isFree ? Icons.check_circle : Icons.workspace_premium,
+                                size: 14,
+                                color: isFree ? Colors.green[700] : Colors.orange[700],
+                              ),
+                              const SizedBox(width: 4),
+                              Text(
+                                isFree ? "FREE" : "PREMIUM",
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.bold,
+                                  color: isFree ? Colors.green[700] : Colors.orange[700],
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      }),
+                    ],
+                  ),
+                  const Gap(8),
+                  CustomDropdownField(
+                    hintText: "Select Service Type",
+                    items: businessAddServiceController.analystType,
+                    onChanged: (value) {
+                      if (value != null) {
+                        businessAddServiceController.selectedAnalystType.value = value;
+                      }
+                    },
+                  ),
+                ],
+              ),
                 Gap(16),
                 Obx((){
                   if(businessAddServiceController.selectedAnalystType.value == "Shop"){
@@ -362,21 +487,35 @@ class _BusinessAddServiceScreenState extends State<BusinessAddServiceScreen> {
                   return SizedBox();
                 }),
                 Gap(24),
-                // In BusinessAddServiceScreen
-                Obx(() {
+
+                // In BusinessAddServiceScreen - Update the submit button
+              /*  Obx(() {
                   return CustomButton(
                     isLoading: businessAddServiceController.isLoading.value,
                     onTap: () async {
+                      // Get subscription controller
                       final subscriptionController = GetControllers.instance.getSubscriptionController();
-                      final canCreate = await subscriptionController.checkSubscriptionBeforeAction(
-                        actionName: "add a service", context: context,
-                      );
-                      if (!canCreate) {
-                        return;
+
+                      // Get selected service type
+                      final selectedServiceType = businessAddServiceController.selectedAnalystType.value;
+
+                      // Check if service type requires subscription
+                      // "Friendly Place" doesn't require subscription, all others do
+                      if (selectedServiceType != "Friendly Place") {
+                        final canCreate = await subscriptionController.checkSubscriptionBeforeAction(
+                          actionName: "add this service",
+                        );
+
+                        if (!canCreate) {
+                          return; // Don't proceed if no subscription
+                        }
                       }
+
+                      // Proceed with service creation
                       final List<String> services = serviceController.value
                           .map((controller) => controller.text)
                           .toList();
+
                       final body = {
                         "serviceType": businessAddServiceController.selectedAnalystType.value,
                         "serviceName": serviceName.text,
@@ -393,6 +532,104 @@ class _BusinessAddServiceScreenState extends State<BusinessAddServiceScreen> {
                       if (_formKey.currentState!.validate()) {
                         businessAddServiceController.addService(body: body);
                       }
+                    },
+                    title: "Add service",
+                    textColor: Colors.black,
+                  );
+                }),*/
+                // In your BusinessAddServiceScreen build method - Update the submit button section:
+
+               /* Obx(() {
+                  return CustomButton(
+                    isLoading: businessAddServiceController.isLoading.value,
+                    onTap: () async {
+                      // Validate form first
+                      if (!_formKey.currentState!.validate()) {
+                        return;
+                      }
+
+                      // Get subscription controller
+                      final subscriptionController = GetControllers.instance.getSubscriptionController();
+
+                      // Get selected service type
+                      final selectedServiceType = businessAddServiceController.selectedAnalystType.value;
+
+                      // Check if service type requires subscription
+                      final canCreate = await subscriptionController.checkSubscriptionBeforeAction(
+                        actionName: "add this service",
+                        serviceType: selectedServiceType, // Pass service type
+                      );
+
+                      if (!canCreate) {
+                        return; // Don't proceed if subscription required but not active
+                      }
+
+                      // Proceed with service creation
+                      final List<String> services = serviceController.value
+                          .map((controller) => controller.text)
+                          .toList();
+
+                      final body = {
+                        "serviceType": businessAddServiceController.selectedAnalystType.value,
+                        "serviceName": serviceName.text,
+                        "providings": services.join(','),
+                        "location": selectedLocation.value.address,
+                        "phone": phoneNumber.text,
+                        "openingTime": businessAddServiceController.openingTime.value?.format(context) ?? "",
+                        "closingTime": businessAddServiceController.closingTime.value?.format(context) ?? "",
+                        "offDay": businessAddServiceController.selectedWeek.value,
+                        "latitude": selectedLocation.value.latLng.latitude.toString(),
+                        "longitude": selectedLocation.value.latLng.longitude.toString(),
+                      };
+
+                      businessAddServiceController.addService(body: body);
+                    },
+                    title: "Add service",
+                    textColor: Colors.black,
+                  );
+                }),*/
+                // BusinessAddServiceScreen er submit button update karo
+
+                Obx(() {
+                  return CustomButton(
+                    isLoading: businessAddServiceController.isLoading.value,
+                    onTap: () async {
+                      // Form validation
+                      if (!_formKey.currentState!.validate()) {
+                        toastMessage(message: "Please fill all required fields");
+                        return;
+                      }
+
+                      final subscriptionController = GetControllers.instance.getSubscriptionController();
+
+                      final selectedServiceType = businessAddServiceController.selectedAnalystType.value;
+
+                      final canAddService = await subscriptionController.checkBeforeAddService(selectedServiceType,context);
+
+                      if (!canAddService) {
+                        return;
+                        return;
+                      }
+
+                      // Ab service add karo
+                      final List<String> services = serviceController.value
+                          .map((controller) => controller.text)
+                          .toList();
+
+                      final body = {
+                        "serviceType": businessAddServiceController.selectedAnalystType.value,
+                        "serviceName": serviceName.text,
+                        "providings": services.join(','),
+                        "location": selectedLocation.value.address,
+                        "phone": phoneNumber.text,
+                        "openingTime": businessAddServiceController.openingTime.value?.format(context) ?? "",
+                        "closingTime": businessAddServiceController.closingTime.value?.format(context) ?? "",
+                        "offDay": businessAddServiceController.selectedWeek.value,
+                        "latitude": selectedLocation.value.latLng.latitude.toString(),
+                        "longitude": selectedLocation.value.latLng.longitude.toString(),
+                      };
+
+                      businessAddServiceController.addService(body: body);
                     },
                     title: "Add service",
                     textColor: Colors.black,

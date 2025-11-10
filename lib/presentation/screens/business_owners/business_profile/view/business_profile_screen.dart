@@ -210,8 +210,7 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                               subtitle: "Are you sure you want to Sing Out ?",
                               actionButton: [
                                 CustomButton(
-                                  width: double.infinity,
-                                  height: 36,
+                                    height: 36,
                                   fillColor: Colors.white,
                                   // White background
                                   borderWidth: 1,

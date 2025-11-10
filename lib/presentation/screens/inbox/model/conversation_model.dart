@@ -1,6 +1,6 @@
 class ConversationModel {
   final bool? success;
-  final List<ConversationItem>? data;
+  final List<ConversationItems>? data;
   final Pagination? pagination;
 
   ConversationModel({
@@ -11,7 +11,7 @@ class ConversationModel {
 
   ConversationModel copyWith({
     bool? success,
-    List<ConversationItem>? data,
+    List<ConversationItems>? data,
     Pagination? pagination,
   }) =>
       ConversationModel(
@@ -22,7 +22,7 @@ class ConversationModel {
 
   factory ConversationModel.fromJson(Map<String, dynamic> json) => ConversationModel(
     success: json["success"],
-    data: json["data"] == null ? [] : List<ConversationItem>.from(json["data"]!.map((x) => ConversationItem.fromJson(x))),
+    data: json["data"] == null ? [] : List<ConversationItems>.from(json["data"]!.map((x) => ConversationItems.fromJson(x))),
     pagination: json["pagination"] == null ? null : Pagination.fromJson(json["pagination"]),
   );
 
@@ -33,7 +33,7 @@ class ConversationModel {
   };
 }
 
-class ConversationItem {
+class ConversationItems {
   final String? conversationId;
   final List<dynamic>? blockedBy;
   final List<Participant>? participants;
@@ -41,7 +41,7 @@ class ConversationItem {
   final int? unreadCount;
   final DateTime? updatedAt;
 
-  ConversationItem({
+  ConversationItems({
     this.conversationId,
     this.blockedBy,
     this.participants,
@@ -50,7 +50,7 @@ class ConversationItem {
     this.updatedAt,
   });
 
-  ConversationItem copyWith({
+  ConversationItems copyWith({
     String? conversationId,
     List<dynamic>? blockedBy,
     List<Participant>? participants,
@@ -58,7 +58,7 @@ class ConversationItem {
     int? unreadCount,
     DateTime? updatedAt,
   }) =>
-      ConversationItem(
+      ConversationItems(
         conversationId: conversationId ?? this.conversationId,
         blockedBy: blockedBy ?? this.blockedBy,
         participants: participants ?? this.participants,
@@ -67,7 +67,7 @@ class ConversationItem {
         updatedAt: updatedAt ?? this.updatedAt,
       );
 
-  factory ConversationItem.fromJson(Map<String, dynamic> json) => ConversationItem(
+  factory ConversationItems.fromJson(Map<String, dynamic> json) => ConversationItems(
     conversationId: json["conversationId"],
     blockedBy: json["blockedBy"] == null ? [] : List<dynamic>.from(json["blockedBy"]!.map((x) => x)),
     participants: json["participants"] == null ? [] : List<Participant>.from(json["participants"]!.map((x) => Participant.fromJson(x))),

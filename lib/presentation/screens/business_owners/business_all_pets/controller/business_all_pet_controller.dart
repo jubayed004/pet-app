@@ -1,4 +1,5 @@
 
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pet_app/core/dependency/get_it_injection.dart';
@@ -42,7 +43,9 @@ class BusinessAllPetController extends GetxController {
       }
     } catch (e) {
       log.e(e.toString());
-      print('Error in getBusinessAllPets: $e');
+      if (kDebugMode) {
+        print('Error in getBusinessAllPets: $e');
+      }
       loadingMethod(Status.error);
     }
   }
@@ -72,7 +75,9 @@ class BusinessAllPetController extends GetxController {
         }
       }
     } catch (e) {
-      print('Error in businessPetDetails: $e');
+      if (kDebugMode) {
+        print('Error in businessPetDetails: $e');
+      }
       detailsLoadingMethod(Status.error);
     }
   }

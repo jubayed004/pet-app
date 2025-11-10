@@ -20,7 +20,7 @@ class InboxPage extends StatefulWidget {
 
 class _InboxPageState extends State<InboxPage> with WidgetsBindingObserver {
   final controller = GetControllers.instance.getMessageController();
-  final pagingController = PagingController<int, ConversationItem>(firstPageKey: 1);
+  final pagingController = PagingController<int, ConversationItems>(firstPageKey: 1);
 
   @override
   void initState() {
@@ -85,10 +85,10 @@ class _InboxPageState extends State<InboxPage> with WidgetsBindingObserver {
                   onRefresh: () async {
                     pagingController.refresh();
                   },
-                  child: PagedListView<int, ConversationItem>(
+                  child: PagedListView<int, ConversationItems>(
                     pagingController: pagingController,
                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-                    builderDelegate: PagedChildBuilderDelegate<ConversationItem>(
+                    builderDelegate: PagedChildBuilderDelegate<ConversationItems>(
                       itemBuilder: (context, item, index) {
                         final partner = item.getPartner(id.data ?? "");
                         final name = partner?.name ?? "";

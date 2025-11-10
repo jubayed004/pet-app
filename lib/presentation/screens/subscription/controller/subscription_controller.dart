@@ -2,6 +2,7 @@ import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pet_app/core/dependency/get_it_injection.dart';
 import 'package:pet_app/core/route/route_path.dart';
@@ -31,12 +32,13 @@ class SubscriptionController extends GetxController {
     return entitlements.first;
   }
 
-  // Check if user can create service (has active subscription)
-  bool get canCreateService {
-    return hasActiveSubscription;
+  /// Check if service type is "Friendly Place" (FREE)
+  bool isFriendlyPlace(String? serviceType) {
+    if (serviceType == null) return false;
+    return serviceType.toLowerCase().trim() == "friendly";
   }
 
-  /// Fetch available subscription offerings from RevenueCat
+  /// Fetch subscription offerings
   Future<void> fetchSubscription() async {
     isLoading.value = true;
     try {
@@ -61,7 +63,7 @@ class SubscriptionController extends GetxController {
     }
   }
 
-  /// Fetch current customer subscription info
+  /// Fetch customer info
   Future<void> fetchCustomerInfo() async {
     try {
       final info = await Purchases.getCustomerInfo();
@@ -76,7 +78,7 @@ class SubscriptionController extends GetxController {
     }
   }
 
-  /// Purchase a subscription package
+  /// Purchase package
   Future<void> purchasePackage(Package package) async {
     isPurchasing.value = true;
 
@@ -91,7 +93,6 @@ class SubscriptionController extends GetxController {
 
       toastMessage(message: "Subscription activated successfully!");
 
-      // Navigate back or to home after successful purchase
       if (Get.isOverlaysOpen) {
         Get.back();
       }
@@ -109,19 +110,19 @@ class SubscriptionController extends GetxController {
   /// Handle purchase errors
   void _handlePurchaseError(PlatformException e) {
     switch (e.code) {
-      case '1': // User cancelled
+      case '1':
         debugPrint("ℹ️ User cancelled purchase");
         break;
-      case '2': // Store problem
+      case '2':
         toastMessage(message: "Store unavailable. Try again later.");
         break;
-      case '3': // Purchase not allowed
+      case '3':
         toastMessage(message: "Purchase not allowed on this device");
         break;
-      case '4': // Invalid purchase
+      case '4':
         toastMessage(message: "Invalid purchase");
         break;
-      case '5': // Product not available
+      case '5':
         toastMessage(message: "Product not available");
         break;
       default:
@@ -129,7 +130,7 @@ class SubscriptionController extends GetxController {
     }
   }
 
-  /// Restore previous purchases
+  /// Restore purchases
   Future<void> restorePurchases() async {
     isRestoring.value = true;
 
@@ -151,7 +152,7 @@ class SubscriptionController extends GetxController {
     }
   }
 
-  /// Open store subscription management
+  /// Launch subscription management
   Future<void> launchManageSubscriptions() async {
     final uri = Platform.isAndroid
         ? Uri.parse('https://play.google.com/store/account/subscriptions')
@@ -169,7 +170,7 @@ class SubscriptionController extends GetxController {
     }
   }
 
-  /// Get remaining days in subscription
+  /// Get remaining days
   String getDaysRemaining() {
     final entitlement = activeEntitlement;
     if (entitlement?.expirationDate == null) return "Unknown";
@@ -188,7 +189,7 @@ class SubscriptionController extends GetxController {
     }
   }
 
-  /// Format date string
+  /// Format date
   String getFormattedDate(String? dateString) {
     if (dateString == null || dateString.isEmpty) return "Unknown";
 
@@ -200,7 +201,143 @@ class SubscriptionController extends GetxController {
     }
   }
 
-  /// Check subscription before allowing service creation
+  /// Main method: Check if user can add service
+  Future<bool> checkBeforeAddService(String serviceType   , BuildContext context,) async {
+    // Agar "Friendly Place" hai to directly allow kardo
+    if (isFriendlyPlace(serviceType)) {
+      debugPrint("✅ Friendly Place - FREE service, no subscription needed");
+      return true;
+    }
+
+    // Baki services ke liye subscription check karo
+    await fetchCustomerInfo();
+
+    if (hasActiveSubscription) {
+      debugPrint("✅ Active subscription found - Service allowed");
+      return true;
+    }
+
+    // No subscription - show dialog
+    _showSubscriptionDialog(context,serviceType);
+    return false;
+  }
+
+  /// Show subscription required dialog
+  void _showSubscriptionDialog(BuildContext context,String serviceType) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context,) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          title: Row(
+            children: [
+              Icon(
+                Icons.workspace_premium,
+                color: Colors.orange[700],
+                size: 28.sp,
+              ),
+               SizedBox(width: 12.w),
+               Expanded(
+                child: Text(
+                  "Premium Subscription Required",
+                  style: TextStyle(fontSize: 18.sp),
+                ),
+              ),
+            ],
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+               Text(
+                "This service requires an active premium subscription.",
+                style: TextStyle(fontSize: 16.sp),
+              ),
+               SizedBox(height: 16.h),
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.blue[50],
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: Colors.blue[200]!),
+                ),
+                child: Row(
+                  children: [
+                    Icon(Icons.info_outline, color: Colors.blue[700], size: 20.sp),
+                     SizedBox(width: 8.w),
+                    Expanded(
+                      child: Text(
+                        "Service: $serviceType",
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          color: Colors.blue[900],
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+               SizedBox(height: 16.h),
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Colors.green[50],
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Row(
+                  children: [
+                    Icon(Icons.check_circle, color: Colors.green[700], size: 18),
+                     SizedBox(width: 8.w),
+                    Expanded(
+                      child: Text(
+                        "💡 'Friendly Place' is always FREE!",
+                        style: TextStyle(
+                          fontSize: 13.sp,
+                          color: Colors.green[800],
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(
+                "Cancel",
+                style: TextStyle(color: Colors.grey[600]),
+              ),
+            ),
+            ElevatedButton.icon(
+              onPressed: () {
+                Navigator.of(context).pop();
+               AppRouter.route.goNamed(RoutePath.subscriptionScreen);
+              },
+              icon:  Icon(Icons.star, size: 18.sp),
+              label: const Text("Subscribe Now"),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.orange[700],
+                foregroundColor: Colors.white,
+                padding:
+                const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+/*  /// Check subscription before allowing service creation
   Future<bool> checkSubscriptionBeforeAction({
     required BuildContext context, // Add context as a parameter
     required String actionName,
@@ -247,20 +384,13 @@ class SubscriptionController extends GetxController {
         );
       },
     );
-  }
+  }*/
 
 
   @override
   void onInit() {
     super.onInit();
-    // Initialize subscription data
     fetchCustomerInfo();
     fetchSubscription();
-  }
-
-  @override
-  void onClose() {
-    // Clean up if needed
-    super.onClose();
   }
 }

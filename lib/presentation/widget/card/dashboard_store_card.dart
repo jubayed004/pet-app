@@ -16,8 +16,8 @@ class CustomBookingCard extends StatelessWidget {
     required this.imagePath,
     required this.visitingDate,
     required this.mainTitle,
-    required this.subTitle,
-    required this.rating,
+
+
     required this.phoneNumber,
     required this.address,
     this.onApprove,
@@ -26,47 +26,45 @@ class CustomBookingCard extends StatelessWidget {
     this.showRejectButton = false,
     this.approveText,
     this.rejectText,
+    this.bookingTime,
+    this.checkInDate,
+    this.checkInTime,
+    this.checkOutDate,
+    this.checkOutTime,
   });
-
-  /// The tab index (0=pending, 1=ongoing, 2=completed, 3=rejected)
   final int index;
-
-  /// Can be a service-type key (e.g., "VET") or a URL to logo/SVG.
   final String logoPath;
-
   final String topTitle;
   final String imagePath;
   final String visitingDate;
+  final String? bookingTime;
+  final String? checkInDate;
+  final String? checkInTime;
+  final String? checkOutDate;
+  final String? checkOutTime;
   final String mainTitle;
-  final String subTitle;
-  final double rating;
+
+
   final String phoneNumber;
   final String address;
-
   final VoidCallback? onApprove;
   final VoidCallback? onReject;
   final bool showApproveButton;
   final bool showRejectButton;
-
-  /// Optional button label overrides.
   final String? approveText;
   final String? rejectText;
-
   bool get _isUrlLogo =>
       logoPath.startsWith('http://') ||
           logoPath.startsWith('https://') ||
           logoPath.startsWith('www.');
-
   bool get _isSvgLogo =>
       _isUrlLogo && logoPath.toLowerCase().trim().endsWith('.svg');
-
   String get _defaultApproveText {
     if (index == 1) return 'Complete'; // Ongoing tab
     if (index == 0) return 'Approve';  // Pending tab
     return 'Approve';
   }
   String get _defaultRejectText => 'Reject';
-
   SvgPicture _getIconByService({required String name}) {
     switch (name.toUpperCase()) {
       case "VET":
@@ -102,7 +100,6 @@ class CustomBookingCard extends StatelessWidget {
         );
     }
   }
-
   Widget _buildLogo() {
     // If URL provided, load it; otherwise map by service key.
     if (_isUrlLogo) {
@@ -130,7 +127,6 @@ class CustomBookingCard extends StatelessWidget {
     }
     return _getIconByService(name: logoPath.isNotEmpty ? logoPath : topTitle);
   }
-
   Widget _buildMainImage() {
     if (imagePath.isEmpty) {
       return Container(
@@ -151,12 +147,10 @@ class CustomBookingCard extends StatelessWidget {
       borderRadius: BorderRadius.circular(10),
     );
   }
-
   @override
   Widget build(BuildContext context) {
     final String primaryBtnText = (approveText ?? _defaultApproveText).toUpperCase();
     final String secondaryBtnText = (rejectText ?? _defaultRejectText).toUpperCase();
-
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.all(16),
@@ -165,7 +159,7 @@ class CustomBookingCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.15),
+            color: Colors.grey.withValues(alpha: 0.15),
             spreadRadius: 1,
             blurRadius: 6,
             offset: const Offset(0, 3),
@@ -190,9 +184,7 @@ class CustomBookingCard extends StatelessWidget {
               ),
             ],
           ),
-
           const Gap(8),
-
           /// Main Content
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -203,26 +195,6 @@ class CustomBookingCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     _buildMainImage(),
-                    const Gap(6),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Expanded(
-                          child: CustomText(
-                            text: "Visiting Date:",
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                        Expanded(
-                          child: CustomText(
-                            text: visitingDate,
-                            fontWeight: FontWeight.w400,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ],
-                    ),
                   ],
                 ),
               ),
@@ -240,53 +212,93 @@ class CustomBookingCard extends StatelessWidget {
                       fontWeight: FontWeight.w600,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.start,
                     ),
                     const Gap(4),
-                    CustomText(
-                      text: subTitle,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const Gap(6),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Icon(Icons.call, size: 18),
-                        const Gap(4),
-                        Expanded(
-                          child: CustomText(
-                            text: phoneNumber,
-                            textAlign: TextAlign.start,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const Gap(4),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Icon(Icons.location_on, size: 18),
-                        const Gap(4),
-                        Expanded(
-                          child: CustomText(
-                            text: address,
-                            textAlign: TextAlign.start,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ],
-                    ),
+
                   ],
                 ),
               ),
             ],
           ),
-
+           const Gap(6),
+          Column(
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                   CustomText(
+                     text: "Booking Date:",
+                     fontWeight: FontWeight.w400,
+                   ),
+                  const Gap(4),
+                  Expanded(
+                    child: CustomText(
+                      text: visitingDate,
+                      fontWeight: FontWeight.w400,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                   CustomText(
+                     text: "Booking Time:",
+                     fontWeight: FontWeight.w400,
+                   ),
+                  const Gap(4),
+                  Expanded(
+                    child: CustomText(
+                      text: bookingTime ?? "",
+                      fontWeight: FontWeight.w400,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                ],
+              ),
+              const Gap(6),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Icon(Icons.call, size: 18),
+                  const Gap(4),
+                  Expanded(
+                    child: CustomText(
+                      text: phoneNumber,
+                      textAlign: TextAlign.start,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
+              const Gap(4),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Icon(Icons.location_on, size: 18),
+                  const Gap(4),
+                  Expanded(
+                    child: CustomText(
+                      text: address,
+                      textAlign: TextAlign.start,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
           const Gap(12),
-
           /// Approve / Reject Section (controlled by flags)
           if (showApproveButton || showRejectButton)
             Row(

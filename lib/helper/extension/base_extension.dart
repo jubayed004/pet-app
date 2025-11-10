@@ -10,7 +10,7 @@ extension BasePathExtensions on String {
 }
 
 
-extension ConversationItemExtension on ConversationItem {
+extension ConversationItemExtension on ConversationItems {
   Participant? getPartner(String myId) {
     if (participants == null || participants!.isEmpty) return null;
     final others = participants!.where((p) => p.id != myId).toList();

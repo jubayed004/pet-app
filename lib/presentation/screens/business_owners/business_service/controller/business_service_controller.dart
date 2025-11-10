@@ -51,10 +51,16 @@ class BusinessServiceController extends GetxController {
 
   ///=================== Deleted Service
 
-  Future<void> deletedService ({ required String id})async {
+  var isDeletedServiceLoading = false.obs;
+
+  Future<void> deletedService({required String id}) async {
     try {
+      isDeletedServiceLoading.value = true;
+
       final response = await apiClient.delete(
-        url: ApiUrl.deletedService(id: id), body: {},);
+        url: ApiUrl.deletedService(id: id),
+        body: {},
+      );
 
       if (response.statusCode == 200) {
         await getBusinessService();
@@ -62,11 +68,12 @@ class BusinessServiceController extends GetxController {
         AppRouter.route.pop();
       }
     } catch (error) {
-      if (kDebugMode) {
-        print(error);
-      }
+      if (kDebugMode) print(error);
+    } finally {
+      isDeletedServiceLoading.value = false;
     }
   }
+
   @override
   void onInit() {
     getBusinessService();
