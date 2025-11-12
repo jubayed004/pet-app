@@ -1,9 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-
-
-
 import 'package:flutter/material.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:get/get.dart';
@@ -11,7 +8,6 @@ import 'package:get/get_connect/http/src/request/request.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:mime/mime.dart';
-
 import '../core/dependency/get_it_injection.dart';
 import '../core/network/connection_checker.dart';
 import '../helper/local_db/local_db.dart';

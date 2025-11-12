@@ -56,6 +56,7 @@ class ChatController extends GetxController {
       isLoading = false;
     }
   }
+
 /*
   // Check if user is blocked
   Future<void> checkBlockStatus(String userId) async {
@@ -70,20 +71,20 @@ class ChatController extends GetxController {
     }
   }*/
 
-/*  // Block user
-  Future<void> blockUser(String userId, BuildContext context) async {
+  // Block user
+  Future<void> blockUser({required String id}) async {
     try {
       isBlockLoading.value = true;
 
       final response = await apiClient.post(
-        url: ApiUrl.blockUser(),
-        body: {"userId": userId},
+        url: ApiUrl.blockUser(id: id),
+        body: {},
       );
 
       if (response.statusCode == 200) {
         isBlocked.value = true;
         toastMessage(message: "User blocked successfully");
-        Navigator.of(context).pop(); // Close bottom sheet
+        AppRouter.route.pop();
       } else {
         toastMessage(message: response.body['message'] ?? "Failed to block user");
       }
@@ -93,7 +94,7 @@ class ChatController extends GetxController {
     } finally {
       isBlockLoading.value = false;
     }
-  }*/
+  }
 
 /*  // Unblock user
   Future<void> unblockUser(String userId, BuildContext context) async {
@@ -313,13 +314,3 @@ class UploadImage {
   };
 }
 
-// ============================================
-// 2. API URL EXTENSIONS (Add to ApiUrl class)
-// ============================================
-
-extension ChatBlockingUrls on ApiUrl {
-  static String checkBlockStatus({required String userId}) => "/chat/block-status/$userId";
-  static String blockUser() => "/chat/block";
-  static String unblockUser() => "/chat/unblock";
-  static String reportUser() => "/chat/report";
-}

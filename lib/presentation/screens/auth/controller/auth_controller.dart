@@ -211,7 +211,6 @@ class AuthController extends GetxController {
 
   loginLoadingMethod( bool status) => isLoading.value = status;
 
-  ///Sign Up
   final TextEditingController nameSignUp = TextEditingController();
   final TextEditingController emailSignUp = TextEditingController();
   final TextEditingController passwordSignUp = TextEditingController();
@@ -275,7 +274,6 @@ class AuthController extends GetxController {
       print("verifyOtpScreen2");
       if (response.statusCode == 200) {
         final accessToken = response.body?['accessToken'];
-
         Map<String, dynamic> decodedToken = JwtDecoder.decode(accessToken??'');
         final role = decodedToken['role'] ?? "";
         dbHelper.saveUserdata(

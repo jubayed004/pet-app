@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -20,6 +21,7 @@ class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key, required this.senderId});
 
   final String senderId;
+
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
@@ -145,7 +147,8 @@ class _ChatScreenState extends State<ChatScreen> {
                   ? null
                   : () {
                 Navigator.pop(context);
-               /* controller.blockUser(widget.senderId, context);*/
+                controller.blockUser( id: widget.senderId);
+                print("================SENDER ID =======================${widget.senderId}===================SENDER ID=================");
               },
               child: controller.isBlockLoading.value
                   ? const SizedBox(
@@ -184,7 +187,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   ? null
                   : () {
                 Navigator.pop(context);
-                /*controller.unblockUser(widget.senderId, context);*/
+                controller.blockUser(id: widget.senderId);
               },
               child: controller.isBlockLoading.value
                   ? const SizedBox(
