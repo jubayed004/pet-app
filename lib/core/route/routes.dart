@@ -142,7 +142,7 @@ class AppRouter {
       GoRoute(
         name: RoutePath.chatScreen,
         path: RoutePath.chatScreen.addBasePath,
-        pageBuilder: (context, state) => _buildPageWithAnimation(child: ChatScreen(senderId: state.extra as String), state: state),
+        pageBuilder: (context, state) => _buildPageWithAnimation(child: ChatScreen(  senderId: state.extra as String), state: state),
       ),
 
       ///======================= MY Pets Route =======================

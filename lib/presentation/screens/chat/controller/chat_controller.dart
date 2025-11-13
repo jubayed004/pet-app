@@ -38,7 +38,7 @@ class ChatController extends GetxController {
         if (pageKey == 1) {
           chatModel.value = newData;
           // Check block status from chat model if available
-         /* checkBlockStatus(id);*/
+          checkBlockStatus(id);
         }
         final newItems = newData.conversation?.messages ?? [];
         if (newItems.isEmpty) {
@@ -57,19 +57,18 @@ class ChatController extends GetxController {
     }
   }
 
-/*
-  // Check if user is blocked
+
   Future<void> checkBlockStatus(String userId) async {
     try {
-      final response = await apiClient.get(url: ApiUrl.checkBlockStatus(userId: userId));
+      final response = await apiClient.get(url: ApiUrl.checkUserIsBlocked(id: userId));
       if (response.statusCode == 200) {
-        isBlocked.value = response.body['isBlocked'] ?? false;
-        isBlockedByOther.value = response.body['isBlockedByOther'] ?? false;
+        isBlocked.value = response.body['isBlockedByYou'] ?? false;
+        isBlockedByOther.value = response.body['isBlockedByThem'] ?? false;
       }
     } catch (e) {
       debugPrint("Error checking block status: $e");
     }
-  }*/
+  }
 
   // Block user
   Future<void> blockUser({required String id}) async {
@@ -84,6 +83,7 @@ class ChatController extends GetxController {
       if (response.statusCode == 200) {
         isBlocked.value = true;
         toastMessage(message: "User blocked successfully");
+
         AppRouter.route.pop();
       } else {
         toastMessage(message: response.body['message'] ?? "Failed to block user");
@@ -96,20 +96,20 @@ class ChatController extends GetxController {
     }
   }
 
-/*  // Unblock user
-  Future<void> unblockUser(String userId, BuildContext context) async {
+  // Unblock user
+  Future<void> unblockUser({required String userId}) async {
     try {
       isBlockLoading.value = true;
 
       final response = await apiClient.post(
-        url: ApiUrl.unblockUser(),
+        url: ApiUrl.unBlockUser(id: userId),
         body: {"userId": userId},
       );
 
       if (response.statusCode == 200) {
         isBlocked.value = false;
         toastMessage(message: "User unblocked successfully");
-        Navigator.of(context).pop(); // Close bottom sheet
+        AppRouter.route.pop();
       } else {
         toastMessage(message: response.body['message'] ?? "Failed to unblock user");
       }
@@ -119,7 +119,7 @@ class ChatController extends GetxController {
     } finally {
       isBlockLoading.value = false;
     }
-  }*/
+  }
 
 
 

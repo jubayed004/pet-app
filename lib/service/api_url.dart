@@ -79,7 +79,9 @@ class ApiUrl {
   static getConversation({required int pageKey}) => '$base/chat/get-conversation-list?page=$pageKey&limit=10';
   static getMessageForChat({required int pageKey,required String id}) => '$base/chat/get-conversation?page=$pageKey&limit=30&partnerId=$id';
   static updateFile() => '$base/chat/chat-images-video';
-  static blockUser({required String id}) => '$base/chat/block-toggle/$id';
+  static blockUser({required String id}) => '$base/chat/block/$id';
+  static unBlockUser({required String id}) => '$base/chat/unblock/$id';
+  static checkUserIsBlocked({required String id}) => '$base/chat/check-block/$id';
   ///User All==================
   static getNotification({required int pageKey}) => '$base/notification/get-all-notifications?page=$pageKey&limit=20';
   static deleteNotification({required String id}) => '$base/notification/delete-notification/$id';

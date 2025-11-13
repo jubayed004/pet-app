@@ -187,7 +187,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   ? null
                   : () {
                 Navigator.pop(context);
-                controller.blockUser(id: widget.senderId);
+                controller.unblockUser(userId: widget.senderId);
               },
               child: controller.isBlockLoading.value
                   ? const SizedBox(
