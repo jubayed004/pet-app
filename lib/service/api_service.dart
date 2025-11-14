@@ -51,7 +51,7 @@ Future<Map<String, String>> bearerHeaderInfoForDelete() async {
   };
 }
 
-String noInternetConnection = "no_internet_connection".tr;
+String noInternetConnection = "no internet connection";
 
 final ConnectionChecker connectionChecker = serviceLocator();
 

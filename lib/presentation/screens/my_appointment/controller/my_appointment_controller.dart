@@ -24,21 +24,20 @@ class MyAppointmentController extends GetxController {
 
     try{
       final response = await apiClient.get(url: ApiUrl.getBookingAppointment(page: page));
+      log.d(response.body);
       if (response.statusCode == 200) {
         final newData = AppointmentBookingModel.fromJson(response.body);
         final newItems = newData.bookings ?? [];
-
         if(page == 1 && newItems.isNotEmpty){
           firstBooking.value = newItems.first;
         }
-
         if (newItems.isEmpty) {
           pagingController1.appendLastPage(newItems);
         } else {
           pagingController1.appendPage(newItems, page + 1);
         }
       } else {
-        pagingController1.error = 'No internet connection. \nPlease check your connection and try again.';
+        pagingController1.error = response.body?['message'] ?? "No internet connection. \nPlease check your connection and try again.";
       }
     }catch(_){
       pagingController1.error = 'An error occurred';

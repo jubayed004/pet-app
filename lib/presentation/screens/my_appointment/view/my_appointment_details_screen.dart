@@ -235,7 +235,7 @@ class _MyAppointmentDetailsScreenState extends State<MyAppointmentDetailsScreen>
                           Row(
                             spacing: 10,
                             children: [
-                              if (["COMPLETE"].contains(item1?.bookingStatus))
+                              if (["COMPLETED"].contains(item1?.bookingStatus))
                              /* bookingStatus == "COMPLETE" ? SizedBox() :*/ Flexible(
                                   child: CustomButton(
                                     onTap: () {
