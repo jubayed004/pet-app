@@ -39,7 +39,7 @@ Future<void> showAddReviewDialog(BuildContext context, String businessId, String
                       direction: Axis.horizontal,
                       allowHalfRating: true,
                       itemCount: 5,
-                      itemSize: 40.0,
+                      itemSize: 30.0,
                       itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
                       itemBuilder: (context, _) => Icon(Icons.star, color: Colors.amber),
                       onRatingUpdate: (newRating) {
@@ -53,11 +53,12 @@ Future<void> showAddReviewDialog(BuildContext context, String businessId, String
                       child: CustomText(text: "Share more about your experience", fontSize: 14, fontWeight: FontWeight.w600),
                     ),
                     DescriptionTextField(
+
                       hintText: "Share details of your own experience at this place",
-                      hintStyle: TextStyle(color: Colors.grey.withAlpha(958)),
+                      hintStyle: TextStyle(color: Colors.grey.withAlpha(958),overflow: TextOverflow.visible ,),
                       backgroundColor: Colors.white,
                       radius: 10,
-                      contentPadding: EdgeInsets.only(left: 20, right: 20, bottom: 10, top: 10),
+                      contentPadding: EdgeInsets.only(left: 20, right: 20,),
                       controller: comments,
                       maxLines: 10,
                     ),

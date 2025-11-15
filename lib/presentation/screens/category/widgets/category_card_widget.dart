@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
@@ -35,8 +36,9 @@ class CategoryCardWidget extends StatelessWidget {
     final rating = item.avgRating?.toStringAsFixed(2) ?? "";
     final ratingStar = item.avgRating?.toInt() ?? 0;
     final businessServiceController = GetControllers.instance.getBusinessServiceController();
-
-    print("${ApiUrl.imageBase}${image.replaceAll("\\", "/")}");
+      if (kDebugMode) {
+        print("${ApiUrl.imageBase}${image.replaceAll("\\", "/")}");
+      }
     return GestureDetector(
       onTap: () {
         AppRouter.route.pushNamed(RoutePath.categoryDetailsScreen, extra: [showWebsite, id, isShop]);

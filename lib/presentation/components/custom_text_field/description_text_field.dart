@@ -37,7 +37,7 @@ class DescriptionTextField extends StatelessWidget {
         onChanged: onChanged,
         decoration: InputDecoration(
           contentPadding: contentPadding ??
-              const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              const EdgeInsets.symmetric(horizontal: 20,),
           border: InputBorder.none,
           filled: true,
           fillColor: backgroundColor ?? Colors.white,
@@ -64,6 +64,7 @@ class PrimaryContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: MediaQuery.of(context).size.height/8,
       decoration: BoxDecoration(
         color: color ?? Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(radius ?? 30),

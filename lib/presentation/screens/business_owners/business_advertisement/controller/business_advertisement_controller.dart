@@ -213,7 +213,7 @@ class BusinessAdvertisementController extends GetxController {
     }
   }
 
-  /// Get Advertisement Details
+  ///========================== Get Advertisement Details =====================
   Future<void> getDetailsAdvertisement() async {
     loadingMethod(Status.loading);
 
@@ -222,9 +222,9 @@ class BusinessAdvertisementController extends GetxController {
         url: ApiUrl.getAdvertisement(),
       );
 
-      if (kDebugMode) {
-        print('Get Advertisement Response: ${response.statusCode}');
-      }
+
+   log.d('Get Advertisement Response: ${response.statusCode}');
+
 
       if (response.statusCode == 200) {
         // Parse response

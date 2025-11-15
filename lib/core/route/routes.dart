@@ -22,6 +22,7 @@ import 'package:pet_app/presentation/screens/business_owners/business_review/vie
 import 'package:pet_app/presentation/screens/business_owners/business_service/view/business_add_service_screen.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_service/view/business_edit_service_screen.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_service/view/business_service_screen.dart';
+import 'package:pet_app/presentation/screens/business_owners/business_shop_profile/view/business_edit_shop_profile_screen.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_shop_profile/view/business_shop_profile_screen.dart';
 import 'package:pet_app/presentation/screens/category/book_an_appointment/view/congratulation_screen.dart';
 import 'package:pet_app/presentation/screens/category/category_details/view/category_details_screen.dart';
@@ -421,6 +422,24 @@ class AppRouter {
         name: RoutePath.businessShopProfileScreen,
         path: RoutePath.businessShopProfileScreen.addBasePath,
         pageBuilder: (context, state) => _buildPageWithAnimation(child: BusinessShopProfileScreen(), state: state),
+      ),
+      GoRoute(
+        name: RoutePath.businessEditShopProfileScreen,
+        path: RoutePath.businessEditShopProfileScreen.addBasePath,
+        pageBuilder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>?;
+
+          return _buildPageWithAnimation(
+            child: BusinessEditShopProfileScreen(
+              name: extra?['name'] ?? '',
+              address: extra?['address'] ?? '',
+              webSiteLink: extra?['phoneNumber'] ?? '',
+              logoUrl: extra?['logoUrl'],
+              shopPicUrl: extra?['shopPicUrl'],
+            ),
+            state: state,
+          );
+        },
       ),
       GoRoute(
         name: RoutePath.businessServiceScreen,

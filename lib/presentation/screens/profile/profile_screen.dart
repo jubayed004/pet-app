@@ -49,10 +49,11 @@ class ProfileScreen extends StatelessWidget {
               centerTitle: true,
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [CustomText(text: "Profile", fontSize: 18, fontWeight: FontWeight.w600, color: Colors.black)],
+                children: [
+                  CustomText(text: "Profile", fontSize: 18, fontWeight: FontWeight.w600, color: Colors.black)
+                ],
               ),
             ),
-
             SliverAppBar(
               pinned: true,
               expandedHeight: 200,

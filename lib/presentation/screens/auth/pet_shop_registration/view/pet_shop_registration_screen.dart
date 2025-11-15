@@ -27,7 +27,6 @@ class PetShopRegistrationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-
       appBar: AppBar(
         surfaceTintColor: Colors.white,
         backgroundColor: Colors.white,
