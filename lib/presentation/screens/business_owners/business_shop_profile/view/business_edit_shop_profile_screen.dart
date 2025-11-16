@@ -338,6 +338,7 @@ class _BusinessEditShopProfileScreenState
                   onTap: _handleSubmit,
                 );
               }),
+
               Gap(24.h),
             ],
           ),
