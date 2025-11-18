@@ -104,7 +104,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         hintText: widget.hintText,
         hintStyle: widget.hintStyle ??
             GoogleFonts.poppins(
-                fontSize: 16,
+                fontSize: 14,
                 fontWeight: FontWeight.w400,
                 color: AppColors.secondTextColor),
         fillColor: widget.fillColor,

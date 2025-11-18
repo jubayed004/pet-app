@@ -1,12 +1,16 @@
  
+/*
+
+import 'package:get/get_connect/http/src/response/response.dart';
 
 class ApiChecker {
-/*  static void checkApi(Response response, {bool getXSnackBar = false}) async {
+  static void checkApi(Response response, {bool getXSnackBar = false}) async {
     if (response.statusCode == 401) {
-      // await SharePrefsHelper.remove(AppConstants.bearerToken);
-     // Get.offAllNamed(AppRoute.signIn);
+      await SharePrefsHelper.remove(AppConstants.bearerToken);
+     Get.offAllNamed(AppRoute.signIn);
     } else {
       showCustomSnackBar(response.statusText!, getXSnackBar: getXSnackBar);
     }
-  }*/
+  }
 }
+*/

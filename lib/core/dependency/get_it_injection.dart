@@ -1,5 +1,4 @@
 import 'package:pet_app/service/socket_service.dart';
-
 import '../../helper/local_db/local_db.dart';
 import '../../service/api_service.dart';
 import '../network/connection_checker.dart';
@@ -9,12 +8,13 @@ final serviceLocator = GetIt.instance;
 
 Future<void> initDependencies() async {
 
+ ///==================InternetConnection===========
   serviceLocator.registerFactory(() => InternetConnection());
 
-  /// ======================= core ==================
+  /// ======================= core ================
   serviceLocator.registerFactory<ConnectionChecker>(() => ConnectionCheckerImpl(serviceLocator()));
 
-  /// ===================== DB =====================
+  /// ===================== DB ====================
   serviceLocator.registerFactory<DBHelper>(() => DBHelper());
 
   /// ================= Api client ================

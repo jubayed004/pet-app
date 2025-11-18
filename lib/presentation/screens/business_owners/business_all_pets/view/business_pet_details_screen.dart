@@ -35,6 +35,12 @@ class _BusinessPetsDetailsScreenState extends State<BusinessPetsDetailsScreen> {
     final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
+      appBar: AppBar(
+        scrolledUnderElevation: 0,
+        backgroundColor: AppColors.whiteColor,
+        centerTitle: true,
+        title: CustomText(fontWeight: FontWeight.w600, fontSize: 16, text: "Pet Details"),
+      ),
       backgroundColor: AppColors.kWhiteColor,
       body: Obx(() {
         final isLoading = businessAllPetController.detailsLoading.value == Status.loading;
@@ -55,36 +61,35 @@ class _BusinessPetsDetailsScreenState extends State<BusinessPetsDetailsScreen> {
 
         final pet = businessAllPetController.details.value.petWithMedicalHistory;
 
-        return CustomScrollView(
-          slivers: [
-            CustomDefaultAppbar(title: pet?.name ?? "Pet Details"),
-
-            // Pet Image with gradient overlay
-            SliverToBoxAdapter(
-              child: _buildPetImageSection(context, pet?.petPhoto, screenHeight),
-            ),
-
-            // Main Content
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: screenWidth * 0.04,
-                  vertical: 16,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildPetInfoCard(pet, screenWidth),
-                    const Gap(20),
-                    _buildAboutSection(pet, screenWidth),
-                    const Gap(20),
-                    _buildHealthSection(context, screenWidth),
-                    const Gap(20),
-                  ],
+        return SafeArea(
+          child: CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: _buildPetImageSection(context, pet?.petPhoto, screenHeight),
+              ),
+          
+              // Main Content
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: screenWidth * 0.04,
+                    vertical: 16,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildPetInfoCard(pet, screenWidth),
+                      const Gap(20),
+                      _buildAboutSection(pet, screenWidth),
+                      const Gap(20),
+                      _buildHealthSection(context, screenWidth),
+                      const Gap(20),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         );
       }),
     );

@@ -6,8 +6,6 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:map_location_picker/map_location_picker.dart'; // Import the package
 import 'package:pet_app/controller/get_controllers.dart';
-import 'package:pet_app/core/route/route_path.dart';
-import 'package:pet_app/core/route/routes.dart';
 import 'package:pet_app/helper/image/network_image.dart';
 import 'package:pet_app/helper/toast_message/toast_message.dart';
 import 'package:pet_app/presentation/components/custom_button/custom_button.dart';
@@ -42,11 +40,9 @@ class _BusinessAddServiceScreenState extends State<BusinessAddServiceScreen> {
     selectedLocation.dispose();
     super.dispose();
   }
-
   void _addBeltField() {
     serviceController.value = [...serviceController.value, TextEditingController()];
   }
-
   void _removeBeltField(int index) {
     if (serviceController.value.length > 1) {
       final removed = serviceController.value[index];
@@ -55,589 +51,378 @@ class _BusinessAddServiceScreenState extends State<BusinessAddServiceScreen> {
       serviceController.value = updated;
     }
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-
         scrolledUnderElevation: 0,
         backgroundColor: AppColors.whiteColor,
         centerTitle: true,
         title: CustomText(fontWeight: FontWeight.w600, fontSize: 16, text: "Add Service"),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: paddingH16V8,
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CustomText(text: "Service Photo", fontWeight: FontWeight.w400, fontSize: 16),
-                Gap(8),
-                GestureDetector(
-                  onTap: businessAddServiceController.pickImage,
-                  child: SizedBox(
-                    height: 156.h,
-                    width: double.infinity,
-                    child: Obx(() {
-                      final image = businessAddServiceController.selectedImage.value?.path;
-                      return Stack(
-                        children: [
-                          Positioned.fill(
-                            child:
-                                image != null && image.isNotEmpty
-                                    ? ClipRRect(
-                                      borderRadius: BorderRadius.circular(6),
-                                      child: Image.file(File(image), height: 156.h, width: MediaQuery.of(context).size.width, fit: BoxFit.cover),
-                                    )
-                                    : CustomNetworkImage(
-                                      imageUrl: "",
-                                      height: 156.h,
-                                      borderRadius: BorderRadius.circular(6),
-                                      width: MediaQuery.of(context).size.width,
-                                    ),
-                          ),
-                          image != null && image.isNotEmpty
-                              ? SizedBox()
-                              : Center(
-                                child: Container(
-                                  height: 30.h,
-                                  width: 30.w,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(color: Color(0xffC2C2C2), width: 1.w),
-                                    color: AppColors.whiteColor700,
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: Icon(Icons.image_outlined, size: 18.sp, color: AppColors.purple500),
-                                ),
-                              ),
-                        ],
-                      );
-                    }),
-                  ),
-                ),
-                Gap(14),
-                /*CustomText(text: "Service Type", fontWeight: FontWeight.w500, fontSize: 16),
-                Gap(8),
-                CustomDropdownField(
-                  hintText: "Service Type",
-                  items:
-                      businessAddServiceController.analystType.map((item) {
-                        return item;
-                      }).toList(),
-                  onChanged: (value) {
-                    if (value != null) {
-                      businessAddServiceController.selectedAnalystType.value = value;
-                    }
-                  },
-                ),*/
-                // Add this in your Service Type dropdown section
-                /*Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        CustomText(text: "Service Type", fontWeight: FontWeight.w500, fontSize: 16),
-                        const Gap(8),
-                        // Show badge based on selected service type
-                        Obx(() {
-                          final selectedType = businessAddServiceController.selectedAnalystType.value;
-                          final subscriptionController = GetControllers.instance.getSubscriptionController();
-
-                          if (selectedType.isEmpty) return const SizedBox();
-
-                          final isFree = subscriptionController.isServiceTypeFree(selectedType);
-
-                          return Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                            decoration: BoxDecoration(
-                              color: isFree ? Colors.green[100] : Colors.orange[100],
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(
-                                color: isFree ? Colors.green[300]! : Colors.orange[300]!,
-                              ),
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(
-                                  isFree ? Icons.check_circle : Icons.workspace_premium,
-                                  size: 14,
-                                  color: isFree ? Colors.green[700] : Colors.orange[700],
-                                ),
-                                const SizedBox(width: 4),
-                                Text(
-                                  isFree ? "FREE" : "PREMIUM",
-                                  style: TextStyle(
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.bold,
-                                    color: isFree ? Colors.green[700] : Colors.orange[700],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        }),
-                      ],
-                    ),
-                    const Gap(8),
-                    CustomDropdownField(
-                      hintText: "Service Type",
-                      items: businessAddServiceController.analystType.map((item) => item).toList(),
-                      onChanged: (value) {
-                        if (value != null) {
-                          businessAddServiceController.selectedAnalystType.value = value;
-                        }
-                      },
-                    ),
-                  ],
-                ),*/
-              // Service Type dropdown section mein ye add karo
-
-              Column(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: paddingH16V8,
+            child: Form(
+              key: _formKey,
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      CustomText(text: "Service Type", fontWeight: FontWeight.w500, fontSize: 16),
-                      const Gap(8),
-                      // Badge show karo
-                      Obx(() {
-                        final selectedType = businessAddServiceController.selectedAnalystType.value;
-                        final subscriptionController = GetControllers.instance.getSubscriptionController();
-
-                        if (selectedType.isEmpty) return const SizedBox();
-
-                        final isFree = subscriptionController.isFriendlyPlace(selectedType);
-
-                        return Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: isFree ? Colors.green[100] : Colors.orange[100],
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(
-                              color: isFree ? Colors.green[400]! : Colors.orange[400]!,
-                              width: 1.5,
+                  CustomText(text: "Service Photo", fontWeight: FontWeight.w400, fontSize: 16),
+                  Gap(8),
+                  GestureDetector(
+                    onTap: businessAddServiceController.pickImage,
+                    child: SizedBox(
+                      height: 156.h,
+                      width: double.infinity,
+                      child: Obx(() {
+                        final image = businessAddServiceController.selectedImage.value?.path;
+                        return Stack(
+                          children: [
+                            Positioned.fill(
+                              child:
+                                  image != null && image.isNotEmpty
+                                      ? ClipRRect(
+                                        borderRadius: BorderRadius.circular(6),
+                                        child: Image.file(File(image), height: 156.h, width: MediaQuery.of(context).size.width, fit: BoxFit.cover),
+                                      )
+                                      : CustomNetworkImage(
+                                        imageUrl: "",
+                                        height: 156.h,
+                                        borderRadius: BorderRadius.circular(6),
+                                        width: MediaQuery.of(context).size.width,
+                                      ),
                             ),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(
-                                isFree ? Icons.check_circle : Icons.workspace_premium,
-                                size: 14,
-                                color: isFree ? Colors.green[700] : Colors.orange[700],
-                              ),
-                              const SizedBox(width: 4),
-                              Text(
-                                isFree ? "FREE" : "PREMIUM",
-                                style: TextStyle(
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.bold,
-                                  color: isFree ? Colors.green[700] : Colors.orange[700],
-                                ),
-                              ),
-                            ],
-                          ),
+                          ],
                         );
                       }),
-                    ],
+                    ),
                   ),
-                  const Gap(8),
-                  CustomDropdownField(
-                    hintText: "Select Service Type",
-                    items: businessAddServiceController.analystType,
-                    onChanged: (value) {
-                      if (value != null) {
-                        businessAddServiceController.selectedAnalystType.value = value;
-                      }
-                    },
-                  ),
-                ],
-              ),
-                Gap(16),
-                Obx((){
-                  if(businessAddServiceController.selectedAnalystType.value == "Shop"){
-                    return SizedBox();
-                  }
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                  Gap(14),
+                  Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomText(text: "Providing Service", fontWeight: FontWeight.w500, fontSize: 16),
-                      Gap(8),
-                      ValueListenableBuilder<List<TextEditingController>>(
-                        valueListenable: serviceController,
-                        builder: (context, list, _) {
-                          return Column(
-                            children: List.generate(list.length, (index) {
-                              return Padding(
-                                padding: const EdgeInsets.only(bottom: 8.0),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Expanded(
-                                      child: CustomTextField(
-                                        textEditingController: list[index],
-                                        fieldBorderColor: AppColors.blackColor,
-                                        fieldBorderRadius: 10,
-                                        fillColor: Colors.white,
-                                        hintText: "Enter Providing Service",
-                                        keyboardType: TextInputType.text,
-                                        validator: (value) {
-                                          final v = (value ?? '').trim();
-                                          if (v.isEmpty) {
-                                            return 'Service name is required';
-                                          }
-                                          if (v.length < 3) {
-                                            return 'At least 3 characters';
-                                          }
-                                          if (v.length > 100) {
-                                            return 'Must be 50 characters or fewer';
-                                          }
-                                          final ok = RegExp(r"^[A-Za-z0-9&/.,\-()' ]+$");
-                                          if (!ok.hasMatch(v)) {
-                                            return "Only letters, numbers, spaces, and -/.,()'& are allowed";
-                                          }
-                                          final hasAlnum = RegExp(r'[A-Za-z0-9]').hasMatch(v);
-                                          if (!hasAlnum) {
-                                            return 'Enter a meaningful service name';
-                                          }
-
-                                          return null;
-                                        },
-                                      ),
+                      Row(
+                        children: [
+                          CustomText(text: "Service Type", fontWeight: FontWeight.w500, fontSize: 16),
+                          const Gap(8),
+                          Obx(() {
+                            final selectedType = businessAddServiceController.selectedAnalystType.value;
+                            final subscriptionController = GetControllers.instance.getSubscriptionController();
+                            if (selectedType.isEmpty) return const SizedBox();
+                            final isFree = subscriptionController.isFriendlyPlace(selectedType);
+                            return Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                              decoration: BoxDecoration(
+                                color: isFree ? Colors.green[100] : Colors.orange[100],
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(color: isFree ? Colors.green[400]! : Colors.orange[400]!, width: 1.5),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    isFree ? Icons.check_circle : Icons.workspace_premium,
+                                    size: 14,
+                                    color: isFree ? Colors.green[700] : Colors.orange[700],
+                                  ),
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    isFree ? "FREE" : "PREMIUM",
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.bold,
+                                      color: isFree ? Colors.green[700] : Colors.orange[700],
                                     ),
-                                    const Gap(5),
-                                    index == 0
-                                        ? IconButton(onPressed: _addBeltField, icon: const Icon(Iconsax.add_circle))
-                                        : IconButton(onPressed: () => _removeBeltField(index), icon: const Icon(Icons.remove_circle_outline)),
-                                  ],
-                                ),
-                              );
-                            }),
-                          );
+                                  ),
+                                ],
+                              ),
+                            );
+                          }),
+                        ],
+                      ),
+                      const Gap(8),
+                      CustomDropdownField(
+                        hintText: "Select Service Type",
+                        items: businessAddServiceController.analystType,
+                        onChanged: (value) {
+                          if (value != null) {
+                            businessAddServiceController.selectedAnalystType.value = value;
+                          }
                         },
                       ),
                     ],
-                  );
-                }),
-                Gap(8),
-                CustomText(text: "Service Name", fontWeight: FontWeight.w500, fontSize: 16),
-                Gap(8),
-                CustomTextField(
-                  fieldBorderColor: AppColors.blackColor,
-                  fieldBorderRadius: 10,
-                  fillColor: Colors.white,
-                  hintText: "Enter service name",
-                  keyboardType: TextInputType.text,
-                  textEditingController: serviceName,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Enter service name';
-                    }
-                    if (value.length < 3) {
-                      return 'Name must be at least 3 characters';
-                    }
-                    return null; // Valid
-                  },
-                ),
-                Gap(14),
-                CustomText(text: "Phone Number", fontWeight: FontWeight.w500, fontSize: 16),
-                Gap(8),
-                CustomTextField(
-                  fieldBorderColor: AppColors.blackColor,
-                  fieldBorderRadius: 10,
-                  fillColor: Colors.white,
-                  hintText: "Enter phone number",
-                  keyboardType: TextInputType.phone,
-                  textEditingController: phoneNumber,
-                  validator: (value) {
-                    if (value == null || value.trim().isEmpty) {
-                      return "Phone number is required";
-                    }
-                    final phoneRegExp = RegExp(r'^\+?\d{7,15}$');
-                    if (!phoneRegExp.hasMatch(value.trim())) {
-                      return "Enter a valid phone number";
-                    }
-                    return null;
-                  },
-                ),
-                Gap(14),
-                CustomText(text: "Location", fontWeight: FontWeight.w500, fontSize: 16),
-                Gap(8),
-                GestureDetector(
-                  onTap: () async {
-                    _openLocationPicker(); // Trigger the location picker
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(16),
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1), borderRadius: BorderRadius.circular(12)),
-                    child: ValueListenableBuilder<RecordLocation>(
-                      valueListenable: selectedLocation, // Listen to changes
-                      builder: (_, item, _) {
-                        String address = item.address.isEmpty ? " selected Your Location" : item.address;
-                        return Text(address);
-                      },
-                    ),
                   ),
-                ),
-
-                Gap(14),
-                CustomText(text: " Time Duration", fontWeight: FontWeight.w600, fontSize: 16),
-                Gap(14),
-
-                CustomText(text: "Opening time", fontWeight: FontWeight.w500, fontSize: 16),
-                Gap(8),
-                Obx(() {
-                  return GestureDetector(
-                    onTap: () => businessAddServiceController.pickOpeningTime(context),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: AppColors.whiteColor,
-                        border: Border.all(color: AppColors.blackColor),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      height: 56,
-                      width: MediaQuery.of(context).size.width,
-                      alignment: Alignment.centerLeft,
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
-                      child: Text(
-                        businessAddServiceController.openingTime.value == null
-                            ? "Select opening time"
-                            : businessAddServiceController.openingTime.value!.format(context),
-                        style: TextStyle(fontSize: 16, color: businessAddServiceController.openingTime.value == null ? Colors.grey : Colors.black),
-                      ),
-                    ),
-                  );
-                }),
-                Gap(14),
-                CustomText(text: "Closing time", fontWeight: FontWeight.w500, fontSize: 16.sp
-                ),
-                Gap(8),
-                Obx(() {
-                  return GestureDetector(
-                    onTap: () => businessAddServiceController.pickClosingTime(context),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: AppColors.whiteColor,
-                        border: Border.all(color: AppColors.blackColor),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      height: 56,
-                      width: MediaQuery.of(context).size.width,
-                      alignment: Alignment.centerLeft,
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
-                      child: Text(
-                        businessAddServiceController.closingTime.value == null
-                            ? "Select closing time"
-                            : businessAddServiceController.closingTime.value!.format(context),
-                        style: TextStyle(fontSize: 16.sp, color: businessAddServiceController.closingTime.value == null ? Colors.grey : Colors.black),
-                      ),
-                    ),
-                  );
-                }),
-
-                Gap(14),
-                CustomText(text: "Off day", fontWeight: FontWeight.w500, fontSize: 16.sp),
-                Gap(8),
-                CustomDropdownField(
-                  hintText: "Off Day Type",
-                  items:
-                      businessAddServiceController.weekly.map((item) {
-                        return item;
-                      }).toList(),
-                  onChanged: (value) {
-                    if (value != null) {
-                      businessAddServiceController.selectedWeek.value = value;
+                  Gap(16),
+                  Obx(() {
+                    if (businessAddServiceController.selectedAnalystType.value == "Shop") {
+                      return SizedBox();
                     }
-                  },
-                ),
-                Obx(() {
-                  final value = businessAddServiceController.selectedWeek.value;
-                  if (["Pet Shops", "Pet Hotels"].contains(value)) {
                     return Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Gap(14),
-                        CustomText(text: "Website Link", fontWeight: FontWeight.w500, fontSize: 16),
+                        CustomText(text: "Providing Service", fontWeight: FontWeight.w500, fontSize: 16),
                         Gap(8),
-                        CustomTextField(
-                          fieldBorderColor: AppColors.blackColor,
-                          fieldBorderRadius: 10,
-                          fillColor: Colors.white,
-                          hintText: "link here",
-                          keyboardType: TextInputType.text,
-                          textEditingController: webSiteLInk,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'link here';
-                            }
-                            if (value.length < 3) {
-                              return 'Name must be at least 3 characters';
-                            }
-                            return null; // Valid
+                        ValueListenableBuilder<List<TextEditingController>>(
+                          valueListenable: serviceController,
+                          builder: (context, list, _) {
+                            return Column(
+                              children: List.generate(list.length, (index) {
+                                return Padding(
+                                  padding: const EdgeInsets.only(bottom: 8.0),
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Expanded(
+                                        child: CustomTextField(
+                                          textEditingController: list[index],
+                                          fieldBorderColor: AppColors.blackColor,
+                                          fieldBorderRadius: 10,
+                                          fillColor: Colors.white,
+                                          hintText: "Enter Providing Service",
+                                          keyboardType: TextInputType.text,
+                                          validator: (value) {
+                                            final v = (value ?? '').trim();
+                                            if (v.isEmpty) {
+                                              return 'Service name is required';
+                                            }
+                                            if (v.length < 3) {
+                                              return 'At least 3 characters';
+                                            }
+                                            if (v.length > 100) {
+                                              return 'Must be 50 characters or fewer';
+                                            }
+                                            final ok = RegExp(r"^[A-Za-z0-9&/.,\-()' ]+$");
+                                            if (!ok.hasMatch(v)) {
+                                              return "Only letters, numbers, spaces, and -/.,()'& are allowed";
+                                            }
+                                            final hasAlnum = RegExp(r'[A-Za-z0-9]').hasMatch(v);
+                                            if (!hasAlnum) {
+                                              return 'Enter a meaningful service name';
+                                            }
+
+                                            return null;
+                                          },
+                                        ),
+                                      ),
+                                      const Gap(5),
+                                      index == 0
+                                          ? IconButton(onPressed: _addBeltField, icon: const Icon(Iconsax.add_circle))
+                                          : IconButton(onPressed: () => _removeBeltField(index), icon: const Icon(Icons.remove_circle_outline)),
+                                    ],
+                                  ),
+                                );
+                              }),
+                            );
                           },
                         ),
                       ],
                     );
-                  }
-                  return SizedBox();
-                }),
-                Gap(24),
-
-                // In BusinessAddServiceScreen - Update the submit button
-              /*  Obx(() {
-                  return CustomButton(
-                    isLoading: businessAddServiceController.isLoading.value,
-                    onTap: () async {
-                      // Get subscription controller
-                      final subscriptionController = GetControllers.instance.getSubscriptionController();
-
-                      // Get selected service type
-                      final selectedServiceType = businessAddServiceController.selectedAnalystType.value;
-
-                      // Check if service type requires subscription
-                      // "Friendly Place" doesn't require subscription, all others do
-                      if (selectedServiceType != "Friendly Place") {
-                        final canCreate = await subscriptionController.checkSubscriptionBeforeAction(
-                          actionName: "add this service",
-                        );
-
-                        if (!canCreate) {
-                          return; // Don't proceed if no subscription
-                        }
+                  }),
+                  Gap(8),
+                  CustomText(text: "Service Name", fontWeight: FontWeight.w500, fontSize: 16),
+                  Gap(8),
+                  CustomTextField(
+                    fieldBorderColor: AppColors.blackColor,
+                    fieldBorderRadius: 10,
+                    fillColor: Colors.white,
+                    hintText: "Enter service name",
+                    keyboardType: TextInputType.text,
+                    textEditingController: serviceName,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Enter service name';
                       }
+                      if (value.length < 3) {
+                        return 'Name must be at least 3 characters';
+                      }
+                      return null; // Valid
+                    },
+                  ),
+                  Gap(14),
+                  CustomText(text: "Phone Number", fontWeight: FontWeight.w500, fontSize: 16),
+                  Gap(8),
+                  CustomTextField(
+                    fieldBorderColor: AppColors.blackColor,
+                    fieldBorderRadius: 10,
+                    fillColor: Colors.white,
+                    hintText: "Enter phone number",
+                    keyboardType: TextInputType.phone,
+                    textEditingController: phoneNumber,
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return "Phone number is required";
+                      }
+                      final phoneRegExp = RegExp(r'^\+?\d{7,15}$');
+                      if (!phoneRegExp.hasMatch(value.trim())) {
+                        return "Enter a valid phone number";
+                      }
+                      return null;
+                    },
+                  ),
+                  Gap(14),
+                  CustomText(text: "Location", fontWeight: FontWeight.w500, fontSize: 16),
+                  Gap(8),
+                  GestureDetector(
+                    onTap: () async {
+                      _openLocationPicker(); // Trigger the location picker
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(16),
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1), borderRadius: BorderRadius.circular(12)),
+                      child: ValueListenableBuilder<RecordLocation>(
+                        valueListenable: selectedLocation, // Listen to changes
+                        builder: (_, item, _) {
+                          String address = item.address.isEmpty ? " selected Your Location" : item.address;
+                          return Text(address);
+                        },
+                      ),
+                    ),
+                  ),
 
-                      // Proceed with service creation
-                      final List<String> services = serviceController.value
-                          .map((controller) => controller.text)
-                          .toList();
+                  Gap(14),
+                  CustomText(text: " Time Duration", fontWeight: FontWeight.w600, fontSize: 16),
+                  Gap(14),
 
-                      final body = {
-                        "serviceType": businessAddServiceController.selectedAnalystType.value,
-                        "serviceName": serviceName.text,
-                        "providings": services.join(','),
-                        "location": selectedLocation.value.address,
-                        "phone": phoneNumber.text,
-                        "openingTime": businessAddServiceController.openingTime.value?.format(context) ?? "",
-                        "closingTime": businessAddServiceController.closingTime.value?.format(context) ?? "",
-                        "offDay": businessAddServiceController.selectedWeek.value,
-                        "latitude": selectedLocation.value.latLng.latitude.toString(),
-                        "longitude": selectedLocation.value.latLng.longitude.toString(),
-                      };
+                  CustomText(text: "Opening time", fontWeight: FontWeight.w500, fontSize: 16),
+                  Gap(8),
+                  Obx(() {
+                    return GestureDetector(
+                      onTap: () => businessAddServiceController.pickOpeningTime(context),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: AppColors.whiteColor,
+                          border: Border.all(color: AppColors.blackColor),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        height: 56,
+                        width: MediaQuery.of(context).size.width,
+                        alignment: Alignment.centerLeft,
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        child: Text(
+                          businessAddServiceController.openingTime.value == null
+                              ? "Select opening time"
+                              : businessAddServiceController.openingTime.value!.format(context),
+                          style: TextStyle(fontSize: 16, color: businessAddServiceController.openingTime.value == null ? Colors.grey : Colors.black),
+                        ),
+                      ),
+                    );
+                  }),
+                  Gap(14),
+                  CustomText(text: "Closing time", fontWeight: FontWeight.w500, fontSize: 16.sp),
+                  Gap(8),
+                  Obx(() {
+                    return GestureDetector(
+                      onTap: () => businessAddServiceController.pickClosingTime(context),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: AppColors.whiteColor,
+                          border: Border.all(color: AppColors.blackColor),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        height: 56,
+                        width: MediaQuery.of(context).size.width,
+                        alignment: Alignment.centerLeft,
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        child: Text(
+                          businessAddServiceController.closingTime.value == null
+                              ? "Select closing time"
+                              : businessAddServiceController.closingTime.value!.format(context),
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                            color: businessAddServiceController.closingTime.value == null ? Colors.grey : Colors.black,
+                          ),
+                        ),
+                      ),
+                    );
+                  }),
 
-                      if (_formKey.currentState!.validate()) {
-                        businessAddServiceController.addService(body: body);
+                  Gap(14),
+                  CustomText(text: "Off day", fontWeight: FontWeight.w500, fontSize: 16.sp),
+                  Gap(8),
+                  CustomDropdownField(
+                    hintText: "Off Day Type",
+                    items: businessAddServiceController.weekly.map((item) {
+                          return item;
+                        }).toList(),
+                    onChanged: (value) {
+                      if (value != null) {
+                        businessAddServiceController.selectedWeek.value = value;
                       }
                     },
-                    title: "Add service",
-                    textColor: Colors.black,
-                  );
-                }),*/
-                // In your BusinessAddServiceScreen build method - Update the submit button section:
-
-               /* Obx(() {
-                  return CustomButton(
-                    isLoading: businessAddServiceController.isLoading.value,
-                    onTap: () async {
-                      // Validate form first
-                      if (!_formKey.currentState!.validate()) {
-                        return;
-                      }
-
-                      // Get subscription controller
-                      final subscriptionController = GetControllers.instance.getSubscriptionController();
-
-                      // Get selected service type
-                      final selectedServiceType = businessAddServiceController.selectedAnalystType.value;
-
-                      // Check if service type requires subscription
-                      final canCreate = await subscriptionController.checkSubscriptionBeforeAction(
-                        actionName: "add this service",
-                        serviceType: selectedServiceType, // Pass service type
+                  ),
+                  Obx(() {
+                    final value = businessAddServiceController.selectedWeek.value;
+                    if (["Pet Shops", "Pet Hotels"].contains(value)) {
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Gap(14),
+                          CustomText(text: "Website Link", fontWeight: FontWeight.w500, fontSize: 16),
+                          Gap(8),
+                          CustomTextField(
+                            fieldBorderColor: AppColors.blackColor,
+                            fieldBorderRadius: 10,
+                            fillColor: Colors.white,
+                            hintText: "link here",
+                            keyboardType: TextInputType.text,
+                            textEditingController: webSiteLInk,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'link here';
+                              }
+                              if (value.length < 3) {
+                                return 'Name must be at least 3 characters';
+                              }
+                              return null;
+                            },
+                          ),
+                        ],
                       );
-
-                      if (!canCreate) {
-                        return; // Don't proceed if subscription required but not active
-                      }
-
-                      // Proceed with service creation
-                      final List<String> services = serviceController.value
-                          .map((controller) => controller.text)
-                          .toList();
-
-                      final body = {
-                        "serviceType": businessAddServiceController.selectedAnalystType.value,
-                        "serviceName": serviceName.text,
-                        "providings": services.join(','),
-                        "location": selectedLocation.value.address,
-                        "phone": phoneNumber.text,
-                        "openingTime": businessAddServiceController.openingTime.value?.format(context) ?? "",
-                        "closingTime": businessAddServiceController.closingTime.value?.format(context) ?? "",
-                        "offDay": businessAddServiceController.selectedWeek.value,
-                        "latitude": selectedLocation.value.latLng.latitude.toString(),
-                        "longitude": selectedLocation.value.latLng.longitude.toString(),
-                      };
-
-                      businessAddServiceController.addService(body: body);
-                    },
-                    title: "Add service",
-                    textColor: Colors.black,
-                  );
-                }),*/
-                // BusinessAddServiceScreen er submit button update karo
-
-                Obx(() {
-                  return CustomButton(
-                    isLoading: businessAddServiceController.isLoading.value,
-                    onTap: () async {
-                      // Form validation
-                      if (!_formKey.currentState!.validate()) {
-                        toastMessage(message: "Please fill all required fields");
-                        return;
-                      }
-
-                      final subscriptionController = GetControllers.instance.getSubscriptionController();
-
-                      final selectedServiceType = businessAddServiceController.selectedAnalystType.value;
-
-                      final canAddService = await subscriptionController.checkBeforeAddService(selectedServiceType,context);
-
-                      if (!canAddService) {
-                        return;
-                      }
-
-                      // Ab service add karo
-                      final List<String> services = serviceController.value
-                          .map((controller) => controller.text)
-                          .toList();
-
-                      final body = {
-                        "serviceType": businessAddServiceController.selectedAnalystType.value,
-                        "serviceName": serviceName.text,
-                        "providings": services.join(','),
-                        "location": selectedLocation.value.address,
-                        "phone": phoneNumber.text,
-                        "openingTime": businessAddServiceController.openingTime.value?.format(context) ?? "",
-                        "closingTime": businessAddServiceController.closingTime.value?.format(context) ?? "",
-                        "offDay": businessAddServiceController.selectedWeek.value,
-                        "latitude": selectedLocation.value.latLng.latitude.toString(),
-                        "longitude": selectedLocation.value.latLng.longitude.toString(),
-                      };
-
-                      businessAddServiceController.addService(body: body);
-                    },
-                    title: "Add service",
-                    textColor: Colors.black,
-                  );
-                }),
-              ],
+                    }
+                    return SizedBox();
+                  }),
+                  Gap(24),
+                  Obx(() {
+                    return CustomButton(
+                      isLoading: businessAddServiceController.isLoading.value,
+                      onTap: () async {
+                        if (!_formKey.currentState!.validate()) {
+                          toastMessage(message: "Please fill all required fields");
+                          return;
+                        }
+                        final subscriptionController = GetControllers.instance.getSubscriptionController();
+                        final selectedServiceType = businessAddServiceController.selectedAnalystType.value;
+                        final canAddService = await subscriptionController.checkBeforeAddService(selectedServiceType, context);
+                        if (!canAddService) {
+                          return;
+                        }
+                        final List<String> services = serviceController.value.map((controller) => controller.text).toList();
+                        final body = {
+                          "serviceType": businessAddServiceController.selectedAnalystType.value,
+                          "serviceName": serviceName.text,
+                          "providings": services.join(','),
+                          "location": selectedLocation.value.address,
+                          "phone": phoneNumber.text,
+                          "openingTime": businessAddServiceController.openingTime.value?.format(context) ?? "",
+                          "closingTime": businessAddServiceController.closingTime.value?.format(context) ?? "",
+                          "offDay": businessAddServiceController.selectedWeek.value,
+                          "latitude": selectedLocation.value.latLng.latitude.toString(),
+                          "longitude": selectedLocation.value.latLng.longitude.toString(),
+                        };
+                        businessAddServiceController.addService(body: body);
+                      },
+                      title: "Add service",
+                      textColor: Colors.black,
+                    );
+                  }),
+                ],
+              ),
             ),
           ),
         ),

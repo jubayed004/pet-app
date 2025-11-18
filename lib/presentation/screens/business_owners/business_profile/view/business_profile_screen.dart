@@ -46,8 +46,10 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("Profile"),
+        scrolledUnderElevation: 0,
+        backgroundColor: Colors.transparent,
         centerTitle: true,
+        title: CustomText(fontWeight: FontWeight.w600, fontSize: 16, text: "Profile"),
       ),
       body: RefreshIndicator(
         onRefresh: () async {

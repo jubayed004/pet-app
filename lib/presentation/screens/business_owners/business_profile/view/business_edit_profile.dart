@@ -42,66 +42,66 @@ class _BusinessEditProfileScreenState extends State<BusinessEditProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        scrolledUnderElevation: 0,
+        backgroundColor: AppColors.whiteColor,
+        centerTitle: true,
+        title: CustomText(fontWeight: FontWeight.w600, fontSize: 16, text: "Edit Profile"),
+      ),
       backgroundColor: Colors.white,
       body: Form(
         key: _formKey,
         child: CustomScrollView(
           slivers: [
-            SliverAppBar(
-              floating: true,
-              snap: true,
-              backgroundColor: AppColors.primaryColor,
-              toolbarHeight: kToolbarHeight,
-              centerTitle: true,
-              title: CustomText(
-                text: "Edit Profile",
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                color: Colors.black,
-              ),
-            ),
-            SliverAppBar(
-              foregroundColor: AppColors.primaryColor,
-              pinned: true,
-              backgroundColor: Colors.white,
-              expandedHeight: 200,
-              automaticallyImplyLeading: false,
-              flexibleSpace: FlexibleSpaceBar(
-                  background: Obx(() {
-                    return Stack(
-                      children: [
-                        businessProfileController.selectedImage.value != null
+            SliverToBoxAdapter(
+              child: Obx(
+                    () {
+                  final selected = businessProfileController.selectedImage.value;
+
+                  return Stack(
+                    children: [
+                      // --- Background Image ---
+                      SizedBox(
+                        width: double.infinity,
+                        height: MediaQuery.of(context).size.height * 0.25,
+                        child: selected != null
                             ? Image.file(
-                          File(businessProfileController.selectedImage.value!.path),
+                          File(selected.path),
                           fit: BoxFit.cover,
-                          width: double.infinity,
-                          height: double.infinity,
                         )
-                            : Image.network(
-                          'https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=800&q=80',
-                          fit: BoxFit.cover,
-                          width: double.infinity,
-                          height: double.infinity,
-                        ),
-                        Positioned(
-                          top: 0,
-                          bottom: 0,
-                          left: 0,
-                          right: 0,
+                            : Icon(Icons.person),
+                      ),
+
+                      // --- Dark Overlay ---
+                      Container(
+                        width: double.infinity,
+                        height: MediaQuery.of(context).size.height * 0.25,
+                        color: Colors.black.withValues(alpha: 0.25),
+                      ),
+
+                      // --- Camera Button ---
+                      Positioned.fill(
+                        child: Center(
                           child: GestureDetector(
-                            onTap: () {
-                              businessProfileController.pickImage();
-                            },
-                            child: Icon(
-                              Icons.camera_alt,
-                              size: 40,
-                              color: AppColors.primaryColor,
+                            onTap: businessProfileController.pickImage,
+                            child: Container(
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color: Colors.white.withValues(alpha: 0.8),
+                                shape: BoxShape.circle,
+                              ),
+                              child: Icon(
+                                Icons.camera_alt,
+                                size: 32,
+                                color: AppColors.primaryColor,
+                              ),
                             ),
                           ),
                         ),
-                      ],
-                    );
-                  })
+                      ),
+                    ],
+                  );
+                },
               ),
             ),
             SliverToBoxAdapter(
@@ -109,10 +109,10 @@ class _BusinessEditProfileScreenState extends State<BusinessEditProfileScreen> {
                 padding: EdgeInsets.only(left: 16, right: 16, top: 20),
                 child: Column(
                   children: [
-
                     CustomAlignText(
+                      fontSize: 16.sp,
                       text: "Name",
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w600,
                     ),
                     Gap(8.0),
                     CustomTextField(
@@ -126,8 +126,9 @@ class _BusinessEditProfileScreenState extends State<BusinessEditProfileScreen> {
 
                     Gap(16),
                     CustomAlignText(
+                      fontSize: 16.sp,
                       text: "Phone Number",
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w600,
                     ),
                     Gap(8.0),
                     CustomTextField(
@@ -142,8 +143,9 @@ class _BusinessEditProfileScreenState extends State<BusinessEditProfileScreen> {
 
                     Gap(16),
                     CustomAlignText(
+                      fontSize: 16.sp,
                       text: "Address",
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w600,
                     ),
                     Gap(8.0),
                     CustomTextField(

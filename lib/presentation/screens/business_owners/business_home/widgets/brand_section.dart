@@ -10,6 +10,7 @@ import 'package:pet_app/presentation/no_internet/more_data_error_card.dart';
 import 'package:pet_app/presentation/no_internet/no_data_card.dart';
 import 'package:pet_app/presentation/no_internet/no_internet_card.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:pet_app/presentation/widget/loading/loading_widget.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
 import 'package:pet_app/utils/app_const/app_const.dart';
 
@@ -37,7 +38,7 @@ class BrandSection extends StatelessWidget {
 
               switch (status) {
                 case Status.loading:
-                  return const Center(child: CircularProgressIndicator());
+                  return  Center(child: LoadingWidget(color: Colors.pink,));
                 case Status.error:
                   return Center(
                       child: ErrorCard(onTap: () => controller.getBusinessHomeBrand()));
