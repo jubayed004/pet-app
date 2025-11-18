@@ -45,13 +45,16 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: Text("Profile"),
+        centerTitle: true,
+      ),
       body: RefreshIndicator(
         onRefresh: () async {
           businessProfileController.getBusinessProfile();
         },
         child: CustomScrollView(
           slivers: [
-            CustomDefaultAppbar(title: "Profile"),
             SliverAppBar(
               pinned: true,
               expandedHeight: 200,

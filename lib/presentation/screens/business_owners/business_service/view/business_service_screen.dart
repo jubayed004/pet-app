@@ -23,6 +23,10 @@ class BusinessServiceScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Services"),
+        centerTitle: true,
+      ),
       body: RefreshIndicator(
         onRefresh: () async {
           businessServiceController.getBusinessService();
@@ -30,7 +34,6 @@ class BusinessServiceScreen extends StatelessWidget {
         child: CustomScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
           slivers: [
-            CustomDefaultAppbar(title: "Services",),
             SliverToBoxAdapter(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,

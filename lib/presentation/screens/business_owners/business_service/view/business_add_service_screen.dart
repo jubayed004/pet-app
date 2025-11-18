@@ -611,7 +611,6 @@ class _BusinessAddServiceScreenState extends State<BusinessAddServiceScreen> {
 
                       if (!canAddService) {
                         return;
-                        return;
                       }
 
                       // Ab service add karo

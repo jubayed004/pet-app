@@ -36,7 +36,6 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Obx(() {
-        // Show loading state
         if (controller.isLoading.value) {
           return const Center(
             child: Column(
@@ -684,7 +683,11 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
             ),
             const SizedBox(height: 16),
             TextButton(
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: (){
+                if(Navigator.canPop(context)){
+                  AppRouter.route.pop();
+                }
+              },
               child: const Text('Go Back'),
             ),
           ],

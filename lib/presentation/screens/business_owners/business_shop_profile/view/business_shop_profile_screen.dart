@@ -24,6 +24,10 @@ class BusinessShopProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[50],
+      appBar: AppBar(
+        title: Text("Business Profile"),
+        centerTitle: true,
+      ),
       body: RefreshIndicator(
         onRefresh: () async {
           await shopProfileController.getBusinessShopProfile();
@@ -31,7 +35,6 @@ class BusinessShopProfileScreen extends StatelessWidget {
         color: AppColors.purple500,
         child: CustomScrollView(
           slivers: [
-            const CustomDefaultAppbar(title: "Business Profile"),
 
             /// ---------- Main Profile Section ----------
             SliverToBoxAdapter(

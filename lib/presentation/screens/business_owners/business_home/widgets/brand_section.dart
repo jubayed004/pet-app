@@ -23,76 +23,80 @@ class BrandSection extends StatelessWidget {
     return SliverToBoxAdapter(
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
-        child: Obx(() {
-          final brands = controller.brand.value.topBrands ?? [];
-          final status = controller.loading.value;
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CustomText(
+              text: "Top Brands",
+              fontSize: 18.sp,
+              fontWeight: FontWeight.bold,
+            ),
+            Obx(() {
+              final brands = controller.brand.value.topBrands ?? [];
+              final status = controller.loading.value;
 
-          switch (status) {
-            case Status.loading:
-              return const Center(child: CircularProgressIndicator());
-            case Status.error:
-              return Center(
-                  child: ErrorCard(onTap: () => controller.getBusinessHomeBrand()));
-            case Status.internetError:
-              return Center(
-                  child: NoInternetCard(onTap: () => controller.getBusinessHomeBrand()));
-            case Status.noDataFound:
-              return Center(
-                  child: MoreDataErrorCard(
-                      onTap: () => controller.getBusinessHomeBrand()));
-            case Status.completed:
-              if (brands.isEmpty) {
-                return Center(
-                    child: NoDataCard(
-                        onTap: () => controller.getBusinessHomeBrand()));
-              }
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CustomText(
-                    text: "Top Brands",
-                    fontSize: 18.sp,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  Gap(12.h),
-                  CarouselSlider.builder(
-                    itemCount: brands.length,
-                    itemBuilder: (context, index, realIndex) {
-                      final brand = brands[index];
-                      final logos = brand.logo;
-                      final imageUrl = (logos != null && logos.isNotEmpty)
-                          ? logos.first
-                          : "assets/images/default_pet_image.png";
+              switch (status) {
+                case Status.loading:
+                  return const Center(child: CircularProgressIndicator());
+                case Status.error:
+                  return Center(
+                      child: ErrorCard(onTap: () => controller.getBusinessHomeBrand()));
+                case Status.internetError:
+                  return Center(
+                      child: NoInternetCard(onTap: () => controller.getBusinessHomeBrand()));
+                case Status.noDataFound:
+                  return Center(
+                      child: MoreDataErrorCard(
+                          onTap: () => controller.getBusinessHomeBrand()));
+                case Status.completed:
+                  if (brands.isEmpty) {
+                    return Center(
+                        child: NoDataCard(
+                            onTap: () => controller.getBusinessHomeBrand()));
+                  }
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CarouselSlider.builder(
+                        itemCount: brands.length,
+                        itemBuilder: (context, index, realIndex) {
+                          final brand = brands[index];
+                          final logos = brand.logo;
+                          final imageUrl = (logos != null && logos.isNotEmpty)
+                              ? logos.first
+                              : "assets/images/default_pet_image.png";
 
-                      return ClipRRect(
-                        borderRadius: BorderRadius.circular(12.r),
-                        child: CustomNetworkImage(
-                          imageUrl:  imageUrl,
-                          height: 80.h,
-                          width: double.infinity,
+                          return ClipRRect(
+                            borderRadius: BorderRadius.circular(12.r),
+                            child: CustomNetworkImage(
+                              imageUrl:  imageUrl,
+                              height: 80.h,
+                              width: double.infinity,
 
+                            ),
+                          );
+                        },
+                        options: CarouselOptions(
+                          height: 140.h,
+                          autoPlay: brands.length > 1,
+                          autoPlayInterval: const Duration(seconds: 3),
+                          enlargeCenterPage: true,
+                          enableInfiniteScroll: brands.length > 1,
+                          viewportFraction: 0.9,
+                          scrollPhysics: brands.length > 1
+                              ? const BouncingScrollPhysics()
+                              : const NeverScrollableScrollPhysics(),
+                          onPageChanged: (index, reason) {
+                            controller.currentIndex.value = index % brands.length;
+                          },
                         ),
-                      );
-                    },
-                    options: CarouselOptions(
-                      height: 140.h,
-                      autoPlay: brands.length > 1,
-                      autoPlayInterval: const Duration(seconds: 3),
-                      enlargeCenterPage: true,
-                      enableInfiniteScroll: brands.length > 1,
-                      viewportFraction: 0.9,
-                      scrollPhysics: brands.length > 1
-                          ? const BouncingScrollPhysics()
-                          : const NeverScrollableScrollPhysics(),
-                      onPageChanged: (index, reason) {
-                        controller.currentIndex.value = index % brands.length;
-                      },
-                    ),
-                  ),
-                ],
-              );
-          }
-        }),
+                      ),
+                    ],
+                  );
+              }
+            }),
+          ],
+        ),
       ),
     );
   }

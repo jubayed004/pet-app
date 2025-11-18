@@ -344,7 +344,11 @@ class SubscriptionController extends GetxController {
           ),
           actions: [
             TextButton(
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: (){
+                if(Navigator.canPop(context)){
+                  AppRouter.route.pop();
+                }
+              },
               child: Text(
                 "Cancel",
                 style: TextStyle(color: Colors.grey[600]),
@@ -352,8 +356,10 @@ class SubscriptionController extends GetxController {
             ),
             ElevatedButton.icon(
               onPressed: () {
-                Navigator.of(context).pop();
-               AppRouter.route.goNamed(RoutePath.subscriptionScreen);
+                if(Navigator.canPop(context)){
+                  AppRouter.route.pop();
+                }
+               AppRouter.route.pushNamed(RoutePath.subscriptionScreen);
               },
               icon:  Icon(Icons.star, size: 18.sp),
               label: const Text("Subscribe Now"),

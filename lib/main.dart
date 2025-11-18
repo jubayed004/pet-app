@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -7,7 +6,6 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 import 'core/dependency/get_it_injection.dart';
 import 'core/route/routes.dart';
 import 'helper/device_utils/device_utils.dart';
-import 'package:device_preview/device_preview.dart';
 import 'helper/local_db/local_db.dart';
 
 Future<void> main() async {
@@ -41,10 +39,7 @@ Future<void> main() async {
   });
 
   runApp(
-    DevicePreview(
-      enabled: !kReleaseMode,
-      builder: (context) => const MyApp(),
-    ),
+    const MyApp(),
   );
 }
 

@@ -28,28 +28,17 @@ class ActivePromotionSection extends StatelessWidget {
           final status = controller.loading.value;
           switch (status) {
             case Status.loading:
-              return const Center(child: CircularProgressIndicator());
+              return SizedBox();
             case Status.error:
-              return Center(
-                  child: ErrorCard(
-                    onTap: () => controller.getDetailsAdvertisement(),
-                  ));
+              return SizedBox();
             case Status.internetError:
-              return Center(
-                  child: NoInternetCard(
-                    onTap: () => controller.getDetailsAdvertisement(),
-                  ));
+              return SizedBox();
             case Status.noDataFound:
-              return Center(
-                  child: MoreDataErrorCard(
-                    onTap: () => controller.getDetailsAdvertisement(),
-                  ));
+              return SizedBox();
             case Status.completed:
-              if (activeAds.isEmpty) {
-                return Center(
-                    child: NoDataCard(
-                      onTap: () => controller.getDetailsAdvertisement(),
-                    ));
+
+              if (activeAds.length < 2) {
+                return SizedBox();
               }
               return CarouselSlider.builder(
                 itemCount: activeAds.length,
@@ -76,9 +65,6 @@ class ActivePromotionSection extends StatelessWidget {
                   enlargeCenterPage: true,
                   enableInfiniteScroll: activeAds.length > 1,
                   viewportFraction: 0.9,
-                  scrollPhysics: activeAds.length > 1
-                      ? const BouncingScrollPhysics()
-                      : const NeverScrollableScrollPhysics(),
                 ),
               );
           }
