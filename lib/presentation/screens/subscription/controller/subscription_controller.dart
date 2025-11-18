@@ -153,22 +153,57 @@ class SubscriptionController extends GetxController {
   }
 
   /// Launch subscription management
-  Future<void> launchManageSubscriptions() async {
-    final uri = Platform.isAndroid
-        ? Uri.parse('https://play.google.com/store/account/subscriptions')
-        : Uri.parse('https://apps.apple.com/account/subscriptions');
-
+  Future<void> launchManageSubscriptions(BuildContext context) async {
     try {
-      if (await canLaunchUrl(uri)) {
+      final uri = Platform.isAndroid
+          ? Uri.parse('https://play.google.com/store/account/subscriptions')
+          : Uri.parse('https://apps.apple.com/account/subscriptions');
+
+      final canLaunch = await canLaunchUrl(uri);
+
+      if (canLaunch) {
         await launchUrl(uri, mode: LaunchMode.externalApplication);
+        toastMessage(message: "Opening subscription settings...");
       } else {
-        toastMessage(message: "Unable to open subscription settings");
+        _showManualInstructions(context);
       }
     } catch (e) {
-      debugPrint("❌ Error launching URL: $e");
-      toastMessage(message: "Unable to open subscription settings");
+      debugPrint("❌ Error: $e");
+      _showManualInstructions(context);
     }
   }
+
+  /// Show manual instructions
+  void _showManualInstructions(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Manage Subscription"),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text("To manage your subscription:"),
+            const SizedBox(height: 16),
+            if (Platform.isAndroid) ...[
+              const Text("1. Open Google Play Store"),
+              const Text("2. Tap profile icon → Subscriptions"),
+            ] else ...[
+              const Text("1. Open Settings app"),
+              const Text("2. Tap your name → Subscriptions"),
+            ],
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text("Got it"),
+          ),
+        ],
+      ),
+    );
+  }
+
 
   /// Get remaining days
   String getDaysRemaining() {

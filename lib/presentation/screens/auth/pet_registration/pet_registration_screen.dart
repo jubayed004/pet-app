@@ -252,7 +252,7 @@ class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
                                     ),
                                   )
                                   : CustomNetworkImage(
-                                    imageUrl: "https://www.rawpixel.com/image/12143311/png",
+                                    imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTthOAFH-LW3IUWWsgGR8i3JhmzNnROSght6-j-mDZ3Wv-y71FhVkDItwtASsD9fSFKzp0&usqp=CAU",
                                     height: 156.h,
                                     borderRadius: BorderRadius.circular(6),
                                     width: MediaQuery.of(context).size.width,

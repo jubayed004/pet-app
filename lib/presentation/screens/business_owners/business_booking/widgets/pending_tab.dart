@@ -25,7 +25,11 @@ class PendingTab extends StatelessWidget {
             final servicesImages = item.serviceId?.servicesImages;
             final img = _firstImage(servicesImages);
             final date = _formatDate(item.bookingDate);
-
+            final bookingTime  = item.bookingTime ?? "";
+            final checkInDate = DateFormat("dd MMMM yyyy").format((item.checkInDate ?? DateTime.now()).toLocal(),);
+            final checkInTime = item.checkInTime ?? "";
+            final checkOutDate = DateFormat("dd MMMM yyyy").format((item.checkOutDate ?? DateTime.now()).toLocal(),);
+            final checkOutTime = item.checkOutTime ?? "";
             // Prefer shopLogo if available, else pass service type to map icon
             final logoKeyOrUrl =
             (shopLogo != null && shopLogo.toString().isNotEmpty)
@@ -40,6 +44,11 @@ class PendingTab extends StatelessWidget {
               topTitle: service,
               imagePath: img,
               visitingDate: date,
+              bookingTime: bookingTime,
+              checkInDate:checkInDate ,
+              checkInTime: checkInTime,
+              checkOutDate: checkOutDate,
+              checkOutTime: checkOutTime,
               mainTitle: selectedService,
 
               phoneNumber: phone,

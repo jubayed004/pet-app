@@ -72,7 +72,7 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
   }
 
   SliverAppBar _buildSliverAppBar() {
-    bool isLoading = true;
+
     return SliverAppBar(
       floating: true,
       snap: true,

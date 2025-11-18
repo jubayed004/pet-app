@@ -59,7 +59,6 @@ class ActivePromotionSection extends StatelessWidget {
                   final imageUrl = imgs.isNotEmpty
                       ? imgs.first
                       : "assets/images/default_promotion_image.png";
-
                   return ClipRRect(
                     borderRadius: BorderRadius.circular(12.r),
                     child: Image.network(

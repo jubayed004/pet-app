@@ -106,7 +106,7 @@ class MyAppointmentContainer extends StatelessWidget {
                     ),
                   ],
                 ),
-                if(["PENDING", "COMPLETED","CANCELLED"].contains(bookingStatus))Container(
+                if(["PENDING", "COMPLETED","CANCELLED","APPROVED",].contains(bookingStatus))Container(
                   padding: padding8,
                   decoration: BoxDecoration(
                     color: bookingStatus == "PENDING" ? Color(0xffE0F2FE) :  Color(0xffDCFCE7),

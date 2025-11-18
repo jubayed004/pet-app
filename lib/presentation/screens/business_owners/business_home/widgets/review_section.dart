@@ -15,8 +15,6 @@ class ReviewSection extends StatelessWidget {
   GetControllers.instance.getBusinessReviewController();
   @override
   Widget build(BuildContext context) {
-
-
     return SliverToBoxAdapter(
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.w,vertical: 24.h),

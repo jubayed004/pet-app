@@ -30,7 +30,7 @@ class BusinessServiceScreen extends StatelessWidget {
         child: CustomScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
           slivers: [
-            CustomDefaultAppbar(title: "Services"),
+            CustomDefaultAppbar(title: "Services",),
             SliverToBoxAdapter(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,

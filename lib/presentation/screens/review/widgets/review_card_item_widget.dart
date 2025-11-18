@@ -30,7 +30,7 @@ class ReviewCardItem extends StatelessWidget {
    final date= DateFormat(
       "dd MMMM yyyy",
     ).format(item?.createdAt ?? DateTime.now());
-    print("==================Rating 1111===========${int.tryParse(rate.toString()) ?? 0}");
+    print("==================Rating ===========${int.tryParse(rate.toString()) ?? 0}===================Rating===========");
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 8.sp, horizontal: 12.w),
       child: Row(
@@ -38,7 +38,7 @@ class ReviewCardItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomNetworkImage(
-            imageUrl: "${ApiUrl.imageBase}$image",
+            imageUrl: userImage,
             boxShape: BoxShape.circle,
             height: 40.w,
             width: 40.w,
@@ -61,10 +61,7 @@ class ReviewCardItem extends StatelessWidget {
                   ],
                 ),
                 StarRating(rating: int.tryParse(rate.toString()) ?? 0, size: 15.sp,),
-
                 ExpandableText(text: comment ?? ""),
-
-
 
               ],
             ),

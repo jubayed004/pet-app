@@ -221,21 +221,15 @@ class BusinessAdvertisementController extends GetxController {
       final response = await apiClient.get(
         url: ApiUrl.getAdvertisement(),
       );
-
-
    log.d('Get Advertisement Response: ${response.statusCode}');
-
-
       if (response.statusCode == 200) {
         // Parse response
         try {
           final newData = DetailsAdvertisementModel.fromJson(response.body);
           profile.value = newData;
-
           final adCount = newData.advertisement?.length ?? 0;
-
           if (adCount == 0) {
-            loadingMethod(Status.noDataFound);
+            loadingMethod(Status.completed);
           } else {
             loadingMethod(Status.completed);
           }

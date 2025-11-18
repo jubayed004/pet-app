@@ -169,7 +169,7 @@ class BusinessAllPetsScreen extends StatelessWidget {
                 children: [
                   Container(
                     padding: EdgeInsets.all(24.w),
-                    decoration: BoxDecoration(color: AppColors.purple200.withOpacity(0.3), shape: BoxShape.circle),
+                    decoration: BoxDecoration(color: AppColors.purple200.withValues(alpha: 0.3), shape: BoxShape.circle),
                     child: Icon(Iconsax.pet5, size: 80.sp, color: AppColors.purple500),
                   ),
                   SizedBox(height: 24.h),
@@ -180,7 +180,7 @@ class BusinessAllPetsScreen extends StatelessWidget {
                     style: TextStyle(fontSize: 14.sp, color: Colors.grey[600], height: 1.5),
                     textAlign: TextAlign.center,
                   ),
-                  SizedBox(height: 32.h),
+       /*           SizedBox(height: 32.h),
                   ElevatedButton.icon(
                     onPressed: () => controller.getBusinessAllPets(),
                     icon: Icon(Iconsax.refresh, size: 20.sp),
@@ -192,7 +192,7 @@ class BusinessAllPetsScreen extends StatelessWidget {
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
                       elevation: 0,
                     ),
-                  ),
+                  ),*/
                 ],
               ),
             ),

@@ -264,7 +264,6 @@ class AuthController extends GetxController {
   Future<void> activeAccount({required String email, required String code}) async {
     try {
       activeMethod(true);
-
       final body = {
         "email": email,
         "code":code

@@ -14,13 +14,12 @@ class SubscriptionScreen extends StatefulWidget {
 }
 
 class _SubscriptionScreenState extends State<SubscriptionScreen> {
-  late final controller;
+   final controller = GetControllers.instance.getSubscriptionController();
   int selectedPlanIndex = 1;
 
   @override
   void initState() {
     super.initState();
-    controller = GetControllers.instance.getSubscriptionController();
     _initializeSubscription();
   }
 
@@ -482,144 +481,138 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   }
 
   Widget _buildActiveSubscriptionView(BuildContext context, ThemeData theme) {
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          children: [
-            // Header
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.arrow_back),
-                  onPressed: () => Navigator.of(context).pop(),
+    return Padding(
+      padding: const EdgeInsets.all(24),
+      child: Column(
+        children: [
+          // Header
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () =>AppRouter.route.pop(RoutePath.subscriptionScreen),
+              ),
+              const Text(
+                'Subscription',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
                 ),
-                const Text(
-                  'Subscription',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(width: 48),
-              ],
+              ),
+              const SizedBox(width: 48),
+            ],
+          ),
+
+          const SizedBox(height: 40),
+
+          // Success Icon
+          Container(
+            width: 100,
+            height: 100,
+            decoration: BoxDecoration(
+              color: Colors.green.shade100,
+              shape: BoxShape.circle,
             ),
+            child: Icon(
+              Icons.check_circle,
+              size: 60,
+              color: Colors.green.shade600,
+            ),
+          ),
 
-            const SizedBox(height: 40),
+          const SizedBox(height: 24),
 
-            // Success Icon
-            Container(
-              width: 100,
-              height: 100,
+          Text(
+            'Premium Active',
+            style: theme.textTheme.headlineMedium?.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+
+          const SizedBox(height: 12),
+
+          Obx(() {
+            return Text(
+              controller.getDaysRemaining(),
+              style: theme.textTheme.bodyLarge?.copyWith(
+                color: Colors.black54,
+              ),
+            );
+          }),
+
+          const SizedBox(height: 32),
+
+          // Subscription Details Card
+          Obx(() {
+            final entitlement = controller.activeEntitlement;
+            return Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: Colors.green.shade100,
-                shape: BoxShape.circle,
+                color: Colors.grey.shade100,
+                borderRadius: BorderRadius.circular(16),
               ),
-              child: Icon(
-                Icons.check_circle,
-                size: 60,
-                color: Colors.green.shade600,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildDetailRow(
+                    'Product',
+                    entitlement?.productIdentifier ?? 'Unknown',
+                  ),
+                  const Divider(height: 24),
+                  _buildDetailRow(
+                    'Started',
+                    controller.getFormattedDate(
+                      entitlement?.originalPurchaseDate,
+                    ),
+                  ),
+                  const Divider(height: 24),
+                  _buildDetailRow(
+                    'Renews',
+                    controller.getFormattedDate(
+                      entitlement?.expirationDate,
+                    ),
+                  ),
+                ],
               ),
-            ),
+            );
+          }),
 
-            const SizedBox(height: 24),
 
-            Text(
-              'Premium Active',
-              style: theme.textTheme.headlineMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
 
-            const SizedBox(height: 12),
-
-            Obx(() {
-              return Text(
-                controller.getDaysRemaining(),
-                style: theme.textTheme.bodyLarge?.copyWith(
-                  color: Colors.black54,
-                ),
-              );
-            }),
-
-            const SizedBox(height: 32),
-
-            // Subscription Details Card
-            Obx(() {
-              final entitlement = controller.activeEntitlement;
-              return Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade100,
+          // Replace the existing Manage Subscription Button with this:
+          SizedBox(
+            width: double.infinity,
+            height: 56,
+            child: OutlinedButton(
+              onPressed: () => controller.launchManageSubscriptions(context),
+              style: OutlinedButton.styleFrom(
+                side: const BorderSide(color: Colors.blue),
+                shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildDetailRow(
-                      'Product',
-                      entitlement?.productIdentifier ?? 'Unknown',
-                    ),
-                    const Divider(height: 24),
-                    _buildDetailRow(
-                      'Started',
-                      controller.getFormattedDate(
-                        entitlement?.originalPurchaseDate,
-                      ),
-                    ),
-                    const Divider(height: 24),
-                    _buildDetailRow(
-                      'Renews',
-                      controller.getFormattedDate(
-                        entitlement?.expirationDate,
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            }),
-
-            const Spacer(),
-
-            // Manage Subscription Button
-            SizedBox(
-              width: double.infinity,
-              height: 56,
-              child: OutlinedButton(
-                onPressed: () {
-                  // Open subscription management (App Store/Play Store)
-                  // This typically opens the system subscription settings
-                },
-                style: OutlinedButton.styleFrom(
-                  side: const BorderSide(color: Colors.blue),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                ),
-                child: const Text(
-                  'Manage Subscription',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
+              ),
+              child: const Text(
+                'Manage Subscription',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
             ),
+          ),
+          const SizedBox(height: 16),
 
-            const SizedBox(height: 16),
-
-            Text(
-              'Manage your subscription in App Store or Play Store settings',
-              style: TextStyle(
-                fontSize: 12,
-                color: Colors.grey.shade600,
-              ),
-              textAlign: TextAlign.center,
+          Text(
+            'Manage your subscription in App Store or Play Store settings',
+            style: TextStyle(
+              fontSize: 12,
+              color: Colors.grey.shade600,
             ),
-          ],
-        ),
+            textAlign: TextAlign.center,
+          ),
+        ],
       ),
     );
   }

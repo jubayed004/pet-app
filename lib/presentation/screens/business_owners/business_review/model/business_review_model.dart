@@ -1,9 +1,19 @@
+// To parse this JSON data, do
+//
+//     final businessReviewModel = businessReviewModelFromJson(jsonString);
+
+import 'dart:convert';
+
+BusinessReviewModel businessReviewModelFromJson(String str) => BusinessReviewModel.fromJson(json.decode(str));
+
+String businessReviewModelToJson(BusinessReviewModel data) => json.encode(data.toJson());
+
 class BusinessReviewModel {
   final bool? success;
   final String? message;
   final Filters? filters;
   final Pagination? pagination;
-  final double? avgRating;
+  final int? avgRating;
   final List<ReviewItem>? reviews;
 
   BusinessReviewModel({
@@ -20,7 +30,7 @@ class BusinessReviewModel {
     message: json["message"],
     filters: json["filters"] == null ? null : Filters.fromJson(json["filters"]),
     pagination: json["pagination"] == null ? null : Pagination.fromJson(json["pagination"]),
-    avgRating: json["avgRating"]?.toDouble(),
+    avgRating: json["avgRating"],
     reviews: json["reviews"] == null ? [] : List<ReviewItem>.from(json["reviews"]!.map((x) => ReviewItem.fromJson(x))),
   );
 
@@ -75,7 +85,7 @@ class Pagination {
 class ReviewItem {
   final String? id;
   final String? comment;
-  final double? rating;
+  final int? rating;
   final String? businessId;
   final String? ownerId;
   final UserId? userId;
@@ -100,7 +110,7 @@ class ReviewItem {
   factory ReviewItem.fromJson(Map<String, dynamic> json) => ReviewItem(
     id: json["_id"],
     comment: json["comment"],
-    rating: json["rating"]?.toDouble(),
+    rating: json["rating"],
     businessId: json["businessId"],
     ownerId: json["ownerId"],
     userId: json["userId"] == null ? null : UserId.fromJson(json["userId"]),

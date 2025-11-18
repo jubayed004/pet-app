@@ -9,11 +9,9 @@ import 'package:pet_app/service/api_url.dart';
 class BusinessReviewController extends GetxController {
   final ApiClient apiClient = serviceLocator<ApiClient>();
 
-  /// Paging controller for infinite scroll
   final PagingController<int, ReviewItem> pagingController =
   PagingController(firstPageKey: 1);
 
-  /// Holds average rating
   RxDouble avgRating = 0.0.obs;
 
   @override
@@ -33,10 +31,8 @@ class BusinessReviewController extends GetxController {
       );
       if (response.statusCode == 200) {
         final data = BusinessReviewModel.fromJson(response.body);
-        /// Save average rating
-        avgRating.value = data.avgRating ?? 0.0;
+        avgRating.value = (data.avgRating ?? 0.0).toDouble();
         final newItems = data.reviews ?? [];
-        /// Pagination check
         final isLastPage = newItems.length < 10;
         if (isLastPage) {
           pagingController.appendLastPage(newItems);
