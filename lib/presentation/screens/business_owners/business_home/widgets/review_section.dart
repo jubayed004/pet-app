@@ -11,8 +11,7 @@ import 'package:pet_app/utils/app_colors/app_colors.dart';
 
 class ReviewSection extends StatelessWidget {
    ReviewSection({super.key});
-  final businessReviewController =
-  GetControllers.instance.getBusinessReviewController();
+   final businessHomeBrandController = GetControllers.instance.getBusinessHomeController();
   @override
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
@@ -46,7 +45,7 @@ class ReviewSection extends StatelessWidget {
                             ),
                             Gap(8.h),
                             RatingBarIndicator(
-                              rating: businessReviewController.avgRating.value,
+                              rating: businessHomeBrandController.avgRating.value,
                               itemBuilder: (context, _) =>
                               const Icon(Icons.star, color: Colors.amber),
                               itemCount: 5,
@@ -58,16 +57,16 @@ class ReviewSection extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             CustomText(
-                              text: businessReviewController.avgRating.value.toStringAsFixed(1),
+                              text: businessHomeBrandController.avgRating.value.toStringAsFixed(1),
                               fontSize: 24.sp,
                               fontWeight: FontWeight.w700,
                             ),
-                            CustomText(
+                         /*   CustomText(
                               text:
-                              "${businessReviewController.pagingController.itemList?.length ?? 0} Ratings",
+                              "${businessHomeBrandController.review.itemList?.length ?? 0} Ratings",
                               fontSize: 10.sp,
                               fontWeight: FontWeight.w500,
-                            ),
+                            ),*/
                           ],
                         ),
                       ],

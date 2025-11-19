@@ -1,19 +1,9 @@
-// To parse this JSON data, do
-//
-//     final businessReviewModel = businessReviewModelFromJson(jsonString);
-
-import 'dart:convert';
-
-BusinessReviewModel businessReviewModelFromJson(String str) => BusinessReviewModel.fromJson(json.decode(str));
-
-String businessReviewModelToJson(BusinessReviewModel data) => json.encode(data.toJson());
-
 class BusinessReviewModel {
   final bool? success;
   final String? message;
   final Filters? filters;
   final Pagination? pagination;
-  final int? avgRating;
+  final num? avgRating;
   final List<ReviewItem>? reviews;
 
   BusinessReviewModel({
@@ -85,7 +75,7 @@ class Pagination {
 class ReviewItem {
   final String? id;
   final String? comment;
-  final int? rating;
+  final num? rating;
   final String? businessId;
   final String? ownerId;
   final UserId? userId;

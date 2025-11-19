@@ -1,4 +1,4 @@
-class ApiUrl {
+  class ApiUrl {
   ApiUrl._();
   static String base = "http://13.50.247.46/api";
   static String imageBase = "http://13.50.247.46/";

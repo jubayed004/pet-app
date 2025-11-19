@@ -36,12 +36,13 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
   void initState() {
     super.initState();
     businessHomeBrandController.getBusinessHomeBrand();
+    businessHomeBrandController.getHomeReviews(page: 1);
     businessAdvertisementController.getDetailsAdvertisement();
     businessAllPetController.getBusinessAllPets();
-    businessReviewController.pagingController.addPageRequestListener((pageKey) {
+ /*   businessReviewController.pagingController.addPageRequestListener((pageKey) {
       businessReviewController.getReviews(page: pageKey);
-    });
-    businessReviewController.getReviews(page: 1);
+    });*/
+   /* businessReviewController.getReviews(page: 1);*/
   }
 
   @override
@@ -53,9 +54,10 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
         onRefresh: () async {
           await businessAllPetController.getBusinessAllPets();
           await businessHomeBrandController.getBusinessHomeBrand();
+          await businessHomeBrandController.getHomeReviews(page: 1);
           await businessAdvertisementController.getDetailsAdvertisement();
           businessReviewController.pagingController.refresh();
-          businessReviewController.getReviews(page: 1);
+        /*  businessReviewController.getReviews(page: 1);*/
         },
         child: CustomScrollView(
           slivers: [

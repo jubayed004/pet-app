@@ -20,7 +20,6 @@ class BusinessReviewController extends GetxController {
       getReviews(page: pageKey);
     });
 
-     getReviews(page: 1);
     super.onInit();
   }
 
@@ -31,15 +30,15 @@ class BusinessReviewController extends GetxController {
       );
       if (response.statusCode == 200) {
         final data = BusinessReviewModel.fromJson(response.body);
-        avgRating.value = (data.avgRating ?? 0.0).toDouble();
         final newItems = data.reviews ?? [];
-        final isLastPage = newItems.length < 10;
-        if (isLastPage) {
+        if (newItems.isEmpty) {
           pagingController.appendLastPage(newItems);
         } else {
+          avgRating.value = (data.avgRating ?? 0.0).toDouble();
           pagingController.appendPage(newItems, page + 1);
         }
       } else {
+
         pagingController.error = 'Failed to load data';
       }
     } catch (e) {
