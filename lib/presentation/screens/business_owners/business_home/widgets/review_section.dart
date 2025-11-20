@@ -8,28 +8,32 @@ import 'package:pet_app/core/route/route_path.dart';
 import 'package:pet_app/core/route/routes.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
+import 'package:shadify/shadify.dart';
 
 class ReviewSection extends StatelessWidget {
-   ReviewSection({super.key});
-   final businessHomeBrandController = GetControllers.instance.getBusinessHomeController();
+  ReviewSection({super.key});
+
+  final businessHomeBrandController =
+  GetControllers.instance.getBusinessHomeController();
+
   @override
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.w,vertical: 24.h),
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
         child: GestureDetector(
           onTap: () {
             AppRouter.route.pushNamed(RoutePath.businessReviewScreen);
           },
-          child: Card(
-            elevation: 2,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.r),
-            ),
-            child: Padding(
-              padding: EdgeInsets.all(12.w),
-              child: Obx(
-                    () => Column(
+          child: Obx(() {
+            return Card(
+              elevation: 2,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+              child: Padding(
+                padding: EdgeInsets.all(12.w),
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
@@ -45,7 +49,8 @@ class ReviewSection extends StatelessWidget {
                             ),
                             Gap(8.h),
                             RatingBarIndicator(
-                              rating: businessHomeBrandController.avgRating.value,
+                              rating:
+                              businessHomeBrandController.avgRating.value,
                               itemBuilder: (context, _) =>
                               const Icon(Icons.star, color: Colors.amber),
                               itemCount: 5,
@@ -57,16 +62,17 @@ class ReviewSection extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             CustomText(
-                              text: businessHomeBrandController.avgRating.value.toStringAsFixed(1),
+                              text: businessHomeBrandController.avgRating.value
+                                  .toStringAsFixed(1),
                               fontSize: 24.sp,
                               fontWeight: FontWeight.w700,
                             ),
-                         /*   CustomText(
+                            CustomText(
                               text:
-                              "${businessHomeBrandController.review.itemList?.length ?? 0} Ratings",
+                              "${businessHomeBrandController.review?.reviews?.length ?? 0} Ratings",
                               fontSize: 10.sp,
                               fontWeight: FontWeight.w500,
-                            ),*/
+                            ),
                           ],
                         ),
                       ],
@@ -82,13 +88,16 @@ class ReviewSection extends StatelessWidget {
                         color: AppColors.purple500,
                         decoration: TextDecoration.underline,
                         decorationColor: AppColors.purple500,
-                      ),
+                      )
                     ),
                   ],
                 ),
               ),
-            ),
-          ),
+            ).withShadifyLoading(
+              loading: businessHomeBrandController.homeReviewsLoading.value,
+
+            );
+          }),
         ),
       ),
     );

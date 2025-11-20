@@ -131,20 +131,16 @@ class ChatController extends GetxController {
     required TextEditingController messageController,
   }) async {
     try {
-      // Check if blocked before sending
       if (isBlocked.value) {
         toastMessage(message: "You have blocked this user. Unblock to send messages.");
         return;
       }
-
       if (isBlockedByOther.value) {
         toastMessage(message: "You cannot send messages to this user.");
         return;
       }
-
       if (callMessageSend.value) return;
       callMessageSend.value = true;
-
       debugPrint("Is Socket Connected: ${SocketApi.socket!.connected}");
       showPopUpLoader(context: context);
 

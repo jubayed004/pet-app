@@ -25,6 +25,11 @@ class OngoingTab extends StatelessWidget {
             final servicesImages = item.serviceId?.servicesImages;
             final img = _firstImage(servicesImages);
             final date = _formatDate(item.bookingDate);
+            final bookingTime  = item.bookingTime ?? "";
+            final checkInDate = DateFormat("dd MMMM yyyy").format((item.checkInDate ?? DateTime.now()).toLocal(),);
+            final checkInTime = item.checkInTime ?? "";
+            final checkOutDate = DateFormat("dd MMMM yyyy").format((item.checkOutDate ?? DateTime.now()).toLocal(),);
+            final checkOutTime = item.checkOutTime ?? "";
             final logoKeyOrUrl =
             (shopLogo != null && shopLogo.toString().isNotEmpty)
                 ? shopLogo.toString()
@@ -39,6 +44,11 @@ class OngoingTab extends StatelessWidget {
               topTitle: service,
               imagePath: img,
               visitingDate: date,
+              bookingTime: bookingTime,
+              checkInDate:checkInDate ,
+              checkInTime: checkInTime,
+              checkOutDate: checkOutDate,
+              checkOutTime: checkOutTime,
               mainTitle: item.selectedService ?? service,
 
               phoneNumber: phone,

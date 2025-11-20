@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:gap/gap.dart';
 import 'package:pet_app/controller/get_controllers.dart';
+import 'package:pet_app/presentation/components/custom_loader/custom_loader.dart';
 import 'package:pet_app/presentation/components/custom_netwrok_image/custom_network_image.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:pet_app/presentation/no_internet/error_card.dart';
@@ -10,6 +11,7 @@ import 'package:pet_app/presentation/no_internet/more_data_error_card.dart';
 import 'package:pet_app/presentation/no_internet/no_data_card.dart';
 import 'package:pet_app/presentation/no_internet/no_internet_card.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:pet_app/presentation/widget/custom_loader/custom_loader.dart';
 import 'package:pet_app/presentation/widget/loading/loading_widget.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
 import 'package:pet_app/utils/app_const/app_const.dart';
@@ -38,7 +40,7 @@ class BrandSection extends StatelessWidget {
 
               switch (status) {
                 case Status.loading:
-                  return  Center(child: LoadingWidget(color: Colors.pink,));
+                  return  Center(child: CustomLoader());
                 case Status.error:
                   return Center(
                       child: ErrorCard(onTap: () => controller.getBusinessHomeBrand()));

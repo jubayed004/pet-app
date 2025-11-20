@@ -31,7 +31,6 @@ class _NavigationPageState extends State<NavigationPage> {
         children: [
           Expanded(
             child: Obx(() {
-              // Replacing IndexedStack with direct page management
               return _controller.getPages()[_controller.selectedNavIndex.value];
             }),
           ),
@@ -42,7 +41,7 @@ class _NavigationPageState extends State<NavigationPage> {
         decoration: BoxDecoration(
           color: AppColors.primaryColor,
           borderRadius: BorderRadius.vertical(top: Radius.circular(5)),
-          boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.2), blurRadius: 20.r)],
+          boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.2), blurRadius: 20.r)],
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -68,7 +67,7 @@ class _NavigationPageState extends State<NavigationPage> {
                           decoration: BoxDecoration(
                             color: Colors.white,
                             shape: BoxShape.circle,
-                            boxShadow: [BoxShadow(color: AppColors.blueColor.withOpacity(0.2), blurRadius: 4.r, offset: Offset(0, 4))],
+                            boxShadow: [BoxShadow(color: AppColors.blueColor.withValues(alpha: 0.2), blurRadius: 4.r, offset: Offset(0, 4))],
                           ),
                           padding: EdgeInsets.all(6),
                           child: AnimatedContainer(
@@ -78,7 +77,7 @@ class _NavigationPageState extends State<NavigationPage> {
                             decoration: BoxDecoration(
                               color: isSelected ? AppColors.primaryColor : Colors.transparent,
                               shape: BoxShape.circle,
-                              boxShadow: [BoxShadow(color: AppColors.blueColor.withOpacity(0.2), blurRadius: 4.r, offset: Offset(0, 4))],
+                              boxShadow: [BoxShadow(color: AppColors.blueColor.withValues(alpha: 0.2), blurRadius: 4.r, offset: Offset(0, 4))],
                             ),
                             child: SvgPicture.asset(
                               _controller.icons[index],

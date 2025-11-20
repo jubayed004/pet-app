@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:intl/intl.dart';
 import 'package:pet_app/controller/get_controllers.dart';
 import 'package:pet_app/helper/extension/base_extension.dart';
 import 'package:pet_app/helper/local_db/local_db.dart';
 import 'package:pet_app/presentation/components/custom_button/custom_defualt_appbar.dart';
+import 'package:pet_app/presentation/components/custom_loader/custom_loader.dart';
+import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:pet_app/presentation/no_internet/error_card.dart';
 import 'package:pet_app/service/socket_service.dart';
+import 'package:shadify/shadify.dart';
 import 'model/conversation_model.dart';
 import 'widget/message_card_item_widget.dart';
 
@@ -70,16 +74,20 @@ class _InboxPageState extends State<InboxPage> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: CustomText(text:"Inbox",fontWeight: FontWeight.w600,fontSize: 20.sp,),scrolledUnderElevation: 0,
+        backgroundColor: Colors.transparent,
+      ),
       backgroundColor: Colors.white,
       body: FutureBuilder(
         future: DBHelper().getUserId(),
         builder: (_, AsyncSnapshot<String> id) {
           if (!id.hasData) {
-            return const Center(child: CircularProgressIndicator());
+            return const Center(child: CustomLoader());
           }
           return CustomScrollView(
             slivers: [
-              const CustomDefaultAppbar(title: "Inbox"),
               SliverFillRemaining(
                 child: RefreshIndicator(
                   onRefresh: () async {

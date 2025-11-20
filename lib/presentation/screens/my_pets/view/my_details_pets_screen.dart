@@ -34,284 +34,286 @@ class _MyDetailsPetsScreenState extends State<MyDetailsPetsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,scrolledUnderElevation: 0,
+        backgroundColor: Colors.transparent,
+        title: CustomText(text: "Pet Details",fontSize: 16.sp,fontWeight: FontWeight.w600,),
+      ),
       backgroundColor: Colors.grey.shade50,
       body: RefreshIndicator(
         onRefresh: () async {
           await controller.myAllPetDetails(id: widget.id);
         },
         color: AppColors.primaryColor,
-        child: CustomScrollView(
-          slivers: [
-            Obx(() {
-              return CustomDefaultAppbar(
-                  title: controller.details.value.pet?.name ?? "Pet Details");
-            }),
-
-            // Hero Image Section
-            SliverToBoxAdapter(
-              child: Obx(() {
-                final petPhoto = controller.details.value.pet?.petPhoto ?? "";
-                return Stack(
-                  children: [
-                    petPhoto.isNotEmpty
-                        ? Image.network(
-                      petPhoto,
-                      fit: BoxFit.cover,
-                      width: double.infinity,
-                      height: 280.h,
-                      errorBuilder: (context, error, stackTrace) {
-                        return _buildPlaceholderImage();
-                      },
-                    )
-                        : _buildPlaceholderImage(),
-                    // Gradient overlay
-                    Container(
-                      height: 280.h,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            Colors.transparent,
-                            Colors.black.withOpacity(0.6),
-                          ],
+        child: SafeArea(
+          child: CustomScrollView(
+            slivers: [
+              // Hero Image Section
+              SliverToBoxAdapter(
+                child: Obx(() {
+                  final petPhoto = controller.details.value.pet?.petPhoto ?? "";
+                  return Stack(
+                    children: [
+                      petPhoto.isNotEmpty
+                          ? Image.network(
+                        petPhoto,
+                        fit: BoxFit.cover,
+                        width: double.infinity,
+                        height: 280.h,
+                        errorBuilder: (context, error, stackTrace) {
+                          return _buildPlaceholderImage();
+                        },
+                      )
+                          : _buildPlaceholderImage(),
+                      // Gradient overlay
+                      Container(
+                        height: 280.h,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              Colors.transparent,
+                              Colors.black.withOpacity(0.6),
+                            ],
+                          ),
                         ),
                       ),
+                    ],
+                  );
+                }),
+              ),
+          
+              // Main Content
+              SliverToBoxAdapter(
+                child: Transform.translate(
+                  offset: Offset(0, -30.h),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade50,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(30.r),
+                        topRight: Radius.circular(30.r),
+                      ),
                     ),
-                  ],
-                );
-              }),
-            ),
-
-            // Main Content
-            SliverToBoxAdapter(
-              child: Transform.translate(
-                offset: Offset(0, -30.h),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade50,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(30.r),
-                      topRight: Radius.circular(30.r),
-                    ),
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.all(20.w),
-                    child: Column(
-                      children: [
-                        // Pet Info Card
-                        Obx(() {
-                          final pet = controller.details.value.pet;
-                          return Container(
-                            padding: EdgeInsets.all(20.w),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(20.r),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.06),
-                                  blurRadius: 10,
-                                  offset: const Offset(0, 4),
-                                ),
-                              ],
-                            ),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                    children: [
-                                      CustomText(
-                                        text: pet?.name ?? "",
-                                        textAlign: TextAlign.start,
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 24.sp,
-                                      ),
-                                      Gap(8.h),
-                                      Container(
-                                        padding: EdgeInsets.symmetric(
-                                          horizontal: 12.w,
-                                          vertical: 6.h,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          color: AppColors.purple500
-                                              .withOpacity(0.1),
-                                          borderRadius:
-                                          BorderRadius.circular(20.r),
-                                        ),
-                                        child: CustomText(
-                                          text: pet?.gender ?? "",
+                    child: Padding(
+                      padding: EdgeInsets.all(20.w),
+                      child: Column(
+                        children: [
+                          // Pet Info Card
+                          Obx(() {
+                            final pet = controller.details.value.pet;
+                            return Container(
+                              padding: EdgeInsets.all(20.w),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(20.r),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.06),
+                                    blurRadius: 10,
+                                    offset: const Offset(0, 4),
+                                  ),
+                                ],
+                              ),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                      children: [
+                                        CustomText(
+                                          text: pet?.name ?? "",
                                           textAlign: TextAlign.start,
-                                          fontWeight: FontWeight.w600,
-                                          color: AppColors.purple500,
-                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 24.sp,
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  decoration: BoxDecoration(
-                                    color:
-                                    AppColors.primaryColor.withOpacity(0.1),
-                                    borderRadius: BorderRadius.circular(15.r),
-                                  ),
-                                  child: IconButton(
-                                    onPressed: () {
-                                      AppRouter.route.pushNamed(
-                                        RoutePath.editMyPetsScreen,
-                                        extra: {
-                                          "id": pet?.id ?? "",
-                                          "name": pet?.name ?? "",
-                                          "animalType": pet?.animalType ?? "",
-                                          "breed": pet?.breed ?? "",
-                                          "age": pet?.age.toString() ?? "",
-                                          "gender": pet?.gender ?? "",
-                                          "weight": pet?.weight.toString() ?? "",
-                                          "height": pet?.height.toString() ?? "",
-                                          "color": pet?.color ?? "",
-                                        },
-                                      );
-                                    },
-                                    icon: Icon(
-                                      Iconsax.edit,
-                                      color: AppColors.primaryColor,
-                                      size: 24.sp,
+                                        Gap(8.h),
+                                        Container(
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: 12.w,
+                                            vertical: 6.h,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: AppColors.purple500
+                                                .withOpacity(0.1),
+                                            borderRadius:
+                                            BorderRadius.circular(20.r),
+                                          ),
+                                          child: CustomText(
+                                            text: pet?.gender ?? "",
+                                            textAlign: TextAlign.start,
+                                            fontWeight: FontWeight.w600,
+                                            color: AppColors.purple500,
+                                            fontSize: 14.sp,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          );
-                        }),
-                        Gap(20.h),
-
-                        // About Section
-                        _buildSectionHeader(
-                          icon: Icons.info_outline,
-                          title: "About",
-                          subtitle: controller.details.value.pet?.name ?? "",
-                        ),
-                        Gap(12.h),
-
-                        // Details Cards
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height/6,
-                          child: Obx(() {
-                            final pet = controller.details.value.pet;
-                            return ListView(
-                              scrollDirection: Axis.horizontal,
-                              children: [
-                                _buildModernDetailsCard(
-                                  title: "Age",
-                                  value: "${pet?.age ?? 0}",
-                                  icon: Iconsax.calendar,
-                                  color: Colors.blue,
-                                ),
-                                _buildModernDetailsCard(
-                                  title: "Type",
-                                  value: pet?.animalType ?? "",
-                                  icon: Iconsax.category,
-                                  color: Colors.purple,
-                                ),
-                                _buildModernDetailsCard(
-                                  title: "Weight",
-                                  value: "${pet?.weight ?? 0} kg",
-                                  icon: Iconsax.weight,
-                                  color: Colors.orange,
-                                ),
-                                _buildModernDetailsCard(
-                                  title: "Height",
-                                  value: "${pet?.height ?? 0} cm",
-                                  icon: Iconsax.arrow_up_3,
-                                  color: Colors.green,
-                                ),
-                                _buildModernDetailsCard(
-                                  title: "Color",
-                                  value: pet?.color ?? "",
-                                  icon: Iconsax.colorfilter,
-                                  color: Colors.red,
-                                ),
-                                _buildModernDetailsCard(
-                                  title: "Breed",
-                                  value: pet?.breed ?? "",
-                                  icon: Iconsax.share,
-                                  color: Colors.teal,
-                                ),
-                              ],
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      color:
+                                      AppColors.primaryColor.withOpacity(0.1),
+                                      borderRadius: BorderRadius.circular(15.r),
+                                    ),
+                                    child: IconButton(
+                                      onPressed: () {
+                                        AppRouter.route.pushNamed(
+                                          RoutePath.editMyPetsScreen,
+                                          extra: {
+                                            "id": pet?.id ?? "",
+                                            "name": pet?.name ?? "",
+                                            "animalType": pet?.animalType ?? "",
+                                            "breed": pet?.breed ?? "",
+                                            "age": pet?.age.toString() ?? "",
+                                            "gender": pet?.gender ?? "",
+                                            "weight": pet?.weight.toString() ?? "",
+                                            "height": pet?.height.toString() ?? "",
+                                            "color": pet?.color ?? "",
+                                          },
+                                        );
+                                      },
+                                      icon: Icon(
+                                        Iconsax.edit,
+                                        color: AppColors.primaryColor,
+                                        size: 24.sp,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             );
                           }),
-                        ),
-                        Gap(24.h),
-
-                        // Health Section Header
-                        _buildSectionHeader(
-                          icon: Icons.health_and_safety,
-                          title: "Health Status",
-                          subtitle:
-                          controller.details.value.pet?.name ?? "Pet",
-                          actionText: "See All",
-                          onActionTap: () {
-                            AppRouter.route.pushNamed(
-                              RoutePath.petHealthScreen,
-                              extra: widget.id,
-                            );
-                          },
-                        ),
-                      ],
+                          Gap(20.h),
+          
+                          // About Section
+                          _buildSectionHeader(
+                            icon: Icons.info_outline,
+                            title: "About",
+                            subtitle: controller.details.value.pet?.name ?? "",
+                          ),
+                          Gap(12.h),
+          
+                          // Details Cards
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height/6,
+                            child: Obx(() {
+                              final pet = controller.details.value.pet;
+                              return ListView(
+                                scrollDirection: Axis.horizontal,
+                                children: [
+                                  _buildModernDetailsCard(
+                                    title: "Age",
+                                    value: "${pet?.age ?? 0}",
+                                    icon: Iconsax.calendar,
+                                    color: Colors.blue,
+                                  ),
+                                  _buildModernDetailsCard(
+                                    title: "Type",
+                                    value: pet?.animalType ?? "",
+                                    icon: Iconsax.category,
+                                    color: Colors.purple,
+                                  ),
+                                  _buildModernDetailsCard(
+                                    title: "Weight",
+                                    value: "${pet?.weight ?? 0} kg",
+                                    icon: Iconsax.weight,
+                                    color: Colors.orange,
+                                  ),
+                                  _buildModernDetailsCard(
+                                    title: "Height",
+                                    value: "${pet?.height ?? 0} cm",
+                                    icon: Iconsax.arrow_up_3,
+                                    color: Colors.green,
+                                  ),
+                                  _buildModernDetailsCard(
+                                    title: "Color",
+                                    value: pet?.color ?? "",
+                                    icon: Iconsax.colorfilter,
+                                    color: Colors.red,
+                                  ),
+                                  _buildModernDetailsCard(
+                                    title: "Breed",
+                                    value: pet?.breed ?? "",
+                                    icon: Iconsax.share,
+                                    color: Colors.teal,
+                                  ),
+                                ],
+                              );
+                            }),
+                          ),
+                          Gap(24.h),
+          
+                          // Health Section Header
+                          _buildSectionHeader(
+                            icon: Icons.health_and_safety,
+                            title: "Health Status",
+                            subtitle:
+                            controller.details.value.pet?.name ?? "Pet",
+                            actionText: "See All",
+                            onActionTap: () {
+                              AppRouter.route.pushNamed(
+                                RoutePath.petHealthScreen,
+                                extra: widget.id,
+                              );
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-
-            // Medical History List
-            SliverPadding(
-              padding: EdgeInsets.symmetric(horizontal: 20.w),
-              sliver: SliverList(
-                delegate: SliverChildBuilderDelegate(
-                      (context, index) => Obx(() {
-                    final medicalHistory =
-                        controller.details.value.petMedicalHistory ?? [];
-
-                    if (medicalHistory.isEmpty) {
-                      return Container(
-                        //padding: EdgeInsets.all(40.w),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20.r),
-                        ),
-                        child: Column(
-                          children: [
-                            Icon(Icons.medical_services_outlined,
-                                size: 60.sp, color: Colors.grey.shade300),
-                            Gap(16.h),
-                            CustomText(
-                              text: "No medical history available",
-                              fontSize: 16.sp,
-                              color: Colors.grey,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ],
-                        ),
-                      );
-                    }
-
-                    final treatment = medicalHistory[index];
-                    return _buildMedicalHistoryCard(treatment);
-                  }),
-                  childCount:
-                  controller.details.value.petMedicalHistory?.isEmpty ??
-                      true
-                      ? 1
-                      : controller.details.value.petMedicalHistory?.length ??
-                      0,
+          
+              // Medical History List
+              SliverPadding(
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                sliver: SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                        (context, index) => Obx(() {
+                      final medicalHistory =
+                          controller.details.value.petMedicalHistory ?? [];
+          
+                      if (medicalHistory.isEmpty) {
+                        return Container(
+                          //padding: EdgeInsets.all(40.w),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20.r),
+                          ),
+                          child: Column(
+                            children: [
+                              Icon(Icons.medical_services_outlined,
+                                  size: 60.sp, color: Colors.grey.shade300),
+                              Gap(16.h),
+                              CustomText(
+                                text: "No medical history available",
+                                fontSize: 16.sp,
+                                color: Colors.grey,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+          
+                      final treatment = medicalHistory[index];
+                      return _buildMedicalHistoryCard(treatment);
+                    }),
+                    childCount:
+                    controller.details.value.petMedicalHistory?.isEmpty ??
+                        true
+                        ? 1
+                        : controller.details.value.petMedicalHistory?.length ??
+                        0,
+                  ),
                 ),
               ),
-            ),
-            SliverGap(20.h),
-          ],
+              SliverGap(20.h),
+            ],
+          ),
         ),
       ),
     );

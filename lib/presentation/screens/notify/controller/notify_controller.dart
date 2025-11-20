@@ -36,11 +36,10 @@ class NotifyController extends GetxController{
       loadingMethod(Status.error);
     }
   }
-  @override
-  void onReady() {
+@override
+  void onInit() {
     getNotify();
-    super.onReady();
-
+    super.onInit();
   }
 
 }

@@ -112,7 +112,7 @@ class MyAppointmentContainer extends StatelessWidget {
                     color: bookingStatus == "PENDING" ? Color(0xffE0F2FE) :  Color(0xffDCFCE7),
                    borderRadius: BorderRadius.circular(10)
                   ),
-                  child: CustomText(text: bookingStatus,fontWeight: FontWeight.w500,fontSize: 12,color:bookingStatus == "COMPLETED" ? Color(0xff22C55E) :Color(0xff0EA5E9),),
+                  child: CustomText(text: bookingStatus,fontWeight: FontWeight.w500,fontSize: 12,color:bookingStatus == "CANCELLED" ? Color(0xffEF4444) :Color(0xff0EA5E9),),
                 )
               ],
             ),

@@ -42,36 +42,52 @@ class BusinessHomeController extends GetxController{
       loadingMethod(Status.error);
     }
   }
-  var appointmentLoading = false.obs;
-  appointmentLoadingMethod(bool loading) => appointmentLoading.value = loading;
+  var homeReviewsLoading = false.obs;
+  void homeReviewsLoadingMethod(bool loading) => homeReviewsLoading.value = loading;
+
   RxDouble avgRating = 0.0.obs;
 
-  final Rx<BusinessReviewModel?> _review =
-  Rx<BusinessReviewModel?>(null);
+  final Rx<BusinessReviewModel?> _review = Rx<BusinessReviewModel?>(null);
   BusinessReviewModel? get review => _review.value;
+
   Future<void> getHomeReviews({required int page}) async {
+    homeReviewsLoadingMethod(true);
+
     try {
-      appointmentLoadingMethod(true);
       final response = await apiClient.get(
         url: ApiUrl.getOwnerServiceReviews(page: page),
       );
+
       if (response.statusCode == 200) {
-        appointmentLoadingMethod(false);
         final data = BusinessReviewModel.fromJson(response.body);
+
         _review.value = data;
         avgRating.value = (data.avgRating ?? 0.0).toDouble();
+
         final newItems = data.reviews ?? [];
+
+        homeReviewsLoadingMethod(false);
+
+
+
         if (newItems.isEmpty) {
-          toastMessage(message: response.body?['message']?.toString());
-        } else {
-          toastMessage(message: response.body?['message']?.toString());
+
+          print("No new reviews available");
         }
-        }
-    } catch (e) {
-      appointmentLoadingMethod(false);
-      if (kDebugMode) {
-        print('Error in getReviews: $e');
+      } else {
+
+        homeReviewsLoadingMethod(false);
+        toastMessage(
+          message: response.body?['message']?.toString() ?? "Request failed!",
+        );
       }
+    } catch (e) {
+      homeReviewsLoadingMethod(false);
+
+      if (kDebugMode) {
+        print('Error in getHomeReviews: $e');
+      }
+
       toastMessage(message: "Something went wrong!");
     }
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pet_app/presentation/components/custom_loader/custom_loader.dart';
 import 'package:pet_app/presentation/widget/custom_loader/custom_loader.dart';
 
 showPopUpLoader({required BuildContext context, Color color = Colors.transparent}) {
