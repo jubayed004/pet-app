@@ -79,7 +79,7 @@ class DBHelper {
   }
 
   /// ====================== Get User Role ==================
-  Future<String> getUserRole() async {
+  Future<String>  getUserRole() async {
     try{
       SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
       if (sharedPreferences.getString('role') != null) {
