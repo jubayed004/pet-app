@@ -1,7 +1,4 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:pet_app/controller/get_controllers.dart';
@@ -12,11 +9,8 @@ import 'package:pet_app/helper/dialog/show_custom_animated_dialog.dart';
 import 'package:pet_app/helper/image/network_image.dart';
 import 'package:pet_app/helper/local_db/local_db.dart';
 import 'package:pet_app/presentation/components/custom_button/custom_button.dart';
-import 'package:pet_app/presentation/components/custom_button/custom_defualt_appbar.dart';
-import 'package:pet_app/presentation/components/custom_image/custom_image.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:pet_app/presentation/screens/profile/widgets/button_section_all.dart';
-import 'package:pet_app/service/api_url.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
 import 'package:pet_app/utils/app_strings/app_strings.dart';
 
@@ -28,9 +22,6 @@ class BusinessProfileScreen extends StatefulWidget {
 }
 
 class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
-  // final profileController = GetControllers.instance.getProfileController();
-  final _controller = GetControllers.instance.getMyPetsProfileController();
-
   final controller = GetControllers.instance.getNavigationControllerMain();
 
   final businessProfileController = GetControllers.instance.getBusinessProfileController();
@@ -65,7 +56,7 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                 background: Obx(() {
                   final images = businessProfileController.profile.value.ownerDetails?.profilePic;
                   if (images != null && images.isNotEmpty) {
-                    final imageUrl = images.replaceAll('\\', '/'); // Ensure proper URL format
+                    final imageUrl = images.replaceAll('\\', '/');
                     return CustomNetworkImage(imageUrl: imageUrl, width: double.infinity, height: double.infinity, fit: BoxFit.cover);
                   } else {
                     return CustomNetworkImage(
@@ -161,7 +152,7 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                                 Icon(Icons.location_on_outlined, size: 20, color: AppColors.purple500),
                                 Gap(6),
                                 CustomText(
-                                  text: businessProfileController.profile.value.ownerDetails?.business?.address ?? "",
+                                  text: businessProfileController.profile.value.ownerDetails?.address ?? "",
                                   fontWeight: FontWeight.w400,
                                   fontSize: 14,
                                 ),

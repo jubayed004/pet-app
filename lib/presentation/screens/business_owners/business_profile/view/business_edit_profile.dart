@@ -1,19 +1,14 @@
 import 'dart:io';
-
-import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:pet_app/controller/get_controllers.dart';
-import 'package:pet_app/core/route/route_path.dart';
-import 'package:pet_app/core/route/routes.dart';
 import 'package:pet_app/presentation/components/custom_button/custom_button.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:pet_app/presentation/components/custom_text_field/custom_text_field.dart';
 import 'package:pet_app/presentation/widget/align/custom_align_text.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
-import 'package:pet_app/utils/app_strings/app_strings.dart';
 
 class BusinessEditProfileScreen extends StatefulWidget {
   const BusinessEditProfileScreen({super.key});
@@ -29,6 +24,14 @@ class _BusinessEditProfileScreenState extends State<BusinessEditProfileScreen> {
   TextEditingController phone = TextEditingController();
   TextEditingController address = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    name = TextEditingController(text: businessProfileController.profile.value.ownerDetails?.name);
+    phone = TextEditingController(text: businessProfileController.profile.value.ownerDetails?.phone);
+    address = TextEditingController(text: businessProfileController.profile.value.ownerDetails?.address);
+    super.initState();
+  }
 
   @override
   void dispose() {

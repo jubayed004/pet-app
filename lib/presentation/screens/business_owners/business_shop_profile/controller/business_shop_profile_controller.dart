@@ -110,6 +110,7 @@ class BusinessShopProfileController extends GetxController {
   /// Update Shop Profile
   Future<void> updateShopProfile({
     required String businessName,
+    required String id,
     required String address,
     String? website,
   }) async {
@@ -140,7 +141,7 @@ class BusinessShopProfileController extends GetxController {
       }
 
       final response = await _apiClient.multipartRequest(
-        url: ApiUrl.updateProfile(),
+        url: ApiUrl.businessShopUpdateProfile(id: id),
         body: body,
         multipartBody: multipartBody,
         reqType: "PUT",

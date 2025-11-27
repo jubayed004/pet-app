@@ -16,6 +16,7 @@ import 'package:pet_app/utils/app_strings/app_strings.dart';
 
 class BusinessEditShopProfileScreen extends StatefulWidget {
   final String? name;
+  final String id;
   final String? address;
   final String? webSiteLink;
   final String? logoUrl;
@@ -24,6 +25,7 @@ class BusinessEditShopProfileScreen extends StatefulWidget {
   const BusinessEditShopProfileScreen({
     super.key,
     this.name,
+    required this.id,
     this.address,
     this.webSiteLink,
     this.logoUrl,
@@ -35,8 +37,7 @@ class BusinessEditShopProfileScreen extends StatefulWidget {
       _BusinessEditShopProfileScreenState();
 }
 
-class _BusinessEditShopProfileScreenState
-    extends State<BusinessEditShopProfileScreen> {
+class _BusinessEditShopProfileScreenState extends State<BusinessEditShopProfileScreen> {
   final _shopProfileController =
   GetControllers.instance.getBusinessShopProfileController();
   final _formKey = GlobalKey<FormState>();
@@ -70,8 +71,8 @@ class _BusinessEditShopProfileScreenState
       _shopProfileController.updateShopProfile(
         businessName: _businessNameController.text,
         address: _addressController.text,
-        website:
-        _websiteController.text.isNotEmpty ? _websiteController.text : null,
+        id: widget.id,
+        website: _websiteController.text.isNotEmpty ? _websiteController.text : null,
       );
     }
   }

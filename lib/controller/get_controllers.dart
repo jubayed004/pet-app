@@ -10,7 +10,6 @@ import 'package:pet_app/presentation/screens/business_owners/business_profile/co
 import 'package:pet_app/presentation/screens/business_owners/business_review/controller/business_review_screen_controller.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_service/controller/business_add_service_controller.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_service/controller/business_service_controller.dart';
-import 'package:pet_app/presentation/screens/business_owners/business_shop_profile/controller/category_details_controller.dart';
 import 'package:pet_app/presentation/screens/business_owners/dashboard/controller/dashboard_controller.dart';
 import 'package:pet_app/presentation/screens/category/category_details/controller/category_details_controller.dart';
 import 'package:pet_app/presentation/screens/category/controller/category_controller.dart';
@@ -33,6 +32,8 @@ import 'package:pet_app/presentation/screens/search/controller/search_screen_con
 import 'package:pet_app/presentation/screens/subscription/controller/subscription_controller.dart';
 import 'package:pet_app/presentation/screens/subscription/subscription_screen.dart';
 import 'package:pet_app/presentation/screens/text_screen/controller/test_controller.dart';
+
+import '../presentation/screens/business_owners/business_shop_profile/controller/business_shop_profile_controller.dart';
 
 class GetControllers {
   static final GetControllers _singleton = GetControllers._internal();
