@@ -14,8 +14,8 @@ import 'package:pet_app/presentation/no_internet/no_internet_card.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
 import 'package:pet_app/utils/app_const/app_const.dart';
 
-class NotifyScreen extends StatelessWidget {
-  NotifyScreen({super.key});
+class BusinessNotifyScreen extends StatelessWidget {
+  BusinessNotifyScreen({super.key});
 
   final notifyController = GetControllers.instance.getNotifyController();
 

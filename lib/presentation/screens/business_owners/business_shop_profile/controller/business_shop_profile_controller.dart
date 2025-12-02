@@ -10,51 +10,44 @@ import 'package:pet_app/service/api_service.dart';
 import 'package:pet_app/service/api_url.dart';
 import 'package:pet_app/utils/app_const/app_const.dart';
 
+import '../../../../../utils/variable/variable.dart';
+
 class BusinessShopProfileController extends GetxController {
+
   final ApiClient _apiClient = serviceLocator<ApiClient>();
   final ImagePicker _imagePicker = ImagePicker();
 
-  // Observable loading status
   final Rx<Status> _loading = Status.completed.obs;
   Status get loading => _loading.value;
 
-  // Observable shop profile
-  final Rx<BusinessShopProfileModel?> _shopProfile =
-  Rx<BusinessShopProfileModel?>(null);
+  final Rx<BusinessShopProfileModel?> _shopProfile = Rx<BusinessShopProfileModel?>(null);
   BusinessShopProfileModel? get shopProfile => _shopProfile.value;
 
-  // Error message
   final RxString _errorMessage = ''.obs;
   String get errorMessage => _errorMessage.value;
 
-  // Update loading state
   final RxBool _isUpdateLoading = false.obs;
   bool get isUpdateLoading => _isUpdateLoading.value;
 
-  // Image pickers for update (private Rx fields)
   final Rx<XFile?> _selectedLogo = Rx<XFile?>(null);
   final Rx<XFile?> _selectedShopPic = Rx<XFile?>(null);
 
-  // Public getters (value + Rx versions)
   XFile? get selectedLogo => _selectedLogo.value;
   XFile? get selectedShopPic => _selectedShopPic.value;
 
-  // <-- expose Rx so widgets can listen reactively
   Rx<XFile?> get selectedLogoRx => _selectedLogo;
   Rx<XFile?> get selectedShopPicRx => _selectedShopPic;
 
-  /// Update loading status
   void _setLoadingStatus(Status status) {
     _loading.value = status;
   }
 
-  /// Get Business Shop Profile
   Future<void> getBusinessShopProfile() async {
     _setLoadingStatus(Status.completed);
     try {
       _setLoadingStatus(Status.loading);
       final response = await _apiClient.get(url: ApiUrl.getBusinessShopProfile());
-
+      logger.d(response.body);
       if (response.statusCode == 200) {
         final data = BusinessShopProfileModel.fromJson(response.body);
         _shopProfile.value = data;
@@ -146,7 +139,7 @@ class BusinessShopProfileController extends GetxController {
         multipartBody: multipartBody,
         reqType: "PUT",
       );
-
+     logger.d(response.body);
       if (response.statusCode == 200) {
         toastMessage(message: 'Profile updated successfully');
         await getBusinessShopProfile();

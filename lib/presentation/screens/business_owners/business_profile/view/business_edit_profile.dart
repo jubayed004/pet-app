@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:pet_app/controller/get_controllers.dart';
+import 'package:pet_app/helper/image/network_image.dart';
 import 'package:pet_app/presentation/components/custom_button/custom_button.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:pet_app/presentation/components/custom_text_field/custom_text_field.dart';
@@ -11,7 +12,8 @@ import 'package:pet_app/presentation/widget/align/custom_align_text.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
 
 class BusinessEditProfileScreen extends StatefulWidget {
-  const BusinessEditProfileScreen({super.key});
+  final String profileImage;
+  const BusinessEditProfileScreen({super.key, required this.profileImage});
 
   @override
   State<BusinessEditProfileScreen> createState() => _BusinessEditProfileScreenState();
@@ -60,7 +62,6 @@ class _BusinessEditProfileScreenState extends State<BusinessEditProfileScreen> {
               child: Obx(
                     () {
                   final selected = businessProfileController.selectedImage.value;
-
                   return Stack(
                     children: [
                       // --- Background Image ---
@@ -72,7 +73,12 @@ class _BusinessEditProfileScreenState extends State<BusinessEditProfileScreen> {
                           File(selected.path),
                           fit: BoxFit.cover,
                         )
-                            : Icon(Icons.person),
+                            : widget.profileImage.isNotEmpty ?  CustomNetworkImage(
+                          imageUrl: widget.profileImage,
+                          height: 180.h,
+                          borderRadius: BorderRadius.circular(14),
+                          width: double.infinity,
+                        ) :Icon(Icons.person) ,
                       ),
 
                       // --- Dark Overlay ---

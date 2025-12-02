@@ -12,6 +12,8 @@ import 'package:pet_app/service/api_service.dart';
 import 'package:pet_app/service/api_url.dart';
 import 'package:pet_app/utils/app_const/app_const.dart';
 
+import '../../../../../utils/variable/variable.dart';
+
 class BusinessProfileController extends GetxController{
   RxString selectedCountryCode = "+880".obs;
   final ImagePicker _imagePicker = ImagePicker();
@@ -29,6 +31,7 @@ class BusinessProfileController extends GetxController{
     try{
       loadingMethod(Status.loading);
       final response = await apiClient.get(url: ApiUrl.businessProfile());
+      logger.d(response.body);
       if (response.statusCode == 200) {
         final newData = BusinessProfileModel.fromJson(response.body);
         profile.value = newData;
@@ -64,10 +67,8 @@ class BusinessProfileController extends GetxController{
       if(selectedImage.value != null){
         multipartBody.add(MultipartBody("profilePic", File(selectedImage.value?.path?? "")));
       }
-
-      print(body);
       final response = await apiClient.multipartRequest(url: ApiUrl.businessUpdateProfile(), body: body, multipartBody: multipartBody, reqType: "PUT");
-
+      logger.d(response.body);
       if(response.statusCode == 200){
         await getBusinessProfile();
         isUpdateLoading.value = false;

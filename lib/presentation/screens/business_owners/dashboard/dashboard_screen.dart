@@ -39,7 +39,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       backgroundColor: Colors.white,
       body: RefreshIndicator(
         onRefresh: ()async{
-          controller.getDashboard(statuse: "monthly");
+          controller.getDashboard(statuse: controller.selectedView.value);
         },
         child: CustomScrollView(
           slivers: [
@@ -68,7 +68,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           underline: const SizedBox(),
                           icon: Icon(Icons.keyboard_arrow_down_sharp, size: 20.sp, color: Colors.white),
                           style: TextStyle(color: Colors.white, fontSize: 14.sp),
-                          items: ['Monthly', 'Weekly'].map((String value) {
+                          items: ['monthly', 'weekly'].map((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
                               child: Padding(
@@ -112,8 +112,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   return _buildMessage("No data found");
                 }
 
-                final counts = controller.dashboard.value.counts;
+                final counts = controller.dashboard.value.stats;
 
+                   print(counts);
                 final List<_BookingItem> items = [
                   _BookingItem(
                     title: 'Pending',

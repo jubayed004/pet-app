@@ -7,7 +7,6 @@ import 'package:pet_app/controller/get_controllers.dart';
 import 'package:pet_app/core/route/route_path.dart';
 import 'package:pet_app/core/route/routes.dart';
 import 'package:pet_app/presentation/components/custom_button/custom_button.dart';
-import 'package:pet_app/presentation/components/custom_button/custom_defualt_appbar.dart';
 import 'package:pet_app/presentation/components/custom_netwrok_image/custom_network_image.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
@@ -35,13 +34,11 @@ class BusinessShopProfileScreen extends StatelessWidget {
         color: AppColors.purple500,
         child: CustomScrollView(
           slivers: [
-
             /// ---------- Main Profile Section ----------
             SliverToBoxAdapter(
               child: Obx(() {
                 final status = shopProfileController.loading;
 
-                // Show loading indicator
                 if (status == Status.loading) {
                   return Center(
                     child: Padding(
@@ -63,8 +60,6 @@ class BusinessShopProfileScreen extends StatelessWidget {
                     ),
                   );
                 }
-
-                // Check if profile data exists
                 final businesses = shopProfileController.shopProfile?.business ?? [];
                 if (businesses.isEmpty) {
                   return Center(
@@ -89,11 +84,9 @@ class BusinessShopProfileScreen extends StatelessWidget {
 
                 return Column(
                   children: [
-                    // Header Section with Cover & Logo
                     Stack(
                       clipBehavior: Clip.none,
                       children: [
-                        // Cover Image with Gradient Overlay
                         Container(
                           height: 220.h,
                           decoration: BoxDecoration(
@@ -107,7 +100,6 @@ class BusinessShopProfileScreen extends StatelessWidget {
                                 width: double.infinity,
                                 height: 220.h,
                               ),
-                              // Gradient overlay for better text visibility
                               Container(
                                 decoration: BoxDecoration(
                                   gradient: LinearGradient(
@@ -115,7 +107,7 @@ class BusinessShopProfileScreen extends StatelessWidget {
                                     end: Alignment.bottomCenter,
                                     colors: [
                                       Colors.transparent,
-                                      Colors.black.withOpacity(0.3),
+                                      Colors.black.withValues(alpha: 0.3),
                                     ],
                                   ),
                                 ),
@@ -140,7 +132,7 @@ class BusinessShopProfileScreen extends StatelessWidget {
                               ),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.black.withOpacity(0.15),
+                                  color: Colors.black.withValues(alpha: 0.15),
                                   blurRadius: 20,
                                   offset: const Offset(0, 8),
                                 ),
@@ -182,7 +174,7 @@ class BusinessShopProfileScreen extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(12),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: Colors.black.withOpacity(0.1),
+                                    color: Colors.black.withValues(alpha: 0.1),
                                     blurRadius: 8,
                                     offset: const Offset(0, 2),
                                   ),
@@ -312,7 +304,7 @@ class BusinessShopProfileScreen extends StatelessWidget {
                             height: 48.h,
                             fontWeight: FontWeight.w600,
                             fontSize: 15.sp,
-                            fillColor: AppColors.purple500.withOpacity(0.1),
+                            fillColor: AppColors.purple500.withValues(alpha: 0.1),
                             borderColor: AppColors.purple500,
                             borderWidth: 1.5,
                             isBorder: true,
@@ -341,13 +333,13 @@ class BusinessShopProfileScreen extends StatelessWidget {
                                   decoration: BoxDecoration(
                                     gradient: LinearGradient(
                                       colors: [
-                                        AppColors.purple500.withOpacity(0.15),
-                                        AppColors.purple500.withOpacity(0.05),
+                                        AppColors.purple500.withValues(alpha: 0.15),
+                                        AppColors.purple500.withValues(alpha: 0.05),
                                       ],
                                     ),
                                     borderRadius: BorderRadius.circular(20),
                                     border: Border.all(
-                                      color: AppColors.purple500.withOpacity(0.3),
+                                      color: AppColors.purple500.withValues(alpha: 0.3),
                                     ),
                                   ),
                                   child: CustomText(
@@ -379,21 +371,6 @@ class BusinessShopProfileScreen extends StatelessWidget {
                             ),
                           ),
                           Gap(12.h),
-
-                          // More Info Card
-                          _buildInfoCard(
-                            icon: Icons.info_outline_rounded,
-                            title: "More Information",
-                            child: CustomText(
-                              text: business.moreInfo?.isNotEmpty == true
-                                  ? business.moreInfo!
-                                  : "No additional information available",
-                              fontSize: 14.sp,
-                              color: Colors.grey[700],
-                              maxLines: 10,
-                            ),
-                          ),
-                          Gap(32.h),
                         ],
                       ),
                     ),
@@ -406,7 +383,6 @@ class BusinessShopProfileScreen extends StatelessWidget {
       ),
     );
   }
-
   /// Section Title Widget
   Widget _buildSectionTitle(String title) {
     return CustomText(
@@ -431,7 +407,7 @@ class BusinessShopProfileScreen extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -445,7 +421,7 @@ class BusinessShopProfileScreen extends StatelessWidget {
               Container(
                 padding: EdgeInsets.all(8.w),
                 decoration: BoxDecoration(
-                  color: AppColors.purple500.withOpacity(0.1),
+                  color: AppColors.purple500.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Icon(

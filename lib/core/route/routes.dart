@@ -45,8 +45,8 @@ import 'package:pet_app/presentation/screens/profile/help_center_screen.dart';
 import 'package:pet_app/presentation/screens/profile/privacy_policy.dart';
 import 'package:pet_app/presentation/screens/profile/settings_page.dart';
 import 'package:pet_app/presentation/screens/profile/terms_of_condition.dart';
+import 'package:pet_app/presentation/screens/review/search/search_screen.dart';
 import 'package:pet_app/presentation/screens/review/view/review_screen.dart';
-import 'package:pet_app/presentation/screens/search/search_screen.dart';
 import 'package:pet_app/presentation/screens/splash/splash_screen.dart';
 import 'package:pet_app/presentation/screens/subscription/subscription_screen.dart';
 import 'package:pet_app/presentation/screens/text_screen/view/text_screen.dart';
@@ -428,15 +428,20 @@ class AppRouter {
         path: RoutePath.businessEditShopProfileScreen.addBasePath,
         pageBuilder: (context, state) {
           final extra = state.extra as Map<String, dynamic>?;
-
+          final name = extra?['name'] ?? '';
+          final id =extra?['id'] ?? '';
+          final address = extra?['address'] ?? '';
+          final webSiteLink = extra?['phoneNumber'] ?? '';
+          final logoUrl = extra?['logoUrl'];
+          final shopPicUrl = extra?['shopPicUrl'];
           return _buildPageWithAnimation(
             child: BusinessEditShopProfileScreen(
-              name: extra?['name'] ?? '',
-              id: extra?['id'] ?? '',
-              address: extra?['address'] ?? '',
-              webSiteLink: extra?['phoneNumber'] ?? '',
-              logoUrl: extra?['logoUrl'],
-              shopPicUrl: extra?['shopPicUrl'],
+              name:name,
+              id:id ,
+              address: address,
+              webSiteLink: webSiteLink ,
+              logoUrl: logoUrl,
+              shopPicUrl: shopPicUrl,
             ),
             state: state,
           );
@@ -460,20 +465,28 @@ class AppRouter {
         path: RoutePath.businessEditServiceScreen.addBasePath,
         pageBuilder: (context, state) {
           final extra = state.extra as Map<String, dynamic>? ?? {};
-          final serviceName = extra['serviceName'] != null && extra['serviceName'] is String ? extra['serviceName'] as String : "";
-          final id = extra['id'] as String;
-          final phoneNumber = extra['phoneNumber'] as String;
-          final location = extra['location'] as String;
-          final webSiteLInk = extra['websiteLink'] as String;
+          final serviceName = extra['serviceName'] != null && extra['serviceName'] is String ? extra['serviceName'] as String? : "";
+          final id = extra['id'] as String?;
+          final phoneNumber = extra['phoneNumber'] as String?;
+          final location = extra['location'] as String?;
+          final webSiteLInk = extra['websiteLink'] as String?;
+          final openingTime = extra['openingTime'] as String?;
+          final closingTime = extra['closingTime'] as String?;
+          final offDay = extra['offDay'] as String?;
+          final serviceType = extra['serviceType'] as String?;
           final serviceController = extra['serviceController'] is List<String> ? extra['serviceController'] as List<String> : <String>[];
           return _buildPageWithAnimation(
             child: BusinessEditServiceScreen(
-              serviceName: serviceName,
-              phoneNumber: phoneNumber,
-              location: location,
-              webSiteLInk: webSiteLInk,
-              id: id,
+              serviceName: serviceName ?? "",
+              phoneNumber: phoneNumber?? "",
+              location: location ?? "",
+              webSiteLInk: webSiteLInk ?? "",
+              id: id ?? "",
               serviceList: serviceController,
+              openingTime: openingTime ?? "",
+              closingTime: closingTime ?? "",
+              offDay: offDay ?? "",
+              serviceType: serviceType ?? "",
             ),
             state: state,
           );
@@ -513,7 +526,11 @@ class AppRouter {
       GoRoute(
         name: RoutePath.businessEditProfileScreen,
         path: RoutePath.businessEditProfileScreen.addBasePath,
-        pageBuilder: (context, state) => _buildPageWithAnimation(child: BusinessEditProfileScreen(), state: state),
+        pageBuilder: (context, state) {
+          final extra = state.extra as Map<String , Object>? ?? {};
+          final profileImage = extra ["profilePic"] as String;
+          return _buildPageWithAnimation(child: BusinessEditProfileScreen(profileImage: profileImage,), state: state);
+        }
       ),
       GoRoute(
         name: RoutePath.textScreen,

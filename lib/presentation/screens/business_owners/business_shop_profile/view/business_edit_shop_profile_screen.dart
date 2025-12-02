@@ -80,7 +80,7 @@ class _BusinessEditShopProfileScreenState extends State<BusinessEditShopProfileS
   Widget _buildImagePicker({
     required String label,
     required VoidCallback onTap,
-    required Rx<XFile?> selectedImage, // <- expects Rx<XFile?>
+    required Rx<XFile?> selectedImage,
     String? networkImageUrl,
   }) {
     return Column(
@@ -96,7 +96,7 @@ class _BusinessEditShopProfileScreenState extends State<BusinessEditShopProfileS
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
-                color: AppColors.purple500.withOpacity(0.3),
+                color: AppColors.purple500.withValues(alpha: 0.3),
                 width: 2,
               ),
             ),
@@ -130,7 +130,7 @@ class _BusinessEditShopProfileScreenState extends State<BusinessEditShopProfileS
                         : Container(
                       decoration: BoxDecoration(
                         color:
-                        AppColors.purple500.withOpacity(0.05),
+                        AppColors.purple500.withValues(alpha: 0.05),
                         borderRadius: BorderRadius.circular(14),
                       ),
                     ),
@@ -145,7 +145,7 @@ class _BusinessEditShopProfileScreenState extends State<BusinessEditShopProfileS
                             width: 60.w,
                             decoration: BoxDecoration(
                               color:
-                              AppColors.purple500.withOpacity(0.1),
+                              AppColors.purple500.withValues(alpha: 0.1),
                               shape: BoxShape.circle,
                             ),
                             child: Icon(
@@ -186,7 +186,7 @@ class _BusinessEditShopProfileScreenState extends State<BusinessEditShopProfileS
                           shape: BoxShape.circle,
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.15),
+                              color: Colors.black.withValues(alpha: 0.15),
                               blurRadius: 12,
                               offset: const Offset(0, 4),
                             ),
@@ -297,7 +297,7 @@ class _BusinessEditShopProfileScreenState extends State<BusinessEditShopProfileS
                 validator: (value) {
                   if (value != null && value.isNotEmpty) {
                     final urlPattern = RegExp(
-                      r'^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w\.-]*)*\/?$',
+                      r'^(https?://)?([\da-z.-]+)\.([a-z.]{2,6})([/\w.-]*)*/?$',
                       caseSensitive: false,
                     );
                     if (!urlPattern.hasMatch(value)) {
@@ -314,7 +314,7 @@ class _BusinessEditShopProfileScreenState extends State<BusinessEditShopProfileS
                 label: "Shop Logo",
                 onTap: _shopProfileController.pickLogoImage,
                 selectedImage:
-                _shopProfileController.selectedLogoRx, // <-- pass Rx
+                _shopProfileController.selectedLogoRx,
                 networkImageUrl: widget.logoUrl,
               ),
               Gap(24.h),
@@ -324,7 +324,7 @@ class _BusinessEditShopProfileScreenState extends State<BusinessEditShopProfileS
                 label: "Shop Picture",
                 onTap: _shopProfileController.pickShopPicture,
                 selectedImage:
-                _shopProfileController.selectedShopPicRx, // <-- pass Rx
+                _shopProfileController.selectedShopPicRx,
                 networkImageUrl: widget.shopPicUrl,
               ),
               Gap(32.h),

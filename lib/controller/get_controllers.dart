@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:pet_app/presentation/screens/auth/controller/auth_controller.dart';
 import 'package:pet_app/presentation/screens/auth/pet_shop_registration/controller/pet_shop_registration_controller.dart';
+import 'package:pet_app/presentation/screens/business_owners/Business_notify/controller/business_notify_controller.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_advertisement/controller/business_advertisement_controller.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_all_pets/controller/business_all_pet_controller.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_booking/controller/business_booking_controller.dart';
@@ -28,11 +29,9 @@ import 'package:pet_app/presentation/screens/other/controller/other_controller.d
 import 'package:pet_app/presentation/screens/profile/controller/profile_controller.dart';
 import 'package:pet_app/presentation/screens/profile/faq/controller/faq_controller.dart';
 import 'package:pet_app/presentation/screens/review/controller/review_controller.dart';
-import 'package:pet_app/presentation/screens/search/controller/search_screen_controller.dart';
+import 'package:pet_app/presentation/screens/review/search/controller/search_screen_controller.dart';
 import 'package:pet_app/presentation/screens/subscription/controller/subscription_controller.dart';
-import 'package:pet_app/presentation/screens/subscription/subscription_screen.dart';
 import 'package:pet_app/presentation/screens/text_screen/controller/test_controller.dart';
-
 import '../presentation/screens/business_owners/business_shop_profile/controller/business_shop_profile_controller.dart';
 
 class GetControllers {
@@ -104,6 +103,12 @@ AuthController getAuthController() {
       Get.put(NotifyController());
     }
     return Get.find<NotifyController>();
+  }
+  BusinessNotifyController getBusinessNotifyController() {
+    if (!Get.isRegistered<BusinessNotifyController>()) {
+      Get.put(BusinessNotifyController());
+    }
+    return Get.find<BusinessNotifyController>();
   }
 
   HomeController getHomeController() {

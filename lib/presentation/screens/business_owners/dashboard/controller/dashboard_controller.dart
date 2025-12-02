@@ -5,11 +5,14 @@ import 'package:pet_app/service/api_service.dart';
 import 'package:pet_app/service/api_url.dart';
 import 'package:pet_app/utils/app_const/app_const.dart';
 
+import '../../../../../utils/variable/variable.dart';
+
+
 class DashBoardController extends GetxController {
   final ApiClient apiClient = serviceLocator();
 
   var loading = Status.completed.obs;
-  final RxString selectedView = 'Monthly'.obs;
+  final RxString selectedView = 'monthly'.obs;
   final Rx<DashboardModel> dashboard = DashboardModel().obs;
 
   void loadingMethod(Status status) => loading.value = status;
@@ -17,12 +20,12 @@ class DashBoardController extends GetxController {
   Future<void> getDashboard({required String statuse}) async {
     loadingMethod(Status.loading);
     try {
-      final response =
-      await apiClient.get(url: ApiUrl.getBusinessDashboard(status: statuse));
+      final response = await apiClient.get(url: ApiUrl.getBusinessDashboard(status: statuse));
+      logger.d(response.body);
       if (response.statusCode == 200) {
         dashboard.value = DashboardModel.fromJson(response.body);
         loadingMethod(Status.completed);
-        print("✅ Dashboard data fetched for: $statuse");
+
       } else if (response.statusCode == 503) {
         loadingMethod(Status.internetError);
       } else if (response.statusCode == 404) {

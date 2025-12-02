@@ -215,6 +215,10 @@ class BusinessServiceScreen extends StatelessWidget {
                                             'websiteLink': item.websiteLink ?? "",
                                             'phoneNumber': item.phone ?? "",
                                             'serviceController': providerList,
+                                            'openingTime': item.openingTime ,
+                                            'closingTime': item.closingTime ,
+                                            'serviceType': item.serviceType ?? "",
+                                            'offDay': item.offDay ?? "",
                                           },
                                         );
                                       },

@@ -40,7 +40,7 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
         scrolledUnderElevation: 0,
         backgroundColor: Colors.transparent,
         centerTitle: true,
-        title: CustomText(fontWeight: FontWeight.w600, fontSize: 16, text: "Profile"),
+        title: CustomText(fontWeight: FontWeight.w600, fontSize: 16, text: "profile"),
       ),
       body: RefreshIndicator(
         onRefresh: () async {
@@ -97,7 +97,12 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                                 }),
                                 GestureDetector(
                                   onTap: () {
-                                    AppRouter.route.pushNamed(RoutePath.businessEditProfileScreen);
+                                    final images = businessProfileController.profile.value.ownerDetails?.profilePic;
+                                    AppRouter.route.pushNamed(RoutePath.businessEditProfileScreen,extra:
+                                    {
+                                      "profilePic":images ?? ""
+                                    }
+                                    );
                                   },
                                   child: Card(
                                     shape: OutlineInputBorder(

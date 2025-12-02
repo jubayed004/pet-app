@@ -58,7 +58,7 @@
   ///Business All Pets
   static getBusinessAllPets() => '$base/owner/get-all-pets-who-booked';
   static businessPetDetails({required String id}) => '$base/owner/get-pet-details-by-pet-id/$id';
-  static getBusinessDashboard({required String status }) => '$base/booking/owner-status-counts?status=$status';
+  static getBusinessDashboard({required String status }) => '$base/booking/get-booking-overview?viewType=$status';
   static getOwnerServiceReviews({required int page}) => '$base/review/owner/service-reviews?page=$page&limit=10';
   ///Health update
   static getPetBusiness() => '$base/owner/get-all-pets-who-booked';

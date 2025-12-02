@@ -7,7 +7,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pet_app/controller/get_controllers.dart';
 import 'package:pet_app/presentation/components/custom_button/custom_defualt_appbar.dart';
 import 'package:pet_app/presentation/no_internet/error_card.dart';
-import 'package:pet_app/presentation/screens/search/widget/search_item_card.dart';
+import 'package:pet_app/presentation/screens/review/search/widget/search_item_card.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
 
 import 'model/country_city_model.dart';

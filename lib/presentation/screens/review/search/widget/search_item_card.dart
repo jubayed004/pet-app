@@ -4,19 +4,18 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:pet_app/controller/get_controllers.dart';
 import 'package:pet_app/core/custom_assets/assets.gen.dart';
+import 'package:pet_app/core/route/route_path.dart';
+import 'package:pet_app/core/route/routes.dart';
 import 'package:pet_app/helper/image/network_image.dart';
+import 'package:pet_app/presentation/components/custom_button/custom_button.dart';
+import 'package:pet_app/presentation/components/custom_image/custom_image.dart';
+import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_service/widgets/default_dialog.dart';
 import 'package:pet_app/presentation/screens/category/model/category_model.dart';
-import 'package:pet_app/presentation/screens/search/model/country_city_model.dart';
+import 'package:pet_app/presentation/screens/review/search/model/country_city_model.dart';
 import 'package:pet_app/service/api_url.dart';
+import 'package:pet_app/utils/app_colors/app_colors.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import '../../../../core/route/route_path.dart';
-import '../../../../core/route/routes.dart';
-import '../../../../utils/app_colors/app_colors.dart';
-import '../../../components/custom_button/custom_button.dart';
-import '../../../components/custom_image/custom_image.dart';
-import '../../../components/custom_text/custom_text.dart';
 
 class SearchItemCardWidget extends StatelessWidget {
   const SearchItemCardWidget({

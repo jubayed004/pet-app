@@ -6,6 +6,8 @@ import 'package:pet_app/presentation/screens/business_owners/business_booking/mo
 import 'package:pet_app/service/api_service.dart';
 import 'package:pet_app/service/api_url.dart';
 
+import '../../../../../utils/variable/variable.dart';
+
 /// Tab indices
 const int kTabPending = 0;   // PENDING
 const int kTabOngoing = 1;   // APPROVED
@@ -42,25 +44,32 @@ class BusinessBookingController extends GetxController {
     isLoadingPending.value = true;
     try {
       final response = await apiClient.get(
-        url: ApiUrl.getAllBooking(status: "PENDING", page: pageKey),
+        url: ApiUrl.getAllBooking(
+          status: "PENDING",
+          page: pageKey,
+        ),
       );
+      logger.d(response.body);
       if (response.statusCode == 200) {
         final data = BusinessBookingModel.fromJson(response.body);
         final newItems = data.bookings ?? [];
         if (newItems.isEmpty) {
-          pendingController.appendLastPage(newItems);
+          pendingController.appendLastPage([]);
         } else {
           pendingController.appendPage(newItems, pageKey + 1);
         }
       } else {
-        pendingController.error = 'Error fetching data';
+        pendingController.error = 'Error fetching data (Code: ${response.statusCode})';
       }
-    } catch (e) {
+
+    } catch (e, stack) {
+      logger.e("PENDING API ERROR", error: e, stackTrace: stack);
       pendingController.error = e.toString();
     } finally {
       isLoadingPending.value = false;
     }
   }
+
 
   Future<void> getOngoing(int pageKey) async {
     if (isLoadingOngoing.value) return;
@@ -116,9 +125,8 @@ class BusinessBookingController extends GetxController {
     if (isLoadingRejected.value) return;
     isLoadingRejected.value = true;
     try {
-      final response = await apiClient.get(
-        url: ApiUrl.getAllBooking(status: "REJECTED", page: pageKey),
-      );
+      final response = await apiClient.get(url: ApiUrl.getAllBooking(status: "REJECTED", page: pageKey),);
+      logger.d(response.body);
       if (response.statusCode == 200) {
         final data = BusinessBookingModel.fromJson(response.body);
         final newItems = data.bookings ?? [];
@@ -137,26 +145,16 @@ class BusinessBookingController extends GetxController {
     }
   }
 
-  /// -------------- Status update + smart refresh --------------
-  /// [status] must be one of: 'APPROVED' | 'COMPLETED' | 'REJECTED'
-  /// [originTab] is the tab where the action originated (0..3) so we can refresh it immediately.
   Future<void> updateItemStatus({
     required String id,
     required String status,
     required int originTab,
   }) async {
     try {
-      final response = await apiClient.put(
-        url: ApiUrl.updateStatus(id: id),
-        body: {'status': status},
-      );
-
+      final response = await apiClient.put(url: ApiUrl.updateStatus(id: id), body: {'status': status},);
       if (response.statusCode == 200) {
-        // Refresh the right tabs based on the new status
         _refreshForStatusChange(status);
-        // Always refresh the origin tab to remove the moved item immediately
         _refreshTab(originTab);
-
         toastMessage(message: response.body?["message"]);
       } else {
         toastMessage(message: response.body?["message"] ?? 'Update failed');
