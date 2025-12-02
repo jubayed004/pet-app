@@ -7,6 +7,9 @@ import 'package:pet_app/service/api_service.dart';
 import 'package:pet_app/service/api_url.dart';
 import 'package:pet_app/utils/app_const/app_const.dart';
 
+import '../../../../utils/variable/variable.dart';
+
+
 class ReviewController extends GetxController {
 
 
@@ -20,7 +23,7 @@ class ReviewController extends GetxController {
     try {
       isLoading.value = true;
       final response = await apiClient.post(url: ApiUrl.addReview(), body: body,);
-
+          logger.d(response.body);
       if (response.statusCode == 201) {
         await getReviewByService(id: id);
         isLoading.value = false;
@@ -65,6 +68,9 @@ class ReviewController extends GetxController {
     try {
       loadingMethod(Status.loading);
       final response = await apiClient.get(url: ApiUrl.getReview(id: id));
+      logger.d(response.body);
+      log.d(response.status);
+      log.d(response.statusCode);
       if (response.statusCode == 200) {
         final newData = ReviewModel.fromJson(response.body);
         review.value = newData;

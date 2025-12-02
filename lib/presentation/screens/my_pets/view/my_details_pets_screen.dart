@@ -110,7 +110,7 @@ class _MyDetailsPetsScreenState extends State<MyDetailsPetsScreen> {
                                 borderRadius: BorderRadius.circular(20.r),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: Colors.black.withOpacity(0.06),
+                                    color: Colors.black.withValues(alpha: 0.06),
                                     blurRadius: 10,
                                     offset: const Offset(0, 4),
                                   ),
@@ -127,7 +127,7 @@ class _MyDetailsPetsScreenState extends State<MyDetailsPetsScreen> {
                                           text: pet?.name ?? "",
                                           textAlign: TextAlign.start,
                                           fontWeight: FontWeight.w700,
-                                          fontSize: 24.sp,
+                                          fontSize: 18.sp,
                                         ),
                                         Gap(8.h),
                                         Container(
@@ -348,7 +348,7 @@ class _MyDetailsPetsScreenState extends State<MyDetailsPetsScreen> {
         Container(
           padding: EdgeInsets.all(10.w),
           decoration: BoxDecoration(
-            color: AppColors.primaryColor.withOpacity(0.1),
+            color: AppColors.primaryColor.withValues(alpha:  0.1),
             borderRadius: BorderRadius.circular(12.r),
           ),
           child: Icon(icon, color: AppColors.primaryColor, size: 24.sp),
@@ -361,7 +361,7 @@ class _MyDetailsPetsScreenState extends State<MyDetailsPetsScreen> {
               CustomText(
                 text: title,
                 fontWeight: FontWeight.w700,
-                fontSize: 18.sp,
+                fontSize: 14.sp,
               ),
               if (subtitle != null)
                 CustomText(
@@ -591,9 +591,4 @@ class _MyDetailsPetsScreenState extends State<MyDetailsPetsScreen> {
       ),
     );
   }
-}
-
-// Helper widget for Gap in Sliver
-class SliverGap extends SliverToBoxAdapter {
-  SliverGap(double height) : super(child: SizedBox(height: height));
 }

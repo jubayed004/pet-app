@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:pet_app/controller/get_controllers.dart';
+import 'package:pet_app/presentation/components/custom_loader/custom_loader.dart';
 import 'package:pet_app/presentation/components/custom_netwrok_image/custom_network_image.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_advertisement/model/details_advertisement_model.dart';
@@ -60,7 +61,7 @@ class _DetailsAdvertisementScreenState extends State<DetailsAdvertisementScreen>
           ),
         ],
         bottom: PreferredSize(
-          preferredSize: Size.fromHeight(110.h),
+          preferredSize: Size.fromHeight(130.h),
           child: Container(
             color: Colors.white,
             child: Column(
@@ -238,10 +239,7 @@ class _DetailsAdvertisementScreenState extends State<DetailsAdvertisementScreen>
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          CircularProgressIndicator(
-            color: AppColors.purple500,
-            strokeWidth: 3,
-          ),
+          CustomLoader(),
           Gap(20.h),
           CustomText(
             text: "Loading advertisements...",

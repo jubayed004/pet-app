@@ -137,17 +137,17 @@ final Address toAddress = Address(
 List<VendorDashboardModel> vendorGridList = [
   VendorDashboardModel(
     img: Icon(Icons.home_repair_service,color: Colors.green,),
-    title: "Services",
+    title: "Add Services",
     route:  RoutePath.businessServiceScreen,
   ),
   VendorDashboardModel(
     img: Icon(Icons.wallet_giftcard_sharp,color: Colors.pink),
-    title: "Advertisement",
+    title: "Add Advertisement",
     route:  RoutePath.businessAdvertisementScreen,
   ),
   VendorDashboardModel(
     img: Icon(Icons.book_online_outlined,color: Colors.brown),
-    title: "Booking",
+    title: "See Your Booking",
     route:  RoutePath.businessBookingScreen,
   ),
 

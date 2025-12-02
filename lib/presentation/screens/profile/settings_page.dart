@@ -15,6 +15,7 @@ import 'package:pet_app/presentation/components/custom_button/custom_defualt_app
 import 'package:pet_app/presentation/components/custom_button_tap/custom_button_tap.dart';
 import 'package:pet_app/presentation/components/custom_image/custom_image.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
+import 'package:pet_app/presentation/components/custom_text_field/custom_text_field.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
 import 'package:pet_app/utils/app_const/padding_constant.dart';
 import 'package:pet_app/utils/app_strings/app_strings.dart';
@@ -102,10 +103,9 @@ class SettingsPage extends StatelessWidget {
                             textColor: AppColors.greenColor,
                             title: "Cancel",
                             isBorder: true,
-                            fontSize: 14.sp,
+                            fontSize: 12.sp,
                           ),
-                          const SizedBox(height: 12),
-                          // Confirm Button -> Open Password Dialog
+
                           CustomButton(
                             width: double.infinity,
                             height: 36,
@@ -120,16 +120,22 @@ class SettingsPage extends StatelessWidget {
                                 context: context,
                                 title: "Warning",
                                 subtitle: "Please enter your password to permanently delete your account.",
-                                contentWidget: TextField(
-                                  controller: deletePassword,
-                                  obscureText: true,
-                                  decoration: InputDecoration(
-                                    border: OutlineInputBorder(),
-                                    hintText: "Enter your password",
-                                  ),
+                                contentWidget:     CustomTextField(
+                                  fillColor: Colors.white,
+                                  hintText: AppStrings.enterYourPassword,
+                                  textEditingController: deletePassword,
+                                  isPassword: true,
+                                  fieldBorderRadius: 10.r,
+                                  fieldBorderColor: AppColors.secondPrimaryColor,
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Password is required';
+                                    }
+                                    return null;
+                                  },
                                 ),
+
                                 actionButton: [
-                                  // Cancel
                                   CustomButton(
                                     width: double.infinity,
                                     height: 36,
@@ -142,10 +148,9 @@ class SettingsPage extends StatelessWidget {
                                     textColor: AppColors.greenColor,
                                     title: "Cancel",
                                     isBorder: true,
-                                    fontSize: 14.sp,
+                                    fontSize: 12.sp,
                                   ),
-                                  const SizedBox(height: 12),
-                                  // Confirm -> Call deleteAccount()
+
                                   CustomButton(
                                     width: double.infinity,
                                     height: 36,
@@ -159,13 +164,13 @@ class SettingsPage extends StatelessWidget {
                                       await otherController.deleteAccount();
                                     },
                                     title: "Confirm",
-                                    fontSize: 14.sp,
+                                    fontSize: 12.sp,
                                   ),
                                 ],
                               );
                             },
                             title: "Confirm",
-                            fontSize: 14.sp,
+                            fontSize: 12.sp,
                           ),
                         ],
                       );

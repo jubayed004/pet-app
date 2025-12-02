@@ -27,7 +27,6 @@ class _ReviewScreenState extends State<ReviewScreen> {
   @override
   void initState() {
     super.initState();
-    // Fetch reviews when the screen is initialized.
     controller.getReviewByService(id: widget.serviceId);
   }
 
@@ -37,6 +36,9 @@ class _ReviewScreenState extends State<ReviewScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print("############################# -----serviceId---- ${widget.serviceId}##################################");
+    print("############################# ----businessId---- ${widget.businessId}##################################");
+    print("############################# -----ownerId---- ${widget.ownerId}##################################");
     return Scaffold(
       body: RefreshIndicator(
         onRefresh: _refreshReviews,

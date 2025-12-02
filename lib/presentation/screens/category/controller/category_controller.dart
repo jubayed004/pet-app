@@ -7,6 +7,9 @@ import 'package:pet_app/service/api_url.dart';
 
 import 'package:flutter/foundation.dart';
 
+import '../../../../utils/variable/variable.dart';
+
+
 class CategoryController extends GetxController {
   final ApiClient apiClient = serviceLocator<ApiClient>();
   final Rx<CategoryModel> service = CategoryModel().obs;
@@ -20,7 +23,7 @@ class CategoryController extends GetxController {
       final response = await apiClient.get(
         url: ApiUrl.getService(page: page, type: type),
       );
-
+         logger.d(response.body);
       if (response.statusCode == 200) {
         final newData = CategoryModel.fromJson(response.body);
         final newItems = newData.services ?? [];

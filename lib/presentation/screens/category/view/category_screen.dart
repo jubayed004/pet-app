@@ -98,7 +98,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
         backgroundColor: AppColors.whiteColor,
         body: Column(
           children: [
-            /// Category Header
             SizedBox(
               height: 130.h,
               child: ValueListenableBuilder<int>(
@@ -119,29 +118,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
                             GestureDetector(
                               onTap: () {
                                 selectedIndex.value = index;
-                                /*        if (index == 5) {
-                                  showModalBottomSheet(
-                                    context: context,
-                                    builder: (_) {
-                                      return Container(
-                                        padding: padding16,
-                                        width: double.infinity,
-                                        height: MediaQuery.of(context).size.height / 2,
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: const [
-                                            CustomText(text: 'Standard Boarding', fontSize: 14, fontWeight: FontWeight.w500),
-                                            CustomText(text: 'Luxury Suites', fontSize: 14, fontWeight: FontWeight.w500),
-                                            CustomText(text: 'Daycare', fontSize: 14, fontWeight: FontWeight.w500),
-                                            CustomText(text: 'Specialized Care', fontSize: 14, fontWeight: FontWeight.w500),
-                                            CustomText(text: 'Extras', fontSize: 14, fontWeight: FontWeight.w500),
-                                          ],
-                                        ),
-                                      );
-                                    },
-                                  );
-                                }*/
                               },
                               child: Card(
                                 shape: RoundedRectangleBorder(
@@ -172,8 +148,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 },
               ),
             ),
-
-            /// PagedSliverList - changes with category
             Expanded(
               child: ValueListenableBuilder<int>(
                 valueListenable: selectedIndex,

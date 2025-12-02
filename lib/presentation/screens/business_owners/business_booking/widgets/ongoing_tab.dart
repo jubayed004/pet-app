@@ -37,7 +37,7 @@ class OngoingTab extends StatelessWidget {
 
             return CustomBookingCard(
               index: 1,
-              showApproveButton: true,   // approve acts as "Complete"
+              showApproveButton: true,
               showRejectButton: false,
               approveText: 'Complete',
               logoPath: logoKeyOrUrl,

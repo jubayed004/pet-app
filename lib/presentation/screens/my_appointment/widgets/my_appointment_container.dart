@@ -50,6 +50,7 @@ class MyAppointmentContainer extends StatelessWidget {
   final myAppointmentController = GetControllers.instance.getMyAppointmentController();
   @override
   Widget build(BuildContext context) {
+    print("############################ Service Id $id######################################");
     SvgPicture getIconByName({required String name}) {
       switch (name) {
         case "VET":

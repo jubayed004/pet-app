@@ -4,16 +4,26 @@ import 'package:intl/intl.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_booking/model/business_booking_model.dart';
 import 'package:pet_app/presentation/widget/card/dashboard_store_card.dart';
 
-class PendingTab extends StatelessWidget {
+class PendingTab extends StatefulWidget {
   const PendingTab({super.key, required this.controller});
   final dynamic controller;
 
   @override
+  State<PendingTab> createState() => _PendingTabState();
+}
+
+class _PendingTabState extends State<PendingTab> {
+  @override
+  void initState() {
+    super.initState();
+    widget.controller.pendingController.refresh();
+  }
+  @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-      onRefresh: () async => controller.pendingController.refresh(),
+      onRefresh: () async => widget.controller.pendingController.refresh(),
       child: PagedListView<int, BookingItem>(
-        pagingController: controller.pendingController,
+        pagingController: widget.controller.pendingController,
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
         builderDelegate: PagedChildBuilderDelegate<BookingItem>(
           itemBuilder: (context, item, index) {
@@ -53,12 +63,12 @@ class PendingTab extends StatelessWidget {
 
               phoneNumber: phone,
               address: addr,
-              onApprove: () => controller.updateItemStatus(
+              onApprove: () => widget.controller.updateItemStatus(
                 id: item.id ?? '',
                 status: 'APPROVED',
                 originTab: 0,
               ),
-              onReject: () => controller.updateItemStatus(
+              onReject: () => widget.controller.updateItemStatus(
                 id: item.id ?? '',
                 status: 'REJECTED',
                 originTab: 0,

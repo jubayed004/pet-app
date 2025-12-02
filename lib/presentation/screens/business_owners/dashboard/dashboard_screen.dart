@@ -5,6 +5,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:pet_app/controller/get_controllers.dart';
 import 'package:pet_app/core/route/routes.dart';
 import 'package:pet_app/presentation/components/custom_button_tap/custom_button_tap.dart';
+import 'package:pet_app/presentation/components/custom_loader/custom_loader.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
 import 'package:pet_app/utils/app_const/app_const.dart';
 import 'package:pet_app/utils/app_const/padding_constant.dart';
@@ -43,7 +44,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         child: CustomScrollView(
           slivers: [
             const CustomDefaultAppbar(title: "Dashboard"),
-            /// Dropdown selection
+
             SliverToBoxAdapter(
               child: Padding(
                 padding: paddingH12V6,
@@ -90,7 +91,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
               ),
             ),
-            /// Stats Grid
+
             SliverToBoxAdapter(
               child: Obx(() {
                 final status = controller.loading.value;
@@ -99,7 +100,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   return const Center(
                       child: Padding(
                           padding: EdgeInsets.all(40),
-                          child: CircularProgressIndicator()));
+                          child: CustomLoader()));
                 }
                 if (status == Status.error) {
                   return _buildMessage("Something went wrong");
@@ -162,7 +163,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       crossAxisCount: 3,
                       mainAxisSpacing: 16.h,
                       crossAxisSpacing: 22.w,
-                      childAspectRatio: 0.8,
+                      childAspectRatio: 0.7,
 
                     ),
                     itemBuilder: (context, index) =>

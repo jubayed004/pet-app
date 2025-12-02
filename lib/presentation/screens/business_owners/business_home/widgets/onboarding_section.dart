@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:gap/gap.dart';
 import 'package:pet_app/controller/get_controllers.dart';
 import 'package:pet_app/helper/image/network_image.dart';
+import 'package:pet_app/presentation/components/custom_loader/custom_loader.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:pet_app/presentation/no_internet/error_card.dart';
 import 'package:pet_app/presentation/no_internet/more_data_error_card.dart';
@@ -39,7 +40,7 @@ class OnboardingSection extends StatelessWidget {
 
               switch (status) {
                 case Status.loading:
-                  return Center(child:LoadingWidget(color: Colors.pink,) );
+                  return Center(child:CustomLoader() );
                 case Status.error:
                   return Center(
                       child: ErrorCard(

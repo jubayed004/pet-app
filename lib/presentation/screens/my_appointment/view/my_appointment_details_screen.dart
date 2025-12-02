@@ -34,6 +34,7 @@ class _MyAppointmentDetailsScreenState extends State<MyAppointmentDetailsScreen>
 
   @override
   Widget build(BuildContext context) {
+    print("======================= Service Id${widget.id}======================");
     return Scaffold(
       backgroundColor: Colors.white,
       body: RefreshIndicator(
@@ -242,7 +243,7 @@ class _MyAppointmentDetailsScreenState extends State<MyAppointmentDetailsScreen>
                                       AppRouter.route.pushNamed(
                                         RoutePath.reviewScreen,
                                         extra: {
-                                          "serviceId": item1?.id ?? "",
+                                          "serviceId": item1?.serviceId?.id ?? "",
                                           "ownerId": item1?.ownerId ?? "",
                                           "businessId": item1?.businessId ?? "",
                                         },

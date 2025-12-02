@@ -4,6 +4,7 @@ import 'package:pet_app/presentation/screens/category/category_details/model/cat
 import 'package:pet_app/service/api_service.dart';
 import 'package:pet_app/service/api_url.dart';
 import 'package:pet_app/utils/app_const/app_const.dart';
+import 'package:pet_app/utils/variable/variable.dart';
 
 class CategoryDetailsController extends GetxController{
   final ApiClient apiClient = serviceLocator();
@@ -18,9 +19,13 @@ class CategoryDetailsController extends GetxController{
     try {
       loadingMethod(Status.loading);
       final response = await apiClient.get(url: ApiUrl.getCategoryDetails(id: id));
+      logger.d(response.body);
       if (response.statusCode == 200) {
         final newData = CategoryDetailsModel.fromJson(response.body);
         categoryDetails.value = newData;
+        print(categoryDetails.value.message);
+        print(categoryDetails.value.service?.serviceName ?? "nullllllll");
+
         loadingMethod(Status.completed);
       } else {
         if (response.statusCode == 503) {
@@ -32,6 +37,7 @@ class CategoryDetailsController extends GetxController{
         }
       }
     } catch (e) {
+      print("############################# ${e.toString()}");
       loadingMethod(Status.error);
     }
   }

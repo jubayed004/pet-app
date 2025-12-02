@@ -41,9 +41,9 @@ class Service {
   final bool? isActive;
   final DateTime? createdAt;
   final DateTime? updatedAt;
-  final int? v;
+  final num? v;
   final bool? isOpenNow;
-  final int? avgRating;
+  final num? avgRating;
 
   Service({
     this.id,
@@ -121,7 +121,7 @@ class Service {
 class Review {
   final String? id;
   final String? comment;
-  final int? rating;
+  final num? rating;
   final UserId? userId;
   final DateTime? createdAt;
 

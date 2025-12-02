@@ -1,6 +1,5 @@
-import 'dart:io';
 
-import 'package:badges/badges.dart' as badges;
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -510,7 +509,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   : "";
 
               return MyAppointmentContainer(
-                id: item.id ?? "",
+                id: item.serviceId?.id ?? "",
                 petLogo: Assets.images.vet.image(width: 24.w),
                 serviceType: item.serviceId?.serviceType ?? "",
                 shopLogo: item.serviceId?.shopLogo ?? "",

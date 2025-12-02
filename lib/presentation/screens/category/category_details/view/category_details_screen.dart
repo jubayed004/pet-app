@@ -53,7 +53,7 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
         },
         child: CustomScrollView(
           slivers: [
-            // Transparent AppBar with back button overlay
+
             SliverAppBar(
               expandedHeight: 280.h,
               pinned: true,
@@ -158,6 +158,7 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
                                 children: [
                                   Obx(() {
                                     final serviceName = controller.categoryDetails.value.service?.serviceType;
+                                    print(serviceName);
                                     return Text(
                                       serviceName ?? "",
                                       style: TextStyle(

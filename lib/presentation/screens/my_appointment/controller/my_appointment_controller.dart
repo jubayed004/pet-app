@@ -11,6 +11,8 @@ import 'package:pet_app/service/api_service.dart';
 import 'package:pet_app/service/api_url.dart';
 import 'package:pet_app/utils/app_const/app_const.dart';
 
+import '../../../../utils/variable/variable.dart';
+
 class MyAppointmentController extends GetxController {
 
   final ApiClient apiClient = serviceLocator();
@@ -24,7 +26,7 @@ class MyAppointmentController extends GetxController {
 
     try{
       final response = await apiClient.get(url: ApiUrl.getBookingAppointment(page: page));
-      log.d(response.body);
+      logger.d(response.body);
       if (response.statusCode == 200) {
         final newData = AppointmentBookingModel.fromJson(response.body);
         final newItems = newData.bookings ?? [];
@@ -53,6 +55,7 @@ class MyAppointmentController extends GetxController {
     singleAppointmentBookingLoading.value = Status.loading; // Start loading
     try {
       final response = await apiClient.get(url: ApiUrl.getBookingAppointment(page: 1));
+      logger.d(response.body);
       if (response.statusCode == 200) {
         final newData = AppointmentBookingModel.fromJson(response.body);
         final newItems = newData.bookings ?? [];
@@ -87,6 +90,7 @@ class MyAppointmentController extends GetxController {
     try {
       loadingMethod(Status.loading);
       final response = await apiClient.get(url: ApiUrl.getBookingAppointmentDetails(id: id));
+      logger.d(response.body);
       if (response.statusCode == 200) {
         final newData = AppointmentBookingDetailsModel.fromJson(response.body);
         appointmentBookingDetails.value = newData;

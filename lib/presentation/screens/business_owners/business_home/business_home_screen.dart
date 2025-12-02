@@ -15,8 +15,7 @@ import 'package:pet_app/presentation/screens/business_owners/business_home/widge
 import 'package:pet_app/presentation/screens/business_owners/business_home/widgets/onboarding_section.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_home/widgets/review_section.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
-import 'package:shadify/shadify.dart';
-import 'package:shimmer/shimmer.dart';
+
 
 class BusinessHomeScreen extends StatefulWidget {
   const BusinessHomeScreen({super.key});

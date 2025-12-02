@@ -106,7 +106,7 @@ class _EditMyPetsScreenState extends State<EditMyPetsScreen> {
                     borderRadius: BorderRadius.circular(20.r),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
+                        color: Colors.black.withValues(alpha: 0.1),
                         blurRadius: 10,
                         offset: const Offset(0, 4),
                       ),
@@ -148,7 +148,7 @@ class _EditMyPetsScreenState extends State<EditMyPetsScreen> {
                             end: Alignment.bottomCenter,
                             colors: [
                               Colors.transparent,
-                              Colors.black.withOpacity(0.4),
+                              Colors.black.withValues(alpha: 0.4),
                             ],
                           ),
                         ),
@@ -167,7 +167,7 @@ class _EditMyPetsScreenState extends State<EditMyPetsScreen> {
                                 shape: BoxShape.circle,
                                 boxShadow: [
                                   BoxShadow(
-                                    color: Colors.black.withOpacity(0.2),
+                                    color: Colors.black.withValues(alpha: 0.2),
                                     blurRadius: 10,
                                     offset: const Offset(0, 4),
                                   ),
@@ -225,7 +225,7 @@ class _EditMyPetsScreenState extends State<EditMyPetsScreen> {
                   borderRadius: BorderRadius.circular(20.r),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
+                      color: Colors.black.withValues(alpha: 0.05),
                       blurRadius: 10,
                       offset: const Offset(0, 4),
                     ),
@@ -305,7 +305,7 @@ class _EditMyPetsScreenState extends State<EditMyPetsScreen> {
                                 color: Colors.grey.shade50,
                                 borderRadius: BorderRadius.circular(12.r),
                                 border: Border.all(
-                                  color: AppColors.purple500.withOpacity(0.3),
+                                  color: AppColors.purple500.withValues(alpha: 0.3),
                                 ),
                               ),
                               child: CustomDropdown(
