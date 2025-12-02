@@ -64,7 +64,6 @@ class BusinessProfileController extends GetxController{
       if(selectedImage.value != null){
         multipartBody.add(MultipartBody("profilePic", File(selectedImage.value?.path?? "")));
       }
-      print("weiurterit ertioyertoguiopdrtdrthporthndrtpgrtphnrth");
 
       print(body);
       final response = await apiClient.multipartRequest(url: ApiUrl.businessUpdateProfile(), body: body, multipartBody: multipartBody, reqType: "PUT");

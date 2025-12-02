@@ -56,13 +56,13 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
 
         // Get the default offering
         final offering = controller.allOfferings.value['default'];
-
+/*
         if (offering == null || offering.availablePackages.isEmpty) {
           return _buildErrorView(context);
-        }
+        }*/
 
         // Filter packages for monthly and yearly
-        final packages = offering.availablePackages;
+        final packages = offering?.availablePackages ?? [];
         Package? monthlyPackage;
         Package? yearlyPackage;
 
@@ -95,23 +95,14 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
     return SafeArea(
       child: Column(
         children: [
-          // Header
           _buildHeader(context),
-
-          // Scrollable content
           Expanded(
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Column(
+                spacing: 18,
                 children: [
-                  const SizedBox(height: 20),
-
-                  // Hero Image/Icon
                   _buildHeroSection(),
-
-                  const SizedBox(height: 24),
-
-                  // Title and Description
                   Text(
                     'Unlock Premium Features',
                     style: theme.textTheme.headlineMedium?.copyWith(
@@ -120,7 +111,6 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 12),
                   Text(
                     'Get unlimited access to all premium features',
                     style: theme.textTheme.bodyLarge?.copyWith(
@@ -128,45 +118,30 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                     ),
                     textAlign: TextAlign.center,
                   ),
-
-                  const SizedBox(height: 32),
-
-                  // Features List
                   _buildFeaturesList(),
-
-                  const SizedBox(height: 32),
-
-                  // Subscription Plans
-                  if (yearlyPackage != null)
-                    _buildSubscriptionCard(
-                      index: 1,
-                      title: 'Yearly',
-                      price: yearlyPackage.storeProduct.priceString,
-                      period: 'per year',
-                      savings: _calculateSavings(monthlyPackage, yearlyPackage),
-                      package: yearlyPackage,
-                      isPopular: true,
-                    ),
-
-                  if (yearlyPackage != null && monthlyPackage != null)
-                    const SizedBox(height: 16),
-
-                  if (monthlyPackage != null)
-                    _buildSubscriptionCard(
-                      index: 0,
-                      title: 'Monthly',
-                      price: monthlyPackage.storeProduct.priceString,
-                      period: 'per month',
-                      package: monthlyPackage,
-                    ),
-
-                  const SizedBox(height: 24),
+                  _buildSubscriptionCard(
+                    index: 1,
+                    title: 'Yearly',
+                    price: yearlyPackage?.storeProduct.priceString ?? "\$44.99",
+                    period: 'Per year',
+                    savings: _calculateSavings(monthlyPackage, yearlyPackage),
+                    package: yearlyPackage,
+                    isPopular: true,
+                  ),
+                  _buildSubscriptionCard(
+                    index: 0,
+                    title: 'Monthly',
+                    price: monthlyPackage?.storeProduct.priceString ?? "\$3.99",
+                    period: 'Per month',
+                    package: monthlyPackage,
+                  ),
+                  SizedBox(
+                    height: 24,
+                  ),
                 ],
               ),
             ),
           ),
-
-          // Bottom CTA Section
           _buildBottomSection(context, monthlyPackage, yearlyPackage),
         ],
       ),
@@ -262,7 +237,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
     required String title,
     required String price,
     required String period,
-    required Package package,
+    Package? package,
     String? savings,
     bool isPopular = false,
   }) {
@@ -289,7 +264,6 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
             ),
             child: Row(
               children: [
-                // Radio button
                 Container(
                   width: 24,
                   height: 24,
@@ -310,8 +284,6 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                       : null,
                 ),
                 const SizedBox(width: 16),
-
-                // Plan details
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -347,8 +319,6 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                     ],
                   ),
                 ),
-
-                // Price
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
@@ -372,8 +342,6 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
               ],
             ),
           ),
-
-          // Popular badge
           if (isPopular)
             Positioned(
               top: -10,
@@ -484,7 +452,6 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
       padding: const EdgeInsets.all(24),
       child: Column(
         children: [
-          // Header
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -504,8 +471,6 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
           ),
 
           const SizedBox(height: 40),
-
-          // Success Icon
           Container(
             width: 100,
             height: 100,
@@ -541,8 +506,6 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
           }),
 
           const SizedBox(height: 32),
-
-          // Subscription Details Card
           Obx(() {
             final entitlement = controller.activeEntitlement;
             return Container(
@@ -577,10 +540,6 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
               ),
             );
           }),
-
-
-
-          // Replace the existing Manage Subscription Button with this:
           SizedBox(
             width: double.infinity,
             height: 56,
@@ -639,63 +598,6 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
     );
   }
 
-  Widget _buildErrorView(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.error_outline,
-              size: 80,
-              color: Colors.grey.shade400,
-            ),
-            const SizedBox(height: 24),
-            const Text(
-              'Unable to Load Subscriptions',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 12),
-            Text(
-              'Please check your connection and try again',
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.grey.shade600,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 32),
-            ElevatedButton.icon(
-              onPressed: () => _initializeSubscription(),
-              icon: const Icon(Icons.refresh),
-              label: const Text('Retry'),
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 32,
-                  vertical: 16,
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
-            TextButton(
-              onPressed: (){
-                if(Navigator.canPop(context)){
-                  AppRouter.route.pop();
-                }
-              },
-              child: const Text('Go Back'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   String? _calculateSavings(Package? monthlyPackage, Package? yearlyPackage) {
     if (monthlyPackage == null || yearlyPackage == null) return null;
 
@@ -709,8 +611,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
       if (savings > 0) {
         return 'Save $savings%';
       }
-    } catch (e) {
-      // If calculation fails, don't show savings
+    } catch (_) {
     }
 
     return null;

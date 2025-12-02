@@ -162,6 +162,7 @@ class BusinessShopProfileScreen extends StatelessWidget {
                                 RoutePath.businessEditShopProfileScreen,
                                 extra: {
                                   "name": business.businessName ?? "",
+                                  "id": business.id ?? "",
                                   "phoneNumber": business.website ?? "",
                                   "address": business.address ?? "",
                                   "logoUrl": business.shopLogo,
@@ -242,6 +243,7 @@ class BusinessShopProfileScreen extends StatelessWidget {
                                   text: business.address ?? "No address provided",
                                   fontSize: 14.sp,
                                   color: Colors.grey[600],
+                                  textAlign: TextAlign.start,
                                   maxLines: 3,
                                 ),
                               ),

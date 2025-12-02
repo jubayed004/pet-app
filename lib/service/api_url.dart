@@ -32,6 +32,7 @@
   static getAllAdvertisement()=> '$base/user-home-page/allAdsWhichActive?limit=50&page=1';
   ///Update Profile
   static businessUpdateProfile() => '$base/owner/update-owner-details';
+  static businessShopUpdateProfile({required String id}) => '$base/business/update/$id';
   static updateProfile() => '$base/user/update-profile';
   static getBusinessShopProfile() => '$base/business/get';
  ///UserAll

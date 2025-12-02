@@ -432,6 +432,7 @@ class AppRouter {
           return _buildPageWithAnimation(
             child: BusinessEditShopProfileScreen(
               name: extra?['name'] ?? '',
+              id: extra?['id'] ?? '',
               address: extra?['address'] ?? '',
               webSiteLink: extra?['phoneNumber'] ?? '',
               logoUrl: extra?['logoUrl'],

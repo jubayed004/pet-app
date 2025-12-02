@@ -19,6 +19,7 @@ class OnboardingScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
       body: PageView(
+        physics: NeverScrollableScrollPhysics(),
         onPageChanged: (index) {
           _controller.currentIndex.value = index;
         },

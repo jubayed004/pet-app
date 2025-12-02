@@ -38,6 +38,7 @@ class OwnerDetails {
   final String? name;
   final String? email;
   final String? phone;
+  final String? address;
   final bool? isVerified;
   final bool? isBlocked;
   final String? role;
@@ -54,6 +55,7 @@ class OwnerDetails {
     this.name,
     this.email,
     this.phone,
+    this.address,
     this.isVerified,
     this.isBlocked,
     this.role,
@@ -104,6 +106,7 @@ class OwnerDetails {
     name: json["name"],
     email: json["email"],
     phone: json["phone"],
+    address: json["address"],
     isVerified: json["isVerified"],
     isBlocked: json["isBlocked"],
     role: json["role"],
@@ -121,6 +124,7 @@ class OwnerDetails {
     "name": name,
     "email": email,
     "phone": phone,
+    "address": address,
     "isVerified": isVerified,
     "isBlocked": isBlocked,
     "role": role,
