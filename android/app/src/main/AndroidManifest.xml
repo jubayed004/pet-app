@@ -1,25 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <uses-permission android:name="android.permission.INTERNET" />
-    <!-- Needed for API calls, Firebase, Google Maps, chat, booking, etc. -->
-
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <!-- To check if user is online before loading maps or data -->
-
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <!-- For accurate user location on maps -->
-
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <!-- For approximate location when GPS off -->
-
     <uses-permission android:name="android.permission.CAMERA" />
-    <!-- If user takes pet photos from camera -->
-
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <!-- For uploading/saving pet photos and documents -->
-
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-    <!-- To show appointment or reminder notifications (Android 13+) -->
     <uses-permission android:name="com.android.vending.BILLING" />
 
 

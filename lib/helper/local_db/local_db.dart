@@ -136,10 +136,12 @@ class DBHelper {
     required String id,
     required String email,
     required String role,
+    required bool rememberMe,
   }) async {
     try{
       SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
       sharedPreferences.setString("token", token);
+      sharedPreferences.setBool("rememberMe", rememberMe);
       sharedPreferences.setString("id", id);
       sharedPreferences.setString("email", email);
       sharedPreferences.setString("role", role);
@@ -161,6 +163,16 @@ class DBHelper {
       });
     }catch(e){
       AppRouter.route.goNamed(RoutePath.onboardingScreen);
+    }
+  }
+
+
+  Future clearData() async {
+    try{
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.clear();
+    }catch(_){
+
     }
   }
 }

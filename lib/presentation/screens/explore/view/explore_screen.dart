@@ -65,7 +65,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
-    final bottomSheetHeight = screenHeight * 0.33;
+    final bottomSheetHeight = screenHeight * 0.38;
 
     return Scaffold(
       body: Stack(

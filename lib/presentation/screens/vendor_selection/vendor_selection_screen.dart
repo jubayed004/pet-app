@@ -18,6 +18,7 @@ class VendorSelectionScreen extends StatefulWidget {
 
 class _VendorSelectionScreenState extends State<VendorSelectionScreen> {
   final _authController = GetControllers.instance.getAuthController();
+
   @override
   Widget build(BuildContext context) {
     return  Scaffold(

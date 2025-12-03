@@ -77,11 +77,13 @@ class AuthController extends GetxController {
         final loginModel = LoginModel.fromJson(response.body);
         Map<String, dynamic> decodedToken = JwtDecoder.decode(loginModel.accessToken??'');
       final role= decodedToken['role']??"";
+
         dbHelper.saveUserdata(
           token: loginModel.accessToken??'',
           id: decodedToken['id']??"",
           email: loginModel.user?.email ?? "",
           role:  role,
+          rememberMe: rememberMe.value,
         ).then((value){
           loginMethod(false);
           if(role == "USER"){
@@ -268,9 +270,7 @@ class AuthController extends GetxController {
         "email": email,
         "code":code
       };
-      print("verifyOtpScreen1");
       var response = await apiClient.post(body: body, url: ApiUrl.activateOtp(), isBasic: true);
-      print("verifyOtpScreen2");
       if (response.statusCode == 200) {
         final accessToken = response.body?['accessToken'];
         Map<String, dynamic> decodedToken = JwtDecoder.decode(accessToken??'');
@@ -280,16 +280,14 @@ class AuthController extends GetxController {
           id: decodedToken['userId']??"",
           email: decodedToken['email']??"",
           role:  role,
+          rememberMe: true
         ).then((value){
           activeMethod(false);
-      /*   AppRouter.route.goNamed(RoutePath.navigationPage,);*/
           if(role == "USER"){
             AppRouter.route.goNamed(RoutePath.petRegistrationScreen);
-
           }else{
             AppRouter.route.goNamed(RoutePath.petShopRegistrationScreen);
           }
-         /* accountVerifyOtp.dispose();*/
         }).onError((error,stack){
           activeMethod(false);
           toastMessage(message: error.toString());

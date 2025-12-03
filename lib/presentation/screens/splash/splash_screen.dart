@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:pet_app/controller/get_controllers.dart';
 import 'package:pet_app/core/dependency/get_it_injection.dart';
 import 'package:pet_app/core/route/route_path.dart';
 import 'package:pet_app/core/route/routes.dart';
@@ -19,30 +20,51 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   final DBHelper dbHelper = serviceLocator();
-
+  final _authController = GetControllers.instance.getAuthController();
   @override
   void initState() {
     super.initState();
    checkLoginStatus();
   }
 
-  Future<void> checkLoginStatus() async {
 
-final token = await dbHelper.getToken();
-final role = await dbHelper.getUserRole();
 
-    Future.delayed(Duration(seconds: 2), () {
-      if (token.isNotEmpty && !(JwtDecoder.isExpired(token))) {
-        if(role == "USER"){
-          AppRouter.route.goNamed(RoutePath.navigationPage);
-        }else{
-          AppRouter.route.goNamed(RoutePath.businessNavigationPage);
+    Future<void> checkLoginStatus() async {
+      if (_authController.rememberMe.value == true) {
+
+        final token = await dbHelper.getToken();
+        if (token.isNotEmpty && !JwtDecoder.isExpired(token)) {
+
+          final role = await dbHelper.getUserRole();
+          if (role == "USER") {
+            AppRouter.route.goNamed(RoutePath.navigationPage);
+          } else {
+            AppRouter.route.goNamed(RoutePath.businessNavigationPage);
+          }
+        } else {
+
+          AppRouter.route.goNamed(RoutePath.onboardingScreen);
         }
       } else {
-        AppRouter.route.goNamed(RoutePath.onboardingScreen);
+
+        final token = await dbHelper.getToken();
+        final role = await dbHelper.clearData();
+
+        if (token.isNotEmpty && !JwtDecoder.isExpired(token)) {
+
+          if (role == "USER") {
+            AppRouter.route.goNamed(RoutePath.navigationPage);
+          } else {
+            AppRouter.route.goNamed(RoutePath.businessNavigationPage);
+          }
+        } else {
+
+          AppRouter.route.goNamed(RoutePath.signInScreen);
+        }
       }
-    });
-  }
+    }
+
+
 
   @override
   Widget build(BuildContext context) {

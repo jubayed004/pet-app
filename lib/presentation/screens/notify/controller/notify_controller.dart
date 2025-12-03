@@ -1,10 +1,12 @@
+
 import 'package:get/get.dart';
 import 'package:pet_app/core/dependency/get_it_injection.dart';
-import 'package:pet_app/presentation/screens/home/model/home_model.dart';
 import 'package:pet_app/presentation/screens/notify/model/notify_model.dart';
 import 'package:pet_app/service/api_service.dart';
 import 'package:pet_app/service/api_url.dart';
 import 'package:pet_app/utils/app_const/app_const.dart';
+
+import '../../../../utils/variable/variable.dart';
 
 class NotifyController extends GetxController{
 
@@ -19,6 +21,7 @@ class NotifyController extends GetxController{
     try{
       loadingMethod(Status.loading);
       final response = await apiClient.get(url: ApiUrl.getNotify());
+     logger.d(response.body);
       if (response.statusCode == 200) {
         final newData = NotifyModel.fromJson(response.body);
         notify.value = newData;
