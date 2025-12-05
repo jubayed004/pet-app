@@ -175,4 +175,14 @@ class DBHelper {
 
     }
   }
+
+  /// ====================== RememberMe ==================
+  Future<bool> getRememberMe() async {
+    try {
+      SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+      return sharedPreferences.getBool("rememberMe") ?? false;
+    } catch (e) {
+      return false;
+    }
+  }
 }

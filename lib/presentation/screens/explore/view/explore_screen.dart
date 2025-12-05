@@ -27,9 +27,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
   final ValueNotifier<int> selectedIndex = ValueNotifier<int>(0);
   final categoryController = GetControllers.instance.getCategoryController();
   final exploreController = GetControllers.instance.getExploreController();
-
   static const LatLng _center = LatLng(23.804693584341365, 90.41590889596907);
-
   final List<CategoryItem> categories = [
     CategoryItem(icon: Assets.icons.petvets.svg(), title: AppStrings.petVets, type: "VET"),
     CategoryItem(icon: Assets.icons.petshops.svg(), title: AppStrings.petShops, type: "SHOP"),
@@ -38,39 +36,32 @@ class _ExploreScreenState extends State<ExploreScreen> {
     CategoryItem(icon: Assets.icons.pettraining.svg(), title: AppStrings.petTraining, type: "TRAINING"),
     CategoryItem(icon: Assets.icons.friendlyplace.svg(), title: AppStrings.friendlyPlace, type: "FRIENDLY"),
   ];
-
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
   }
-
   @override
   void initState() {
     super.initState();
     exploreController.startLocationSharing(type: "VET");
   }
-
   @override
   void dispose() {
     selectedIndex.dispose();
     super.dispose();
   }
-
   void _animateToShowAllMarkers() {
     if (exploreController.markers.isNotEmpty) {
       final cameraPosition = exploreController.getCameraPosition();
       mapController.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
     }
   }
-
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final bottomSheetHeight = screenHeight * 0.38;
-
     return Scaffold(
       body: Stack(
         children: [
-          // Full screen Google Map
           Obx(() {
             return GoogleMap(
               onMapCreated: _onMapCreated,
@@ -84,7 +75,6 @@ class _ExploreScreenState extends State<ExploreScreen> {
             );
           }),
 
-          // Bottom Sheet Overlay
           Positioned(
             left: 0,
             right: 0,

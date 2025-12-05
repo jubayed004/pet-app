@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
@@ -7,10 +6,7 @@ import 'package:pet_app/core/dependency/get_it_injection.dart';
 import 'package:pet_app/core/route/route_path.dart';
 import 'package:pet_app/core/route/routes.dart';
 import 'package:pet_app/helper/local_db/local_db.dart';
-import 'package:pet_app/presentation/components/custom_image/custom_image.dart';
 import 'package:pet_app/core/custom_assets/assets.gen.dart';
-import '../../../utils/app_colors/app_colors.dart';
-
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -20,7 +16,6 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   final DBHelper dbHelper = serviceLocator();
-  final _authController = GetControllers.instance.getAuthController();
   @override
   void initState() {
     super.initState();
@@ -29,46 +24,40 @@ class _SplashScreenState extends State<SplashScreen> {
 
 
 
-    Future<void> checkLoginStatus() async {
-      if (_authController.rememberMe.value == true) {
-
-        final token = await dbHelper.getToken();
-        if (token.isNotEmpty && !JwtDecoder.isExpired(token)) {
-
-          final role = await dbHelper.getUserRole();
-          if (role == "USER") {
-            AppRouter.route.goNamed(RoutePath.navigationPage);
-          } else {
-            AppRouter.route.goNamed(RoutePath.businessNavigationPage);
-          }
+  Future<void> checkLoginStatus() async {
+    bool rememberMe = await dbHelper.getRememberMe();
+    if (rememberMe == true) {
+      final token = await dbHelper.getToken();
+      if (token.isNotEmpty && !JwtDecoder.isExpired(token)) {
+        final role = await dbHelper.getUserRole();
+        if (role == "USER") {
+          AppRouter.route.goNamed(RoutePath.navigationPage);
         } else {
-
-          AppRouter.route.goNamed(RoutePath.onboardingScreen);
+          AppRouter.route.goNamed(RoutePath.businessNavigationPage);
         }
       } else {
+        AppRouter.route.goNamed(RoutePath.onboardingScreen);
+      }
+    } else {
+      final token = await dbHelper.getToken();
+      final role = await dbHelper.clearData();
 
-        final token = await dbHelper.getToken();
-        final role = await dbHelper.clearData();
-
-        if (token.isNotEmpty && !JwtDecoder.isExpired(token)) {
-
-          if (role == "USER") {
-            AppRouter.route.goNamed(RoutePath.navigationPage);
-          } else {
-            AppRouter.route.goNamed(RoutePath.businessNavigationPage);
-          }
+      if (token.isNotEmpty && !JwtDecoder.isExpired(token)) {
+        if (role == "USER") {
+          AppRouter.route.goNamed(RoutePath.navigationPage);
         } else {
-
-          AppRouter.route.goNamed(RoutePath.signInScreen);
+          AppRouter.route.goNamed(RoutePath.businessNavigationPage);
         }
+      } else {
+        AppRouter.route.goNamed(RoutePath.signInScreen);
       }
     }
+  }
 
 
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Container(
@@ -77,8 +66,8 @@ class _SplashScreenState extends State<SplashScreen> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Color(0xFFe7abcd), // প্রথম কালার (আপনার দেয়া)
-              Color(0xFF91DF92), // দ্বিতীয় কালার (আপনার দেয়া)
+              Color(0xFFe7abcd),
+              Color(0xFF91DF92),
             ],
           ),
         ),
