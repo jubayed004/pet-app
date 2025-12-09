@@ -9,22 +9,27 @@ import 'package:pet_app/service/api_url.dart';
 import '../../../../../utils/variable/variable.dart';
 
 /// Tab indices
-const int kTabPending = 0;   // PENDING
-const int kTabOngoing = 1;   // APPROVED
+const int kTabPending = 0; // PENDING
+const int kTabOngoing = 1; // APPROVED
 const int kTabCompleted = 2; // COMPLETED
-const int kTabRejected = 3;  // REJECTED
+const int kTabRejected = 3; // REJECTED
+const int kTabCanceled = 4; // CANCELED
 
 class BusinessBookingController extends GetxController {
   final RxInt selectedTabIndex = kTabPending.obs;
 
-  final PagingController<int, BookingItem> pendingController =
-  PagingController(firstPageKey: 1);
-  final PagingController<int, BookingItem> ongoingController =
-  PagingController(firstPageKey: 1);
+  final PagingController<int, BookingItem> pendingController = PagingController(
+    firstPageKey: 1,
+  );
+  final PagingController<int, BookingItem> ongoingController = PagingController(
+    firstPageKey: 1,
+  );
   final PagingController<int, BookingItem> approvedController =
-  PagingController(firstPageKey: 1);
+      PagingController(firstPageKey: 1);
   final PagingController<int, BookingItem> rejectedController =
-  PagingController(firstPageKey: 1);
+      PagingController(firstPageKey: 1);
+  final PagingController<int, BookingItem> canceledController =
+      PagingController(firstPageKey: 1);
 
   final ApiClient apiClient = serviceLocator();
 
@@ -33,10 +38,11 @@ class BusinessBookingController extends GetxController {
   RxBool isLoadingOngoing = false.obs;
   RxBool isLoadingApproved = false.obs;
   RxBool isLoadingRejected = false.obs;
+  RxBool isLoadingCanceled = false.obs;
 
   // Lazy-load helpers
-  final List<bool> _listenerAdded = [false, false, false, false];
-  final List<bool> _firstLoadTriggered = [false, false, false, false];
+  final List<bool> _listenerAdded = [false, false, false, false, false];
+  final List<bool> _firstLoadTriggered = [false, false, false, false, false];
 
   /// ---------------- API loads per status ----------------
   Future<void> getPending(int pageKey) async {
@@ -44,10 +50,7 @@ class BusinessBookingController extends GetxController {
     isLoadingPending.value = true;
     try {
       final response = await apiClient.get(
-        url: ApiUrl.getAllBooking(
-          status: "PENDING",
-          page: pageKey,
-        ),
+        url: ApiUrl.getAllBooking(status: "PENDING", page: pageKey),
       );
       logger.d(response.body);
       if (response.statusCode == 200) {
@@ -59,9 +62,9 @@ class BusinessBookingController extends GetxController {
           pendingController.appendPage(newItems, pageKey + 1);
         }
       } else {
-        pendingController.error = 'Error fetching data (Code: ${response.statusCode})';
+        pendingController.error =
+            'Error fetching data (Code: ${response.statusCode})';
       }
-
     } catch (e, stack) {
       logger.e("PENDING API ERROR", error: e, stackTrace: stack);
       pendingController.error = e.toString();
@@ -69,7 +72,6 @@ class BusinessBookingController extends GetxController {
       isLoadingPending.value = false;
     }
   }
-
 
   Future<void> getOngoing(int pageKey) async {
     if (isLoadingOngoing.value) return;
@@ -125,7 +127,9 @@ class BusinessBookingController extends GetxController {
     if (isLoadingRejected.value) return;
     isLoadingRejected.value = true;
     try {
-      final response = await apiClient.get(url: ApiUrl.getAllBooking(status: "REJECTED", page: pageKey),);
+      final response = await apiClient.get(
+        url: ApiUrl.getAllBooking(status: "REJECTED", page: pageKey),
+      );
       logger.d(response.body);
       if (response.statusCode == 200) {
         final data = BusinessBookingModel.fromJson(response.body);
@@ -145,13 +149,42 @@ class BusinessBookingController extends GetxController {
     }
   }
 
+  Future<void> getCanceled(int pageKey) async {
+    if (isLoadingCanceled.value) return;
+    isLoadingCanceled.value = true;
+    try {
+      final response = await apiClient.get(
+        url: ApiUrl.getAllBooking(status: "CANCELLED", page: pageKey),
+      );
+      logger.d(response.body);
+      if (response.statusCode == 200) {
+        final data = BusinessBookingModel.fromJson(response.body);
+        final newItems = data.bookings ?? [];
+        if (newItems.isEmpty) {
+          canceledController.appendLastPage(newItems);
+        } else {
+          canceledController.appendPage(newItems, pageKey + 1);
+        }
+      } else {
+        canceledController.error = 'Error fetching data';
+      }
+    } catch (e) {
+      canceledController.error = e.toString();
+    } finally {
+      isLoadingCanceled.value = false;
+    }
+  }
+
   Future<void> updateItemStatus({
     required String id,
     required String status,
     required int originTab,
   }) async {
     try {
-      final response = await apiClient.put(url: ApiUrl.updateStatus(id: id), body: {'status': status},);
+      final response = await apiClient.put(
+        url: ApiUrl.updateStatus(id: id),
+        body: {'status': status},
+      );
       if (response.statusCode == 200) {
         _refreshForStatusChange(status);
         _refreshTab(originTab);
@@ -166,18 +199,23 @@ class BusinessBookingController extends GetxController {
 
   void _refreshForStatusChange(String status) {
     switch (status) {
-      case 'APPROVED':   // now item lives in Ongoing
+      case 'APPROVED': // now item lives in Ongoing
         _refreshTab(kTabPending);
         _refreshTab(kTabOngoing);
         break;
-      case 'COMPLETED':  // now item lives in Completed
+      case 'COMPLETED': // now item lives in Completed
         _refreshTab(kTabOngoing);
         _refreshTab(kTabCompleted);
         break;
-      case 'REJECTED':   // now item lives in Rejected (from Pending/Ongoing)
+      case 'REJECTED': // now item lives in Rejected (from Pending/Ongoing)
         _refreshTab(kTabPending);
         _refreshTab(kTabOngoing);
         _refreshTab(kTabRejected);
+        break;
+      case 'CANCELLED':
+        _refreshTab(kTabPending);
+        _refreshTab(kTabOngoing);
+        _refreshTab(kTabCanceled);
         break;
       default:
         _refreshAll();
@@ -189,6 +227,7 @@ class BusinessBookingController extends GetxController {
     ongoingController.refresh();
     approvedController.refresh();
     rejectedController.refresh();
+    canceledController.refresh();
   }
 
   void _refreshTab(int tab) {
@@ -205,6 +244,9 @@ class BusinessBookingController extends GetxController {
       case kTabRejected:
         rejectedController.refresh();
         break;
+      case kTabCanceled:
+        canceledController.refresh();
+        break;
     }
   }
 
@@ -217,6 +259,11 @@ class BusinessBookingController extends GetxController {
   }
 
   void _ensureListenerFor(int tabIndex) {
+    if (tabIndex >= _listenerAdded.length) {
+      _listenerAdded.addAll(
+        List.filled(tabIndex - _listenerAdded.length + 1, false),
+      );
+    }
     if (_listenerAdded[tabIndex]) return;
 
     switch (tabIndex) {
@@ -232,11 +279,19 @@ class BusinessBookingController extends GetxController {
       case kTabRejected:
         rejectedController.addPageRequestListener(getRejected);
         break;
+      case kTabCanceled:
+        canceledController.addPageRequestListener(getCanceled);
+        break;
     }
     _listenerAdded[tabIndex] = true;
   }
 
   void _triggerFirstLoadIfNeeded(int tabIndex) {
+    if (tabIndex >= _firstLoadTriggered.length) {
+      _firstLoadTriggered.addAll(
+        List.filled(tabIndex - _firstLoadTriggered.length + 1, false),
+      );
+    }
     if (_firstLoadTriggered[tabIndex]) return;
 
     switch (tabIndex) {
@@ -251,6 +306,9 @@ class BusinessBookingController extends GetxController {
         break;
       case kTabRejected:
         rejectedController.refresh();
+        break;
+      case kTabCanceled:
+        canceledController.refresh();
         break;
     }
     _firstLoadTriggered[tabIndex] = true;
@@ -270,6 +328,7 @@ class BusinessBookingController extends GetxController {
     ongoingController.dispose();
     approvedController.dispose();
     rejectedController.dispose();
+    canceledController.dispose();
     super.onClose();
   }
 }

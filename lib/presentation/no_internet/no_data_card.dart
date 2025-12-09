@@ -1,9 +1,6 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
-import 'package:get/get.dart';
-import 'package:pet_app/presentation/components/custom_button/custom_button.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 
 class NoDataCard extends StatelessWidget {
@@ -17,9 +14,13 @@ class NoDataCard extends StatelessWidget {
       child: Column(
         children: [
           const Gap(16),
-          CustomText(text: "No items found", fontWeight: FontWeight.w600, fontSize: 22.sp),
+          CustomText(
+            text: "No items found",
+            fontWeight: FontWeight.w600,
+            fontSize: 22.sp,
+          ),
           const Gap(8),
-          CustomText(text: "The list is currently empty",maxLines: 2,),
+          CustomText(text: "The list is currently empty", maxLines: 2),
           const Gap(16),
           /*CustomButton(title: "Try again",onTap: onTap),*/
         ],

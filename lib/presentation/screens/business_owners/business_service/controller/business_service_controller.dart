@@ -1,22 +1,12 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:pet_app/core/custom_assets/assets.gen.dart';
 import 'package:pet_app/core/dependency/get_it_injection.dart';
-import 'package:pet_app/core/route/route_path.dart';
 import 'package:pet_app/core/route/routes.dart';
 import 'package:pet_app/helper/toast_message/toast_message.dart';
-import 'package:pet_app/presentation/components/custom_button/custom_button.dart';
-import 'package:pet_app/presentation/components/custom_image/custom_image.dart';
-import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:pet_app/presentation/screens/business_owners/business_service/model/business_service_model.dart';
 import 'package:pet_app/service/api_service.dart';
 import 'package:pet_app/service/api_url.dart';
-import 'package:pet_app/utils/app_colors/app_colors.dart';
 import 'package:pet_app/utils/app_const/app_const.dart';
-import 'package:pet_app/utils/app_const/padding_constant.dart';
 
 class BusinessServiceController extends GetxController {
   final ApiClient apiClient = serviceLocator();
@@ -26,9 +16,9 @@ class BusinessServiceController extends GetxController {
   final Rx<BusinessServiceModel> service = BusinessServiceModel().obs;
 
   Future<void> getBusinessService() async {
-    loadingMethod(Status.completed);
+    service.value = BusinessServiceModel(); // Clear old data
+    loadingMethod(Status.loading);
     try {
-      loadingMethod(Status.loading);
       final response = await apiClient.get(url: ApiUrl.getBusinessService());
       if (response.statusCode == 200) {
         final newData = BusinessServiceModel.fromJson(response.body);
@@ -47,7 +37,6 @@ class BusinessServiceController extends GetxController {
       loadingMethod(Status.error);
     }
   }
-
 
   ///=================== Deleted Service
 
@@ -80,7 +69,7 @@ class BusinessServiceController extends GetxController {
     super.onInit();
   }
 
-/*  @override
+  /*  @override
   void onReady() {
 
     super.onReady();

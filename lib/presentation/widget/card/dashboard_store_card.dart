@@ -17,7 +17,6 @@ class CustomBookingCard extends StatelessWidget {
     required this.visitingDate,
     required this.mainTitle,
 
-
     required this.phoneNumber,
     required this.address,
     this.onApprove,
@@ -31,6 +30,7 @@ class CustomBookingCard extends StatelessWidget {
     this.checkInTime,
     this.checkOutDate,
     this.checkOutTime,
+    this.cancellationReason,
   });
   final int index;
   final String logoPath;
@@ -44,7 +44,6 @@ class CustomBookingCard extends StatelessWidget {
   final String? checkOutTime;
   final String mainTitle;
 
-
   final String phoneNumber;
   final String address;
   final VoidCallback? onApprove;
@@ -53,53 +52,62 @@ class CustomBookingCard extends StatelessWidget {
   final bool showRejectButton;
   final String? approveText;
   final String? rejectText;
+  final String? cancellationReason;
   bool get _isUrlLogo =>
       logoPath.startsWith('http://') ||
-          logoPath.startsWith('https://') ||
-          logoPath.startsWith('www.');
+      logoPath.startsWith('https://') ||
+      logoPath.startsWith('www.');
   bool get _isSvgLogo =>
       _isUrlLogo && logoPath.toLowerCase().trim().endsWith('.svg');
   String get _defaultApproveText {
     if (index == 1) return 'Complete'; // Ongoing tab
-    if (index == 0) return 'Approve';  // Pending tab
+    if (index == 0) return 'Approve'; // Pending tab
     return 'Approve';
   }
+
   String get _defaultRejectText => 'Reject';
   SvgPicture _getIconByService({required String name}) {
     switch (name.toUpperCase()) {
       case "VET":
         return Assets.icons.petvets.svg(
           colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
-          width: 22, height: 22,
+          width: 22,
+          height: 22,
         );
       case "SHOP":
         return Assets.icons.petshops.svg(
           colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
-          width: 22, height: 22,
+          width: 22,
+          height: 22,
         );
       case "GROOMING":
         return Assets.icons.petgrooming.svg(
           colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
-          width: 22, height: 22,
+          width: 22,
+          height: 22,
         );
       case "HOTEL":
         return Assets.icons.pethotel.svg(
           colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
-          width: 22, height: 22,
+          width: 22,
+          height: 22,
         );
       case "TRAINING":
         return Assets.icons.pettraining.svg(
           colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
-          width: 22, height: 22,
+          width: 22,
+          height: 22,
         );
       case "FRIENDLY":
       default:
         return Assets.icons.friendlyplace.svg(
           colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
-          width: 22, height: 22,
+          width: 22,
+          height: 22,
         );
     }
   }
+
   Widget _buildLogo() {
     // If URL provided, load it; otherwise map by service key.
     if (_isUrlLogo) {
@@ -109,10 +117,12 @@ class CustomBookingCard extends StatelessWidget {
           width: 22,
           height: 22,
           colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
-          placeholderBuilder: (context) => const SizedBox(
-            height: 22, width: 22,
-            child: CircularProgressIndicator(strokeWidth: 2),
-          ),
+          placeholderBuilder:
+              (context) => const SizedBox(
+                height: 22,
+                width: 22,
+                child: CircularProgressIndicator(strokeWidth: 2),
+              ),
         );
       }
       return ClipRRect(
@@ -127,6 +137,7 @@ class CustomBookingCard extends StatelessWidget {
     }
     return _getIconByService(name: logoPath.isNotEmpty ? logoPath : topTitle);
   }
+
   Widget _buildMainImage() {
     if (imagePath.isEmpty) {
       return Container(
@@ -137,7 +148,11 @@ class CustomBookingCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
         ),
         alignment: Alignment.center,
-        child: const Icon(Icons.image_not_supported, size: 20, color: Colors.grey),
+        child: const Icon(
+          Icons.image_not_supported,
+          size: 20,
+          color: Colors.grey,
+        ),
       );
     }
     return CustomNetworkImage(
@@ -147,10 +162,13 @@ class CustomBookingCard extends StatelessWidget {
       borderRadius: BorderRadius.circular(10),
     );
   }
+
   @override
   Widget build(BuildContext context) {
-    final String primaryBtnText = (approveText ?? _defaultApproveText).toUpperCase();
-    final String secondaryBtnText = (rejectText ?? _defaultRejectText).toUpperCase();
+    final String primaryBtnText =
+        (approveText ?? _defaultApproveText).toUpperCase();
+    final String secondaryBtnText =
+        (rejectText ?? _defaultRejectText).toUpperCase();
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.all(16),
@@ -163,7 +181,7 @@ class CustomBookingCard extends StatelessWidget {
             spreadRadius: 1,
             blurRadius: 6,
             offset: const Offset(0, 3),
-          )
+          ),
         ],
       ),
       child: Column(
@@ -185,6 +203,7 @@ class CustomBookingCard extends StatelessWidget {
             ],
           ),
           const Gap(8),
+
           /// Main Content
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -193,9 +212,7 @@ class CustomBookingCard extends StatelessWidget {
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildMainImage(),
-                  ],
+                  children: [_buildMainImage()],
                 ),
               ),
               const Gap(8),
@@ -215,23 +232,22 @@ class CustomBookingCard extends StatelessWidget {
                       textAlign: TextAlign.start,
                     ),
                     const Gap(4),
-
                   ],
                 ),
               ),
             ],
           ),
-           const Gap(6),
+          const Gap(6),
           Column(
             children: [
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                   CustomText(
-                     text: "Booking Date:",
-                     fontWeight: FontWeight.w400,
-                   ),
+                  CustomText(
+                    text: "Booking Date:",
+                    fontWeight: FontWeight.w400,
+                  ),
                   const Gap(4),
                   Expanded(
                     child: CustomText(
@@ -248,10 +264,10 @@ class CustomBookingCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                   CustomText(
-                     text: "Booking Time:",
-                     fontWeight: FontWeight.w400,
-                   ),
+                  CustomText(
+                    text: "Booking Time:",
+                    fontWeight: FontWeight.w400,
+                  ),
                   const Gap(4),
                   Expanded(
                     child: CustomText(
@@ -298,7 +314,49 @@ class CustomBookingCard extends StatelessWidget {
               ),
             ],
           ),
+          if (cancellationReason != null && cancellationReason!.isNotEmpty) ...[
+            const Gap(12),
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.red.withValues(alpha: 0.08),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: Colors.red.withValues(alpha: 0.2)),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      const Icon(
+                        Icons.info_outline,
+                        color: Colors.red,
+                        size: 16,
+                      ),
+                      const Gap(6),
+                      CustomText(
+                        text: "Cancellation Reason",
+                        color: Colors.red,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 12,
+                      ),
+                    ],
+                  ),
+                  const Gap(4),
+                  CustomText(
+                    text: cancellationReason!,
+                    color: Colors.red.shade900,
+                    fontSize: 13,
+                    maxLines: 3,
+                    textAlign: TextAlign.start,
+                  ),
+                ],
+              ),
+            ),
+          ],
           const Gap(12),
+
           /// Approve / Reject Section (controlled by flags)
           if (showApproveButton || showRejectButton)
             Row(
@@ -309,7 +367,9 @@ class CustomBookingCard extends StatelessWidget {
                       onPressed: onApprove,
                       style: ElevatedButton.styleFrom(
                         backgroundColor:
-                        onApprove == null ? Colors.grey : AppColors.primaryColor,
+                            onApprove == null
+                                ? Colors.grey
+                                : AppColors.primaryColor,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(6),
                         ),
@@ -322,7 +382,8 @@ class CustomBookingCard extends StatelessWidget {
                       ),
                     ),
                   ),
-                if (showApproveButton && showRejectButton) const SizedBox(width: 12),
+                if (showApproveButton && showRejectButton)
+                  const SizedBox(width: 12),
                 if (showRejectButton)
                   Expanded(
                     child: OutlinedButton(

@@ -53,7 +53,6 @@ Future<void> showAddReviewDialog(BuildContext context, String businessId, String
                       child: CustomText(text: "Share more about your experience", fontSize: 14, fontWeight: FontWeight.w600),
                     ),
                     DescriptionTextField(
-
                       hintText: "Share details of your own experience at this place",
                       hintStyle: TextStyle(color: Colors.grey.withAlpha(958),overflow: TextOverflow.visible ,),
                       backgroundColor: Colors.white,

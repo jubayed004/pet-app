@@ -1,10 +1,10 @@
-
 import 'package:flutter/material.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
 
 class TabButton extends StatelessWidget {
-  const TabButton({super.key,
+  const TabButton({
+    super.key,
     required this.label,
     required this.isActive,
     required this.onTap,
@@ -29,7 +29,7 @@ class TabButton extends StatelessWidget {
             text: label,
             color: AppColors.blackColor,
             fontSize: 14,
-            fontWeight: FontWeight.w800,
+            fontWeight: FontWeight.w600,
           ),
         ),
       ),

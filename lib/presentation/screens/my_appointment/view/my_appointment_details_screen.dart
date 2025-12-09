@@ -4,7 +4,6 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:pet_app/controller/get_controllers.dart';
-import 'package:pet_app/core/custom_assets/assets.gen.dart';
 import 'package:pet_app/core/route/route_path.dart';
 import 'package:pet_app/core/route/routes.dart';
 import 'package:pet_app/presentation/components/custom_button/custom_button.dart';
@@ -20,10 +19,12 @@ class MyAppointmentDetailsScreen extends StatefulWidget {
   const MyAppointmentDetailsScreen({super.key, required this.id});
 
   @override
-  State<MyAppointmentDetailsScreen> createState() => _MyAppointmentDetailsScreenState();
+  State<MyAppointmentDetailsScreen> createState() =>
+      _MyAppointmentDetailsScreenState();
 }
 
-class _MyAppointmentDetailsScreenState extends State<MyAppointmentDetailsScreen> {
+class _MyAppointmentDetailsScreenState
+    extends State<MyAppointmentDetailsScreen> {
   final controller = GetControllers.instance.getMyAppointmentController();
 
   @override
@@ -34,7 +35,9 @@ class _MyAppointmentDetailsScreenState extends State<MyAppointmentDetailsScreen>
 
   @override
   Widget build(BuildContext context) {
-    print("======================= Service Id${widget.id}======================");
+    print(
+      "======================= Service Id${widget.id}======================",
+    );
     return Scaffold(
       backgroundColor: Colors.white,
       body: RefreshIndicator(
@@ -48,39 +51,53 @@ class _MyAppointmentDetailsScreenState extends State<MyAppointmentDetailsScreen>
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: Obx(() {
-                  final item = controller.appointmentBookingDetails.value.booking?.serviceId;
+                  final item =
+                      controller
+                          .appointmentBookingDetails
+                          .value
+                          .booking
+                          ?.serviceId;
                   final serviceImage = item?.servicesImages;
-                  final image = (serviceImage != null && serviceImage.isNotEmpty) ? serviceImage : "";
+                  final image =
+                      (serviceImage != null && serviceImage.isNotEmpty)
+                          ? serviceImage
+                          : "";
                   final serviceLogo = item?.shopLogo;
-                  final logo = (serviceLogo != null && serviceLogo.isNotEmpty) ? serviceLogo : "";
+                  final logo =
+                      (serviceLogo != null && serviceLogo.isNotEmpty)
+                          ? serviceLogo
+                          : "";
                   final serviceType = item?.serviceType ?? "";
                   final location = item?.location ?? "";
                   final phone = item?.phone ?? "";
                   final website = item?.websiteLink ?? "";
 
-                  final item1 = controller.appointmentBookingDetails.value.booking;
+                  final item1 =
+                      controller.appointmentBookingDetails.value.booking;
                   final selectedService = item1?.selectedService ?? "";
                   final bookingStatus = item1?.bookingStatus ?? "";
 
                   // ✅ Convert all server dates to local timezone before formatting
-                  final bookingDate = DateFormat("dd MMMM yyyy").format(
-                    (item1?.bookingDate ?? DateTime.now()).toLocal(),
-                  );
+                  final bookingDate = DateFormat(
+                    "dd MMMM yyyy",
+                  ).format((item1?.bookingDate ?? DateTime.now()).toLocal());
                   final bookingTime = item1?.bookingTime ?? "";
 
-                  final checkInDate = DateFormat("dd MMMM yyyy").format(
-                    (item1?.checkInDate ?? DateTime.now()).toLocal(),
-                  );
+                  final checkInDate = DateFormat(
+                    "dd MMMM yyyy",
+                  ).format((item1?.checkInDate ?? DateTime.now()).toLocal());
                   final checkInTime = item1?.checkInTime ?? "";
 
-                  final checkOutDate = DateFormat("dd MMMM yyyy").format(
-                    (item1?.checkOutDate ?? DateTime.now()).toLocal(),
-                  );
+                  final checkOutDate = DateFormat(
+                    "dd MMMM yyyy",
+                  ).format((item1?.checkOutDate ?? DateTime.now()).toLocal());
                   final checkOutTime = item1?.checkOutTime ?? "";
 
                   final notes = item1?.notes ?? "";
 
-                  print("===============================================${ApiUrl.imageBase}$image");
+                  print(
+                    "===============================================${ApiUrl.imageBase}$image",
+                  );
 
                   return Column(
                     children: [
@@ -113,7 +130,10 @@ class _MyAppointmentDetailsScreenState extends State<MyAppointmentDetailsScreen>
                             child: Text(
                               "Appointment",
                               textAlign: TextAlign.center,
-                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
                             ),
                           ),
                           SizedBox(height: 10.h),
@@ -121,7 +141,10 @@ class _MyAppointmentDetailsScreenState extends State<MyAppointmentDetailsScreen>
                             text: TextSpan(
                               style: TextStyle(color: Colors.black),
                               children: [
-                                TextSpan(text: "Service Type : ", style: TextStyle(fontWeight: FontWeight.bold)),
+                                TextSpan(
+                                  text: "Service Type : ",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
                                 TextSpan(text: serviceType),
                               ],
                             ),
@@ -130,7 +153,10 @@ class _MyAppointmentDetailsScreenState extends State<MyAppointmentDetailsScreen>
                             text: TextSpan(
                               style: TextStyle(color: Colors.black),
                               children: [
-                                TextSpan(text: "Selected Service : ", style: TextStyle(fontWeight: FontWeight.bold)),
+                                TextSpan(
+                                  text: "Selected Service : ",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
                                 TextSpan(text: selectedService),
                               ],
                             ),
@@ -139,7 +165,10 @@ class _MyAppointmentDetailsScreenState extends State<MyAppointmentDetailsScreen>
                             text: TextSpan(
                               style: TextStyle(color: Colors.black),
                               children: [
-                                TextSpan(text: "Booking Status : ", style: TextStyle(fontWeight: FontWeight.bold)),
+                                TextSpan(
+                                  text: "Booking Status : ",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
                                 TextSpan(text: bookingStatus),
                               ],
                             ),
@@ -148,7 +177,10 @@ class _MyAppointmentDetailsScreenState extends State<MyAppointmentDetailsScreen>
                             text: TextSpan(
                               style: TextStyle(color: Colors.black),
                               children: [
-                                TextSpan(text: "Booking Date : ", style: TextStyle(fontWeight: FontWeight.bold)),
+                                TextSpan(
+                                  text: "Booking Date : ",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
                                 TextSpan(text: bookingDate),
                               ],
                             ),
@@ -157,7 +189,10 @@ class _MyAppointmentDetailsScreenState extends State<MyAppointmentDetailsScreen>
                             text: TextSpan(
                               style: TextStyle(color: Colors.black),
                               children: [
-                                TextSpan(text: "Booking Time: ", style: TextStyle(fontWeight: FontWeight.bold)),
+                                TextSpan(
+                                  text: "Booking Time: ",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
                                 TextSpan(text: bookingTime),
                               ],
                             ),
@@ -171,7 +206,12 @@ class _MyAppointmentDetailsScreenState extends State<MyAppointmentDetailsScreen>
                                   text: TextSpan(
                                     style: TextStyle(color: Colors.black),
                                     children: [
-                                      TextSpan(text: "Check In Date : ", style: TextStyle(fontWeight: FontWeight.bold)),
+                                      TextSpan(
+                                        text: "Check In Date : ",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
                                       TextSpan(text: checkInDate),
                                     ],
                                   ),
@@ -180,7 +220,12 @@ class _MyAppointmentDetailsScreenState extends State<MyAppointmentDetailsScreen>
                                   text: TextSpan(
                                     style: TextStyle(color: Colors.black),
                                     children: [
-                                      TextSpan(text: "Check In Time: ", style: TextStyle(fontWeight: FontWeight.bold)),
+                                      TextSpan(
+                                        text: "Check In Time: ",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
                                       TextSpan(text: checkInTime),
                                     ],
                                   ),
@@ -189,7 +234,12 @@ class _MyAppointmentDetailsScreenState extends State<MyAppointmentDetailsScreen>
                                   text: TextSpan(
                                     style: TextStyle(color: Colors.black),
                                     children: [
-                                      TextSpan(text: "Check Out Date : ", style: TextStyle(fontWeight: FontWeight.bold)),
+                                      TextSpan(
+                                        text: "Check Out Date : ",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
                                       TextSpan(text: checkOutDate),
                                     ],
                                   ),
@@ -198,7 +248,12 @@ class _MyAppointmentDetailsScreenState extends State<MyAppointmentDetailsScreen>
                                   text: TextSpan(
                                     style: TextStyle(color: Colors.black),
                                     children: [
-                                      TextSpan(text: "Check Out Time : ", style: TextStyle(fontWeight: FontWeight.bold)),
+                                      TextSpan(
+                                        text: "Check Out Time : ",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
                                       TextSpan(text: checkOutTime),
                                     ],
                                   ),
@@ -209,7 +264,10 @@ class _MyAppointmentDetailsScreenState extends State<MyAppointmentDetailsScreen>
                             text: TextSpan(
                               style: TextStyle(color: Colors.black),
                               children: [
-                                TextSpan(text: "Location: ", style: TextStyle(fontWeight: FontWeight.bold)),
+                                TextSpan(
+                                  text: "Location: ",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
                                 TextSpan(text: location),
                               ],
                             ),
@@ -218,7 +276,10 @@ class _MyAppointmentDetailsScreenState extends State<MyAppointmentDetailsScreen>
                             text: TextSpan(
                               style: TextStyle(color: Colors.black),
                               children: [
-                                TextSpan(text: "Phone: ", style: TextStyle(fontWeight: FontWeight.bold)),
+                                TextSpan(
+                                  text: "Phone: ",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
                                 TextSpan(text: phone),
                               ],
                             ),
@@ -227,7 +288,10 @@ class _MyAppointmentDetailsScreenState extends State<MyAppointmentDetailsScreen>
                             text: TextSpan(
                               style: TextStyle(color: Colors.black),
                               children: [
-                                TextSpan(text: "Extra Information : ", style: TextStyle(fontWeight: FontWeight.bold)),
+                                TextSpan(
+                                  text: "Extra Information : ",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
                                 TextSpan(text: notes),
                               ],
                             ),
@@ -237,13 +301,14 @@ class _MyAppointmentDetailsScreenState extends State<MyAppointmentDetailsScreen>
                             spacing: 10,
                             children: [
                               if (["COMPLETED"].contains(item1?.bookingStatus))
-                             /* bookingStatus == "COMPLETE" ? SizedBox() :*/ Flexible(
+                                /* bookingStatus == "COMPLETE" ? SizedBox() :*/ Flexible(
                                   child: CustomButton(
                                     onTap: () {
                                       AppRouter.route.pushNamed(
                                         RoutePath.reviewScreen,
                                         extra: {
-                                          "serviceId": item1?.serviceId?.id ?? "",
+                                          "serviceId":
+                                              item1?.serviceId?.id ?? "",
                                           "ownerId": item1?.ownerId ?? "",
                                           "businessId": item1?.businessId ?? "",
                                         },
@@ -257,7 +322,10 @@ class _MyAppointmentDetailsScreenState extends State<MyAppointmentDetailsScreen>
                               Flexible(
                                 child: CustomButton(
                                   onTap: () {
-                                    AppRouter.route.pushNamed(RoutePath.chatScreen, extra: item1?.ownerId);
+                                    AppRouter.route.pushNamed(
+                                      RoutePath.chatScreen,
+                                      extra: item1?.ownerId,
+                                    );
                                   },
                                   title: "Chat",
                                   textColor: Colors.black,
@@ -267,9 +335,13 @@ class _MyAppointmentDetailsScreenState extends State<MyAppointmentDetailsScreen>
                                 Flexible(
                                   child: CustomButton(
                                     onTap: () async {
-                                      String websiteUrl = item?.websiteLink ?? "";
-                                      if (websiteUrl.isEmpty) websiteUrl = "https://www.defaultwebsite.com";
-                                      if (!websiteUrl.startsWith('http')) websiteUrl = 'https://$websiteUrl';
+                                      String websiteUrl =
+                                          item?.websiteLink ?? "";
+                                      if (websiteUrl.isEmpty)
+                                        websiteUrl =
+                                            "https://www.defaultwebsite.com";
+                                      if (!websiteUrl.startsWith('http'))
+                                        websiteUrl = 'https://$websiteUrl';
                                       final Uri url = Uri.parse(websiteUrl);
                                       if (await canLaunchUrl(url)) {
                                         await launchUrl(url);
@@ -288,7 +360,7 @@ class _MyAppointmentDetailsScreenState extends State<MyAppointmentDetailsScreen>
                       ),
                     ],
                   );
-                })
+                }),
               ),
             ),
           ],

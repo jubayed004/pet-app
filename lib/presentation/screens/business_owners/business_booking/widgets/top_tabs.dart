@@ -39,6 +39,11 @@ class TopTabs extends StatelessWidget {
               isActive: sel == 3,
               onTap: () => controller.selectTab(3),
             ),
+            TabButton(
+              label: 'Canceled',
+              isActive: sel == 4,
+              onTap: () => controller.selectTab(4),
+            ),
           ],
         );
       }),

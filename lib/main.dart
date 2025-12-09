@@ -13,35 +13,35 @@ Future<void> main() async {
   DeviceUtils.lockDevicePortrait();
   initDependencies();
   // RevenueCat API keys
-  final apiKey = Platform.isAndroid
-      ? "goog_sCftdXMYAurDYVZVoYgBtPyWPbQ"
-      : "appl_BXKcaKbTpnefeGGYkxEtmWkSiEL";
+  final apiKey =
+      Platform.isAndroid
+          ? "goog_sCftdXMYAurDYVZVoYgBtPyWPbQ"
+          : "appl_BXKcaKbTpnefeGGYkxEtmWkSiEL";
 
   // Configure RevenueCat
   DBHelper dbHelper = DBHelper();
-  String userId = await dbHelper.getUserId() ?? "";
+  String userId = await dbHelper.getUserId();
 
-  await Purchases.configure(
-    PurchasesConfiguration(apiKey)..appUserID = userId,
-  );
+  await Purchases.configure(PurchasesConfiguration(apiKey)..appUserID = userId);
 
   // Fetch initial customer info
   try {
     final customerInfo = await Purchases.getCustomerInfo();
-    debugPrint("🔹 Initial Customer Info: ${customerInfo.entitlements.active.keys}");
+    debugPrint(
+      "🔹 Initial Customer Info: ${customerInfo.entitlements.active.keys}",
+    );
   } catch (e) {
     debugPrint("❌ Error fetching customer info: $e");
   }
 
   // Listen for subscription updates
   Purchases.addCustomerInfoUpdateListener((customerInfo) {
-    debugPrint("🔔 Subscription Updated: ${customerInfo.entitlements.active.keys}");
+    debugPrint(
+      "🔔 Subscription Updated: ${customerInfo.entitlements.active.keys}",
+    );
   });
 
-
-  runApp(
-    const MyApp(),
-  );
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {

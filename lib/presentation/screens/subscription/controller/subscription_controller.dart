@@ -71,15 +71,17 @@ class SubscriptionController extends GetxController {
 
       if (kDebugMode) {
         debugPrint("👤 Customer Info Updated");
-        debugPrint("Active Subscriptions: ${info.entitlements.active.keys.join(", ")}");
+        debugPrint(
+          "Active Subscriptions: ${info.entitlements.active.keys.join(", ")}",
+        );
       }
     } catch (e) {
       debugPrint("❌ Error fetching customer info: $e");
     }
   }
 
-  /// Purchase package
-  Future<void> purchasePackage(Package package) async {
+  /// Purchase package - Returns true if successful
+  Future<bool> purchasePackage(Package package) async {
     isPurchasing.value = true;
 
     try {
@@ -88,20 +90,20 @@ class SubscriptionController extends GetxController {
 
       if (kDebugMode) {
         debugPrint("✅ Purchase Successful!");
-        debugPrint("Active Entitlements: ${result.customerInfo.entitlements.active.keys.join(", ")}");
+        debugPrint(
+          "Active Entitlements: ${result.customerInfo.entitlements.active.keys.join(", ")}",
+        );
       }
 
       toastMessage(message: "Subscription activated successfully!");
-
-      if (Get.isOverlaysOpen) {
-        Get.back();
-      }
-
+      return true;
     } on PlatformException catch (e) {
       _handlePurchaseError(e);
+      return false;
     } catch (e) {
       debugPrint("❌ Purchase Error: $e");
       toastMessage(message: "Purchase failed. Please try again.");
+      return false;
     } finally {
       isPurchasing.value = false;
     }
@@ -140,7 +142,9 @@ class SubscriptionController extends GetxController {
 
       if (customerInfo.entitlements.active.isNotEmpty) {
         toastMessage(message: "Purchases restored successfully!");
-        debugPrint("✅ Restored: ${customerInfo.entitlements.active.keys.join(", ")}");
+        debugPrint(
+          "✅ Restored: ${customerInfo.entitlements.active.keys.join(", ")}",
+        );
       } else {
         toastMessage(message: "No active purchases found");
       }
@@ -155,9 +159,10 @@ class SubscriptionController extends GetxController {
   /// Launch subscription management
   Future<void> launchManageSubscriptions(BuildContext context) async {
     try {
-      final uri = Platform.isAndroid
-          ? Uri.parse('https://play.google.com/store/account/subscriptions')
-          : Uri.parse('https://apps.apple.com/account/subscriptions');
+      final uri =
+          Platform.isAndroid
+              ? Uri.parse('https://play.google.com/store/account/subscriptions')
+              : Uri.parse('https://apps.apple.com/account/subscriptions');
 
       final canLaunch = await canLaunchUrl(uri);
 
@@ -177,33 +182,33 @@ class SubscriptionController extends GetxController {
   void _showManualInstructions(BuildContext context) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text("Manage Subscription"),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text("To manage your subscription:"),
-            const SizedBox(height: 16),
-            if (Platform.isAndroid) ...[
-              const Text("1. Open Google Play Store"),
-              const Text("2. Tap profile icon → Subscriptions"),
-            ] else ...[
-              const Text("1. Open Settings app"),
-              const Text("2. Tap your name → Subscriptions"),
+      builder:
+          (context) => AlertDialog(
+            title: const Text("Manage Subscription"),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text("To manage your subscription:"),
+                const SizedBox(height: 16),
+                if (Platform.isAndroid) ...[
+                  const Text("1. Open Google Play Store"),
+                  const Text("2. Tap profile icon → Subscriptions"),
+                ] else ...[
+                  const Text("1. Open Settings app"),
+                  const Text("2. Tap your name → Subscriptions"),
+                ],
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text("Got it"),
+              ),
             ],
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text("Got it"),
           ),
-        ],
-      ),
     );
   }
-
 
   /// Get remaining days
   String getDaysRemaining() {
@@ -237,14 +242,17 @@ class SubscriptionController extends GetxController {
   }
 
   /// Main method: Check if user can add service
-  Future<bool> checkBeforeAddService(String serviceType   , BuildContext context,) async {
-    // Agar "Friendly Place" hai to directly allow kardo
+  Future<bool> checkBeforeAddService(
+    String serviceType,
+    BuildContext context,
+  ) async {
+    // If "Friendly Place", allow directly
     if (isFriendlyPlace(serviceType)) {
       debugPrint("✅ Friendly Place - FREE service, no subscription needed");
       return true;
     }
 
-    // Baki services ke liye subscription check karo
+    // Check existing subscription
     await fetchCustomerInfo();
 
     if (hasActiveSubscription) {
@@ -252,17 +260,37 @@ class SubscriptionController extends GetxController {
       return true;
     }
 
-    // No subscription - show dialog
-    _showSubscriptionDialog(context,serviceType);
+    // No subscription - show dialog and wait for result
+    // If dialog returns true, it means user wants to subscribe
+    final bool shouldSubscribe =
+        await _showSubscriptionDialog(context, serviceType) ?? false;
+
+    if (shouldSubscribe) {
+      // Navigate to subscription screen and wait for result
+      // Ensure SubscriptionScreen returns true on success
+      final result = await AppRouter.route.pushNamed(
+        RoutePath.subscriptionScreen,
+      );
+
+      if (result == true) {
+        // Double check to be sure
+        await fetchCustomerInfo();
+        return hasActiveSubscription;
+      }
+    }
+
     return false;
   }
 
-  /// Show subscription required dialog
-  void _showSubscriptionDialog(BuildContext context,String serviceType) {
-    showDialog(
+  /// Show subscription required dialog and return true if user wants to subscribe
+  Future<bool?> _showSubscriptionDialog(
+    BuildContext context,
+    String serviceType,
+  ) async {
+    return await showDialog<bool>(
       context: context,
       barrierDismissible: false,
-      builder: (context,) {
+      builder: (context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
@@ -274,8 +302,8 @@ class SubscriptionController extends GetxController {
                 color: Colors.orange[700],
                 size: 28.sp,
               ),
-               SizedBox(width: 12.w),
-               Expanded(
+              SizedBox(width: 12.w),
+              Expanded(
                 child: Text(
                   "Premium Subscription Required",
                   style: TextStyle(fontSize: 18.sp),
@@ -287,11 +315,11 @@ class SubscriptionController extends GetxController {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-               Text(
+              Text(
                 "This service requires an active premium subscription.",
                 style: TextStyle(fontSize: 16.sp),
               ),
-               SizedBox(height: 16.h),
+              SizedBox(height: 16.h),
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
@@ -301,8 +329,12 @@ class SubscriptionController extends GetxController {
                 ),
                 child: Row(
                   children: [
-                    Icon(Icons.info_outline, color: Colors.blue[700], size: 20.sp),
-                     SizedBox(width: 8.w),
+                    Icon(
+                      Icons.info_outline,
+                      color: Colors.blue[700],
+                      size: 20.sp,
+                    ),
+                    SizedBox(width: 8.w),
                     Expanded(
                       child: Text(
                         "Service: $serviceType",
@@ -316,7 +348,7 @@ class SubscriptionController extends GetxController {
                   ],
                 ),
               ),
-               SizedBox(height: 16.h),
+              SizedBox(height: 16.h),
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
@@ -325,8 +357,12 @@ class SubscriptionController extends GetxController {
                 ),
                 child: Row(
                   children: [
-                    Icon(Icons.check_circle, color: Colors.green[700], size: 18),
-                     SizedBox(width: 8.w),
+                    Icon(
+                      Icons.check_circle,
+                      color: Colors.green[700],
+                      size: 18,
+                    ),
+                    SizedBox(width: 8.w),
                     Expanded(
                       child: Text(
                         "💡 'Friendly Place' is always FREE!",
@@ -344,30 +380,24 @@ class SubscriptionController extends GetxController {
           ),
           actions: [
             TextButton(
-              onPressed: (){
-                if(Navigator.canPop(context)){
-                  AppRouter.route.pop();
-                }
+              onPressed: () {
+                Navigator.pop(context, false);
               },
-              child: Text(
-                "Cancel",
-                style: TextStyle(color: Colors.grey[600]),
-              ),
+              child: Text("Cancel", style: TextStyle(color: Colors.grey[600])),
             ),
             ElevatedButton.icon(
               onPressed: () {
-                if(Navigator.canPop(context)){
-                  AppRouter.route.pop();
-                }
-               AppRouter.route.pushNamed(RoutePath.subscriptionScreen);
+                Navigator.pop(context, true);
               },
-              icon:  Icon(Icons.star, size: 18.sp),
+              icon: Icon(Icons.star, size: 18.sp),
               label: const Text("Subscribe Now"),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.orange[700],
                 foregroundColor: Colors.white,
-                padding:
-                const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 12,
+                ),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
@@ -378,55 +408,6 @@ class SubscriptionController extends GetxController {
       },
     );
   }
-/*  /// Check subscription before allowing service creation
-  Future<bool> checkSubscriptionBeforeAction({
-    required BuildContext context, // Add context as a parameter
-    required String actionName,
-  }) async {
-    // Refresh customer info to get latest subscription status
-    await fetchCustomerInfo();
-
-    if (!hasActiveSubscription) {
-      _showSubscriptionRequiredDialog(context, actionName); // Pass the correct context here
-      return false;
-    }
-
-    return true;
-  }
-
-
-
-  /// Show dialog when subscription is required
-  void _showSubscriptionRequiredDialog(BuildContext context, String actionName) {
-    showDialog(
-      context: context,
-      barrierDismissible: false, // Prevent dismissing by tapping outside
-      builder: (BuildContext dialogContext) {
-        return AlertDialog(
-          title: const Text("Subscription Required"),
-          content: Text(
-            "To $actionName, you need an active subscription. Would you like to subscribe now?",
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(dialogContext).pop(); // Close the dialog
-              },
-              child: const Text("Later"),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(dialogContext).pop(); // Close the dialog
-                AppRouter.route.pushNamed(RoutePath.subscriptionScreen); // Navigate to the subscription screen
-              },
-              child: const Text("Subscribe Now"),
-            ),
-          ],
-        );
-      },
-    );
-  }*/
-
 
   @override
   void onInit() {
