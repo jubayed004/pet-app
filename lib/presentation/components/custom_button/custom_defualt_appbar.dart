@@ -1,12 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:gap/gap.dart';
-import 'package:get/get.dart';
-import 'package:pet_app/presentation/components/custom_image/custom_image.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
-import 'package:pet_app/utils/app_colors/app_colors.dart';
-
 
 class CustomAuthAppbar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
@@ -14,13 +8,7 @@ class CustomAuthAppbar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(
-      centerTitle: true,
-      title: CustomText(
-        text: title,
-
-      ),
-    );
+    return AppBar(centerTitle: true, title: CustomText(text: title));
   }
 
   @override
@@ -52,34 +40,32 @@ class CustomDefaultAppbar extends StatelessWidget
     return SliverAppBar(
       surfaceTintColor: Colors.transparent,
       //pinned: true,
-        floating: true,
-        snap: true,
+      floating: true,
+      snap: true,
       automaticallyImplyLeading: true,
-       //floating: false,
-      backgroundColor:backgroundColor?? Colors.transparent,
+      //floating: false,
+      backgroundColor: backgroundColor ?? Colors.transparent,
       // foregroundColor: AppColors.kWhiteColor,
-   centerTitle: true,
+      centerTitle: true,
       leading: leading,
       actions: action,
-        title: Row(
-         crossAxisAlignment: CrossAxisAlignment.center,
-         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            SizedBox(),
-            SizedBox(),
-            titleWidget ??
-                CustomText(
-                  text: title ?? "",
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.black,
-                ),
-            SizedBox(),
-            iconButton ?? SizedBox(),
-          ],
-        )
-
-
+      title: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          SizedBox(),
+          SizedBox(),
+          titleWidget ??
+              CustomText(
+                text: title ?? "",
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                color: Colors.black,
+              ),
+          SizedBox(),
+          iconButton ?? SizedBox(),
+        ],
+      ),
     );
   }
 

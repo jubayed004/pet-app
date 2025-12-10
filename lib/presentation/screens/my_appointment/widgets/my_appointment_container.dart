@@ -2,17 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:pet_app/controller/get_controllers.dart';
 import 'package:pet_app/core/custom_assets/assets.gen.dart';
 import 'package:pet_app/core/route/route_path.dart';
 import 'package:pet_app/core/route/routes.dart';
-import 'package:pet_app/presentation/components/custom_button/custom_button.dart';
 import 'package:pet_app/presentation/components/custom_netwrok_image/custom_network_image.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
-import 'package:pet_app/presentation/screens/business_owners/business_service/widgets/default_dialog.dart';
-import 'package:pet_app/service/api_url.dart';
-import 'package:pet_app/utils/app_colors/app_colors.dart';
 import 'package:pet_app/utils/app_const/padding_constant.dart';
 
 class MyAppointmentContainer extends StatelessWidget {
@@ -27,10 +22,9 @@ class MyAppointmentContainer extends StatelessWidget {
   final String address;
   final String phone;
   final String bookingStatus;
-  final VoidCallback  deletedOnTab;
+  final VoidCallback deletedOnTab;
 
-
-   MyAppointmentContainer({
+  MyAppointmentContainer({
     super.key,
     required this.petLogo,
     required this.serviceType,
@@ -40,39 +34,57 @@ class MyAppointmentContainer extends StatelessWidget {
     required this.selectedService,
     required this.address,
     required this.phone,
-     required this.deletedOnTab,
-     required this.id,
-     required this.bookingTime,
-     required this.bookingStatus,
-
-
+    required this.deletedOnTab,
+    required this.id,
+    required this.bookingTime,
+    required this.bookingStatus,
   });
-  final myAppointmentController = GetControllers.instance.getMyAppointmentController();
+  final myAppointmentController =
+      GetControllers.instance.getMyAppointmentController();
   @override
   Widget build(BuildContext context) {
-    print("############################ Service Id $id######################################");
+    print(
+      "############################ Service Id $id######################################",
+    );
     SvgPicture getIconByName({required String name}) {
       switch (name) {
         case "VET":
-          return Assets.icons.petvets.svg(colorFilter: ColorFilter.mode(Colors.black,BlendMode.srcIn));
+          return Assets.icons.petvets.svg(
+            colorFilter: ColorFilter.mode(Colors.black, BlendMode.srcIn),
+          );
         case "SHOP":
-          return Assets.icons.petshops.svg(colorFilter: ColorFilter.mode(Colors.black,BlendMode.srcIn));
+          return Assets.icons.petshops.svg(
+            colorFilter: ColorFilter.mode(Colors.black, BlendMode.srcIn),
+          );
         case "GROOMING":
-          return Assets.icons.petgrooming.svg(colorFilter: ColorFilter.mode(Colors.black,BlendMode.srcIn));
+          return Assets.icons.petgrooming.svg(
+            colorFilter: ColorFilter.mode(Colors.black, BlendMode.srcIn),
+          );
         case "HOTEL":
-          return Assets.icons.pethotel.svg(colorFilter: ColorFilter.mode(Colors.black,BlendMode.srcIn));
+          return Assets.icons.pethotel.svg(
+            colorFilter: ColorFilter.mode(Colors.black, BlendMode.srcIn),
+          );
         case "TRAINING":
-          return Assets.icons.pettraining.svg(colorFilter: ColorFilter.mode(Colors.black,BlendMode.srcIn));
+          return Assets.icons.pettraining.svg(
+            colorFilter: ColorFilter.mode(Colors.black, BlendMode.srcIn),
+          );
         case "FRIENDLY":
-          return Assets.icons.friendlyplace.svg(colorFilter: ColorFilter.mode(Colors.black,BlendMode.srcIn));
+          return Assets.icons.friendlyplace.svg(
+            colorFilter: ColorFilter.mode(Colors.black, BlendMode.srcIn),
+          );
         default:
-          return Assets.icons.friendlyplace.svg(colorFilter: ColorFilter.mode(Colors.black,BlendMode.srcIn));
+          return Assets.icons.friendlyplace.svg(
+            colorFilter: ColorFilter.mode(Colors.black, BlendMode.srcIn),
+          );
       }
     }
 
     return GestureDetector(
       onTap: () {
-        AppRouter.route.pushNamed(RoutePath.myAppointmentDetailsScreen,extra: id);
+        AppRouter.route.pushNamed(
+          RoutePath.myAppointmentDetailsScreen,
+          extra: id,
+        );
       },
       child: Container(
         margin: EdgeInsets.only(bottom: 10),
@@ -107,14 +119,31 @@ class MyAppointmentContainer extends StatelessWidget {
                     ),
                   ],
                 ),
-                if(["PENDING", "COMPLETED","CANCELLED","APPROVED",].contains(bookingStatus))Container(
-                  padding: padding8,
-                  decoration: BoxDecoration(
-                    color: bookingStatus == "PENDING" ? Color(0xffE0F2FE) :  Color(0xffDCFCE7),
-                   borderRadius: BorderRadius.circular(10)
+                if ([
+                  "PENDING",
+                  "COMPLETED",
+                  "CANCELLED",
+                  "APPROVED",
+                ].contains(bookingStatus))
+                  Container(
+                    padding: padding8,
+                    decoration: BoxDecoration(
+                      color:
+                          bookingStatus == "PENDING"
+                              ? Color(0xffE0F2FE)
+                              : Color(0xffDCFCE7),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: CustomText(
+                      text: bookingStatus,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 12,
+                      color:
+                          bookingStatus == "CANCELLED"
+                              ? Color(0xffEF4444)
+                              : Color(0xff0EA5E9),
+                    ),
                   ),
-                  child: CustomText(text: bookingStatus,fontWeight: FontWeight.w500,fontSize: 12,color:bookingStatus == "CANCELLED" ? Color(0xffEF4444) :Color(0xff0EA5E9),),
-                )
               ],
             ),
 
@@ -133,7 +162,6 @@ class MyAppointmentContainer extends StatelessWidget {
                       width: 100.w,
                       borderRadius: BorderRadius.circular(10),
                     ),
-
                   ],
                 ),
                 Gap(6),
@@ -156,7 +184,7 @@ class MyAppointmentContainer extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                       ),
 
-         /*             Gap(4),
+                      /*             Gap(4),
                       Row(
                         children: [
                           Row(
@@ -179,7 +207,6 @@ class MyAppointmentContainer extends StatelessWidget {
                           ),
                         ],
                       ),*/
-
                       Row(
                         spacing: 6,
                         children: [
@@ -259,29 +286,40 @@ class MyAppointmentContainer extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 OutlinedButton(
-                    onPressed: (){
-                      AppRouter.route.pushNamed(RoutePath.myAppointmentDetailsScreen,extra: id);
-                    },
-                    child: CustomText(text: "View Details",fontSize: 12,fontWeight: FontWeight.w400,)
-                ),
-                if(["PENDING",].contains(bookingStatus))OutlinedButton(
-                  style: ButtonStyle(
-                    side: WidgetStateProperty.all(
-                      BorderSide(color: Colors.red, width: 1), // Set the border color here
-                    ),
-                  ),
-                  onPressed: deletedOnTab,
+                  onPressed: () {
+                    AppRouter.route.pushNamed(
+                      RoutePath.myAppointmentDetailsScreen,
+                      extra: id,
+                    );
+                  },
                   child: CustomText(
-                    text: "Cancel",
+                    text: "View Details",
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
-                    color: Colors.red,
                   ),
-                )
+                ),
+                if (["PENDING"].contains(bookingStatus))
+                  OutlinedButton(
+                    style: ButtonStyle(
+                      side: WidgetStateProperty.all(
+                        BorderSide(
+                          color: Colors.red,
+                          width: 1,
+                        ), // Set the border color here
+                      ),
+                    ),
+                    onPressed: deletedOnTab,
+                    child: CustomText(
+                      text: "Cancel",
+                      fontSize: 12,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.red,
+                    ),
+                  ),
 
                 /* IconButton(onPressed: deletedOnTab, icon: Icon(Iconsax.trush_square,color: Colors.red,size: 28,)),*/
               ],
-            )
+            ),
           ],
         ),
       ),

@@ -1,4 +1,3 @@
-
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -25,7 +24,7 @@ class BusinessAllPetController extends GetxController {
     loadingMethod(Status.loading);
     try {
       final response = await apiClient.get(url: ApiUrl.getBusinessAllPets());
-          log.d(response);
+      log.d(response);
       if (response.statusCode == 200) {
         final newData = BusinessAllPetsModel.fromJson(response.body);
         log.d(newData.toJson());
@@ -54,13 +53,17 @@ class BusinessAllPetController extends GetxController {
   var detailsLoading = Status.completed.obs;
 
   detailsLoadingMethod(Status status) => detailsLoading.value = status;
-  final Rx<BusinessAllPetsDetailsModel> details = BusinessAllPetsDetailsModel().obs;
+  final Rx<BusinessAllPetsDetailsModel> details =
+      BusinessAllPetsDetailsModel().obs;
 
   Future<void> businessPetDetails({required String id}) async {
+    log.d(id);
     try {
       detailsLoadingMethod(Status.loading);
-      final response = await apiClient.get(url: ApiUrl.businessPetDetails(id: id));
-
+      final response = await apiClient.get(
+        url: ApiUrl.businessPetDetails(id: id),
+      );
+      log.d(response);
       if (response.statusCode == 200) {
         final newData = BusinessAllPetsDetailsModel.fromJson(response.body);
         details.value = newData;
@@ -83,13 +86,15 @@ class BusinessAllPetController extends GetxController {
   }
 
   /// Get Health History (Completed)
-  final Rx<BusinessMedicalHistoryModel> healthHistory = BusinessMedicalHistoryModel().obs;
+  final Rx<BusinessMedicalHistoryModel> healthHistory =
+      BusinessMedicalHistoryModel().obs;
 
   Future<void> getHealthHistoryUpdate({
     required String id,
     required String status,
     required int page,
-    required PagingController<int, PetMedicalHistoryByTreatmentStatus> pagingController,
+    required PagingController<int, PetMedicalHistoryByTreatmentStatus>
+    pagingController,
   }) async {
     try {
       final response = await apiClient.get(
@@ -121,7 +126,8 @@ class BusinessAllPetController extends GetxController {
     required String id,
     required String status,
     required int page,
-    required PagingController<int, PetMedicalHistoryByTreatmentStatus> pagingController1,
+    required PagingController<int, PetMedicalHistoryByTreatmentStatus>
+    pagingController1,
   }) async {
     try {
       final response = await apiClient.get(
@@ -157,8 +163,10 @@ class BusinessAllPetController extends GetxController {
     required Map<String, String> body,
     required String id,
     required String status,
-    required PagingController<int, PetMedicalHistoryByTreatmentStatus> pagingController1,
-    required PagingController<int, PetMedicalHistoryByTreatmentStatus> pagingController,
+    required PagingController<int, PetMedicalHistoryByTreatmentStatus>
+    pagingController1,
+    required PagingController<int, PetMedicalHistoryByTreatmentStatus>
+    pagingController,
   }) async {
     try {
       isUpdateLoading.value = true;
@@ -179,7 +187,8 @@ class BusinessAllPetController extends GetxController {
       } else {
         isUpdateLoading.value = false;
         toastMessage(
-          message: response.body?['message']?.toString() ?? 'Failed to add record',
+          message:
+              response.body?['message']?.toString() ?? 'Failed to add record',
         );
       }
     } catch (error) {
@@ -196,8 +205,10 @@ class BusinessAllPetController extends GetxController {
     required Map<String, String> body,
     required String id,
     required String status,
-    required PagingController<int, PetMedicalHistoryByTreatmentStatus> pagingController1,
-    required PagingController<int, PetMedicalHistoryByTreatmentStatus> pagingController,
+    required PagingController<int, PetMedicalHistoryByTreatmentStatus>
+    pagingController1,
+    required PagingController<int, PetMedicalHistoryByTreatmentStatus>
+    pagingController,
   }) async {
     try {
       isEditLoading.value = true;
@@ -218,7 +229,9 @@ class BusinessAllPetController extends GetxController {
       } else {
         isEditLoading.value = false;
         toastMessage(
-          message: response.body?['message']?.toString() ?? 'Failed to update record',
+          message:
+              response.body?['message']?.toString() ??
+              'Failed to update record',
         );
       }
     } catch (error) {
@@ -232,8 +245,10 @@ class BusinessAllPetController extends GetxController {
   Future<void> deletedHealthHistory({
     required String id,
     required String status,
-    required PagingController<int, PetMedicalHistoryByTreatmentStatus> pagingController1,
-    required PagingController<int, PetMedicalHistoryByTreatmentStatus> pagingController,
+    required PagingController<int, PetMedicalHistoryByTreatmentStatus>
+    pagingController1,
+    required PagingController<int, PetMedicalHistoryByTreatmentStatus>
+    pagingController,
   }) async {
     try {
       final response = await apiClient.delete(
@@ -247,12 +262,16 @@ class BusinessAllPetController extends GetxController {
         pagingController.refresh();
 
         toastMessage(
-          message: response.body?['message']?.toString() ?? 'Record deleted successfully',
+          message:
+              response.body?['message']?.toString() ??
+              'Record deleted successfully',
         );
         AppRouter.route.pop();
       } else {
         toastMessage(
-          message: response.body?['message']?.toString() ?? 'Failed to delete record',
+          message:
+              response.body?['message']?.toString() ??
+              'Failed to delete record',
         );
       }
     } catch (error) {

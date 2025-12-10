@@ -14,9 +14,13 @@ class MessageController extends GetxController {
 
   bool isRunning = false;
 
-  Future<void> getAllConversation({required int pageKey, required PagingController<int, ConversationItems> pagingController}) async {
-    try{
-      final resp = await apiClient.get(url: ApiUrl.getConversation(pageKey: pageKey))
+  Future<void> getAllConversation({
+    required int pageKey,
+    required PagingController<int, ConversationItems> pagingController,
+  }) async {
+    try {
+      final resp = await apiClient
+          .get(url: ApiUrl.getConversation(pageKey: pageKey))
           .timeout(const Duration(seconds: 15));
 
       if (resp.statusCode == 200) {
@@ -34,22 +38,26 @@ class MessageController extends GetxController {
     } catch (_) {
       pagingController.error = 'Error';
     }
-
   }
 
-  void listenForNewConversation({required PagingController<int, ConversationItems> pagingController}) async {
-
+  void listenForNewConversation({
+    required PagingController<int, ConversationItems> pagingController,
+  }) async {
     try {
       final userId = await DBHelper().getUserId();
       SocketApi.socket?.off('conversation_update/$userId');
       SocketApi.socket?.on('conversation_update/$userId', (data) {
-        debugPrint("<<<<<==========Conversation Received========>>>>>: ${data.toString()}");
+        debugPrint(
+          "<<<<<==========Conversation Received========>>>>>: ${data.toString()}",
+        );
 
         if (data['messageType'] == 'TEXT') {
           final updatedMessage = ConversationItems.fromJson(data);
           final currentMessages = pagingController.itemList ?? [];
 
-          int existingIndex = currentMessages.indexWhere((msg) => msg.conversationId == updatedMessage.conversationId);
+          int existingIndex = currentMessages.indexWhere(
+            (msg) => msg.conversationId == updatedMessage.conversationId,
+          );
 
           if (existingIndex != -1) {
             if (existingIndex == 0) {
@@ -63,14 +71,17 @@ class MessageController extends GetxController {
           }
 
           pagingController.itemList = [...currentMessages];
-          debugPrint("<<<<<<================Updated conversation list==============>>>>>>: ${pagingController.itemList?.length}");
+          debugPrint(
+            "<<<<<<================Updated conversation list==============>>>>>>: ${pagingController.itemList?.length}",
+          );
         } else {
-          debugPrint("<<<<<================Ignored non-text message==============>>>>>");
+          debugPrint(
+            "<<<<<================Ignored non-text message==============>>>>>",
+          );
         }
       });
     } catch (e) {
       debugPrint("Socket Error Inbox Controller Try Catch $e");
     }
   }
-
 }

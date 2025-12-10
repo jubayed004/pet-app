@@ -3,32 +3,37 @@ class ConversationModel {
   final List<ConversationItems>? data;
   final Pagination? pagination;
 
-  ConversationModel({
-    this.success,
-    this.data,
-    this.pagination,
-  });
+  ConversationModel({this.success, this.data, this.pagination});
 
   ConversationModel copyWith({
     bool? success,
     List<ConversationItems>? data,
     Pagination? pagination,
-  }) =>
-      ConversationModel(
-        success: success ?? this.success,
-        data: data ?? this.data,
-        pagination: pagination ?? this.pagination,
-      );
-
-  factory ConversationModel.fromJson(Map<String, dynamic> json) => ConversationModel(
-    success: json["success"],
-    data: json["data"] == null ? [] : List<ConversationItems>.from(json["data"]!.map((x) => ConversationItems.fromJson(x))),
-    pagination: json["pagination"] == null ? null : Pagination.fromJson(json["pagination"]),
+  }) => ConversationModel(
+    success: success ?? this.success,
+    data: data ?? this.data,
+    pagination: pagination ?? this.pagination,
   );
+
+  factory ConversationModel.fromJson(Map<String, dynamic> json) =>
+      ConversationModel(
+        success: json["success"],
+        data:
+            json["data"] == null
+                ? []
+                : List<ConversationItems>.from(
+                  json["data"]!.map((x) => ConversationItems.fromJson(x)),
+                ),
+        pagination:
+            json["pagination"] == null
+                ? null
+                : Pagination.fromJson(json["pagination"]),
+      );
 
   Map<String, dynamic> toJson() => {
     "success": success,
-    "data": data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
+    "data":
+        data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
     "pagination": pagination?.toJson(),
   };
 }
@@ -57,29 +62,47 @@ class ConversationItems {
     LastMessage? lastMessage,
     int? unreadCount,
     DateTime? updatedAt,
-  }) =>
-      ConversationItems(
-        conversationId: conversationId ?? this.conversationId,
-        blockedBy: blockedBy ?? this.blockedBy,
-        participants: participants ?? this.participants,
-        lastMessage: lastMessage ?? this.lastMessage,
-        unreadCount: unreadCount ?? this.unreadCount,
-        updatedAt: updatedAt ?? this.updatedAt,
-      );
-
-  factory ConversationItems.fromJson(Map<String, dynamic> json) => ConversationItems(
-    conversationId: json["conversationId"],
-    blockedBy: json["blockedBy"] == null ? [] : List<dynamic>.from(json["blockedBy"]!.map((x) => x)),
-    participants: json["participants"] == null ? [] : List<Participant>.from(json["participants"]!.map((x) => Participant.fromJson(x))),
-    lastMessage: json["lastMessage"] == null ? null : LastMessage.fromJson(json["lastMessage"]),
-    unreadCount: json["unreadCount"],
-    updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+  }) => ConversationItems(
+    conversationId: conversationId ?? this.conversationId,
+    blockedBy: blockedBy ?? this.blockedBy,
+    participants: participants ?? this.participants,
+    lastMessage: lastMessage ?? this.lastMessage,
+    unreadCount: unreadCount ?? this.unreadCount,
+    updatedAt: updatedAt ?? this.updatedAt,
   );
+
+  factory ConversationItems.fromJson(Map<String, dynamic> json) =>
+      ConversationItems(
+        conversationId: json["conversationId"],
+        blockedBy:
+            json["blockedBy"] == null
+                ? []
+                : List<dynamic>.from(json["blockedBy"]!.map((x) => x)),
+        participants:
+            json["participants"] == null
+                ? []
+                : List<Participant>.from(
+                  json["participants"]!.map((x) => Participant.fromJson(x)),
+                ),
+        lastMessage:
+            json["lastMessage"] == null
+                ? null
+                : LastMessage.fromJson(json["lastMessage"]),
+        unreadCount: json["unreadCount"],
+        updatedAt:
+            json["updatedAt"] == null
+                ? null
+                : DateTime.parse(json["updatedAt"]),
+      );
 
   Map<String, dynamic> toJson() => {
     "conversationId": conversationId,
-    "blockedBy": blockedBy == null ? [] : List<dynamic>.from(blockedBy!.map((x) => x)),
-    "participants": participants == null ? [] : List<dynamic>.from(participants!.map((x) => x.toJson())),
+    "blockedBy":
+        blockedBy == null ? [] : List<dynamic>.from(blockedBy!.map((x) => x)),
+    "participants":
+        participants == null
+            ? []
+            : List<dynamic>.from(participants!.map((x) => x.toJson())),
     "lastMessage": lastMessage?.toJson(),
     "unreadCount": unreadCount,
     "updatedAt": updatedAt?.toIso8601String(),
@@ -128,21 +151,20 @@ class LastMessage {
     DateTime? createdAt,
     DateTime? updatedAt,
     int? v,
-  }) =>
-      LastMessage(
-        id: id ?? this.id,
-        conversationId: conversationId ?? this.conversationId,
-        sender: sender ?? this.sender,
-        receiver: receiver ?? this.receiver,
-        text: text ?? this.text,
-        images: images ?? this.images,
-        video: video ?? this.video,
-        videoCover: videoCover ?? this.videoCover,
-        seen: seen ?? this.seen,
-        createdAt: createdAt ?? this.createdAt,
-        updatedAt: updatedAt ?? this.updatedAt,
-        v: v ?? this.v,
-      );
+  }) => LastMessage(
+    id: id ?? this.id,
+    conversationId: conversationId ?? this.conversationId,
+    sender: sender ?? this.sender,
+    receiver: receiver ?? this.receiver,
+    text: text ?? this.text,
+    images: images ?? this.images,
+    video: video ?? this.video,
+    videoCover: videoCover ?? this.videoCover,
+    seen: seen ?? this.seen,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    v: v ?? this.v,
+  );
 
   factory LastMessage.fromJson(Map<String, dynamic> json) => LastMessage(
     id: json["_id"],
@@ -150,12 +172,17 @@ class LastMessage {
     sender: json["sender"],
     receiver: json["receiver"],
     text: json["text"],
-    images: json["images"] == null ? [] : List<dynamic>.from(json["images"]!.map((x) => x)),
+    images:
+        json["images"] == null
+            ? []
+            : List<dynamic>.from(json["images"]!.map((x) => x)),
     video: json["video"],
     videoCover: json["videoCover"],
     seen: json["seen"],
-    createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
-    updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+    createdAt:
+        json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+    updatedAt:
+        json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
     v: json["__v"],
   );
 
@@ -181,28 +208,22 @@ class Participant {
   final String? profileImage;
   final bool? online;
 
-  Participant({
-    this.id,
-    this.name,
-    this.profileImage,
-    this.online,
-  });
+  Participant({this.id, this.name, this.profileImage, this.online});
 
   Participant copyWith({
     String? id,
     String? name,
     String? profileImage,
     bool? online,
-  }) =>
-      Participant(
-        id: id ?? this.id,
-        name: name ?? this.name,
-        profileImage: profileImage ?? this.profileImage,
-        online: online ?? this.online,
-      );
+  }) => Participant(
+    id: id ?? this.id,
+    name: name ?? this.name,
+    profileImage: profileImage ?? this.profileImage,
+    online: online ?? this.online,
+  );
 
   factory Participant.fromJson(Map<String, dynamic> json) => Participant(
-    id: json["id"],
+    id: json["id"] ?? json["_id"],
     name: json["name"],
     profileImage: json["profileImage"],
     online: json["online"],
@@ -221,22 +242,17 @@ class Pagination {
   final int? totalPages;
   final int? totalConversations;
 
-  Pagination({
-    this.currentPage,
-    this.totalPages,
-    this.totalConversations,
-  });
+  Pagination({this.currentPage, this.totalPages, this.totalConversations});
 
   Pagination copyWith({
     int? currentPage,
     int? totalPages,
     int? totalConversations,
-  }) =>
-      Pagination(
-        currentPage: currentPage ?? this.currentPage,
-        totalPages: totalPages ?? this.totalPages,
-        totalConversations: totalConversations ?? this.totalConversations,
-      );
+  }) => Pagination(
+    currentPage: currentPage ?? this.currentPage,
+    totalPages: totalPages ?? this.totalPages,
+    totalConversations: totalConversations ?? this.totalConversations,
+  );
 
   factory Pagination.fromJson(Map<String, dynamic> json) => Pagination(
     currentPage: json["currentPage"],

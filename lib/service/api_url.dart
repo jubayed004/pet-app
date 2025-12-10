@@ -75,7 +75,7 @@ class ApiUrl {
   /// Booking MY Appointment
   static createBookingAppointment() => '$base/booking/create-booking';
   static getBookingAppointmentDetails({required String id}) =>
-      '$base/booking/get/$id';
+      '$base/booking/get-bookings-by-service-id/$id';
   static getBookingAppointment({required int page}) =>
       '$base/booking/get-bookings?limit=10&page=$page';
   static deletedBookingAppointment({required String id}) =>

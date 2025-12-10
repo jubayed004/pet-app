@@ -27,8 +27,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
-    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
 
@@ -41,10 +39,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                CustomText(text: 'Create Your Account', fontWeight: FontWeight.w800, fontSize: 24),
-                CustomText(text: AppStrings.helloLets, color: AppColors.blackNormal, fontWeight: FontWeight.w400, fontSize: 18),
+                CustomText(
+                  text: 'Create Your Account',
+                  fontWeight: FontWeight.w800,
+                  fontSize: 24,
+                ),
+                CustomText(
+                  text: AppStrings.helloLets,
+                  color: AppColors.blackNormal,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 18,
+                ),
                 Gap(14),
-                CustomAlignText(text: AppStrings.fullName, fontWeight: FontWeight.w500),
+                CustomAlignText(
+                  text: AppStrings.fullName,
+                  fontWeight: FontWeight.w500,
+                ),
                 Gap(8.0),
                 CustomTextField(
                   fieldBorderColor: AppColors.purple500,
@@ -64,7 +74,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   },
                 ),
                 Gap(14),
-                CustomAlignText(text: "Email", fontWeight: FontWeight.w500, fontSize: 16,),
+                CustomAlignText(
+                  text: "Email",
+                  fontWeight: FontWeight.w500,
+                  fontSize: 16,
+                ),
                 Gap(8.0),
                 CustomTextField(
                   hintText: AppStrings.enterYourEmail,
@@ -77,7 +91,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     if (value == null || value.isEmpty) {
                       return 'Email is required';
                     }
-                    final emailRegex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+                    final emailRegex = RegExp(
+                      r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+                    );
                     if (!emailRegex.hasMatch(value)) {
                       return 'Enter a valid email';
                     }
@@ -85,7 +101,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   },
                 ),
                 Gap(14),
-                CustomAlignText(text: AppStrings.phoneNumber, fontWeight: FontWeight.w500,fontSize: 16,),
+                CustomAlignText(
+                  text: AppStrings.phoneNumber,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 16,
+                ),
                 Gap(8.0),
                 CustomTextField(
                   textEditingController: _authController.phoneNumberSignUp,
@@ -103,7 +123,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                 Gap(14),
 
-                CustomAlignText(text: "Password", fontWeight: FontWeight.w500,fontSize: 16,),
+                CustomAlignText(
+                  text: "Password",
+                  fontWeight: FontWeight.w500,
+                  fontSize: 16,
+                ),
                 Gap(8.0),
                 CustomTextField(
                   fieldBorderColor: AppColors.purple500,
@@ -124,7 +148,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   },
                 ),
                 Gap(14),
-                CustomAlignText(text: AppStrings.confirmPassword, fontWeight: FontWeight.w500,fontSize: 16,),
+                CustomAlignText(
+                  text: AppStrings.confirmPassword,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 16,
+                ),
                 Gap(8.0),
                 CustomTextField(
                   fieldBorderColor: AppColors.purple500,
@@ -163,9 +191,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(height: 1.5.h, color: AppColors.purple500, width: MediaQuery.of(context).size.width * .38),
-                    CustomText(text: "OR", left: 8.w, right: 8.w, fontWeight: FontWeight.w600),
-                    Container(height: 1.5.h, color: AppColors.purple500, width: MediaQuery.of(context).size.width * .43),
+                    Container(
+                      height: 1.5.h,
+                      color: AppColors.purple500,
+                      width: MediaQuery.of(context).size.width * .38,
+                    ),
+                    CustomText(
+                      text: "OR",
+                      left: 8.w,
+                      right: 8.w,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    Container(
+                      height: 1.5.h,
+                      color: AppColors.purple500,
+                      width: MediaQuery.of(context).size.width * .43,
+                    ),
                   ],
                 ),
                 Gap(24),
@@ -174,15 +215,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   child: RichText(
                     text: TextSpan(
                       text: 'Already have an account?',
-                      style: TextStyle(color: AppColors.secondTextColor, fontSize: 16, fontWeight: FontWeight.w400),
+                      style: TextStyle(
+                        color: AppColors.secondTextColor,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                      ),
                       children: [
                         TextSpan(
                           text: " Sign In",
-                          style: TextStyle(color: AppColors.purple500, fontWeight: FontWeight.w600),
+                          style: TextStyle(
+                            color: AppColors.purple500,
+                            fontWeight: FontWeight.w600,
+                          ),
                           recognizer:
                               TapGestureRecognizer()
                                 ..onTap = () {
-                                  AppRouter.route.goNamed(RoutePath.signInScreen);
+                                  AppRouter.route.goNamed(
+                                    RoutePath.signInScreen,
+                                  );
                                 },
                         ),
                       ],

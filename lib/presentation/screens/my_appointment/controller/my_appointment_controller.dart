@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:pet_app/controller/get_controllers.dart';
 import 'package:pet_app/core/dependency/get_it_injection.dart';
 import 'package:pet_app/core/route/routes.dart';
 import 'package:pet_app/helper/toast_message/toast_message.dart';
@@ -14,23 +13,26 @@ import 'package:pet_app/utils/app_const/app_const.dart';
 import '../../../../utils/variable/variable.dart';
 
 class MyAppointmentController extends GetxController {
-
   final ApiClient apiClient = serviceLocator();
-  final PagingController<int, BookingItem> pagingController1 = PagingController(firstPageKey: 1);
+  final PagingController<int, BookingItem> pagingController1 = PagingController(
+    firstPageKey: 1,
+  );
   final Rx<BookingItem?> firstBooking = Rx(null);
   bool isRunning = false;
 
   Future<void> getAppointmentBooking({required int page}) async {
-    if(isRunning)return;
+    if (isRunning) return;
     isRunning = true;
 
-    try{
-      final response = await apiClient.get(url: ApiUrl.getBookingAppointment(page: page));
+    try {
+      final response = await apiClient.get(
+        url: ApiUrl.getBookingAppointment(page: page),
+      );
       logger.d(response.body);
       if (response.statusCode == 200) {
         final newData = AppointmentBookingModel.fromJson(response.body);
         final newItems = newData.bookings ?? [];
-        if(page == 1 && newItems.isNotEmpty){
+        if (page == 1 && newItems.isNotEmpty) {
           firstBooking.value = newItems.first;
         }
         if (newItems.isEmpty) {
@@ -39,22 +41,27 @@ class MyAppointmentController extends GetxController {
           pagingController1.appendPage(newItems, page + 1);
         }
       } else {
-        pagingController1.error = response.body?['message'] ?? "No internet connection. \nPlease check your connection and try again.";
+        pagingController1.error =
+            response.body?['message'] ??
+            "No internet connection. \nPlease check your connection and try again.";
       }
-    }catch(_){
+    } catch (_) {
       pagingController1.error = 'An error occurred';
-    }finally{
+    } finally {
       isRunning = false;
     }
   }
 
-// In your MyAppointmentController
-  var singleAppointmentBookingLoading = Status.completed.obs; // <-- dedicated loading
+  // In your MyAppointmentController
+  var singleAppointmentBookingLoading =
+      Status.completed.obs; // <-- dedicated loading
 
   Future<void> getSingleAppointmentBooking() async {
     singleAppointmentBookingLoading.value = Status.loading; // Start loading
     try {
-      final response = await apiClient.get(url: ApiUrl.getBookingAppointment(page: 1));
+      final response = await apiClient.get(
+        url: ApiUrl.getBookingAppointment(page: 1),
+      );
       logger.d(response.body);
       if (response.statusCode == 200) {
         final newData = AppointmentBookingModel.fromJson(response.body);
@@ -78,18 +85,20 @@ class MyAppointmentController extends GetxController {
     }
   }
 
-
   var loading = Status.completed.obs;
 
   loadingMethod(Status status) => loading.value = status;
-  final Rx<AppointmentBookingDetailsModel> appointmentBookingDetails = AppointmentBookingDetailsModel().obs;
+  final Rx<AppointmentBookingDetailsModel> appointmentBookingDetails =
+      AppointmentBookingDetailsModel().obs;
 
   ///===================== Appointment Booking Details ====================
   Future<void> getAppointmentBookingDetails({required String id}) async {
     loadingMethod(Status.completed);
     try {
       loadingMethod(Status.loading);
-      final response = await apiClient.get(url: ApiUrl.getBookingAppointmentDetails(id: id));
+      final response = await apiClient.get(
+        url: ApiUrl.getBookingAppointmentDetails(id: id),
+      );
       logger.d(response.body);
       if (response.statusCode == 200) {
         final newData = AppointmentBookingDetailsModel.fromJson(response.body);
@@ -110,7 +119,7 @@ class MyAppointmentController extends GetxController {
   }
 
   ///=================== Deleted Booking Appointment
-/*
+  /*
   Future<void> deletedBookingAppointment({required String id})async {
     try {
       final response = await apiClient.delete(
@@ -127,10 +136,15 @@ class MyAppointmentController extends GetxController {
       }
     }
   }  */
-  Future<void> cencelBookingAppointment({required String id,required Map<String, String> body})async {
+  Future<void> cencelBookingAppointment({
+    required String id,
+    required Map<String, String> body,
+  }) async {
     try {
       final response = await apiClient.put(
-          url: ApiUrl.cencelBookingAppointment(id: id), body: body);
+        url: ApiUrl.cencelBookingAppointment(id: id),
+        body: body,
+      );
       if (response.statusCode == 200) {
         pagingController1.refresh();
         toastMessage(message: response.body?['message']?.toString());
@@ -143,5 +157,4 @@ class MyAppointmentController extends GetxController {
       }
     }
   }
-
 }

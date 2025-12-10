@@ -19,21 +19,29 @@ class ChatModel {
     String? message,
     Participant? participant,
     BlockStatus? blockStatus,
-  }) =>
-      ChatModel(
-        status: status ?? this.status,
-        conversation: conversation ?? this.conversation,
-        message: message ?? this.message,
-        participant: participant ?? this.participant,
-        blockStatus: blockStatus ?? this.blockStatus,
-      );
+  }) => ChatModel(
+    status: status ?? this.status,
+    conversation: conversation ?? this.conversation,
+    message: message ?? this.message,
+    participant: participant ?? this.participant,
+    blockStatus: blockStatus ?? this.blockStatus,
+  );
 
   factory ChatModel.fromJson(Map<String, dynamic> json) => ChatModel(
     status: json["status"],
-    conversation: json["conversation"] == null ? null : Conversation.fromJson(json["conversation"]),
+    conversation:
+        json["conversation"] == null
+            ? null
+            : Conversation.fromJson(json["conversation"]),
     message: json["message"],
-    participant: json["participant"] == null ? null : Participant.fromJson(json["participant"]),
-    blockStatus: json["blockStatus"] == null ? null : BlockStatus.fromJson(json["blockStatus"]),
+    participant:
+        json["participant"] == null
+            ? null
+            : Participant.fromJson(json["participant"]),
+    blockStatus:
+        json["blockStatus"] == null
+            ? null
+            : BlockStatus.fromJson(json["blockStatus"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -50,22 +58,17 @@ class BlockStatus {
   final bool? isBlockedByPartner;
   final bool? isBlocked;
 
-  BlockStatus({
-    this.isBlockedByYou,
-    this.isBlockedByPartner,
-    this.isBlocked,
-  });
+  BlockStatus({this.isBlockedByYou, this.isBlockedByPartner, this.isBlocked});
 
   BlockStatus copyWith({
     bool? isBlockedByYou,
     bool? isBlockedByPartner,
     bool? isBlocked,
-  }) =>
-      BlockStatus(
-        isBlockedByYou: isBlockedByYou ?? this.isBlockedByYou,
-        isBlockedByPartner: isBlockedByPartner ?? this.isBlockedByPartner,
-        isBlocked: isBlocked ?? this.isBlocked,
-      );
+  }) => BlockStatus(
+    isBlockedByYou: isBlockedByYou ?? this.isBlockedByYou,
+    isBlockedByPartner: isBlockedByPartner ?? this.isBlockedByPartner,
+    isBlocked: isBlocked ?? this.isBlocked,
+  );
 
   factory BlockStatus.fromJson(Map<String, dynamic> json) => BlockStatus(
     isBlockedByYou: json["isBlockedByYou"],
@@ -107,32 +110,53 @@ class Conversation {
     DateTime? createdAt,
     DateTime? updatedAt,
     int? v,
-  }) =>
-      Conversation(
-        id: id ?? this.id,
-        participants: participants ?? this.participants,
-        messages: messages ?? this.messages,
-        blockedBy: blockedBy ?? this.blockedBy,
-        createdAt: createdAt ?? this.createdAt,
-        updatedAt: updatedAt ?? this.updatedAt,
-        v: v ?? this.v,
-      );
+  }) => Conversation(
+    id: id ?? this.id,
+    participants: participants ?? this.participants,
+    messages: messages ?? this.messages,
+    blockedBy: blockedBy ?? this.blockedBy,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    v: v ?? this.v,
+  );
 
   factory Conversation.fromJson(Map<String, dynamic> json) => Conversation(
     id: json["_id"],
-    participants: json["participants"] == null ? [] : List<Participant>.from(json["participants"]!.map((x) => Participant.fromJson(x))),
-    messages: json["messages"] == null ? [] : List<MessageItem>.from(json["messages"]!.map((x) => MessageItem.fromJson(x))),
-    blockedBy: json["blockedBy"] == null ? [] : List<dynamic>.from(json["blockedBy"]!.map((x) => x)),
-    createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
-    updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+    participants:
+        json["participants"] == null
+            ? []
+            : List<Participant>.from(
+              json["participants"]!.map((x) => Participant.fromJson(x)),
+            ),
+    messages:
+        json["messages"] == null
+            ? []
+            : List<MessageItem>.from(
+              json["messages"]!.map((x) => MessageItem.fromJson(x)),
+            ),
+    blockedBy:
+        json["blockedBy"] == null
+            ? []
+            : List<dynamic>.from(json["blockedBy"]!.map((x) => x)),
+    createdAt:
+        json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+    updatedAt:
+        json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
     v: json["__v"],
   );
 
   Map<String, dynamic> toJson() => {
     "_id": id,
-    "participants": participants == null ? [] : List<dynamic>.from(participants!.map((x) => x.toJson())),
-    "messages": messages == null ? [] : List<dynamic>.from(messages!.map((x) => x.toJson())),
-    "blockedBy": blockedBy == null ? [] : List<dynamic>.from(blockedBy!.map((x) => x)),
+    "participants":
+        participants == null
+            ? []
+            : List<dynamic>.from(participants!.map((x) => x.toJson())),
+    "messages":
+        messages == null
+            ? []
+            : List<dynamic>.from(messages!.map((x) => x.toJson())),
+    "blockedBy":
+        blockedBy == null ? [] : List<dynamic>.from(blockedBy!.map((x) => x)),
     "createdAt": createdAt?.toIso8601String(),
     "updatedAt": updatedAt?.toIso8601String(),
     "__v": v,
@@ -181,21 +205,20 @@ class MessageItem {
     DateTime? createdAt,
     DateTime? updatedAt,
     int? v,
-  }) =>
-      MessageItem(
-        id: id ?? this.id,
-        conversationId: conversationId ?? this.conversationId,
-        sender: sender ?? this.sender,
-        receiver: receiver ?? this.receiver,
-        text: text ?? this.text,
-        images: images ?? this.images,
-        video: video ?? this.video,
-        videoCover: videoCover ?? this.videoCover,
-        seen: seen ?? this.seen,
-        createdAt: createdAt ?? this.createdAt,
-        updatedAt: updatedAt ?? this.updatedAt,
-        v: v ?? this.v,
-      );
+  }) => MessageItem(
+    id: id ?? this.id,
+    conversationId: conversationId ?? this.conversationId,
+    sender: sender ?? this.sender,
+    receiver: receiver ?? this.receiver,
+    text: text ?? this.text,
+    images: images ?? this.images,
+    video: video ?? this.video,
+    videoCover: videoCover ?? this.videoCover,
+    seen: seen ?? this.seen,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    v: v ?? this.v,
+  );
 
   factory MessageItem.fromJson(Map<String, dynamic> json) => MessageItem(
     id: json["_id"],
@@ -203,12 +226,17 @@ class MessageItem {
     sender: json["sender"],
     receiver: json["receiver"],
     text: json["text"],
-    images: json["images"] == null ? [] : List<String?>.from(json["images"]!.map((x) => x)),
+    images:
+        json["images"] == null
+            ? []
+            : List<String?>.from(json["images"]!.map((x) => x)),
     video: json["video"],
     videoCover: json["videoCover"],
     seen: json["seen"],
-    createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
-    updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+    createdAt:
+        json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+    updatedAt:
+        json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
     v: json["__v"],
   );
 
@@ -234,25 +262,19 @@ class Participant {
   final String? role;
   final String? profilePic;
 
-  Participant({
-    this.id,
-    this.name,
-    this.role,
-    this.profilePic,
-  });
+  Participant({this.id, this.name, this.role, this.profilePic});
 
   Participant copyWith({
     String? id,
     String? name,
     String? role,
     String? profilePic,
-  }) =>
-      Participant(
-        id: id ?? this.id,
-        name: name ?? this.name,
-        role: role ?? this.role,
-        profilePic: profilePic ?? this.profilePic,
-      );
+  }) => Participant(
+    id: id ?? this.id,
+    name: name ?? this.name,
+    role: role ?? this.role,
+    profilePic: profilePic ?? this.profilePic,
+  );
 
   factory Participant.fromJson(Map<String, dynamic> json) => Participant(
     id: json["_id"],

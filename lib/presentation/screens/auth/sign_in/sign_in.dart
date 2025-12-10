@@ -7,7 +7,6 @@ import 'package:pet_app/controller/get_controllers.dart';
 import 'package:pet_app/core/custom_assets/assets.gen.dart';
 import 'package:pet_app/core/route/route_path.dart';
 import 'package:pet_app/core/route/routes.dart';
-import 'package:pet_app/helper/toast_message/toast_message.dart';
 import 'package:pet_app/presentation/components/custom_button/custom_button.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
 import 'package:pet_app/presentation/components/custom_text_field/custom_text_field.dart';
@@ -59,7 +58,11 @@ class _SignInScreenState extends State<SignInScreen> {
                   Assets.icons.loginimage.svg(), // Your login image
                   Gap(24),
                   // Email Field
-                  CustomAlignText(text: "Email",fontSize: 16,fontWeight: FontWeight.w600,),
+                  CustomAlignText(
+                    text: "Email",
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
                   Gap(8),
                   CustomTextField(
                     fillColor: Colors.white,
@@ -73,7 +76,8 @@ class _SignInScreenState extends State<SignInScreen> {
                         return 'Email is required';
                       }
                       final emailRegex = RegExp(
-                          r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+                        r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+                      );
                       if (!emailRegex.hasMatch(value)) {
                         return 'Enter a valid email';
                       }
@@ -83,7 +87,11 @@ class _SignInScreenState extends State<SignInScreen> {
                   Gap(24),
 
                   // Password Field
-                  CustomAlignText(text: "Password",fontWeight: FontWeight.w600,fontSize: 16,),
+                  CustomAlignText(
+                    text: "Password",
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
+                  ),
                   Gap(8),
                   CustomTextField(
                     fillColor: Colors.white,
@@ -104,58 +112,19 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                   Gap(16),
 
-                  // Remember Me + Forgot Password
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Obx(() {
-                        return GestureDetector(
-                          onTap: () {
-                            _authController.rememberMe.value =
-                            !_authController.rememberMe.value;
-                          },
-                          child: Row(
-                            children: [
-                              Container(
-                                height: 18.h,
-                                width: 18.w,
-                                decoration: BoxDecoration(
-                                  color: _authController.rememberMe.value
-                                      ? AppColors.purple500
-                                      : Colors.transparent,
-                                  border: Border.all(
-                                      width: 1.sp,
-                                      color: AppColors.secondPrimaryColor),
-                                  borderRadius: BorderRadius.circular(4.sp),
-                                ),
-                                child: _authController.rememberMe.value
-                                    ? Icon(Icons.check,
-                                    color: AppColors.whiteColor, size: 14.sp)
-                                    : SizedBox.shrink(),
-                              ),
-                              Gap(8),
-                              CustomText(
-                                text: "Remember Me",
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ],
-                          ),
-                        );
-                      }),
-                      GestureDetector(
-                        onTap: () {
-                          AppRouter.route
-                              .pushNamed(RoutePath.forgotPassScreen);
-                        },
-                        child: CustomText(
-                          text: "Forgot Password?",
-                          color: AppColors.whiteColor700,
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w500,
-                        ),
+                  GestureDetector(
+                    onTap: () {
+                      AppRouter.route.pushNamed(RoutePath.forgotPassScreen);
+                    },
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: CustomText(
+                        text: "Forgot Password?",
+                        color: AppColors.whiteColor700,
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w500,
                       ),
-                    ],
+                    ),
                   ),
                   Gap(24),
 
@@ -169,7 +138,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         if (_formKey.currentState!.validate()) {
                           final body = {
                             "email": email.text.trim(),
-                            "password": password.text
+                            "password": password.text,
                           };
                           _authController.login(body: body);
                         }
@@ -182,19 +151,21 @@ class _SignInScreenState extends State<SignInScreen> {
                   Row(
                     children: [
                       Expanded(
-                          child: Divider(
-                            color: AppColors.purple500,
-                            thickness: 1,
-                          )),
+                        child: Divider(
+                          color: AppColors.purple500,
+                          thickness: 1,
+                        ),
+                      ),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 8.w),
                         child: CustomText(text: "OR"),
                       ),
                       Expanded(
-                          child: Divider(
-                            color: AppColors.purple500,
-                            thickness: 1,
-                          )),
+                        child: Divider(
+                          color: AppColors.purple500,
+                          thickness: 1,
+                        ),
+                      ),
                     ],
                   ),
                   Gap(24),
@@ -206,20 +177,24 @@ class _SignInScreenState extends State<SignInScreen> {
                       text: TextSpan(
                         text: 'Don’t have an account? ',
                         style: TextStyle(
-                            color: AppColors.secondTextColor,
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w400),
+                          color: AppColors.secondTextColor,
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w400,
+                        ),
                         children: [
                           TextSpan(
                             text: "Sign Up",
                             style: TextStyle(
-                                color: AppColors.purple500,
-                                fontWeight: FontWeight.w600),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () {
-                                AppRouter.route.pushNamed(
-                                    RoutePath.vendorSelectionScreen);
-                              },
+                              color: AppColors.purple500,
+                              fontWeight: FontWeight.w600,
+                            ),
+                            recognizer:
+                                TapGestureRecognizer()
+                                  ..onTap = () {
+                                    AppRouter.route.pushNamed(
+                                      RoutePath.vendorSelectionScreen,
+                                    );
+                                  },
                           ),
                         ],
                       ),

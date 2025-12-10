@@ -5,7 +5,6 @@ import 'package:pet_app/core/route/routes.dart';
 import 'package:pet_app/helper/image/network_image.dart';
 import 'package:pet_app/presentation/components/custom_button_tap/custom_button_tap.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
-import 'package:pet_app/service/api_url.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
 
 class MessageCardItemWidget extends StatelessWidget {
@@ -31,9 +30,17 @@ class MessageCardItemWidget extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(bottom: 10),
       decoration: BoxDecoration(
-        color: isRead == false ? AppColors.kPrimaryAccentColor : AppColors.kWhiteColor,
+        color:
+            isRead == false
+                ? AppColors.kPrimaryAccentColor
+                : AppColors.kWhiteColor,
         borderRadius: BorderRadius.circular(16.r),
-        boxShadow: [BoxShadow(color: AppColors.kBlackColor.withValues(alpha: 0.1), blurRadius: 12.r)],
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.kBlackColor.withValues(alpha: 0.1),
+            blurRadius: 12.r,
+          ),
+        ],
       ),
       child: ButtonTapWidget(
         radius: 16.r,
@@ -45,7 +52,12 @@ class MessageCardItemWidget extends StatelessWidget {
           child: Row(
             spacing: 12.w,
             children: [
-              CustomNetworkImage(imageUrl: image, boxShape: BoxShape.circle, height: 50.w, width: 50.w),
+              CustomNetworkImage(
+                imageUrl: image,
+                boxShape: BoxShape.circle,
+                height: 50.w,
+                width: 50.w,
+              ),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,15 +73,17 @@ class MessageCardItemWidget extends StatelessWidget {
                             fontWeight: FontWeight.bold, // Bold if owner
                           ),
                         ),
-                        Expanded(child: CustomText(text: date, color: AppColors.kExtraLightGreyTextColor)),
+                        Expanded(
+                          child: CustomText(
+                            text: date,
+                            color: AppColors.kExtraLightGreyTextColor,
+                          ),
+                        ),
                       ],
                     ),
 
                     ///=============================dynamic message =============================///
-                    CustomText(
-                      text: message,
-                      fontWeight: FontWeight.w500,
-                    ),
+                    CustomText(text: message, fontWeight: FontWeight.w500),
                   ],
                 ),
               ),

@@ -1,5 +1,3 @@
-
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -12,12 +10,8 @@ import 'package:pet_app/core/custom_assets/assets.gen.dart';
 import 'package:pet_app/core/route/route_path.dart';
 import 'package:pet_app/core/route/routes.dart';
 import 'package:pet_app/helper/image/network_image.dart';
-import 'package:pet_app/presentation/components/custom_button/custom_button.dart';
-import 'package:pet_app/presentation/components/custom_image/custom_image.dart';
 import 'package:pet_app/presentation/components/custom_loader/custom_loader.dart';
-import 'package:pet_app/presentation/components/custom_tab_selected/custom_tab_bar.dart';
 import 'package:pet_app/presentation/components/custom_text/custom_text.dart';
-import 'package:pet_app/presentation/components/custom_text_field/custom_text_field.dart';
 import 'package:pet_app/presentation/no_internet/error_card.dart';
 import 'package:pet_app/presentation/no_internet/more_data_error_card.dart';
 import 'package:pet_app/presentation/no_internet/no_data_card.dart';
@@ -26,17 +20,12 @@ import 'package:pet_app/presentation/screens/business_owners/business_home/widge
 import 'package:pet_app/presentation/screens/business_owners/business_service/widgets/default_dialog.dart';
 import 'package:pet_app/presentation/screens/home/controller/home_controller.dart';
 import 'package:pet_app/presentation/screens/home/widget/category_iist_widget.dart';
-import 'package:pet_app/presentation/screens/home/widget/top_brands_carousel_widget.dart';
 import 'package:pet_app/presentation/screens/my_appointment/widgets/my_appointment_container.dart';
 import 'package:pet_app/presentation/widget/align/custom_align_text.dart';
-import 'package:pet_app/service/api_url.dart';
 import 'package:pet_app/utils/app_colors/app_colors.dart';
 import 'package:pet_app/utils/app_const/app_const.dart';
 import 'package:pet_app/utils/app_strings/app_strings.dart';
 import 'package:get/get.dart';
-import 'package:shimmer/shimmer.dart';
-
-import '../../../../utils/app_images/app_images.dart' show AppImages;
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -48,8 +37,10 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final homeController = GetControllers.instance.getHomeController();
   final navController = GetControllers.instance.getNavigationControllerMain();
-  final myAppointmentController = GetControllers.instance.getMyAppointmentController();
-  final businessHomeController = GetControllers.instance.getBusinessHomeController();
+  final myAppointmentController =
+      GetControllers.instance.getMyAppointmentController();
+  final businessHomeController =
+      GetControllers.instance.getBusinessHomeController();
 
   @override
   void initState() {
@@ -64,13 +55,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return SafeArea(
       top: false,
       child: Scaffold(
         backgroundColor: AppColors.appBackgroundColor,
         body: RefreshIndicator(
-          onRefresh: ()async{
+          onRefresh: () async {
             homeController.userHomeHeader();
             homeController.getAllAdvertisement();
             myAppointmentController.getSingleAppointmentBooking();
@@ -83,14 +73,17 @@ class _HomeScreenState extends State<HomeScreen> {
               const SliverGap(8),
               _buildFindWhatYouNeedTitle(),
               const SliverGap(8),
-              SliverToBoxAdapter(child: CategoryList(controller: homeController)),
-             /* _buildAdsSection(), */// Ads Section'
+              SliverToBoxAdapter(
+                child: CategoryList(controller: homeController),
+              ),
+              /* _buildAdsSection(), */
+              // Ads Section'
               _buildAdvertisementSection(homeController),
               _buildAppointmentsHeader(),
               _buildAppointmentsSection(),
               const SliverGap(16),
               BrandSection(),
-          /*    SliverToBoxAdapter(
+              /*    SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Column(
@@ -132,9 +125,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       width: 50.w,
                       decoration: const BoxDecoration(shape: BoxShape.circle),
                       child: Obx(() {
-                        final imageFile = homeController.homeHeader.value.data?.userPic;
+                        final imageFile =
+                            homeController.homeHeader.value.data?.userPic;
                         return CustomNetworkImage(
-                          imageUrl: imageFile ??
+                          imageUrl:
+                              imageFile ??
                               'https://images.unsplash.com/photo-1548767797-d8c844163c4c?q=80&w=1171&auto=format&fit=crop',
                           height: 50.h,
                           width: 50.w,
@@ -142,11 +137,12 @@ class _HomeScreenState extends State<HomeScreen> {
                         );
                       }),
                     ),
-
                   ),
                   Expanded(
                     child: GestureDetector(
-                      onTap: () => AppRouter.route.pushNamed(RoutePath.searchScreen),
+                      onTap:
+                          () =>
+                              AppRouter.route.pushNamed(RoutePath.searchScreen),
                       child: Container(
                         height: 40,
                         decoration: BoxDecoration(
@@ -154,11 +150,21 @@ class _HomeScreenState extends State<HomeScreen> {
                           border: Border.all(color: AppColors.purple500),
                           borderRadius: BorderRadius.circular(6),
                         ),
-                        child: const Center(child: CustomText(textAlign: TextAlign.start, text: AppStrings.searchForServices)),
+                        child: const Center(
+                          child: CustomText(
+                            textAlign: TextAlign.start,
+                            text: AppStrings.searchForServices,
+                          ),
+                        ),
                       ),
                     ),
                   ),
-                  IconButton(onPressed: (){ AppRouter.route.pushNamed(RoutePath.notifyScreen);}, icon: Icon(Iconsax.notification_bing)),
+                  IconButton(
+                    onPressed: () {
+                      AppRouter.route.pushNamed(RoutePath.notifyScreen);
+                    },
+                    icon: Icon(Iconsax.notification_bing),
+                  ),
                 ],
               ),
             ],
@@ -175,7 +181,11 @@ class _HomeScreenState extends State<HomeScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20),
         child: Column(
           children: [
-          CustomAlignText(text:AppStrings.activePetProfiles,fontWeight: FontWeight.w600,fontSize: 16,),
+            CustomAlignText(
+              text: AppStrings.activePetProfiles,
+              fontWeight: FontWeight.w600,
+              fontSize: 16,
+            ),
             const Gap(16),
             Obx(() {
               final status = homeController.loading.value; // Rx<Status>
@@ -226,16 +236,16 @@ class _HomeScreenState extends State<HomeScreen> {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-
                       // Carousel
                       CarouselSlider.builder(
                         itemCount: item.length,
                         itemBuilder: (context, index, realIndex) {
                           final pet = item[index];
                           final image = pet.petPhoto ?? "";
-                          final imageUrl = image.isEmpty
-                              ? "assets/images/default_pet_image.png"
-                              : image;
+                          final imageUrl =
+                              image.isEmpty
+                                  ? "assets/images/default_pet_image.png"
+                                  : image;
                           return Container(
                             padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
@@ -254,7 +264,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               children: [
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       CustomText(
@@ -269,7 +280,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                           text: pet.name!,
                                           fontWeight: FontWeight.w400,
                                           fontSize: 12.sp,
-                                          color: Colors.white.withValues(alpha: 0.8),
+                                          color: Colors.white.withValues(
+                                            alpha: 0.8,
+                                          ),
                                         ),
                                       ],
                                     ],
@@ -295,7 +308,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           viewportFraction: 0.97,
 
                           onPageChanged: (index, reason) {
-                            homeController.currentIndex.value = index % item.length;
+                            homeController.currentIndex.value =
+                                index % item.length;
                           },
                         ),
                       ),
@@ -309,7 +323,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: List.generate(
                               item.length,
-                                  (index) => buildDot(index, active: index == activeIdx),
+                              (index) =>
+                                  buildDot(index, active: index == activeIdx),
                             ),
                           );
                         }),
@@ -319,12 +334,12 @@ class _HomeScreenState extends State<HomeScreen> {
               }
             }),
           ],
-        )
+        ),
       ),
     );
   }
 
-// Updated buildDot method with active parameter
+  // Updated buildDot method with active parameter
   Widget buildDot(int index, {bool active = false}) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
@@ -332,16 +347,18 @@ class _HomeScreenState extends State<HomeScreen> {
       height: 8.h,
       width: active ? 24 : 8,
       decoration: BoxDecoration(
-        color: active
-            ? AppColors.primaryColor
-            : AppColors.primaryColor.withOpacity(0.3),
+        color:
+            active
+                ? AppColors.primaryColor
+                : AppColors.primaryColor.withOpacity(0.3),
         borderRadius: BorderRadius.circular(12),
-        border: active
-            ? Border.all(
-          color: AppColors.primaryColor.withOpacity(0.6),
-          width: 0.5.w,
-        )
-            : null,
+        border:
+            active
+                ? Border.all(
+                  color: AppColors.primaryColor.withOpacity(0.6),
+                  width: 0.5.w,
+                )
+                : null,
       ),
     );
   }
@@ -353,10 +370,14 @@ class _HomeScreenState extends State<HomeScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         child: Column(
           children: [
-            CustomAlignText(text: " Active Advertisement",fontSize: 16,fontWeight: FontWeight.w600,),
+            CustomAlignText(
+              text: " Active Advertisement",
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+            ),
             Obx(() {
               if (homeController.isRunning.value) {
-                return const Center(child:CustomLoader());
+                return const Center(child: CustomLoader());
               }
               final adsPic = homeController.adsPic;
               if (adsPic.isEmpty) {
@@ -368,8 +389,6 @@ class _HomeScreenState extends State<HomeScreen> {
               }
               return Column(
                 children: [
-
-
                   CarouselSlider.builder(
                     itemCount: adsPic.length,
                     itemBuilder: (context, index, realIndex) {
@@ -378,7 +397,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         margin: const EdgeInsets.symmetric(horizontal: 5),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(8),
-                          child: CustomNetworkImage(imageUrl: imgUrl)
+                          child: CustomNetworkImage(imageUrl: imgUrl),
                         ),
                       );
                     },
@@ -392,14 +411,14 @@ class _HomeScreenState extends State<HomeScreen> {
                       },
                     ),
                   ),
-                   SizedBox(height: 10.h),
+                  SizedBox(height: 10.h),
                   Obx(() {
                     final activeIdx = homeController.currentIndex.value;
                     return Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: List.generate(
                         adsPic.length,
-                            (i) => buildDot1(i, active: i == activeIdx),
+                        (i) => buildDot1(i, active: i == activeIdx),
                       ),
                     );
                   }),
@@ -419,12 +438,13 @@ class _HomeScreenState extends State<HomeScreen> {
       height: 6.h,
       width: active ? 22 : 8,
       decoration: BoxDecoration(
-        color: active
-            ? Colors.white.withValues(alpha: 0.95)
-            : Colors.white.withValues(alpha: 0.45),
+        color:
+            active
+                ? Colors.white.withValues(alpha: 0.95)
+                : Colors.white.withValues(alpha: 0.45),
         borderRadius: BorderRadius.circular(100),
         border: Border.all(
-          color: Colors.white.withValues(alpha:  active ? 0.6 : 0.35),
+          color: Colors.white.withValues(alpha: active ? 0.6 : 0.35),
         ),
       ),
     );
@@ -435,7 +455,12 @@ class _HomeScreenState extends State<HomeScreen> {
     return SliverToBoxAdapter(
       child: Padding(
         padding: EdgeInsets.only(left: 16),
-        child: CustomText(text: AppStrings.findWhatYouNeed, textAlign: TextAlign.start, fontWeight: FontWeight.w600, fontSize: 18.sp),
+        child: CustomText(
+          text: AppStrings.findWhatYouNeed,
+          textAlign: TextAlign.start,
+          fontWeight: FontWeight.w600,
+          fontSize: 18.sp,
+        ),
       ),
     );
   }
@@ -448,10 +473,20 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            CustomText(text: AppStrings.upcomingAppointments, fontWeight: FontWeight.w600, fontSize: 18.sp),
+            CustomText(
+              text: AppStrings.upcomingAppointments,
+              fontWeight: FontWeight.w600,
+              fontSize: 18.sp,
+            ),
             TextButton(
-              onPressed: () => AppRouter.route.pushNamed(RoutePath.myAppointmentScreen),
-              child: CustomText(text: AppStrings.seeAll, fontWeight: FontWeight.w600, fontSize: 14.sp),
+              onPressed:
+                  () =>
+                      AppRouter.route.pushNamed(RoutePath.myAppointmentScreen),
+              child: CustomText(
+                text: AppStrings.seeAll,
+                fontWeight: FontWeight.w600,
+                fontSize: 14.sp,
+              ),
             ),
           ],
         ),
@@ -465,7 +500,10 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Obx(() {
-          final status = myAppointmentController.singleAppointmentBookingLoading.value; // Rx<Status>
+          final status =
+              myAppointmentController
+                  .singleAppointmentBookingLoading
+                  .value; // Rx<Status>
           final item = myAppointmentController.firstBooking.value;
 
           switch (status) {
@@ -475,27 +513,33 @@ class _HomeScreenState extends State<HomeScreen> {
             case Status.error:
               return Center(
                 child: ErrorCard(
-                  onTap: () => myAppointmentController.getSingleAppointmentBooking(),
+                  onTap:
+                      () =>
+                          myAppointmentController.getSingleAppointmentBooking(),
                 ),
               );
 
             case Status.internetError:
               return Center(
                 child: NoInternetCard(
-                  onTap: () => myAppointmentController.getSingleAppointmentBooking(),
+                  onTap:
+                      () =>
+                          myAppointmentController.getSingleAppointmentBooking(),
                 ),
               );
 
             case Status.noDataFound:
               return Center(
                 child: NoDataCard(
-                  onTap: () => myAppointmentController.getSingleAppointmentBooking(),
+                  onTap:
+                      () =>
+                          myAppointmentController.getSingleAppointmentBooking(),
                 ),
               );
 
             case Status.completed:
               if (item == null) {
-                return  Center(
+                return Center(
                   child: CustomText(
                     text: "No Appointment Found",
                     fontSize: 16.sp,
@@ -504,12 +548,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 );
               }
 
-              final bookingDate = item.bookingDate != null
-                  ? DateFormat("dd MMMM yyyy").format(item.bookingDate!)
-                  : "";
+              final bookingDate =
+                  item.bookingDate != null
+                      ? DateFormat("dd MMMM yyyy").format(item.bookingDate!)
+                      : "";
+
+              print("item.serviceId?.id ${item.serviceId?.id}");
 
               return MyAppointmentContainer(
-                id: item.serviceId?.id ?? "",
+                id: item.id ?? "",
                 petLogo: Assets.images.vet.image(width: 24.w),
                 serviceType: item.serviceId?.serviceType ?? "",
                 shopLogo: item.serviceId?.shopLogo ?? "",
@@ -534,5 +581,4 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-
 }

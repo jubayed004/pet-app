@@ -28,11 +28,17 @@ class ChatController extends GetxController {
 
   bool isLoading = false;
 
-  Future<void> getChatList({required int pageKey, required String id, required PagingController<int, MessageItem> pagingController,}) async {
+  Future<void> getChatList({
+    required int pageKey,
+    required String id,
+    required PagingController<int, MessageItem> pagingController,
+  }) async {
     if (isLoading) return;
     isLoading = true;
     try {
-      final response = await apiClient.get(url: ApiUrl.getMessageForChat(pageKey: pageKey, id: id));
+      final response = await apiClient.get(
+        url: ApiUrl.getMessageForChat(pageKey: pageKey, id: id),
+      );
       if (response.statusCode == 200) {
         final newData = ChatModel.fromJson(response.body);
         if (pageKey == 1) {
@@ -57,10 +63,11 @@ class ChatController extends GetxController {
     }
   }
 
-
   Future<void> checkBlockStatus(String userId) async {
     try {
-      final response = await apiClient.get(url: ApiUrl.checkUserIsBlocked(id: userId));
+      final response = await apiClient.get(
+        url: ApiUrl.checkUserIsBlocked(id: userId),
+      );
       if (response.statusCode == 200) {
         isBlocked.value = response.body['isBlockedByYou'] ?? false;
         isBlockedByOther.value = response.body['isBlockedByThem'] ?? false;
@@ -86,7 +93,9 @@ class ChatController extends GetxController {
 
         AppRouter.route.pop();
       } else {
-        toastMessage(message: response.body['message'] ?? "Failed to block user");
+        toastMessage(
+          message: response.body['message'] ?? "Failed to block user",
+        );
       }
     } catch (e) {
       debugPrint("Error blocking user: $e");
@@ -111,7 +120,9 @@ class ChatController extends GetxController {
         toastMessage(message: "User unblocked successfully");
         AppRouter.route.pop();
       } else {
-        toastMessage(message: response.body['message'] ?? "Failed to unblock user");
+        toastMessage(
+          message: response.body['message'] ?? "Failed to unblock user",
+        );
       }
     } catch (e) {
       debugPrint("Error unblocking user: $e");
@@ -120,8 +131,6 @@ class ChatController extends GetxController {
       isBlockLoading.value = false;
     }
   }
-
-
 
   var callMessageSend = false.obs;
 
@@ -132,7 +141,9 @@ class ChatController extends GetxController {
   }) async {
     try {
       if (isBlocked.value) {
-        toastMessage(message: "You have blocked this user. Unblock to send messages.");
+        toastMessage(
+          message: "You have blocked this user. Unblock to send messages.",
+        );
         return;
       }
       if (isBlockedByOther.value) {
@@ -141,28 +152,28 @@ class ChatController extends GetxController {
       }
       if (callMessageSend.value) return;
       callMessageSend.value = true;
-      debugPrint("Is Socket Connected: ${SocketApi.socket!.connected}");
-      showPopUpLoader(context: context);
+      debugPrint("Is Socket Connected: ${SocketApi.socket?.connected}");
 
       final UploadImage imageUploadResponse = await uploadImages();
 
-      debugPrint("Images: ${imageUploadResponse.images?.length} / ${imageUploadResponse.images.toString()}");
+      debugPrint(
+        "Images: ${imageUploadResponse.images?.length} / ${imageUploadResponse.images.toString()}",
+      );
 
-      if (SocketApi.socket != null && SocketApi.socket!.connected) {
+      if (SocketApi.socket?.connected ?? false) {
         final body = {
           "senderId": userId.value,
           "receiverId": senderId,
           "text": messageController.text,
           "images": imageUploadResponse.images ?? [],
           "video": "",
-          "videoCover": ""
+          "videoCover": "",
         };
 
         SocketApi.socket?.emit('new-message', body);
         debugPrint(body.toString());
 
         messageController.clear();
-        AppRouter.route.pop();
         selectedImages.clear();
         callMessageSend.value = false;
 
@@ -171,15 +182,11 @@ class ChatController extends GetxController {
         });
       } else {
         debugPrint("Socket Null Or Socket Not Connected Send Message");
-        AppRouter.route.pop();
         callMessageSend.value = false;
         SocketApi.reconnect();
       }
     } catch (e) {
       callMessageSend.value = false;
-      if (Navigator.canPop(context)) {
-        AppRouter.route.pop();
-      }
       debugPrint("Socket Error Send Message Controller Try Catch Error $e");
     }
   }
@@ -196,7 +203,9 @@ class ChatController extends GetxController {
         debugPrint("New message received: $data");
         final newMessage = MessageItem.fromJson(data);
         final currentMessages = pagingController.itemList ?? [];
-        if (!currentMessages.any((msg) => msg.conversationId == newMessage.id)) {
+        if (!currentMessages.any(
+          (msg) => msg.conversationId == newMessage.id,
+        )) {
           pagingController.itemList = [newMessage, ...currentMessages];
         }
       });
@@ -210,7 +219,10 @@ class ChatController extends GetxController {
 
   Future<void> pickImage() async {
     selectedImages.clear();
-    List<XFile> images = await _picker.pickMultiImage(imageQuality: 50, limit: 6);
+    List<XFile> images = await _picker.pickMultiImage(
+      imageQuality: 50,
+      limit: 6,
+    );
     if (images.isNotEmpty) {
       selectedImages.addAll(images);
     }
@@ -218,7 +230,10 @@ class ChatController extends GetxController {
 
   Future<void> pickCameraImage() async {
     selectedImages.clear();
-    XFile? image = await _picker.pickImage(source: ImageSource.camera, imageQuality: 50);
+    XFile? image = await _picker.pickImage(
+      source: ImageSource.camera,
+      imageQuality: 50,
+    );
     if (image != null) {
       selectedImages.add(image);
     }
@@ -233,9 +248,10 @@ class ChatController extends GetxController {
   Future<UploadImage> uploadImages() async {
     try {
       if (selectedImages.isNotEmpty) {
-        List<MultipartBody> multipartBody = selectedImages.map((item) {
-          return MultipartBody("chatImage", File(item.path));
-        }).toList();
+        List<MultipartBody> multipartBody =
+            selectedImages.map((item) {
+              return MultipartBody("chatImage", File(item.path));
+            }).toList();
 
         final response = await apiClient.multipartRequest(
           url: ApiUrl.updateFile(),
@@ -288,16 +304,14 @@ class UploadImage {
   final dynamic video;
   final dynamic cover;
 
-  UploadImage({
-    this.success,
-    this.images,
-    this.video,
-    this.cover,
-  });
+  UploadImage({this.success, this.images, this.video, this.cover});
 
   factory UploadImage.fromJson(Map<String, dynamic> json) => UploadImage(
     success: json["success"],
-    images: json["images"] == null ? [] : List<String>.from(json["images"]!.map((x) => x)),
+    images:
+        json["images"] == null
+            ? []
+            : List<String>.from(json["images"]!.map((x) => x)),
     video: json["video"],
     cover: json["cover"],
   );
@@ -309,4 +323,3 @@ class UploadImage {
     "cover": cover,
   };
 }
-

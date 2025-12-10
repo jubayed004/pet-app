@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:pet_app/controller/get_controllers.dart';
 import 'package:pet_app/core/dependency/get_it_injection.dart';
 import 'package:pet_app/core/route/route_path.dart';
 import 'package:pet_app/core/route/routes.dart';
 import 'package:pet_app/helper/local_db/local_db.dart';
 import 'package:pet_app/core/custom_assets/assets.gen.dart';
+
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -19,10 +19,8 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-   checkLoginStatus();
+    checkLoginStatus();
   }
-
-
 
   Future<void> checkLoginStatus() async {
     bool rememberMe = await dbHelper.getRememberMe();
@@ -36,7 +34,7 @@ class _SplashScreenState extends State<SplashScreen> {
           AppRouter.route.goNamed(RoutePath.businessNavigationPage);
         }
       } else {
-        AppRouter.route.goNamed(RoutePath.onboardingScreen);
+        AppRouter.route.goNamed(RoutePath.signInScreen);
       }
     } else {
       final token = await dbHelper.getToken();
@@ -54,8 +52,6 @@ class _SplashScreenState extends State<SplashScreen> {
     }
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,14 +61,10 @@ class _SplashScreenState extends State<SplashScreen> {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [
-              Color(0xFFe7abcd),
-              Color(0xFF91DF92),
-            ],
+            colors: [Color(0xFFe7abcd), Color(0xFF91DF92)],
           ),
         ),
-        child: Center(child:Assets.images.splashlogo.image(width: 255.w)
-        ),
+        child: Center(child: Assets.images.splashlogo.image(width: 255.w)),
       ),
     );
   }

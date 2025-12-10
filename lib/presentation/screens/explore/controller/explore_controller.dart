@@ -16,6 +16,10 @@ class ExploreController extends GetxController {
   var loading = Status.completed.obs;
   final RxSet<Marker> markers = <Marker>{}.obs;
   final Rx<LatLng?> currentLocation = Rx<LatLng?>(null);
+
+  // Cache the calculated camera position
+  final Rx<CameraPosition?> cachedCameraPosition = Rx<CameraPosition?>(null);
+
   Future<void> startLocationSharing({required String type}) async {
     try {
       loadingMethod(Status.loading);
@@ -39,7 +43,9 @@ class ExploreController extends GetxController {
         return;
       }
       final position = await Geolocator.getCurrentPosition(
-        locationSettings: const LocationSettings(accuracy: LocationAccuracy.high),
+        locationSettings: const LocationSettings(
+          accuracy: LocationAccuracy.high,
+        ),
       );
       final latLng = LatLng(position.latitude, position.longitude);
       currentLocation.value = latLng;
@@ -53,17 +59,25 @@ class ExploreController extends GetxController {
     }
   }
 
-
   /// ============================= GET Home Header =====================================
 
   loadingMethod(Status status) => loading.value = status;
-  final Rx<MapCategoryDetailsModel> mapDetailsCategory = MapCategoryDetailsModel().obs;
-  Future<void> getMapDetailsCategory({required String type, required String lat, required String long}) async {
+  final Rx<MapCategoryDetailsModel> mapDetailsCategory =
+      MapCategoryDetailsModel().obs;
+  Future<void> getMapDetailsCategory({
+    required String type,
+    required String lat,
+    required String long,
+  }) async {
     try {
-      final response = await apiClient.get(url: ApiUrl.getMapDetailsCategory(type: type, lat: lat, long: long));
+      final response = await apiClient.get(
+        url: ApiUrl.getMapDetailsCategory(type: type, lat: lat, long: long),
+      );
       if (response.statusCode == 200) {
         loadingMethod(Status.completed);
-        mapDetailsCategory.value = MapCategoryDetailsModel.fromJson(response.body);
+        mapDetailsCategory.value = MapCategoryDetailsModel.fromJson(
+          response.body,
+        );
         _createMarkersFromServices();
       } else {
         if (response.statusCode == 503) {
@@ -79,19 +93,32 @@ class ExploreController extends GetxController {
       loadingMethod(Status.error);
     }
   }
+
   void _createMarkersFromServices() {
     final services = mapDetailsCategory.value.services ?? [];
-    markers.clear();
+    final Set<Marker> newMarkers = {};
+    double? minLat, maxLat, minLng, maxLng;
+
     for (var service in services) {
       final lat = double.tryParse(service.latitude ?? "0.0") ?? 0.0;
       final lng = double.tryParse(service.longitude ?? "0.0") ?? 0.0;
       if (lat == 0.0 && lng == 0.0) {
-        debugPrint("Skipping service ${service.serviceName} due to invalid coordinates");
+        debugPrint(
+          "Skipping service ${service.serviceName} due to invalid coordinates",
+        );
         continue;
       }
-      final markerId = service.id?.toString() ??
+
+      // Calculate bounds logic
+      if (minLat == null || lat < minLat) minLat = lat;
+      if (maxLat == null || lat > maxLat) maxLat = lat;
+      if (minLng == null || lng < minLng) minLng = lng;
+      if (maxLng == null || lng > maxLng) maxLng = lng;
+
+      final markerId =
+          service.id?.toString() ??
           service.serviceName ??
-          "marker_${markers.length}";
+          "marker_${newMarkers.length}";
       final marker = Marker(
         markerId: MarkerId(markerId),
         position: LatLng(lat, lng),
@@ -104,21 +131,53 @@ class ExploreController extends GetxController {
           debugPrint("Tapped on ${service.serviceName}");
         },
       );
-      markers.add(marker);
+      newMarkers.add(marker);
     }
-    debugPrint("Created ${markers.length} markers for ${services.length} services");
+
+    markers.assignAll(newMarkers);
+
+    // Set cached camera position
+    if (newMarkers.isNotEmpty &&
+        minLat != null &&
+        maxLat != null &&
+        minLng != null &&
+        maxLng != null) {
+      double centerLat = (minLat + maxLat) / 2;
+      double centerLng = (minLng + maxLng) / 2;
+      centerLat -= 0.015; // Offset for bottom sheet
+
+      cachedCameraPosition.value = CameraPosition(
+        target: LatLng(centerLat, centerLng),
+        zoom: _calculateZoomLevel(minLat, maxLat, minLng, maxLng),
+      );
+    } else {
+      cachedCameraPosition.value = null;
+    }
+
+    debugPrint(
+      "Created ${markers.length} markers for ${services.length} services",
+    );
   }
+
   Set<Marker> get getMarkers => markers;
   void clearMarkers() {
     markers.clear();
   }
+
   void addMarker(Marker marker) {
     markers.add(marker);
   }
+
   void removeMarker(String markerId) {
     markers.removeWhere((marker) => marker.markerId.value == markerId);
   }
+
   CameraPosition getCameraPosition() {
+    if (cachedCameraPosition.value != null && markers.isNotEmpty) {
+      return cachedCameraPosition.value!;
+    }
+
+    // Fallback if no cached position but markers exist (shouldn't happen with new logic usually)
     if (markers.isNotEmpty) {
       double minLat = markers.first.position.latitude;
       double maxLat = markers.first.position.latitude;
@@ -126,10 +185,18 @@ class ExploreController extends GetxController {
       double maxLng = markers.first.position.longitude;
 
       for (var marker in markers) {
-        if (marker.position.latitude < minLat) minLat = marker.position.latitude;
-        if (marker.position.latitude > maxLat) maxLat = marker.position.latitude;
-        if (marker.position.longitude < minLng) minLng = marker.position.longitude;
-        if (marker.position.longitude > maxLng) maxLng = marker.position.longitude;
+        if (marker.position.latitude < minLat) {
+          minLat = marker.position.latitude;
+        }
+        if (marker.position.latitude > maxLat) {
+          maxLat = marker.position.latitude;
+        }
+        if (marker.position.longitude < minLng) {
+          minLng = marker.position.longitude;
+        }
+        if (marker.position.longitude > maxLng) {
+          maxLng = marker.position.longitude;
+        }
       }
       double centerLat = (minLat + maxLat) / 2;
       double centerLng = (minLng + maxLng) / 2;
@@ -142,13 +209,19 @@ class ExploreController extends GetxController {
     }
 
     return CameraPosition(
-      target: currentLocation.value ??
+      target:
+          currentLocation.value ??
           const LatLng(23.804693584341365, 90.41590889596907),
-      zoom: 8,
+      zoom: 14,
     );
   }
+
   double _calculateZoomLevel(
-      double minLat, double maxLat, double minLng, double maxLng) {
+    double minLat,
+    double maxLat,
+    double minLng,
+    double maxLng,
+  ) {
     double latDiff = maxLat - minLat;
     double lngDiff = maxLng - minLng;
     double maxDiff = latDiff > lngDiff ? latDiff : lngDiff;
