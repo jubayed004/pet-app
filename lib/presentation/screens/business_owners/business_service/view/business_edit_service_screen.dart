@@ -41,31 +41,44 @@ class BusinessEditServiceScreen extends StatefulWidget {
   final List<String> serviceList;
 
   @override
-  State<BusinessEditServiceScreen> createState() => _BusinessEditServiceScreenState();
+  State<BusinessEditServiceScreen> createState() =>
+      _BusinessEditServiceScreenState();
 }
 
 class _BusinessEditServiceScreenState extends State<BusinessEditServiceScreen> {
-  final businessAddServiceController = GetControllers.instance.getBusinessAddServiceController();
+  final businessAddServiceController =
+      GetControllers.instance.getBusinessAddServiceController();
   TextEditingController serviceName = TextEditingController();
   TextEditingController phoneNumber = TextEditingController();
   TextEditingController location = TextEditingController();
   TextEditingController webSiteLInk = TextEditingController();
-  ValueNotifier<List<TextEditingController>> serviceController = ValueNotifier([]);
+  ValueNotifier<List<TextEditingController>> serviceController = ValueNotifier(
+    [],
+  );
   final _formKey = GlobalKey<FormState>();
-  final selectedLocation = ValueNotifier<RecordLocation>(RecordLocation(LatLng(0.0, 0.0), ""));
+  final selectedLocation = ValueNotifier<RecordLocation>(
+    RecordLocation(LatLng(0.0, 0.0), ""),
+  );
 
   @override
   void initState() {
+    super.initState();
     serviceName = TextEditingController(text: widget.serviceName);
     phoneNumber = TextEditingController(text: widget.phoneNumber);
     location = TextEditingController(text: widget.location);
     webSiteLInk = TextEditingController(text: widget.webSiteLInk);
+    serviceController = ValueNotifier(
+      widget.serviceList
+          .map((service) => TextEditingController(text: service))
+          .toList(),
+    );
 
-    businessAddServiceController.selectedAnalystType.value = widget.serviceType ;
-    businessAddServiceController.selectedWeek.value = widget.offDay;
-    serviceController = ValueNotifier(widget.serviceList.map((service) => TextEditingController(text: service)).toList());
-
-    super.initState();
+    // Defer reactive value assignments to prevent setState during build
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      businessAddServiceController.selectedAnalystType.value =
+          widget.serviceType;
+      businessAddServiceController.selectedWeek.value = widget.offDay;
+    });
   }
 
   @override
@@ -79,7 +92,10 @@ class _BusinessEditServiceScreenState extends State<BusinessEditServiceScreen> {
   }
 
   void _addBeltField() {
-    serviceController.value = [...serviceController.value, TextEditingController()];
+    serviceController.value = [
+      ...serviceController.value,
+      TextEditingController(),
+    ];
   }
 
   void _removeBeltField(int index) {
@@ -99,7 +115,11 @@ class _BusinessEditServiceScreenState extends State<BusinessEditServiceScreen> {
         scrolledUnderElevation: 0,
         backgroundColor: AppColors.whiteColor,
         centerTitle: true,
-        title: CustomText(fontWeight: FontWeight.w600, fontSize: 16, text: "Edit Service"),
+        title: CustomText(
+          fontWeight: FontWeight.w600,
+          fontSize: 16,
+          text: "Edit Service",
+        ),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -110,7 +130,11 @@ class _BusinessEditServiceScreenState extends State<BusinessEditServiceScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CustomText(text: "Service Photo", fontWeight: FontWeight.w400, fontSize: 16),
+                  CustomText(
+                    text: "Service Photo",
+                    fontWeight: FontWeight.w400,
+                    fontSize: 16,
+                  ),
                   Gap(8),
                   GestureDetector(
                     onTap: businessAddServiceController.editPickImage,
@@ -118,7 +142,11 @@ class _BusinessEditServiceScreenState extends State<BusinessEditServiceScreen> {
                       height: 156.h,
                       width: double.infinity,
                       child: Obx(() {
-                        final image = businessAddServiceController.selecteImage.value?.path;
+                        final image =
+                            businessAddServiceController
+                                .selecteImage
+                                .value
+                                ?.path;
                         return Stack(
                           children: [
                             Positioned.fill(
@@ -126,16 +154,24 @@ class _BusinessEditServiceScreenState extends State<BusinessEditServiceScreen> {
                                   image != null && image.isNotEmpty
                                       ? ClipRRect(
                                         borderRadius: BorderRadius.circular(6),
-                                        child: Image.file(File(image), height: 156.h, width: MediaQuery.of(context).size.width, fit: BoxFit.cover),
+                                        child: Image.file(
+                                          File(image),
+                                          height: 156.h,
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          fit: BoxFit.cover,
+                                        ),
                                       )
                                       : CustomNetworkImage(
-                                        imageUrl: "https://www.rawpixel.com/image/12143311/png",
+                                        imageUrl:
+                                            "https://www.rawpixel.com/image/12143311/png",
                                         height: 156.h,
                                         borderRadius: BorderRadius.circular(6),
-                                        width: MediaQuery.of(context).size.width,
+                                        width:
+                                            MediaQuery.of(context).size.width,
                                       ),
                             ),
-                     /*       image != null && image.isNotEmpty
+                            /*       image != null && image.isNotEmpty
                                 ? SizedBox()
                                 : Center(
                                   child: Container(
@@ -155,22 +191,35 @@ class _BusinessEditServiceScreenState extends State<BusinessEditServiceScreen> {
                     ),
                   ),
                   Gap(14),
-                  CustomText(text: "Service Type", fontWeight: FontWeight.w500, fontSize: 16),
+                  CustomText(
+                    text: "Service Type",
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16,
+                  ),
                   Gap(8),
-                CustomDropdownField(
-                  hintText: widget.serviceType.isNotEmpty ? widget.serviceType : "Service Type",
-                  items: businessAddServiceController.analystType.map((item) {
-                    return item;
-                  }).toList(),
-                  onChanged: (value) {
-                    if (value != null) {
-                      businessAddServiceController.selectedAnalystType.value = value;
-                    }
-                  },
-                ),
+                  CustomDropdownField(
+                    hintText:
+                        widget.serviceType.isNotEmpty
+                            ? widget.serviceType
+                            : "Service Type",
+                    items:
+                        businessAddServiceController.analystType.map((item) {
+                          return item;
+                        }).toList(),
+                    onChanged: (value) {
+                      if (value != null) {
+                        businessAddServiceController.selectedAnalystType.value =
+                            value;
+                      }
+                    },
+                  ),
 
                   Gap(16),
-                  CustomText(text: "Providing Service", fontWeight: FontWeight.w500, fontSize: 16),
+                  CustomText(
+                    text: "Providing Service",
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16,
+                  ),
                   Gap(8),
                   ValueListenableBuilder<List<TextEditingController>>(
                     valueListenable: serviceController,
@@ -199,11 +248,15 @@ class _BusinessEditServiceScreenState extends State<BusinessEditServiceScreen> {
                                         if (v.length > 100) {
                                           return 'Must be 100 characters or fewer';
                                         }
-                                        final ok = RegExp(r"^[A-Za-z0-9&/.,\-()' ]+$");
+                                        final ok = RegExp(
+                                          r"^[A-Za-z0-9&/.,\-()' ]+$",
+                                        );
                                         if (!ok.hasMatch(v)) {
                                           return "Only letters, numbers, spaces, and -/.,()'& are allowed";
                                         }
-                                        final hasAlnum = RegExp(r'[A-Za-z0-9]').hasMatch(v);
+                                        final hasAlnum = RegExp(
+                                          r'[A-Za-z0-9]',
+                                        ).hasMatch(v);
                                         if (!hasAlnum) {
                                           return 'Enter a meaningful service name';
                                         }
@@ -214,8 +267,16 @@ class _BusinessEditServiceScreenState extends State<BusinessEditServiceScreen> {
                                 ),
                                 const Gap(5),
                                 index == 0
-                                    ? IconButton(onPressed: _addBeltField, icon: const Icon(Iconsax.add_circle))
-                                    : IconButton(onPressed: () => _removeBeltField(index), icon: const Icon(Icons.remove_circle_outline)),
+                                    ? IconButton(
+                                      onPressed: _addBeltField,
+                                      icon: const Icon(Iconsax.add_circle),
+                                    )
+                                    : IconButton(
+                                      onPressed: () => _removeBeltField(index),
+                                      icon: const Icon(
+                                        Icons.remove_circle_outline,
+                                      ),
+                                    ),
                               ],
                             ),
                           );
@@ -224,7 +285,11 @@ class _BusinessEditServiceScreenState extends State<BusinessEditServiceScreen> {
                     },
                   ),
                   Gap(14),
-                  CustomText(text: "Service Name", fontWeight: FontWeight.w500, fontSize: 16),
+                  CustomText(
+                    text: "Service Name",
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16,
+                  ),
                   Gap(8),
                   CustomTextField(
                     fieldBorderColor: AppColors.blackColor,
@@ -241,9 +306,13 @@ class _BusinessEditServiceScreenState extends State<BusinessEditServiceScreen> {
                       return null;
                     },
                   ),
-        
+
                   Gap(14),
-                  CustomText(text: "Phone Number", fontWeight: FontWeight.w500, fontSize: 16),
+                  CustomText(
+                    text: "Phone Number",
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16,
+                  ),
                   Gap(8),
                   CustomTextField(
                     fieldBorderColor: AppColors.blackColor,
@@ -263,9 +332,13 @@ class _BusinessEditServiceScreenState extends State<BusinessEditServiceScreen> {
                       return null;
                     },
                   ),
-        
+
                   Gap(14),
-                  CustomText(text: "Location", fontWeight: FontWeight.w500, fontSize: 16),
+                  CustomText(
+                    text: "Location",
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16,
+                  ),
                   Gap(8),
                   GestureDetector(
                     onTap: () async {
@@ -274,25 +347,42 @@ class _BusinessEditServiceScreenState extends State<BusinessEditServiceScreen> {
                     child: Container(
                       padding: EdgeInsets.all(16),
                       width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1), borderRadius: BorderRadius.circular(12)),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black, width: 1),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                       child: ValueListenableBuilder<RecordLocation>(
                         valueListenable: selectedLocation, // Listen to changes
                         builder: (_, item, _) {
-                          String address = item.address.isEmpty ? " selected Your Location" : item.address;
+                          String address =
+                              item.address.isEmpty
+                                  ? " selected Your Location"
+                                  : item.address;
                           return Text(address);
                         },
                       ),
                     ),
                   ),
-        
+
                   Gap(14),
-                  CustomText(text: " Time Duration", fontWeight: FontWeight.w600, fontSize: 16),
+                  CustomText(
+                    text: " Time Duration",
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
+                  ),
                   Gap(14),
-                  CustomText(text: "Opening time", fontWeight: FontWeight.w500, fontSize: 16),
+                  CustomText(
+                    text: "Opening time",
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16,
+                  ),
                   Gap(8),
                   Obx(() {
                     return GestureDetector(
-                      onTap: () => businessAddServiceController.pickOpeningTime(context),
+                      onTap:
+                          () => businessAddServiceController.pickOpeningTime(
+                            context,
+                          ),
                       child: Container(
                         decoration: BoxDecoration(
                           color: AppColors.whiteColor,
@@ -305,21 +395,39 @@ class _BusinessEditServiceScreenState extends State<BusinessEditServiceScreen> {
                         padding: const EdgeInsets.symmetric(horizontal: 12),
                         child: Text(
                           businessAddServiceController.openingTime.value == null
-                              ? (widget.openingTime.isEmpty ? "Select opening time" : widget.openingTime )
-                              : businessAddServiceController.openingTime.value!.format(context),
+                              ? (widget.openingTime.isEmpty
+                                  ? "Select opening time"
+                                  : widget.openingTime)
+                              : businessAddServiceController.openingTime.value!
+                                  .format(context),
 
-
-                          style: TextStyle(fontSize: 16, color: businessAddServiceController.openingTime.value == null ? Colors.black : Colors.black),
+                          style: TextStyle(
+                            fontSize: 16,
+                            color:
+                                businessAddServiceController
+                                            .openingTime
+                                            .value ==
+                                        null
+                                    ? Colors.black
+                                    : Colors.black,
+                          ),
                         ),
                       ),
                     );
                   }),
                   Gap(14),
-                  CustomText(text: "Closing time", fontWeight: FontWeight.w500, fontSize: 16),
+                  CustomText(
+                    text: "Closing time",
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16,
+                  ),
                   Gap(8),
                   Obx(() {
                     return GestureDetector(
-                      onTap: () => businessAddServiceController.pickClosingTime(context),
+                      onTap:
+                          () => businessAddServiceController.pickClosingTime(
+                            context,
+                          ),
                       child: Container(
                         decoration: BoxDecoration(
                           color: AppColors.whiteColor,
@@ -332,22 +440,42 @@ class _BusinessEditServiceScreenState extends State<BusinessEditServiceScreen> {
                         padding: const EdgeInsets.symmetric(horizontal: 12),
                         child: Text(
                           businessAddServiceController.closingTime.value == null
-                              ? (widget.openingTime.isEmpty ? "Select closing time" : widget.openingTime )
-                              : businessAddServiceController.closingTime.value!.format(context),
-                          style: TextStyle(fontSize: 16, color: businessAddServiceController.closingTime.value == null ? Colors.black : Colors.black),
+                              ? (widget.openingTime.isEmpty
+                                  ? "Select closing time"
+                                  : widget.openingTime)
+                              : businessAddServiceController.closingTime.value!
+                                  .format(context),
+                          style: TextStyle(
+                            fontSize: 16,
+                            color:
+                                businessAddServiceController
+                                            .closingTime
+                                            .value ==
+                                        null
+                                    ? Colors.black
+                                    : Colors.black,
+                          ),
                         ),
                       ),
                     );
                   }),
-        
+
                   Gap(14),
-                  CustomText(text: "Off day", fontWeight: FontWeight.w500, fontSize: 16),
+                  CustomText(
+                    text: "Off day",
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16,
+                  ),
                   Gap(8),
                   CustomDropdownField(
-                    hintText: widget.offDay.isNotEmpty ? widget.offDay : "Off Day Type",
-                    items: businessAddServiceController.weekly.map((item) {
-                      return item;
-                    }).toList(),
+                    hintText:
+                        widget.offDay.isNotEmpty
+                            ? widget.offDay
+                            : "Off Day Type",
+                    items:
+                        businessAddServiceController.weekly.map((item) {
+                          return item;
+                        }).toList(),
                     onChanged: (value) {
                       if (value != null) {
                         businessAddServiceController.selectedWeek.value = value;
@@ -356,14 +484,19 @@ class _BusinessEditServiceScreenState extends State<BusinessEditServiceScreen> {
                   ),
 
                   Obx(() {
-                    final value = businessAddServiceController.selectedWeek.value;
+                    final value =
+                        businessAddServiceController.selectedWeek.value;
                     if (["Pet Shops", "Pet Hotels"].contains(value)) {
                       return Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Gap(14),
-                          CustomText(text: "Website Link", fontWeight: FontWeight.w500, fontSize: 16),
+                          CustomText(
+                            text: "Website Link",
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
+                          ),
                           Gap(8),
                           CustomTextField(
                             fieldBorderColor: AppColors.blackColor,
@@ -390,28 +523,46 @@ class _BusinessEditServiceScreenState extends State<BusinessEditServiceScreen> {
                   Gap(24),
                   Obx(() {
                     return CustomButton(
-                      isLoading: businessAddServiceController.isEditLoading.value,
+                      isLoading:
+                          businessAddServiceController.isEditLoading.value,
                       onTap: () {
                         print("index 1");
-                        final List<String> services = serviceController.value.map((controller) => controller.text).toList();
-        
+                        final List<String> services =
+                            serviceController.value
+                                .map((controller) => controller.text)
+                                .toList();
+
                         final body = {
-                          "serviceType": businessAddServiceController.selectedAnalystType.value,
+                          "serviceType":
+                              businessAddServiceController
+                                  .selectedAnalystType
+                                  .value,
                           "serviceName": serviceName.text,
                           "providings": services.join(','),
                           "location": selectedLocation.value.address,
                           "phone": phoneNumber.text,
-                          "openingTime": businessAddServiceController.openingTime.value?.format(context) ?? "",
-                          "closingTime": businessAddServiceController.closingTime.value?.format(context) ?? "",
-                          "offDay": businessAddServiceController.selectedWeek.value,
-                          "latitude": selectedLocation.value.latLng.latitude.toString(),
-                          "longitude": selectedLocation.value.latLng.longitude.toString(),
+                          "openingTime":
+                              businessAddServiceController.openingTime.value
+                                  ?.format(context) ??
+                              "",
+                          "closingTime":
+                              businessAddServiceController.closingTime.value
+                                  ?.format(context) ??
+                              "",
+                          "offDay":
+                              businessAddServiceController.selectedWeek.value,
+                          "latitude":
+                              selectedLocation.value.latLng.latitude.toString(),
+                          "longitude":
+                              selectedLocation.value.latLng.longitude
+                                  .toString(),
                         };
 
                         if (_formKey.currentState!.validate()) {
-
-                          businessAddServiceController.editService(body: body, id: widget.id);
-
+                          businessAddServiceController.editService(
+                            body: body,
+                            id: widget.id,
+                          );
                         }
                       },
                       title: "Update service",
@@ -439,7 +590,10 @@ class _BusinessEditServiceScreenState extends State<BusinessEditServiceScreen> {
                 onNext: (result) {
                   if (result != null) {
                     selectedLocation.value = RecordLocation(
-                      LatLng(result.geometry.location.lat, result.geometry.location.lng),
+                      LatLng(
+                        result.geometry.location.lat,
+                        result.geometry.location.lng,
+                      ),
                       result.formattedAddress ?? "Address not available",
                     );
                   }
@@ -448,7 +602,10 @@ class _BusinessEditServiceScreenState extends State<BusinessEditServiceScreen> {
                   }
                 },
               ),
-              searchConfig: const SearchConfig(apiKey: "AIzaSyAszXC1be8aJ37eHuNcBm_-O1clWkPUwV4", searchHintText: "Search for a location"),
+              searchConfig: const SearchConfig(
+                apiKey: "AIzaSyAszXC1be8aJ37eHuNcBm_-O1clWkPUwV4",
+                searchHintText: "Search for a location",
+              ),
             ),
       ),
     );
