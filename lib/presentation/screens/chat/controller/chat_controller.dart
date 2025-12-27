@@ -1,7 +1,3 @@
-// ============================================
-// 1. UPDATED CHAT CONTROLLER
-// ============================================
-
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -15,7 +11,6 @@ import 'package:pet_app/presentation/screens/chat/model/chat_model.dart';
 import 'package:pet_app/service/api_service.dart';
 import 'package:pet_app/service/api_url.dart';
 import 'package:pet_app/service/socket_service.dart';
-import 'package:pet_app/utils/popup_loader/popup_loader.dart';
 
 class ChatController extends GetxController {
   final ApiClient apiClient = serviceLocator<ApiClient>();

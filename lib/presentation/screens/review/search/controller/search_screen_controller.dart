@@ -28,6 +28,7 @@ class SearchScreenController extends GetxController{
 
   Future<void> getAllSearch( int pageKey ) async {
 
+
   if (isLoadingMove.value) return;
     isLoadingMove.value = true;
 
